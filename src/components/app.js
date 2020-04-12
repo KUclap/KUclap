@@ -1,6 +1,6 @@
 // import { h } from "preact";
-import { useState } from "preact/hooks";
-import styled, { createGlobalStyle } from "styled-components";
+import { useState, useEffect } from "preact/hooks";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Select from "react-virtualized-select";
 import "react-virtualized-select/styles.css";
 import "react-select/dist/react-select.css";
@@ -8,6 +8,7 @@ import "react-virtualized/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Header from "./common/Header";
 import { data as data_mock_class } from "../assets/data/class";
+import ReviewCard from "./common/ReviewCard";
 // Code-splitting is automated for routes
 // import Home from "../routes/home";
 // import Profile from "../routes/profile";
@@ -60,7 +61,7 @@ const SubjectDetails = styled.div`
   margin: 2rem 0;
 `;
 
-const SubjectTitle = styled.span`
+const SubjectTitle = styled.p`
   font-size: 2rem;
 `;
 
@@ -75,16 +76,18 @@ const Button = styled.div `
 
 const DetailTitle = styled.p `
   font-size: 1.8rem;
+  margin: 0;
 `;
 
 const ScoreTitle = styled.p `
   font-size: 1.4rem;
+  margin-right: 1.2rem;
 `;
 
 const LinearProgressCustom = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 1.2rem;
-    width: 13.7rem;
+    width: 45%;
     border-radius: 0.6rem;
   }
 
@@ -93,10 +96,23 @@ const LinearProgressCustom = styled(LinearProgress)`
   }
 
   & .MuiLinearProgress-barColorPrimary {
-    background-image: linear-gradient(89.94deg, #9BC1EE 0.01%, #F0C3F7 213.5%);
+    background-image: linear-gradient(89.94deg, ${props => props.colorLeft} 0.01%, ${props => props.colorRight} 213.5%);
     border-radius: 0.6rem;
   }
 `;
+
+const ScoreBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const ReviewTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.8rem;
+`
 
 const App = () => {
   const [classSelected, setClassSelected] = useState(
@@ -104,8 +120,8 @@ const App = () => {
   );
   const [score, setScore] = useState({
     work: 50,
-    lesson: 100,
-    teaching: 100
+    lesson: 75,
+    teaching: 34
   });
 
   return (
@@ -127,17 +143,28 @@ const App = () => {
       <SubjectDetails>
         <SubjectTitle>{classSelected}</SubjectTitle>
         <DetailTitle>คะแนนภาพรวม</DetailTitle>
-        <ScoreTitle>จำนวนงานและการบ้าน</ScoreTitle>
-        <LinearProgressCustom variant="determinate" value={score.work} />
-        <ScoreTitle>ความน่าสนใจของเนื้อหา</ScoreTitle>
-        <LinearProgressCustom variant="determinate" value={score.lesson} />
-        <ScoreTitle>การสอนของอาจารย์</ScoreTitle>
-        <LinearProgressCustom variant="determinate" value={score.teaching} />
+        <ScoreBar>
+          <ScoreTitle>จำนวนงานและการบ้าน</ScoreTitle>
+          <LinearProgressCustom variant="determinate" colorLeft="#9BC1EE" colorRight="#F0C3F7" value={score.work} />
+        </ScoreBar>
+        <ScoreBar>
+          <ScoreTitle>ความน่าสนใจของเนื้อหา</ScoreTitle>
+          <LinearProgressCustom variant="determinate" colorLeft="#A3E0B5" colorRight="#B4D9F3" value={score.lesson} />
+        </ScoreBar>
+        <ScoreBar>
+          <ScoreTitle>การสอนของอาจารย์</ScoreTitle>
+          <LinearProgressCustom variant="determinate" colorLeft="#EEA99A" colorRight="#F6DEA2" value={score.teaching} />
+        </ScoreBar>
+        <ReviewTitle>
+          <DetailTitle>รีวิวทั้งหมด</DetailTitle>
+          <Button>
+            รีวิววิชานี้
+          </Button>
+        </ReviewTitle>
+        <ReviewCard />
       </SubjectDetails>
       
-      {/* <Button>
-          รีวิววิชานี้
-      </Button> */}
+
     </Container>
   );
 };
