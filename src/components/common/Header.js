@@ -12,6 +12,7 @@ const DetailKUclap = styled.h1`
   color: #666;
   width: 80%;
   text-align: center;
+  margin: 2rem;
 `;
 
 const Header = () => {

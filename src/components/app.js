@@ -1,6 +1,6 @@
 // import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import { useState } from "preact/hooks";
+import styled, { createGlobalStyle } from "styled-components";
 import Select from "react-virtualized-select";
 import "react-virtualized-select/styles.css";
 import "react-select/dist/react-select.css";
@@ -9,6 +9,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Header from "./common/Header";
 import { data as data_mock_class } from "../assets/data/class";
 import ReviewCard from "./common/ReviewCard";
+import ReviewForm from "./common/ReviewForm";
 // Code-splitting is automated for routes
 // import Home from "../routes/home";
 // import Profile from "../routes/profile";
@@ -22,6 +23,7 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     font-family: 'Kanit', arial, sans-serif;
     font-weight: 400;
+    overflow: ${props => props.overflow === true ? 'hidden' : 'scroll'}
   }
 
   * {
@@ -35,6 +37,8 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  max-width: 86rem;
+  margin: auto;
 `;
 
 const SelectCustom = styled(Select)`
@@ -56,31 +60,44 @@ const SelectCustom = styled(Select)`
   }
 `;
 
-const SubjectDetails = styled.div`
-  max-width: 80%;
-  margin: 2rem 0;
+const Details = styled.div`
+  min-width: 86%;
+  margin: 0 2.4rem;
+  display: ${props => props.enable === false ? 'block' : 'none'};
 `;
 
 const SubjectTitle = styled.p`
   font-size: 2rem;
+  margin: 3rem;
+  min-width: 86%;
 `;
 
 const Button = styled.div `
-  background-color: #9BC1EE;
+  background-color: #2F80ED;
   color: #fff;
   padding: 0.2rem 1.8rem;
   border-radius: 0.6rem;
-  font-size: 1.4rem;
-  height: 2.5rem;
+  font-size: 2rem;
+  cursor: pointer;
+
+  &:active {
+    background-color: #2F80ED;
+  }
+
+  &:hover {
+    background-color: #9AC1EE;
+  }
 `;
 
 const DetailTitle = styled.p `
-  font-size: 1.8rem;
-  margin: 0;
+  font-size: 2rem;
+  margin: 1.2rem 0;
+  font-weight: 600;
+  color: ${props => props.desc ? '#BDBDBD' : '#4F4F4F'}
 `;
 
 const ScoreTitle = styled.p `
-  font-size: 1.4rem;
+  font-size: 1.7rem;
   margin-right: 1.2rem;
 `;
 
@@ -101,7 +118,7 @@ const LinearProgressCustom = styled(LinearProgress)`
   }
 `;
 
-const ScoreBar = styled.div`
+const ScoreContainter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -117,12 +134,14 @@ const ReviewTitle = styled.div`
 const App = () => {
   const [classSelected, setClassSelected] = useState(
     "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
-  );
+  )
   const [score, setScore] = useState({
     work: 50,
     lesson: 75,
     teaching: 34
   });
+  const [showForm, setShowForm] = useState(false)
+  const [scroll, setScroll] = useState(false)
 
   return (
     <Container>
@@ -130,7 +149,7 @@ const App = () => {
         href="https://fonts.googleapis.com/css?family=Kanit&display=swap"
         rel="stylesheet"
       />
-      <GlobalStyles />
+      <GlobalStyles overflow={scroll} />
       <Header />
       <SelectCustom
         name="major"
@@ -140,31 +159,34 @@ const App = () => {
         placeholder={classSelected}
         onChange={(e) => setClassSelected(e.label)}
       />
-      <SubjectDetails>
-        <SubjectTitle>{classSelected}</SubjectTitle>
-        <DetailTitle>คะแนนภาพรวม</DetailTitle>
-        <ScoreBar>
+      <SubjectTitle>{classSelected}</SubjectTitle>
+      <ReviewForm enable={showForm} back={setShowForm} modal={setScroll} />
+      <Details enable={showForm}>
+        <ScoreContainter>
+          <DetailTitle>คะแนนภาพรวม</DetailTitle>
+          <DetailTitle desc>มาก</DetailTitle>
+          <DetailTitle desc>น้อย</DetailTitle>
+        </ScoreContainter>
+        <ScoreContainter>
           <ScoreTitle>จำนวนงานและการบ้าน</ScoreTitle>
           <LinearProgressCustom variant="determinate" colorLeft="#9BC1EE" colorRight="#F0C3F7" value={score.work} />
-        </ScoreBar>
-        <ScoreBar>
+        </ScoreContainter>
+        <ScoreContainter>
           <ScoreTitle>ความน่าสนใจของเนื้อหา</ScoreTitle>
           <LinearProgressCustom variant="determinate" colorLeft="#A3E0B5" colorRight="#B4D9F3" value={score.lesson} />
-        </ScoreBar>
-        <ScoreBar>
+        </ScoreContainter>
+        <ScoreContainter>
           <ScoreTitle>การสอนของอาจารย์</ScoreTitle>
           <LinearProgressCustom variant="determinate" colorLeft="#EEA99A" colorRight="#F6DEA2" value={score.teaching} />
-        </ScoreBar>
+        </ScoreContainter>
         <ReviewTitle>
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
-          <Button>
+          <Button onClick={() => setShowForm(true)}>
             รีวิววิชานี้
           </Button>
         </ReviewTitle>
         <ReviewCard />
-      </SubjectDetails>
-      
-
+      </Details>
     </Container>
   );
 };
