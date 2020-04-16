@@ -17,9 +17,10 @@ const Rate = [
     title: 'การสอนของอาจารย์',
   },
 ]
+const RateIcon = [Worst, Bad, So, Good, Excellent]
 
 const Container = styled.div`
-  display: ${props => props.isEnable === true ? 'flex' : 'none'};
+  display: ${props => props.isEnable === 'form' ? 'flex' : 'none'};
   flex-direction: column;
   margin: 0 2rem 4rem;
   min-width: 86%
@@ -27,8 +28,8 @@ const Container = styled.div`
 
 const DetailTitle = styled.div `
   font-size: 2rem;
-  margin-right: 2.8rem;
   font-weight: 600;
+  margin: 1.2rem 2.8rem 1.2rem 0;
 `;
 
 const FormTitle = styled.div`
@@ -91,7 +92,6 @@ const GradeBar = styled.div`
   width: 100%;
   max-width: 46rem;
   justify-content: space-between;
-  margin: 1.2rem 0;
 `
 
 const InputName = styled.input`
@@ -112,11 +112,11 @@ const InputContainer = styled.div`
   display: flex;
   flex-flow: wrap;
   align-items: center;
-  margin: 2.8rem 0;
+  margin: 2rem 0;
 `
 
 const Caution = styled.p`
-  font-size: 1.4rem;
+  font-size: 2rem;
   color: #BDBDBD;
   font-weight: 500;
   text-align: center
@@ -138,12 +138,14 @@ const ReviewButton = styled(Button)`
   background-color: #2F80ED;
   font-size: 2rem;
   align-self: center;
+  margin: 1rem 1rem;
 `
 
 const CancelButton = styled(Button)`
   padding: 0.4rem 1.2rem;
   font-size: 2rem;
   text-align: center;
+  margin: 1rem 1rem;
 `
 
 const ModalBackdrop = styled.div`
@@ -165,22 +167,24 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 3.2rem 3.8rem;
+  padding: 2.8rem 1.2rem;
   font-weight: 500;
   font-size: 2rem;
   line-height: 3.4rem;
   text-align: center;
   display: ${props => props.show === true? 'block' : 'none'};
   z-index: 1;
+  max-width: 42rem;
+  width: 84%;
 `
 
 const ModalActions = styled.div`
   align-self: center;
-  padding: 1.4rem 3rem 0; 
-  width: 33rem;
+  padding: 1.4rem 0 0; 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  flex-flow: wrap;
+  justify-content: center;
 `
 
 const Rating = styled.div`
@@ -190,6 +194,8 @@ const Rating = styled.div`
 `
 
 const RateContainer = styled.div`
+  cursor: pointer;
+
   svg {
     #outer, #mouth {
       stroke: ${props => props.selected === true ? '#2F80ED' : '#BDBDBD'};
@@ -213,8 +219,6 @@ const RateContainer = styled.div`
   }
 `
 
-const RateIcon = [Worst, Bad, So, Good, Excellent]
-
 const ReviewForm = ({enable, back, modal}) => {
   const [showDialog, setDialog] = useState(false);
   const [form, setForm] = useState({
@@ -234,7 +238,7 @@ const ReviewForm = ({enable, back, modal}) => {
     <Container isEnable={enable}>
       <FormTitle>
           <DetailTitle>รีวิววิชานี้</DetailTitle>
-          <Button onClick={() => back(false)}>
+          <Button onClick={() => back('details')}>
               ย้อนกลับ
           </Button>
       </FormTitle>

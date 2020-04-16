@@ -63,13 +63,14 @@ const SelectCustom = styled(Select)`
 const Details = styled.div`
   min-width: 86%;
   margin: 0 2.4rem;
-  display: ${props => props.enable === false ? 'block' : 'none'};
+  display: ${props => props.enable === 'details' ? 'block' : 'none'};
 `;
 
 const SubjectTitle = styled.p`
   font-size: 2rem;
-  margin: 3rem;
+  margin: 3rem 6.4rem;
   min-width: 86%;
+  display: ${props => props.enable !== 'main' ? 'block' : 'none'};
 `;
 
 const Button = styled.div `
@@ -93,19 +94,22 @@ const DetailTitle = styled.p `
   font-size: 2rem;
   margin: 1.2rem 0;
   font-weight: 600;
-  color: ${props => props.desc ? '#BDBDBD' : '#4F4F4F'}
+  color: ${props => props.desc ? '#BDBDBD' : '#4F4F4F'};
+  padding: ${props => props.desc ? '0 1rem' : '0'}
 `;
 
 const ScoreTitle = styled.p `
   font-size: 1.7rem;
-  margin-right: 1.2rem;
+  width: ${props => props.score ? '0rem' : '36%'};
+  color: ${props => props.score ? '#BDBDBD' : '#4F4F4F'}
 `;
 
 const LinearProgressCustom = styled(LinearProgress)`
   &.MuiLinearProgress-root {
     height: 1.2rem;
-    width: 45%;
+    width: 72%;
     border-radius: 0.6rem;
+    margin-left: 1rem;
   }
 
   &.MuiLinearProgress-colorPrimary {
@@ -122,6 +126,10 @@ const ScoreContainter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  span {
+    display: flex;
+  }
 `
 
 const ReviewTitle = styled.div`
@@ -129,6 +137,19 @@ const ReviewTitle = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 2.8rem;
+`
+
+const ScoreBar = styled.div`
+  display: flex;
+  align-items: center;
+  width: ${props => props.title ? '55%' : '60%'};
+  padding-right: ${props => props.title ? '9%' : 0};
+  justify-content: ${props => props.title ? 'space-between' : 'space-evenly'};
+`
+
+const LastReview = styled(Details)`
+  margin: 2.4rem;
+  display: ${props => props.enable === 'main' ? 'block' : 'none'};
 `
 
 const App = () => {
@@ -140,7 +161,7 @@ const App = () => {
     lesson: 75,
     teaching: 34
   });
-  const [showForm, setShowForm] = useState(false)
+  const [show, setShow] = useState('main')
   const [scroll, setScroll] = useState(false)
 
   return (
@@ -157,31 +178,48 @@ const App = () => {
         options={data_mock_class}
         value={classSelected}
         placeholder={classSelected}
-        onChange={(e) => setClassSelected(e.label)}
+        onChange={(e) => { setClassSelected(e.label)
+          setShow('details')
+        }}
       />
-      <SubjectTitle>{classSelected}</SubjectTitle>
-      <ReviewForm enable={showForm} back={setShowForm} modal={setScroll} />
-      <Details enable={showForm}>
+      <LastReview enable={show} >
+        <DetailTitle>รีวิวล่าสุด</DetailTitle>
+        <ReviewCard />
+      </LastReview>
+      <SubjectTitle enable={show}>{classSelected}</SubjectTitle>
+      <ReviewForm enable={show} back={setShow} modal={setScroll} />
+      <Details enable={show}>
         <ScoreContainter>
           <DetailTitle>คะแนนภาพรวม</DetailTitle>
-          <DetailTitle desc>มาก</DetailTitle>
-          <DetailTitle desc>น้อย</DetailTitle>
+          <ScoreBar title>
+            <DetailTitle desc>มาก</DetailTitle>
+            <DetailTitle desc>น้อย</DetailTitle>
+          </ScoreBar>
         </ScoreContainter>
         <ScoreContainter>
           <ScoreTitle>จำนวนงานและการบ้าน</ScoreTitle>
-          <LinearProgressCustom variant="determinate" colorLeft="#9BC1EE" colorRight="#F0C3F7" value={score.work} />
+          <ScoreBar>
+            <LinearProgressCustom variant="determinate" colorLeft="#9BC1EE" colorRight="#F0C3F7" value={score.work} />
+            <ScoreTitle score>{score.work}%</ScoreTitle>
+          </ScoreBar>
         </ScoreContainter>
         <ScoreContainter>
           <ScoreTitle>ความน่าสนใจของเนื้อหา</ScoreTitle>
-          <LinearProgressCustom variant="determinate" colorLeft="#A3E0B5" colorRight="#B4D9F3" value={score.lesson} />
+          <ScoreBar>
+            <LinearProgressCustom variant="determinate" colorLeft="#A3E0B5" colorRight="#B4D9F3" value={score.lesson} />
+            <ScoreTitle score>{score.lesson}%</ScoreTitle>
+          </ScoreBar>
         </ScoreContainter>
         <ScoreContainter>
           <ScoreTitle>การสอนของอาจารย์</ScoreTitle>
-          <LinearProgressCustom variant="determinate" colorLeft="#EEA99A" colorRight="#F6DEA2" value={score.teaching} />
+          <ScoreBar>
+            <LinearProgressCustom variant="determinate" colorLeft="#EEA99A" colorRight="#F6DEA2" value={score.teaching} />
+            <ScoreTitle score>{score.teaching}%</ScoreTitle>
+          </ScoreBar>
         </ScoreContainter>
         <ReviewTitle>
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
-          <Button onClick={() => setShowForm(true)}>
+          <Button onClick={() => setShow('form')}>
             รีวิววิชานี้
           </Button>
         </ReviewTitle>
