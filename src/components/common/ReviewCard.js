@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Clap, Boo } from '../../assets/icons/Icons'
 import { useState } from 'preact/hooks';
-import { Popover } from '@material-ui/core';
 
 const Container = styled.div`
     border: 0.2rem solid #E0E0E0;
@@ -11,16 +10,23 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-    font-size: 1.7rem;
+    font-size: 2rem;
     color: #4F4F4F;
 `;
 
-const DetailsContainer = styled.div`
+const CardDetails = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
+
+const DetailContainer = styled.div`
     font-size: 1.6rem;
     display: flex;
     color: #828282;
     margin-top: 0.8rem;
     justify-content: space-between;
+    flex-direction: column;
 `
 
 const DetailRight = styled.div`
@@ -34,7 +40,7 @@ const Button = styled.div`
     width: ${props => props.type === "report" ? '6rem' : 'auto'};
     text-align: right;
     align-items: center;
-    justify-content: ${props => props.type === "report" ? 'flex-end' : 'space-between'};
+    justify-content: space-between;
     user-select: none;
     cursor: pointer;
 
@@ -64,14 +70,15 @@ const Button = styled.div`
 
 const ButtonLeft = styled.div`
     display: flex;
-    width: 14rem;
+    width: 18rem;
     justify-content: space-between;
     align-items: center;
     color: #BDBDBD;
 
     span {
         user-select: none;
-        width: 2rem;
+        width: 3rem;
+        font-size: 2rem;
     }
 `
 
@@ -143,23 +150,25 @@ const ReviewCard = () => {
 
     return (
         <Container>
-            <Content> การบ้านน้อยมากกกบ 8 ชม. ได้ A เย้ </Content>
-            <DetailsContainer>
-                โดย ASMB
-                <DetailRight>
-                    <span>เกรด A</span>
-                    <span>11 เม.ย. 19</span>
-                </DetailRight>
-            </DetailsContainer>
-            <DetailsContainer>
-                <ButtonLeft>
-                    <Button onClick={() => setActions({...actions, clap: actions.clap+1})}><Clap /></Button>
-                    <span>{actions.clap}</span>
-                    <Button onClick={() => setActions({...actions, boo: actions.boo+1})}><Boo /></Button>
-                    <span>{actions.boo}</span>
-                </ButtonLeft>
-                <Button type="report" onClick={() => setDialog(true)}>Report</Button>
-            </DetailsContainer>
+            <Content> การบ้านน้อยมากกกบ 8น้อยมากกมากกกบ 8น้อยมากกยมากมากกกบ 8น้อยมากกยมากมากกกบ 8น้อยมากกยมากมากกกบ 8น้อยมากกยมากมากกกบ 8น้อยมากกยมากsยมากกกบ 8 ชม. ได้ A เ ชม. ได้ A เย้ </Content>
+            <CardDetails>
+                <DetailContainer>
+                    โดย ASMB
+                    <DetailRight>
+                        <span>เกรด A</span>
+                        <span>11 เม.ย. 19</span>
+                    </DetailRight>
+                    <Button type="report" onClick={() => setDialog(true)}>Report</Button>
+                </DetailContainer>
+                <DetailContainer>
+                    <ButtonLeft>
+                        <Button onClick={() => setActions({...actions, clap: actions.clap+1})}><Clap /></Button>
+                        <span>{actions.clap}</span>
+                        <Button onClick={() => setActions({...actions, boo: actions.boo+1})}><Boo /></Button>
+                        <span>{actions.boo}</span>
+                    </ButtonLeft>
+                </DetailContainer>
+            </CardDetails>
             <ModalBackdrop show={showDialog} onClick={() => setDialog(false)} />
             <Modal show={showDialog}>
                 แจ้งลบรีวิวหรือไม่ ?

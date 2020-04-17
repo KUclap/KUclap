@@ -61,7 +61,7 @@ const SelectCustom = styled(Select)`
 `;
 
 const Details = styled.div`
-  min-width: 86%;
+  width: 86%;
   margin: 0 2.4rem;
   display: ${props => props.enable === 'details' ? 'block' : 'none'};
 `;
