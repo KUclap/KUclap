@@ -45,15 +45,18 @@ const Container = styled.div`
 const SelectCustom = styled(Select)`
   width: 80%;
   max-width: 58rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 
   .Select-placeholder {
-    color: #666;
+    color: #888;
+    height: 5.2rem;
   }
 
   .Select-control {
     width: 100%;
     margin: 0 auto;
+    border: 0.2rem solid #e0e0e0;
+    border-radius: 10px;
   }
 
   .Select-input {
@@ -159,6 +162,7 @@ const LastReview = styled(Details)`
 `;
 
 const App = () => {
+  const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [show, setShow] = useState("main");
   const [scroll, setScroll] = useState(false);
@@ -173,9 +177,16 @@ const App = () => {
 
   useEffect(() => {
     APIs.getLastReviews(5, (res) => setReviews(res.data));
+    APIs.getAllClasses((res) => setClasses(res.data));
   }, []);
 
   useEffect(() => console.log(reviews), [reviews]);
+
+  const handleSelected = (e) => {
+    // alert(e.label);
+    setClassSelected(e.label);
+    setShow("details");
+  };
 
   return (
     <Container>
@@ -189,13 +200,12 @@ const App = () => {
       <SelectCustom
         name="major"
         autosize={false}
-        options={data_mock_class}
-        value={classSelected}
+        // options={data_mock_class}
+        options={classes}
+        valueKey={"classId"}
+        key={"classId"}
         placeholder={classSelected}
-        onChange={(e) => {
-          setClassSelected(e.label);
-          setShow("details");
-        }}
+        onChange={handleSelected}
       />
       <LastReview enable={show}>
         <DetailTitle>รีวิวล่าสุด</DetailTitle>
