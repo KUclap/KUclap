@@ -16,15 +16,15 @@ import Details from "./common/Detail";
 const GlobalStyles = createGlobalStyle`
   html {
     font-size: 62.5%; /* 10px at html, body */
-    font-family: 'Kanit', arial, sans-serif;
-    font-weight: 400; 
   } 
   body {
-    height: 100%;
-    width: 100%;
-    padding: 0;
+    font-family: 'Kanit', arial, sans-serif;
+    font-weight: 400; 
+    /* height: auto; */
+    /* width: 100%; */
+    /* padding: 0; */
     margin: 0;
-    overflow: ${(props) => (props.overflow === true ? "hidden" : "scroll")}
+    overflow: ${(props) => (props.overflow === true ? "hidden" : "auto")}
   } 
 
   * {
@@ -79,11 +79,16 @@ const DetailTitle = styled.p`
   padding: ${(props) => (props.desc ? "0 1rem" : "0")};
 `;
 
+const AdaptorReviews = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  background: pink;
+`;
+
 const LastReview = styled.div`
   width: 86%;
-  /* margin: 0 2.4rem; */
   margin: 2.4rem;
-  /* display: ${(props) => (props.enable === "main" ? "block" : "none")}; */
+  background: green;
 `;
 
 const ReviewTitle = styled.div`
@@ -110,24 +115,21 @@ const Button = styled.div`
   }
 `;
 
-const App = () => {
+const App = (props) => {
   const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [show, setShow] = useState("main");
   const [scroll, setScroll] = useState(false);
+  const [loadMore, setLoadMore] = useState(true);
   const [classSelected, setClassSelected] = useState(
     "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
   );
+
   const [score] = useState({
     work: 50,
     lesson: 75,
     teaching: 34,
   });
-
-  useEffect(() => {
-    APIs.getLastReviews(5, (res) => setReviews(res.data));
-    APIs.getAllClasses((res) => setClasses(res.data));
-  }, []);
 
   useEffect(() => console.log(reviews), [reviews]);
 
@@ -136,6 +138,48 @@ const App = () => {
     setClassSelected(e.label);
     setShow("details");
   };
+
+  useEffect(() => {
+    APIs.getLastReviews(5, (res) => setReviews(res.data));
+    APIs.getAllClasses((res) => setClasses(res.data));
+
+    // const list = document.getElementById("adaptor");
+    // window.addEventListener("scroll", () => {
+    // console.log(
+    //   window.scrollY,
+    //   window.innerHeight,
+    //   list.clientHeight,
+    //   list.offsetTop
+    // );
+    //   console.log(
+    //     window.scrollY + window.innerHeight,
+    //     list.clientHeight + list.offsetTop
+    //   );
+    //   if (
+    //     window.scrollY + window.innerHeight ===
+    //     list.clientHeight + list.offsetTop
+    //   ) {
+    //     setLoadMore(true);
+    //   }
+    // });
+  }, []);
+
+  // useEffect(() => {
+  //   if (loadMore) {
+  //     APIs.getLastReviews(5, (res) =>
+  //       setReviews((prevReview) => [...prevReview, res.data])
+  //     );
+  //   }
+  //   setLoadMore(false);
+  // }, [loadMore]);
+
+  // useEffect(() => {
+  //   const list = document.getElementById("adaptor");
+
+  //   if (list.clientHeight <= window.innerHeight && list.clientHeight) {
+  //     setLoadMore(true);
+  //   }
+  // }, [reviews]);
 
   return (
     <Container>
@@ -166,14 +210,15 @@ const App = () => {
             <Button onClick={() => setShow("form")}>รีวิววิชานี้</Button>
           </ReviewTitle>
         )}
-
-        {show === "form"
-          ? null
-          : reviews
-          ? reviews.map((review, index) => (
-              <ReviewCard key={index} {...review} />
-            ))
-          : "ยังไม่มีข้อมูลครับ"}
+        <AdaptorReviews id="adaptor">
+          {show === "form"
+            ? null
+            : reviews
+            ? reviews.map((review, index) => (
+                <ReviewCard key={index} {...review} />
+              ))
+            : "ยังไม่มีข้อมูลครับ"}
+        </AdaptorReviews>
       </LastReview>
     </Container>
   );
