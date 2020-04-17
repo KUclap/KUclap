@@ -43,7 +43,7 @@ const Container = styled.div`
 const SelectCustom = styled(Select)`
   width: 80%;
   max-width: 58rem;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
 
   .Select-placeholder {
     color: #888;
@@ -181,7 +181,7 @@ const App = () => {
   useEffect(() => console.log(reviews), [reviews]);
 
   const handleSelected = (e) => {
-    // alert(e.label);
+    APIs.getReviewsByClassId(e.classId, (res) => setReviews(res.data));
     setClassSelected(e.label);
     setShow("details");
   };
@@ -207,9 +207,11 @@ const App = () => {
       />
       <LastReview enable={show}>
         <DetailTitle>รีวิวล่าสุด</DetailTitle>
-        {reviews.map((review) => (
-          <ReviewCard {...review} />
-        ))}
+        {reviews
+          ? reviews.map((review, index) => (
+              <ReviewCard key={index} {...review} />
+            ))
+          : "ยังไม่มีข้อมูลครับ"}
       </LastReview>
       <SubjectTitle enable={show}>{classSelected}</SubjectTitle>
       <ReviewForm enable={show} back={setShow} modal={setScroll} />
@@ -261,9 +263,11 @@ const App = () => {
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
           <Button onClick={() => setShow("form")}>รีวิววิชานี้</Button>
         </ReviewTitle>
-        {reviews.map((review, index) => {
-          <ReviewCard key={index} {...review} />;
-        })}
+        {reviews
+          ? reviews.map((review, index) => (
+              <ReviewCard key={index} {...review} />
+            ))
+          : "ยังไม่มีข้อมูลครับ"}
       </Details>
     </Container>
   );
