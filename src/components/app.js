@@ -1,4 +1,3 @@
-// import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import styled, { createGlobalStyle } from "styled-components";
 import Select from "react-virtualized-select";
@@ -8,7 +7,6 @@ import "react-virtualized/styles.css";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Header from "./common/Header";
 import APIs from "./utillity/apis";
-import { data as data_mock_class } from "../assets/data/class";
 import ReviewCard from "./common/ReviewCard";
 import ReviewForm from "./common/ReviewForm";
 // Code-splitting is automated for routes
