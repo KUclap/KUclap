@@ -14,16 +14,18 @@ import ReviewForm from "./common/ReviewForm";
 // import Profile from "../routes/profile";
 
 const GlobalStyles = createGlobalStyle`
-    html, body {
+  html {
     font-size: 62.5%; /* 10px at html, body */
+    font-family: 'Kanit', arial, sans-serif;
+    font-weight: 400; 
+  } 
+  body {
     height: 100%;
     width: 100%;
     padding: 0;
     margin: 0;
-    font-family: 'Kanit', arial, sans-serif;
-    font-weight: 400;
     overflow: ${(props) => (props.overflow === true ? "hidden" : "scroll")}
-  }
+  } 
 
   * {
     box-sizing: border-box;
