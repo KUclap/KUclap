@@ -7,9 +7,9 @@ const api = axios.create({
 
 const apis = {
   // GET tail reviews when user load page.
-  getLastReviews: async (offset, next) => {
+  getLastReviews: async (page, offset, next) => {
     try {
-      const res = await api.get(`/reviews/last?offset=${offset}`);
+      const res = await api.get(`/reviews/last?page=${page}&offset=${offset}`);
       next(res);
     } catch (err) {
       console.log(err);
@@ -44,9 +44,10 @@ const apis = {
     }
   },
   // GET reviews by classid when class selected
-  getReviewsByClassId: async (classid, next) => {
+  getReviewsByClassId: async (classid, page, offset, next) => {
     try {
-      const res = await api.get(`/reviews/${classid}`);
+      const URl = `/reviews/${classid}?page=${page}&offset=${offset}`;
+      const res = await api.get(URl);
       next(res);
     } catch (err) {
       console.log(err);

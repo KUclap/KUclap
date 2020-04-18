@@ -113,7 +113,12 @@ const Button = styled.div`
   }
 `;
 
-const App = (props) => {
+const App = () => {
+  const [paging, setPaging] = useState({
+    page: 0,
+    offset: 5,
+  });
+
   const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [show, setShow] = useState("main");
@@ -132,15 +137,17 @@ const App = (props) => {
     how: 0,
   });
 
-  useEffect(() => console.log(reviews), [reviews]);
+  useEffect(() => setReviews([]), [show]);
 
   const handleSelected = (e) => {
+    setPaging({ ...paging, page: 0 });
     setLoading(true);
-    APIs.getReviewsByClassId(e.classId, (res) => {
+    APIs.getReviewsByClassId(e.classId, 0, paging.offset, (res) => {
       if (res.data === null) {
         setUnderFlow(true);
       }
       setReviews(res.data);
+      setLoading(false);
     });
 
     APIs.getClassDetailByClassId(e.classId, (res) => {
@@ -151,10 +158,8 @@ const App = (props) => {
         how: res.data.stats.how,
       });
     });
-
     setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -170,35 +175,43 @@ const App = (props) => {
     const adaptor = document.getElementById("adaptor");
     window.addEventListener("scroll", () => {
       if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
-        if (!loading) setLoadMore(true);
+        if (!loading) {
+          setLoadMore(true);
+        }
       }
     });
   }, []);
 
   useEffect(() => {
-    if (!loading && loadMore) {
+    if (!underflow && !loading && loadMore) {
       setLoading(true);
-      console.log("FETCH");
+      console.log("FETCH", paging);
       if (show === "main") {
-        APIs.getLastReviews(1, (res) => {
+        APIs.getLastReviews(paging.page, paging.offset, (res) => {
           console.log(res.data);
           if (!res.data) {
             setUnderFlow(true);
           }
+          setPaging({ ...paging, page: paging.page + 1 });
           setReviews((prevReview) => [...prevReview, ...res.data]);
           setLoading(false);
         });
-      } else if (show === "detail") {
-        APIs.getReviewsByClassId(classSelected.classId, (res) => {
-          if (!res.data) {
-            setUnderFlow(true);
+      } else if (show === "details") {
+        APIs.getReviewsByClassId(
+          classSelected.classId,
+          paging.page,
+          paging.offset,
+          (res) => {
+            if (!res.data) {
+              setUnderFlow(true);
+            }
+            setPaging({ ...paging, page: paging.page + 1 });
+            setReviews((prevReview) => [...prevReview, ...res.data]);
+            setLoading(false);
           }
-          setReviews((prevReview) => [...prevReview, ...res.data]);
-          setLoading(false);
-        });
+        );
       }
     }
-
     setLoadMore(false);
   }, [loadMore]);
 
@@ -245,9 +258,10 @@ const App = (props) => {
           {show === "form"
             ? null
             : reviews
-            ? reviews.map((review, index) => (
-                <ReviewCard key={index} {...review} />
-              ))
+            ? reviews.map(
+                (review, index) =>
+                  review && <ReviewCard key={index} {...review} />
+              )
             : "ยังไม่มีข้อมูลครับ"}
         </AdaptorReviews>
         {(loading || loadMore) && !underflow && (
