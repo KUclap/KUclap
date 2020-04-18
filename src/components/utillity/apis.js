@@ -37,7 +37,10 @@ const apis = {
   createReview: async (payloadReview, payloadVote) => {
     try {
       const resR = await api.post(`/review`, payloadReview);
-      const resV = await api.put(`/class/${payloadReview}/stats`, payloadVote);
+      const resV = await api.put(
+        `/class/${payloadReview.classId}/stats`,
+        payloadVote
+      );
       console.log(resR, resV);
     } catch (err) {
       console.log(err);

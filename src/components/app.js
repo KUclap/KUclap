@@ -231,7 +231,6 @@ const App = () => {
       />
       <GlobalStyles overflow={scroll} />
       <Header />
-
       <SelectCustom
         name="major"
         autosize={false}
