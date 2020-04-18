@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Clap, Boo } from "../../assets/icons/Icons";
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
+import APIs from '../utillity/apis';
 
 const Container = styled.div`
   border: 0.2rem solid #e0e0e0;
@@ -17,7 +18,7 @@ const Content = styled.div`
 const CardDetails = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 const DetailContainer = styled.div`
@@ -27,34 +28,34 @@ const DetailContainer = styled.div`
   margin-top: 0.8rem;
   justify-content: space-between;
   flex-direction: column;
+  align-self: center;
 `;
 
 const DetailRight = styled.div`
   display: flex;
-  width: 14rem;
-  justify-content: space-between;
+  width: 15rem;
+  justify-content: space-between;  
 `;
 
 const Button = styled.div`
-    display: flex;
-    width: ${(props) => (props.type === "report" ? "6rem" : "auto")};
-    text-align: right;
-    align-items: center;
-    justify-content: space-between;
-    user-select: none;
-    cursor: pointer;
+  display: flex;
+  width: ${(props) => (props.type === "report" ? "6rem" : "auto")};
+  text-align: right;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  cursor: pointer;
 
-    &:hover {
-        color: #9AC1EE;
-        svg {
-            #clap {
-                fill: #9AC1EE;
-            }
-            #boo {
-                fill: #EEA99A;
-            }
-        }
-    }
+  &:hover {
+      color: #9AC1EE;
+      svg {
+          #clap {
+              fill: #9AC1EE;
+          }
+          #boo {
+              fill: #EEA99A;
+          }
+      }
   }
 
   &:active {
@@ -69,19 +70,26 @@ const Button = styled.div`
   }
 `;
 
-const ButtonLeft = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
-  width: 18rem;
   justify-content: space-between;
   align-items: center;
   color: #bdbdbd;
+  margin-left: 1.4rem;
 
   span {
     user-select: none;
-    width: 3rem;
+    margin-left: 0.6rem;
+    width: 2.6rem;
     font-size: 2rem;
   }
 `;
+
+const Actions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+`
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -145,61 +153,91 @@ const CancelButton = styled(ConfirmButton)`
 const ReviewCard = (props) => {
   const { reviewId, text, clap, boo, grade, author, createdAt } = props;
   const [actions, setActions] = useState({
-    clap: clap,
-    boo: boo,
+    clap: 0,
+    boo: 0,
   });
 
   const [showDialog, setDialog] = useState(false);
-  const pareDate = (dateUTC) => {
-    // REQUIR implement parser for better ux (convert utc timezone)
-    // 2020-04-15T01:25:52.150+00:00 => 15 เม.ษ 2020
-    let date = dateUTC;
-    return date;
+  const parseDate = (dateUTC) => {
+    const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
+    // REQUIRE implement parser for better ux (convert utc timezone)
+    // 2020-04-15T01:25:52.150+00:00 => 15 เม.ย. 2020
+    let date = dateUTC.split("-");
+    let day = date[2].slice(0,2)
+    let month = months[parseInt(date[1])-1]
+    let year = date[0]
+    if (day[0] === '0') 
+      day = day[1];
+    return day + ' ' + month + ' ' + year;
   };
+
+  const sendReport = () => {
+    APIs.putReportReviewByReviewId(reviewId);
+    setDialog(false);
+  }
+
+  const setClap = () => {
+    // APIs.putClapReviewByReviewId(reviewId, 1);
+    setActions({...actions, clap: actions.clap + 1})
+  }
+
+  let interval
+
+  const setBoo = () => {
+    setActions({...actions, boo: actions.boo + 1})
+    if (interval === undefined)
+      console.log(interval);
+    else
+      clearTimeout(interval);
+    interval = setTimeout(() => {
+      // APIs.putBooReviewByReviewId(reviewId, actions.boo);
+      console.log(interval);
+      console.log(actions.boo);
+    }, 5000); 
+  }
 
   return (
     <Container>
       <Content>
         {" "}
         {text}
-        การบ้านน้อยมากกกบ 8น้อยมากกมากกกบ 8น้อยมากกยมากมากกกบ
-        8น้อยมากกยมากมากกกบ 8น้อยมากกยมากมากกกบ 8น้อยมากกยมากมากกกบ
-        8น้อยมากกยมากsยมากกกบ 8 ชม. ได้ A เ ชม. ได้ A เย้{" "}
+        {" "}
       </Content>
       <CardDetails>
         <DetailContainer>
           โดย {author}
           <DetailRight>
-            <span>เกรด {grade}</span>
-            <span>{pareDate(createdAt)}</span>
+            เกรด {grade}
+            <span>{parseDate(createdAt)}</span>
           </DetailRight>
           <Button type="report" onClick={() => setDialog(true)}>
             Report
           </Button>
         </DetailContainer>
-        <DetailContainer>
-          <ButtonLeft>
-            <Button
-              onClick={() => setActions({ ...actions, clap: actions.clap + 1 })}
-            >
+        <Actions>
+          <ButtonContainer>
+            <Button onClick={setClap}>
               <Clap />
             </Button>
-            <span>{actions.clap}</span>
+            <span>{actions.clap + clap}</span>
+          </ButtonContainer>
+          <ButtonContainer>
             <Button
-              onClick={() => setActions({ ...actions, boo: actions.boo + 1 })}
+              // onClick={() => setActions({ ...actions, boo: actions.boo + 1 })}
+              onClick = {setBoo}
             >
               <Boo />
             </Button>
-            <span>{actions.boo}</span>
-          </ButtonLeft>
-        </DetailContainer>
+            <span>{actions.boo + boo}</span>
+          </ButtonContainer>
+        </Actions>
       </CardDetails>
       <ModalBackdrop show={showDialog} onClick={() => setDialog(false)} />
       <Modal show={showDialog}>
         แจ้งลบรีวิวหรือไม่ ?
         <ModalActions>
           <CancelButton onClick={() => setDialog(false)}>ยกเลิก</CancelButton>
-          <ConfirmButton>แจ้งลบ</ConfirmButton>
+          <ConfirmButton onClick={sendReport}>แจ้งลบ</ConfirmButton>
         </ModalActions>
       </Modal>
     </Container>
