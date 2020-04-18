@@ -164,6 +164,7 @@ const LastReview = styled(Details)`
 const App = () => {
   const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
+  const [classId, setClassId] = useState()
   const [show, setShow] = useState("main");
   const [scroll, setScroll] = useState(false);
   const [classSelected, setClassSelected] = useState(
@@ -186,6 +187,7 @@ const App = () => {
     APIs.getReviewsByClassId(e.classId, (res) => setReviews(res.data));
     setClassSelected(e.label);
     setShow("details");
+    setClassId(e.classId)
   };
 
   return (
@@ -216,7 +218,7 @@ const App = () => {
           : "ยังไม่มีข้อมูลครับ"}
       </LastReview>
       <SubjectTitle enable={show}>{classSelected}</SubjectTitle>
-      <ReviewForm enable={show} back={setShow} modal={setScroll} />
+      <ReviewForm enable={show} back={setShow} modal={setScroll} classId={classId}/>
       <Details enable={show}>
         <ScoreContainter>
           <DetailTitle>คะแนนภาพรวม</DetailTitle>

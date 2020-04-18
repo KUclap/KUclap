@@ -1,19 +1,20 @@
-import { useState } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 import styled from "styled-components";
-import { Worst, Bad, So, Good, Excellent } from '../../assets/icons/Icons'
+import APIs from "../utillity/apis";
+import { Worst, Bad, So, Good, Excellent } from '../../assets/icons/Icons';
 
 const Grade = ['A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F']
 const Rate = [
   {
-    id: 'work',
+    id: 'homework',
     title: 'จำนวนงานและการบ้าน',
   },
   {
-    id: 'lesson',
+    id: 'interest',
     title: 'ความน่าสนใจของเนื้อหา',
   },
   {
-    id: 'teaching',
+    id: 'how',
     title: 'การสอนของอาจารย์',
   },
 ]
@@ -163,7 +164,7 @@ const ModalBackdrop = styled.div`
 const Modal = styled.div`
   border-radius: 10px;
   background-color: white;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -219,20 +220,44 @@ const RateContainer = styled.div`
   }
 `
 
-const ReviewForm = ({enable, back, modal}) => {
+const ReviewForm = (props) => {
+  const {enable, back, modal, classId} = props
   const [showDialog, setDialog] = useState(false);
-  const [form, setForm] = useState({
-    review: "เขียนรีวิว...",
-    score: {
-      work: -1,
-      lesson: -1,
-      teaching: -1,
-    },
+  const initialForm  = {
+    classId: classId,
+    text: "",
+    author: "",
     grade: -1,
-    author: 'ใส่ชื่อผู้เขียน'
-  })
+  }
+  const initialScore = {
+    how: -1,
+    homework: -1,
+    interest: -1,
+  }
+  const [form, setForm] = useState(initialForm)
+  const [score, setScore] = useState(initialScore)
   modal(showDialog)
-  console.log(form)
+
+  const rate = (item, key) => {
+    setScore({...score, [item.id]: key + 1})
+  }
+
+  const required = () => {
+    setDialog(true)
+  }
+
+  const sendReview = () => {
+    APIs.createReview(form, score)
+    setDialog(false)
+    setForm({...initialForm, classId: classId})
+    setScore({...initialScore})
+    back('details')
+  }
+
+  useEffect(() => {
+    setForm({...initialForm, classId: classId})
+    setScore({...initialScore})
+  }, [classId])
 
   return (
     <Container isEnable={enable}>
@@ -242,19 +267,16 @@ const ReviewForm = ({enable, back, modal}) => {
               ย้อนกลับ
           </Button>
       </FormTitle>
-      <ReviewField type="textarea" placeholder={form.review} onChange={(e) => setForm({...form, review: e.target.value})} />
-      <DetailTitle>ให้คะแนนวิชา</DetailTitle>
+      <ReviewField type="textarea" placeholder='เขียนรีวิว...' value={form.text} onChange={(e) => setForm({...form, text: e.target.value})} />
+      <DetailTitle>
+        ให้คะแนนวิชา 
+      </DetailTitle>
       {Rate.map((item, key) =>
         <ScoreBar key={key}>
           <ScoreTitle>{item.title}</ScoreTitle>
           <Rating>
           {RateIcon.map((Rate, key_rate) => (
-            <RateContainer onClick={() => { 
-              setForm({...form, score: {
-                ...form.score, [item.id]: key_rate
-              }});
-            }} selected={form.score[item.id] === key_rate}
-            ><Rate /></RateContainer>)
+            <RateContainer key={key_rate} onClick={() => rate(item, key_rate)} selected={score[item.id] - 1 === key_rate}><Rate /></RateContainer>)
           )}
           </Rating>
         </ScoreBar>
@@ -263,16 +285,16 @@ const ReviewForm = ({enable, back, modal}) => {
         <DetailTitle>เกรดที่ได้</DetailTitle>
           <GradeBar>
               {Grade.map((item, key) =>
-                <GradeButton onClick={() => setForm({...form, grade: item})} key={key+1} selected={form.grade === item}>{item}</GradeButton>
+                <GradeButton onClick={() => setForm({...form, grade: item})} key={key} selected={form.grade === item}>{item}</GradeButton>
               )}
           </GradeBar>
       </InputContainer>
       <InputContainer>
         <DetailTitle>นามปากกา</DetailTitle>
-        <InputName placeholder={form.author} onChange={(e) => setForm({...form, review: e.target.value})} />
+        <InputName placeholder="ใส่ชื่อผู้เขียน" value={form.author} onChange={(e) => setForm({...form, author: e.target.value})} />
       </InputContainer>
       <Caution>กรุณาตรวจสอบความถูกต้องก่อนรีวิว</Caution>
-      <ReviewButton onClick={() => setDialog(true)}>รีวิวเลย !</ReviewButton>
+      <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
       <ModalBackdrop show={showDialog} onClick={() => setDialog(false)} />
       <Modal show={showDialog}>
         เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
@@ -281,7 +303,7 @@ const ReviewForm = ({enable, back, modal}) => {
         </div>
         <ModalActions>
           <CancelButton onClick={() => setDialog(false)}>กลับไปแก้ไข</CancelButton>
-          <ReviewButton>รีวิวเลย !</ReviewButton>
+          <ReviewButton onClick={sendReview}>รีวิวเลย !</ReviewButton>
         </ModalActions>
       </Modal>
     </Container>
