@@ -30,7 +30,14 @@ const Container = styled.div`
 const DetailTitle = styled.div`
   font-size: 2rem;
   font-weight: 600;
-  margin: 1.2rem 2.8rem 1.2rem 0;
+  margin: 1.2rem 2rem 1.2rem 0;
+`;
+
+const Warning = styled(DetailTitle)`
+  margin-left: 1.2rem;
+  font-size: 1.6rem;
+  color: #EB5757;
+  display: ${props => props.required ? 'inline' : 'none'}
 `;
 
 const FormTitle = styled.div`
@@ -124,13 +131,15 @@ const Caution = styled.p`
   text-align: center;
 `;
 
-const Button = styled.div`
+const Button = styled.button`
+  font-family: "Kanit", arial, sans-serif;
   background-color: #bdbdbd;
   color: #fff;
   padding: 0.2rem 1.8rem;
   border-radius: 0.6rem;
   font-size: 1.4rem;
   font-weight: 500;
+  border-width: 0;
   cursor: pointer;
 `;
 
@@ -237,8 +246,15 @@ const ReviewForm = (props) => {
     homework: -1,
     interest: -1,
   };
+  const initialRequire = {
+    text: false,
+    score: false,
+    grade: false,
+    author: false,
+  }
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
+  const [require, setRequire] = useState(initialRequire)
   modal(showDialog);
 
   const rate = (item, key) => {
@@ -246,7 +262,30 @@ const ReviewForm = (props) => {
   };
 
   const required = () => {
-    setDialog(true);
+    let req = {...require};
+    if (form.text !== "" && form.author !== "" && form.grade !== -1 && score.homework !== -1 && score.how !== -1 && score.interest !== -1 ) {
+      setRequire(initialRequire)
+      setDialog(true)
+    }
+    else {
+      if (form.text === "") 
+        req.text = true
+      else
+        req.text = false
+      if (score.homework === -1 || score.how === -1 || score.interest === -1) 
+        req.score = true
+      else
+        req.score = false
+      if (form.grade === -1) 
+        req.grade = true
+      else
+        req.grade = false
+      if (form.author === "") 
+        req.author = true
+      else
+        req.author = false
+      setRequire(req)
+    }
   };
 
   const sendReview = () => {
@@ -265,7 +304,10 @@ const ReviewForm = (props) => {
   return (
     <Container isEnable={enable}>
       <FormTitle>
-        <DetailTitle>รีวิววิชานี้</DetailTitle>
+        <DetailTitle>
+          รีวิววิชานี้ 
+          <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
+        </DetailTitle>
         <Button onClick={() => back("details")}>ย้อนกลับ</Button>
       </FormTitle>
       <ReviewField
@@ -274,7 +316,10 @@ const ReviewForm = (props) => {
         value={form.text}
         onChange={(e) => setForm({ ...form, text: e.target.value })}
       />
-      <DetailTitle>ให้คะแนนวิชา</DetailTitle>
+      <DetailTitle>
+        ให้คะแนนวิชา 
+        <Warning required={require.score}>กรุณาเลือกทุกหัวข้อ</Warning>
+      </DetailTitle>
       {Rate.map((item, key) => (
         <ScoreBar key={key}>
           <ScoreTitle>{item.title}</ScoreTitle>
@@ -292,7 +337,10 @@ const ReviewForm = (props) => {
         </ScoreBar>
       ))}
       <InputContainer>
-        <DetailTitle>เกรดที่ได้</DetailTitle>
+        <DetailTitle>
+          เกรดที่ได้ 
+          <Warning required={require.grade}>กรุณาเลือกเกรด</Warning>
+        </DetailTitle>
         <GradeBar>
           {Grade.map((item, key) => (
             <GradeButton
@@ -306,7 +354,10 @@ const ReviewForm = (props) => {
         </GradeBar>
       </InputContainer>
       <InputContainer>
-        <DetailTitle>นามปากกา</DetailTitle>
+        <DetailTitle>
+          นามปากกา 
+          <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
+        </DetailTitle>
         <InputName
           placeholder="ใส่ชื่อผู้เขียน"
           value={form.author}
