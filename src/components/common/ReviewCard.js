@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { Clap, Boo } from "../../assets/icons/Icons";
 import { useState, useEffect } from "preact/hooks";
-import APIs from '../utillity/apis';
+import APIs from "../utillity/apis";
 
 const Container = styled.div`
   border: 0.2rem solid #e0e0e0;
   border-radius: 1rem;
   margin: 2rem 0;
   padding: 1.2rem 1.6rem;
+  overflow: hidden;
 `;
 
 const Content = styled.div`
@@ -34,7 +35,7 @@ const DetailContainer = styled.div`
 const DetailRight = styled.div`
   display: flex;
   width: 15rem;
-  justify-content: space-between;  
+  justify-content: space-between;
 `;
 
 const Button = styled.div`
@@ -47,15 +48,15 @@ const Button = styled.div`
   cursor: pointer;
 
   &:hover {
-      color: #9AC1EE;
-      svg {
-          #clap {
-              fill: #9AC1EE;
-          }
-          #boo {
-              fill: #EEA99A;
-          }
+    color: #9ac1ee;
+    svg {
+      #clap {
+        fill: #9ac1ee;
       }
+      #boo {
+        fill: #eea99a;
+      }
+    }
   }
 
   &:active {
@@ -89,7 +90,7 @@ const Actions = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-`
+`;
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -151,7 +152,7 @@ const CancelButton = styled(ConfirmButton)`
 `;
 
 const ReviewCard = (props) => {
-  const { reviewId, text, clap, boo, grade, author, createdAt } = props;
+  const { reviewId, text, clap, boo, grade, author, createdAt, modal } = props;
   const [actions, setActions] = useState({
     clap: 0,
     boo: 0,
@@ -159,50 +160,60 @@ const ReviewCard = (props) => {
 
   const [showDialog, setDialog] = useState(false);
   const parseDate = (dateUTC) => {
-    const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
+    const months = [
+      "ม.ค.",
+      "ก.พ.",
+      "มี.ค.",
+      "เม.ย.",
+      "พ.ค.",
+      "มิ.ย.",
+      "ก.ค.",
+      "ส.ค.",
+      "ก.ย.",
+      "ต.ค.",
+      "พ.ย.",
+      "ธ.ค.",
+    ];
     // REQUIRE implement parser for better ux (convert utc timezone)
     // 2020-04-15T01:25:52.150+00:00 => 15 เม.ย. 2020
     let date = dateUTC.split("-");
-    let day = date[2].slice(0,2)
-    let month = months[parseInt(date[1])-1]
-    let year = date[0]
-    if (day[0] === '0') 
-      day = day[1];
-    return day + ' ' + month + ' ' + year;
+    let day = date[2].slice(0, 2);
+    let month = months[parseInt(date[1]) - 1];
+    let year = date[0];
+    if (day[0] === "0") day = day[1];
+    return day + " " + month + " " + year;
   };
+
+  useEffect(() => {
+    modal(showDialog);
+  }, [showDialog]);
 
   const sendReport = () => {
     APIs.putReportReviewByReviewId(reviewId);
     setDialog(false);
-  }
+  };
 
   const setClap = () => {
     // APIs.putClapReviewByReviewId(reviewId, 1);
-    setActions({...actions, clap: actions.clap + 1})
-  }
+    setActions({ ...actions, clap: actions.clap + 1 });
+  };
 
-  let interval
+  let interval;
 
   const setBoo = () => {
-    setActions({...actions, boo: actions.boo + 1})
-    if (interval === undefined)
-      console.log(interval);
-    else
-      clearTimeout(interval);
+    setActions({ ...actions, boo: actions.boo + 1 });
+    if (interval === undefined) console.log(interval);
+    else clearTimeout(interval);
     interval = setTimeout(() => {
       // APIs.putBooReviewByReviewId(reviewId, actions.boo);
       console.log(interval);
       console.log(actions.boo);
-    }, 5000); 
-  }
+    }, 5000);
+  };
 
   return (
     <Container>
-      <Content>
-        {" "}
-        {text}
-        {" "}
-      </Content>
+      <Content> {text} </Content>
       <CardDetails>
         <DetailContainer>
           โดย {author}
@@ -224,7 +235,7 @@ const ReviewCard = (props) => {
           <ButtonContainer>
             <Button
               // onClick={() => setActions({ ...actions, boo: actions.boo + 1 })}
-              onClick = {setBoo}
+              onClick={setBoo}
             >
               <Boo />
             </Button>

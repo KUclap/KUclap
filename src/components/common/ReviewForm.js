@@ -251,12 +251,13 @@ const ReviewForm = (props) => {
   };
 
   const sendReview = () => {
-    APIs.createReview(form, score);
-    setDialog(false);
-    modal(false);
-    setForm({ ...initialForm, classId: classId });
-    setScore({ ...initialScore });
-    back("details");
+    APIs.createReview(form, score, () => {
+      setDialog(false);
+      modal(false);
+      setForm({ ...initialForm, classId: classId });
+      setScore({ ...initialScore });
+      back("details");
+    });
   };
 
   useEffect(() => {

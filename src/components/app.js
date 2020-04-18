@@ -139,7 +139,6 @@ const App = () => {
 
   //   useEffect(() => setReviews([]), [show]);
   const handleFetchingReviewsAndClass = (classId) => {
-    setUnderFlow(false);
     setReviews([]);
     setLoading(true);
     APIs.getReviewsByClassId(classId, 0, paging.offset, (res) => {
@@ -148,6 +147,7 @@ const App = () => {
       }
       setReviews(res.data);
       setLoading(false);
+      setUnderFlow(false);
     });
 
     APIs.getClassDetailByClassId(classId, (res) => {
@@ -161,12 +161,13 @@ const App = () => {
   };
 
   const handleFormClosed = (page) => {
+    setPaging({ ...paging, page: 1 });
     setShow(page);
     handleFetchingReviewsAndClass(classSelected.classId);
   };
 
   const handleSelected = (e) => {
-    setPaging({ ...paging, page: 0 });
+    setPaging({ ...paging, page: 1 });
     handleFetchingReviewsAndClass(e.classId);
     setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
@@ -274,7 +275,9 @@ const App = () => {
             : reviews
             ? reviews.map(
                 (review, index) =>
-                  review && <ReviewCard key={index} {...review} />
+                  review && (
+                    <ReviewCard key={index} modal={setScroll} {...review} />
+                  )
               )
             : "ยังไม่มีข้อมูลครับ"}
         </AdaptorReviews>

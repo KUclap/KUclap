@@ -34,13 +34,14 @@ const apis = {
     }
   },
   // POST & PUT create review then update stats class
-  createReview: async (payloadReview, payloadVote) => {
+  createReview: async (payloadReview, payloadVote, next) => {
     try {
       const resR = await api.post(`/review`, payloadReview);
       const resV = await api.put(
         `/class/${payloadReview.classId}/stats`,
         payloadVote
       );
+      next();
       console.log(resR, resV);
     } catch (err) {
       console.log(err);
