@@ -7,9 +7,9 @@ const api = axios.create({
 
 const apis = {
   // GET tail reviews when user load page.
-  getLastReviews: async (offset, next) => {
+  getLastReviews: async (page, offset, next) => {
     try {
-      const res = await api.get(`/reviews/last?offset=${offset}`);
+      const res = await api.get(`/reviews/last?page=${page}&offset=${offset}`);
       next(res);
     } catch (err) {
       console.log(err);
@@ -27,7 +27,7 @@ const apis = {
   // GET stats when class selected.
   getClassDetailByClassId: async (classid, next) => {
     try {
-      const res = await api.get(`/classes/${classid}`);
+      const res = await api.get(`/class/${classid}`);
       next(res);
     } catch (err) {
       console.log(err);
@@ -37,16 +37,20 @@ const apis = {
   createReview: async (payloadReview, payloadVote) => {
     try {
       const resR = await api.post(`/review`, payloadReview);
-      const resV = await api.put(`/class/${payloadReview.classId}/stats`, payloadVote);
+      const resV = await api.put(
+        `/class/${payloadReview.classId}/stats`,
+        payloadVote
+      );
       console.log(resR, resV);
     } catch (err) {
       console.log(err);
     }
   },
   // GET reviews by classid when class selected
-  getReviewsByClassId: async (classid, next) => {
+  getReviewsByClassId: async (classid, page, offset, next) => {
     try {
-      const res = await api.get(`/reviews/${classid}`);
+      const URl = `/reviews/${classid}?page=${page}&offset=${offset}`;
+      const res = await api.get(URl);
       next(res);
     } catch (err) {
       console.log(err);

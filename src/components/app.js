@@ -4,11 +4,11 @@ import Select from "react-virtualized-select";
 import "react-virtualized-select/styles.css";
 import "react-select/dist/react-select.css";
 import "react-virtualized/styles.css";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import Header from "./common/Header";
 import APIs from "./utillity/apis";
 import ReviewCard from "./common/ReviewCard";
 import ReviewForm from "./common/ReviewForm";
+import Details from "./common/Detail";
 // Code-splitting is automated for routes
 // import Home from "../routes/home";
 // import Profile from "../routes/profile";
@@ -16,15 +16,15 @@ import ReviewForm from "./common/ReviewForm";
 const GlobalStyles = createGlobalStyle`
   html {
     font-size: 62.5%; /* 10px at html, body */
-    font-family: 'Kanit', arial, sans-serif;
-    font-weight: 400; 
   } 
   body {
-    height: 100%;
+    font-family: 'Kanit', arial, sans-serif;
+    font-weight: 400; 
+    height: auto;
     width: 100%;
     padding: 0;
     margin: 0;
-    overflow: ${(props) => (props.overflow === true ? "hidden" : "scroll")}
+    overflow: ${(props) => (props.overflow === true ? "hidden" : "auto")}
   } 
 
   * {
@@ -39,7 +39,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   max-width: 86rem;
-  margin: auto;
+  margin: 0 auto;
 `;
 
 const SelectCustom = styled(Select)`
@@ -64,17 +64,36 @@ const SelectCustom = styled(Select)`
   }
 `;
 
-const Details = styled.div`
-  width: 86%;
-  margin: 0 2.4rem;
-  display: ${(props) => (props.enable === "details" ? "block" : "none")};
-`;
-
 const SubjectTitle = styled.p`
   font-size: 2rem;
   margin: 3rem 6.4rem;
   min-width: 86%;
   display: ${(props) => (props.enable !== "main" ? "block" : "none")};
+`;
+
+const DetailTitle = styled.p`
+  font-size: 2rem;
+  margin: 1.2rem 0;
+  font-weight: 600;
+  color: ${(props) => (props.desc ? "#BDBDBD" : "#4F4F4F")};
+  padding: ${(props) => (props.desc ? "0 1rem" : 0)};
+`;
+
+const AdaptorReviews = styled.div`
+  width: 100%;
+  margin: 0 auto;
+`;
+
+const LastReview = styled.div`
+  width: 86%;
+  margin: 0 2.4rem;
+`;
+
+const ReviewTitle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.8rem;
 `;
 
 const Button = styled.div`
@@ -94,101 +113,115 @@ const Button = styled.div`
   }
 `;
 
-const DetailTitle = styled.p`
-  font-size: 2rem;
-  margin: 1.2rem 0;
-  font-weight: 600;
-  color: ${(props) => (props.desc ? "#BDBDBD" : "#4F4F4F")};
-  padding: ${(props) => (props.desc ? "0 1rem" : "0")};
-`;
-
-const ScoreTitle = styled.p`
-  font-size: 1.7rem;
-  width: ${(props) => (props.score ? "0rem" : "36%")};
-  color: ${(props) => (props.score ? "#BDBDBD" : "#4F4F4F")};
-`;
-
-const LinearProgressCustom = styled(LinearProgress)`
-  &.MuiLinearProgress-root {
-    height: 1.2rem;
-    width: 72%;
-    border-radius: 0.6rem;
-    margin-left: 1rem;
-  }
-
-  &.MuiLinearProgress-colorPrimary {
-    background-color: #f2f2f2;
-  }
-
-  & .MuiLinearProgress-barColorPrimary {
-    background-image: linear-gradient(
-      89.94deg,
-      ${(props) => props.colorLeft} 0.01%,
-      ${(props) => props.colorRight} 213.5%
-    );
-    border-radius: 0.6rem;
-  }
-`;
-
-const ScoreContainter = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  span {
-    display: flex;
-  }
-`;
-
-const ReviewTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2.8rem;
-`;
-
-const ScoreBar = styled.div`
-  display: flex;
-  align-items: center;
-  width: ${(props) => (props.title ? "55%" : "60%")};
-  padding-right: ${(props) => (props.title ? "9%" : 0)};
-  justify-content: ${(props) =>
-    props.title ? "space-between" : "space-evenly"};
-`;
-
-const LastReview = styled(Details)`
-  margin: 2.4rem;
-  display: ${(props) => (props.enable === "main" ? "block" : "none")};
-`;
-
 const App = () => {
-  const [classes, setClasses] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [classId, setClassId] = useState()
-  const [show, setShow] = useState("main");
-  const [scroll, setScroll] = useState(false);
-  const [classSelected, setClassSelected] = useState(
-    "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
-  );
-  const [score] = useState({
-    work: 50,
-    lesson: 75,
-    teaching: 34,
+  const [paging, setPaging] = useState({
+    page: 0,
+    offset: 5,
   });
 
-  useEffect(() => {
-    APIs.getLastReviews(5, (res) => setReviews(res.data));
-    APIs.getAllClasses((res) => setClasses(res.data));
-  }, []);
+  const [classes, setClasses] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [show, setShow] = useState("main");
+  const [scroll, setScroll] = useState(false);
+  const [loadMore, setLoadMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [underflow, setUnderFlow] = useState(false);
+  const [classSelected, setClassSelected] = useState({
+    label: "กำลังโหลดข้อมูลวิชา...",
+    classId: "",
+  });
 
-  useEffect(() => console.log(reviews), [reviews]);
+  const [score, setScore] = useState({
+    homework: 0,
+    interest: 0,
+    how: 0,
+  });
+
+  useEffect(() => setReviews([]), [show]);
 
   const handleSelected = (e) => {
-    APIs.getReviewsByClassId(e.classId, (res) => setReviews(res.data));
-    setClassSelected(e.label);
+    setPaging({ ...paging, page: 0 });
+    setLoading(true);
+    APIs.getReviewsByClassId(e.classId, 0, paging.offset, (res) => {
+      if (res.data === null) {
+        setUnderFlow(true);
+      }
+      setReviews(res.data);
+      setLoading(false);
+    });
+
+    APIs.getClassDetailByClassId(e.classId, (res) => {
+      console.log(res.data);
+      setScore({
+        homework: res.data.stats.homework,
+        interest: res.data.stats.interest,
+        how: res.data.stats.how,
+      });
+    });
+    setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
-    setClassId(e.classId)
   };
+
+  useEffect(() => {
+    setClassSelected({ ...classSelected, label: "กำลังโหลดข้อมูลวิชา..." });
+    APIs.getAllClasses((res) => {
+      setClasses(res.data);
+      setClassSelected({
+        ...classSelected,
+        label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
+      });
+    });
+
+    const adaptor = document.getElementById("adaptor");
+    window.addEventListener("scroll", () => {
+      if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+        if (!loading) {
+          setLoadMore(true);
+        }
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!underflow && !loading && loadMore) {
+      setLoading(true);
+      console.log("FETCH", paging);
+      if (show === "main") {
+        APIs.getLastReviews(paging.page, paging.offset, (res) => {
+          console.log(res.data);
+          if (!res.data) {
+            setUnderFlow(true);
+          }
+          setPaging({ ...paging, page: paging.page + 1 });
+          setReviews((prevReview) => [...prevReview, ...res.data]);
+          setLoading(false);
+        });
+      } else if (show === "details") {
+        APIs.getReviewsByClassId(
+          classSelected.classId,
+          paging.page,
+          paging.offset,
+          (res) => {
+            if (!res.data) {
+              setUnderFlow(true);
+            }
+            setPaging({ ...paging, page: paging.page + 1 });
+            setReviews((prevReview) => [...prevReview, ...res.data]);
+            setLoading(false);
+          }
+        );
+      }
+    }
+    setLoadMore(false);
+  }, [loadMore]);
+
+  useEffect(() => {
+    const adaptor = document.getElementById("adaptor");
+
+    if (adaptor.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+      setLoadMore(true);
+    }
+  }, [reviews]);
 
   return (
     <Container>
@@ -198,81 +231,47 @@ const App = () => {
       />
       <GlobalStyles overflow={scroll} />
       <Header />
-
       <SelectCustom
         name="major"
         autosize={false}
-        // options={data_mock_class}
         options={classes}
         valueKey={"classId"}
         key={"classId"}
-        placeholder={classSelected}
+        placeholder={classSelected.label}
         onChange={handleSelected}
       />
-      <LastReview enable={show}>
-        <DetailTitle>รีวิวล่าสุด</DetailTitle>
-        {reviews
-          ? reviews.map((review, index) => (
-              <ReviewCard key={index} {...review} />
-            ))
-          : "ยังไม่มีข้อมูลครับ"}
+      <SubjectTitle enable={show}>{classSelected.label}</SubjectTitle>
+      <ReviewForm
+        enable={show}
+        back={setShow}
+        modal={setScroll}
+        classId={classSelected.classId}
+      />
+      <Details score={score} enable={show} />
+
+      <LastReview>
+        {show === "main" ? (
+          <DetailTitle>รีวิวล่าสุด</DetailTitle>
+        ) : show === "form" ? null : (
+          <ReviewTitle>
+            <DetailTitle>รีวิวทั้งหมด</DetailTitle>
+            <Button onClick={() => setShow("form")}>รีวิววิชานี้</Button>
+          </ReviewTitle>
+        )}
+        <AdaptorReviews id="adaptor">
+          {show === "form"
+            ? null
+            : reviews
+            ? reviews.map(
+                (review, index) =>
+                  review && <ReviewCard key={index} {...review} />
+              )
+            : "ยังไม่มีข้อมูลครับ"}
+        </AdaptorReviews>
+        {(loading || loadMore) && !underflow && (
+          <p style={{ fontSize: "30px", margin: "0" }}>LOADING...</p>
+        )}
       </LastReview>
-      <SubjectTitle enable={show}>{classSelected}</SubjectTitle>
-      <ReviewForm enable={show} back={setShow} modal={setScroll} classId={classId}/>
-      <Details enable={show}>
-        <ScoreContainter>
-          <DetailTitle>คะแนนภาพรวม</DetailTitle>
-          <ScoreBar title>
-            <DetailTitle desc>มาก</DetailTitle>
-            <DetailTitle desc>น้อย</DetailTitle>
-          </ScoreBar>
-        </ScoreContainter>
-        <ScoreContainter>
-          <ScoreTitle>จำนวนงานและการบ้าน</ScoreTitle>
-          <ScoreBar>
-            <LinearProgressCustom
-              variant="determinate"
-              colorLeft="#9BC1EE"
-              colorRight="#F0C3F7"
-              value={score.work}
-            />
-            <ScoreTitle score>{score.work}%</ScoreTitle>
-          </ScoreBar>
-        </ScoreContainter>
-        <ScoreContainter>
-          <ScoreTitle>ความน่าสนใจของเนื้อหา</ScoreTitle>
-          <ScoreBar>
-            <LinearProgressCustom
-              variant="determinate"
-              colorLeft="#A3E0B5"
-              colorRight="#B4D9F3"
-              value={score.lesson}
-            />
-            <ScoreTitle score>{score.lesson}%</ScoreTitle>
-          </ScoreBar>
-        </ScoreContainter>
-        <ScoreContainter>
-          <ScoreTitle>การสอนของอาจารย์</ScoreTitle>
-          <ScoreBar>
-            <LinearProgressCustom
-              variant="determinate"
-              colorLeft="#EEA99A"
-              colorRight="#F6DEA2"
-              value={score.teaching}
-            />
-            <ScoreTitle score>{score.teaching}%</ScoreTitle>
-          </ScoreBar>
-        </ScoreContainter>
-        <ReviewTitle>
-          <DetailTitle>รีวิวทั้งหมด</DetailTitle>
-          <Button onClick={() => setShow("form")}>รีวิววิชานี้</Button>
-        </ReviewTitle>
-        {reviews
-          ? reviews.map((review, index) => (
-              <ReviewCard key={index} {...review} />
-            ))
-          : "ยังไม่มีข้อมูลครับ"}
-      </Details>
     </Container>
   );
 };
