@@ -137,12 +137,12 @@ const App = () => {
     how: 0,
   });
 
-  useEffect(() => setReviews([]), [show]);
-
-  const handleSelected = (e) => {
-    setPaging({ ...paging, page: 0 });
+  //   useEffect(() => setReviews([]), [show]);
+  const handleFetchingReviewsAndClass = (classId) => {
+    setUnderFlow(false);
+    setReviews([]);
     setLoading(true);
-    APIs.getReviewsByClassId(e.classId, 0, paging.offset, (res) => {
+    APIs.getReviewsByClassId(classId, 0, paging.offset, (res) => {
       if (res.data === null) {
         setUnderFlow(true);
       }
@@ -150,7 +150,7 @@ const App = () => {
       setLoading(false);
     });
 
-    APIs.getClassDetailByClassId(e.classId, (res) => {
+    APIs.getClassDetailByClassId(classId, (res) => {
       console.log(res.data);
       setScore({
         homework: res.data.stats.homework,
@@ -158,6 +158,16 @@ const App = () => {
         how: res.data.stats.how,
       });
     });
+  };
+
+  const handleFormClosed = (page) => {
+    setShow(page);
+    handleFetchingReviewsAndClass(classSelected.classId);
+  };
+
+  const handleSelected = (e) => {
+    setPaging({ ...paging, page: 0 });
+    handleFetchingReviewsAndClass(e.classId);
     setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
   };
@@ -243,7 +253,7 @@ const App = () => {
       <SubjectTitle enable={show}>{classSelected.label}</SubjectTitle>
       <ReviewForm
         enable={show}
-        back={setShow}
+        back={handleFormClosed}
         modal={setScroll}
         classId={classSelected.classId}
       />
