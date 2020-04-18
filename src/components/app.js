@@ -144,8 +144,10 @@ const App = () => {
     APIs.getReviewsByClassId(classId, 0, paging.offset, (res) => {
       if (res.data === null) {
         setUnderFlow(true);
+      } else {
+        setReviews(res.data);
       }
-      setReviews(res.data);
+
       setLoading(false);
       setUnderFlow(false);
     });
@@ -200,7 +202,7 @@ const App = () => {
       if (show === "main") {
         APIs.getLastReviews(paging.page, paging.offset, (res) => {
           console.log(res.data);
-          if (!res.data) {
+          if (!res.data && res !== []) {
             setUnderFlow(true);
           }
           setPaging({ ...paging, page: paging.page + 1 });
@@ -213,7 +215,7 @@ const App = () => {
           paging.page,
           paging.offset,
           (res) => {
-            if (!res.data) {
+            if (!res.data && res !== []) {
               setUnderFlow(true);
             }
             setPaging({ ...paging, page: paging.page + 1 });
@@ -279,10 +281,12 @@ const App = () => {
                     <ReviewCard key={index} modal={setScroll} {...review} />
                   )
               )
-            : "ยังไม่มีข้อมูลครับ"}
+            : null}
         </AdaptorReviews>
-        {(loading || loadMore) && !underflow && show !== "form" && (
+        {(loading || loadMore) && !underflow && show !== "form" ? (
           <p style={{ fontSize: "30px", margin: "0" }}>LOADING...</p>
+        ) : (
+          <p style={{ fontSize: "30px", margin: "0" }}>หมดละ...</p>
         )}
       </LastReview>
     </Container>
