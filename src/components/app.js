@@ -122,14 +122,14 @@ const App = (props) => {
   const [loading, setLoading] = useState(false);
   const [underflow, setUnderFlow] = useState(false);
   const [classSelected, setClassSelected] = useState({
-    label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
+    label: "กำลังโหลดข้อมูลวิชา...",
     classId: "",
   });
 
-  const [score] = useState({
-    work: 50,
-    lesson: 75,
-    teaching: 34,
+  const [score, setScore] = useState({
+    homework: 0,
+    interest: 0,
+    how: 0,
   });
 
   useEffect(() => console.log(reviews), [reviews]);
@@ -143,13 +143,29 @@ const App = (props) => {
       setReviews(res.data);
     });
 
+    APIs.getClassDetailByClassId(e.classId, (res) => {
+      console.log(res.data);
+      setScore({
+        homework: res.data.stats.homework,
+        interest: res.data.stats.interest,
+        how: res.data.stats.how,
+      });
+    });
+
     setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
     setLoading(false);
   };
 
   useEffect(() => {
-    APIs.getAllClasses((res) => setClasses(res.data));
+    setClassSelected({ ...classSelected, label: "กำลังโหลดข้อมูลวิชา..." });
+    APIs.getAllClasses((res) => {
+      setClasses(res.data);
+      setClassSelected({
+        ...classSelected,
+        label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
+      });
+    });
 
     const adaptor = document.getElementById("adaptor");
     window.addEventListener("scroll", () => {

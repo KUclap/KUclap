@@ -79,9 +79,9 @@ const Detail = ({ score, enable }) => {
             variant="determinate"
             colorLeft="#9BC1EE"
             colorRight="#F0C3F7"
-            value={score.work}
+            value={score.homework}
           />
-          <ScoreTitle score>{score.work}%</ScoreTitle>
+          <ScoreTitle score>{score.homework}%</ScoreTitle>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
@@ -91,9 +91,9 @@ const Detail = ({ score, enable }) => {
             variant="determinate"
             colorLeft="#A3E0B5"
             colorRight="#B4D9F3"
-            value={score.lesson}
+            value={score.interest}
           />
-          <ScoreTitle score>{score.lesson}%</ScoreTitle>
+          <ScoreTitle score>{score.interest}%</ScoreTitle>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
@@ -103,9 +103,9 @@ const Detail = ({ score, enable }) => {
             variant="determinate"
             colorLeft="#EEA99A"
             colorRight="#F6DEA2"
-            value={score.teaching}
+            value={score.how}
           />
-          <ScoreTitle score>{score.teaching}%</ScoreTitle>
+          <ScoreTitle score>{score.how}%</ScoreTitle>
         </ScoreBar>
       </ScoreContainter>
     </Details>

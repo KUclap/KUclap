@@ -27,7 +27,7 @@ const apis = {
   // GET stats when class selected.
   getClassDetailByClassId: async (classid, next) => {
     try {
-      const res = await api.get(`/classes/${classid}`);
+      const res = await api.get(`/class/${classid}`);
       next(res);
     } catch (err) {
       console.log(err);
