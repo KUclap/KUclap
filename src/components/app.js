@@ -120,6 +120,7 @@ const App = (props) => {
   const [scroll, setScroll] = useState(false);
   const [loadMore, setLoadMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [underflow, setUnderFlow] = useState(false);
   const [classSelected, setClassSelected] = useState({
     label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
     classId: "",
@@ -134,9 +135,17 @@ const App = (props) => {
   useEffect(() => console.log(reviews), [reviews]);
 
   const handleSelected = (e) => {
-    APIs.getReviewsByClassId(e.classId, (res) => setReviews(res.data));
+    setLoading(true);
+    APIs.getReviewsByClassId(e.classId, (res) => {
+      if (res.data === null) {
+        setUnderFlow(true);
+      }
+      setReviews(res.data);
+    });
+
     setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -155,12 +164,19 @@ const App = (props) => {
       setLoading(true);
       console.log("FETCH");
       if (show === "main") {
-        APIs.getLastReviews(10, (res) => {
+        APIs.getLastReviews(1, (res) => {
+          console.log(res.data);
+          if (!res.data) {
+            setUnderFlow(true);
+          }
           setReviews((prevReview) => [...prevReview, ...res.data]);
           setLoading(false);
         });
       } else if (show === "detail") {
         APIs.getReviewsByClassId(classSelected.classId, (res) => {
+          if (!res.data) {
+            setUnderFlow(true);
+          }
           setReviews((prevReview) => [...prevReview, ...res.data]);
           setLoading(false);
         });
@@ -218,7 +234,7 @@ const App = (props) => {
               ))
             : "ยังไม่มีข้อมูลครับ"}
         </AdaptorReviews>
-        {(loading || loadMore) && (
+        {(loading || loadMore) && !underflow && (
           <p style={{ fontSize: "30px", margin: "0" }}>LOADING...</p>
         )}
       </LastReview>
@@ -226,13 +242,3 @@ const App = (props) => {
   );
 };
 export default App;
-// ? () => {
-//   return (
-//     <>
-//       {reviews.map((review, index) => (
-//         <ReviewCard key={index} {...review} />
-//       ))}
-//       {loading ? "LODING ..." : null}
-//     </>
-//   );
-// }
