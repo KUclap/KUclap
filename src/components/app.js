@@ -114,11 +114,6 @@ const Button = styled.div`
 `;
 
 const App = () => {
-  const [paging, setPaging] = useState({
-    page: 0,
-    offset: 5,
-  });
-
   const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [show, setShow] = useState("main");
@@ -137,7 +132,11 @@ const App = () => {
     how: 0,
   });
 
-  //   useEffect(() => setReviews([]), [show]);
+  const [paging, setPaging] = useState({
+    page: 0,
+    offset: 5,
+  });
+
   const handleFetchingReviewsAndClass = (classId) => {
     setReviews([]);
     setLoading(true);
@@ -172,11 +171,21 @@ const App = () => {
     setPaging({ ...paging, page: 1 });
     handleFetchingReviewsAndClass(e.classId);
     setClassSelected({ label: e.label, classId: e.classId });
-    setShow("details");
+    window.location.search = `?classid=${e.classId}`;
   };
 
   useEffect(() => {
-    setClassSelected({ ...classSelected, label: "กำลังโหลดข้อมูลวิชา..." });
+    // const loadingByClassId = new URLSearchParams(window.location.search).get(
+    //   "classid"
+    // );
+    // if (loadingByClassId) {
+    //   console.log(loadingByClassId);
+    //   setClassSelected({ ...classSelected, classId: loadingByClassId });
+    //   setShow("details");
+    //   handleFetchingReviewsAndClass(loadingByClassId);
+    // }
+
+    // setClassSelected({ ...classSelected, label: "กำลังโหลดข้อมูลวิชา..." });
     APIs.getAllClasses((res) => {
       setClasses(res.data);
       setClassSelected({

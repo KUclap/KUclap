@@ -50,8 +50,9 @@ const apis = {
   // GET reviews by classid when class selected
   getReviewsByClassId: async (classid, page, offset, next) => {
     try {
-      const URl = `/reviews/${classid}?page=${page}&offset=${offset}`;
-      const res = await api.get(URl);
+      const res = await api.get(
+        `/reviews/${classid}?page=${page}&offset=${offset}`
+      );
       next(res);
     } catch (err) {
       console.log(err);
