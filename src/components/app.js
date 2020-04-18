@@ -20,9 +20,9 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Kanit', arial, sans-serif;
     font-weight: 400; 
-    /* height: auto; */
-    /* width: 100%; */
-    /* padding: 0; */
+    height: auto;
+    width: 100%;
+    padding: 0;
     margin: 0;
     overflow: ${(props) => (props.overflow === true ? "hidden" : "auto")}
   } 
@@ -39,7 +39,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   max-width: 86rem;
-  margin: auto;
+  margin: 0 auto;
 `;
 
 const SelectCustom = styled(Select)`
@@ -76,19 +76,17 @@ const DetailTitle = styled.p`
   margin: 1.2rem 0;
   font-weight: 600;
   color: ${(props) => (props.desc ? "#BDBDBD" : "#4F4F4F")};
-  padding: ${(props) => (props.desc ? "0 1rem" : "0")};
+  padding: ${(props) => (props.desc ? "0 1rem" : 0)};
 `;
 
 const AdaptorReviews = styled.div`
   width: 100%;
   margin: 0 auto;
-  background: pink;
 `;
 
 const LastReview = styled.div`
   width: 86%;
-  margin: 2.4rem;
-  background: green;
+  margin: 0 2.4rem;
 `;
 
 const ReviewTitle = styled.div`
@@ -121,9 +119,11 @@ const App = (props) => {
   const [show, setShow] = useState("main");
   const [scroll, setScroll] = useState(false);
   const [loadMore, setLoadMore] = useState(true);
-  const [classSelected, setClassSelected] = useState(
-    "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
-  );
+  const [loading, setLoading] = useState(false);
+  const [classSelected, setClassSelected] = useState({
+    label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
+    classId: "",
+  });
 
   const [score] = useState({
     work: 50,
@@ -135,51 +135,48 @@ const App = (props) => {
 
   const handleSelected = (e) => {
     APIs.getReviewsByClassId(e.classId, (res) => setReviews(res.data));
-    setClassSelected(e.label);
+    setClassSelected({ label: e.label, classId: e.classId });
     setShow("details");
   };
 
   useEffect(() => {
-    APIs.getLastReviews(5, (res) => setReviews(res.data));
     APIs.getAllClasses((res) => setClasses(res.data));
 
-    // const list = document.getElementById("adaptor");
-    // window.addEventListener("scroll", () => {
-    // console.log(
-    //   window.scrollY,
-    //   window.innerHeight,
-    //   list.clientHeight,
-    //   list.offsetTop
-    // );
-    //   console.log(
-    //     window.scrollY + window.innerHeight,
-    //     list.clientHeight + list.offsetTop
-    //   );
-    //   if (
-    //     window.scrollY + window.innerHeight ===
-    //     list.clientHeight + list.offsetTop
-    //   ) {
-    //     setLoadMore(true);
-    //   }
-    // });
+    const adaptor = document.getElementById("adaptor");
+    window.addEventListener("scroll", () => {
+      if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+        if (!loading) setLoadMore(true);
+      }
+    });
   }, []);
 
-  // useEffect(() => {
-  //   if (loadMore) {
-  //     APIs.getLastReviews(5, (res) =>
-  //       setReviews((prevReview) => [...prevReview, res.data])
-  //     );
-  //   }
-  //   setLoadMore(false);
-  // }, [loadMore]);
+  useEffect(() => {
+    if (!loading && loadMore) {
+      setLoading(true);
+      console.log("FETCH");
+      if (show === "main") {
+        APIs.getLastReviews(10, (res) => {
+          setReviews((prevReview) => [...prevReview, ...res.data]);
+          setLoading(false);
+        });
+      } else if (show === "detail") {
+        APIs.getReviewsByClassId(classSelected.classId, (res) => {
+          setReviews((prevReview) => [...prevReview, ...res.data]);
+          setLoading(false);
+        });
+      }
+    }
 
-  // useEffect(() => {
-  //   const list = document.getElementById("adaptor");
+    setLoadMore(false);
+  }, [loadMore]);
 
-  //   if (list.clientHeight <= window.innerHeight && list.clientHeight) {
-  //     setLoadMore(true);
-  //   }
-  // }, [reviews]);
+  useEffect(() => {
+    const adaptor = document.getElementById("adaptor");
+
+    if (adaptor.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+      setLoadMore(true);
+    }
+  }, [reviews]);
 
   return (
     <Container>
@@ -189,18 +186,20 @@ const App = (props) => {
       />
       <GlobalStyles overflow={scroll} />
       <Header />
+
       <SelectCustom
         name="major"
         autosize={false}
         options={classes}
         valueKey={"classId"}
         key={"classId"}
-        placeholder={classSelected}
+        placeholder={classSelected.label}
         onChange={handleSelected}
       />
-      <SubjectTitle enable={show}>{classSelected}</SubjectTitle>
+      <SubjectTitle enable={show}>{classSelected.label}</SubjectTitle>
       <ReviewForm enable={show} back={setShow} modal={setScroll} />
       <Details score={score} enable={show} />
+
       <LastReview>
         {show === "main" ? (
           <DetailTitle>รีวิวล่าสุด</DetailTitle>
@@ -219,8 +218,21 @@ const App = (props) => {
               ))
             : "ยังไม่มีข้อมูลครับ"}
         </AdaptorReviews>
+        {(loading || loadMore) && (
+          <p style={{ fontSize: "30px", margin: "0" }}>LOADING...</p>
+        )}
       </LastReview>
     </Container>
   );
 };
 export default App;
+// ? () => {
+//   return (
+//     <>
+//       {reviews.map((review, index) => (
+//         <ReviewCard key={index} {...review} />
+//       ))}
+//       {loading ? "LODING ..." : null}
+//     </>
+//   );
+// }
