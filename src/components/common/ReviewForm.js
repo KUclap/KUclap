@@ -239,7 +239,7 @@ const ReviewForm = (props) => {
   };
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
-  modal(showDialog);
+  // modal(showDialog);
 
   const rate = (item, key) => {
     setScore({ ...score, [item.id]: key + 1 });
@@ -247,11 +247,13 @@ const ReviewForm = (props) => {
 
   const required = () => {
     setDialog(true);
+    modal(true);
   };
 
   const sendReview = () => {
     APIs.createReview(form, score);
     setDialog(false);
+    modal(false);
     setForm({ ...initialForm, classId: classId });
     setScore({ ...initialScore });
     back("details");
@@ -315,12 +317,23 @@ const ReviewForm = (props) => {
       </InputContainer>
       <Caution>กรุณาตรวจสอบความถูกต้องก่อนรีวิว</Caution>
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
-      <ModalBackdrop show={showDialog} onClick={() => setDialog(false)} />
+      <ModalBackdrop
+        show={showDialog}
+        onClick={() => {
+          setDialog(false);
+          modal(false);
+        }}
+      />
       <Modal show={showDialog}>
         เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
         <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
         <ModalActions>
-          <CancelButton onClick={() => setDialog(false)}>
+          <CancelButton
+            onClick={() => {
+              setDialog(false);
+              modal(false);
+            }}
+          >
             กลับไปแก้ไข
           </CancelButton>
           <ReviewButton onClick={sendReview}>รีวิวเลย !</ReviewButton>

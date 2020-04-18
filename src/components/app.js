@@ -268,7 +268,7 @@ const App = () => {
               )
             : "ยังไม่มีข้อมูลครับ"}
         </AdaptorReviews>
-        {(loading || loadMore) && !underflow && (
+        {(loading || loadMore) && !underflow && show !== "form" && (
           <p style={{ fontSize: "30px", margin: "0" }}>LOADING...</p>
         )}
       </LastReview>
