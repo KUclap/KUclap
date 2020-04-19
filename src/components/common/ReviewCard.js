@@ -153,11 +153,13 @@ const CancelButton = styled(ConfirmButton)`
 
 const ReviewCard = (props) => {
   const { reviewId, text, clap, boo, grade, author, createdAt, modal } = props;
-  const [actions, setActions] = useState({
-    clap: 0,
-    boo: 0,
-  });
+  const [clapAction, setClapAction] = useState(0);
+  const [booAction, setBooAction] = useState(0);
 
+  const [timeId, setTimeId] = useState({
+    clap: null,
+    boo: null,
+  });
   const [showDialog, setDialog] = useState(false);
   const parseDate = (dateUTC) => {
     const months = [
@@ -193,22 +195,34 @@ const ReviewCard = (props) => {
     setDialog(false);
   };
 
-  const setClap = () => {
-    // APIs.putClapReviewByReviewId(reviewId, 1);
-    setActions({ ...actions, clap: actions.clap + 1 });
-  };
+  useEffect(() => {
+    setActionByKey("boo");
+  }, [booAction]);
 
-  let interval;
+  useEffect(() => {
+    setActionByKey("clap");
+  }, [clapAction]);
 
-  const setBoo = () => {
-    setActions({ ...actions, boo: actions.boo + 1 });
-    if (interval === undefined) console.log(interval);
-    else clearTimeout(interval);
-    interval = setTimeout(() => {
-      // APIs.putBooReviewByReviewId(reviewId, actions.boo);
-      console.log(interval);
-      console.log(actions.boo);
-    }, 5000);
+  const setActionByKey = (action) => {
+    if (timeId[action] !== null) {
+      clearTimeout(timeId[action]);
+    }
+    const timer = () =>
+      setTimeout(() => {
+        switch (action) {
+          case "clap": {
+            APIs.putClapReviewByReviewId(reviewId, clapAction);
+            break;
+          }
+          case "boo": {
+            APIs.putBooReviewByReviewId(reviewId, booAction);
+            break;
+          }
+        }
+        setTimeId({ ...timeId, [action]: null });
+      }, 2500);
+    const id = timer();
+    setTimeId({ ...timeId, [action]: id });
   };
 
   return (
@@ -227,19 +241,16 @@ const ReviewCard = (props) => {
         </DetailContainer>
         <Actions>
           <ButtonContainer>
-            <Button onClick={setClap}>
+            <Button onClick={() => setClapAction(clapAction + 1)}>
               <Clap />
             </Button>
-            <span>{actions.clap + clap}</span>
+            <span>{clapAction + clap}</span>
           </ButtonContainer>
           <ButtonContainer>
-            <Button
-              // onClick={() => setActions({ ...actions, boo: actions.boo + 1 })}
-              onClick={setBoo}
-            >
+            <Button onClick={() => setBooAction(booAction + 1)}>
               <Boo />
             </Button>
-            <span>{actions.boo + boo}</span>
+            <span>{booAction + boo}</span>
           </ButtonContainer>
         </Actions>
       </CardDetails>

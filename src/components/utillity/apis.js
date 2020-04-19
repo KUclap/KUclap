@@ -71,7 +71,7 @@ const apis = {
   putClapReviewByReviewId: async (reviewid, clap) => {
     try {
       const res = await api.put(`/review/clap/${reviewid}/${clap}`);
-      console.log(res);
+      console.log(res, clap);
     } catch (err) {
       console.log(err);
     }
@@ -80,7 +80,7 @@ const apis = {
   putBooReviewByReviewId: async (reviewid, boo) => {
     try {
       const res = await api.put(`/review/boo/${reviewid}/${boo}`);
-      console.log(res);
+      console.log(res, boo);
     } catch (err) {
       console.log(err);
     }
