@@ -2,7 +2,7 @@ import { useState, useEffect } from "preact/hooks";
 import styled from "styled-components";
 import APIs from "../utillity/apis";
 import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
-import { Checkbox } from '@material-ui/core';
+import { Checkbox } from "@material-ui/core";
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
@@ -37,8 +37,8 @@ const DetailTitle = styled.div`
 const Warning = styled(DetailTitle)`
   margin-left: 1.2rem;
   font-size: 1.6rem;
-  color: #EB5757;
-  display: ${props => props.required ? 'inline' : 'none'}
+  color: #eb5757;
+  display: ${(props) => (props.required ? "inline" : "none")};
 `;
 
 const FormTitle = styled.div`
@@ -247,9 +247,9 @@ const CheckboxContainer = styled.div`
   }
 
   .MuiCheckbox-colorSecondary.Mui-checked {
-    color: #2F80ED;
+    color: #2f80ed;
   }
-`
+`;
 
 const ReviewForm = (props) => {
   const { enable, back, modal, classId } = props;
@@ -272,10 +272,10 @@ const ReviewForm = (props) => {
     author: false,
     rude: false,
     other: false,
-  }
+  };
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
-  const [require, setRequire] = useState(initialRequire)
+  const [require, setRequire] = useState(initialRequire);
   // modal(showDialog);
 
   const rate = (item, key) => {
@@ -283,30 +283,31 @@ const ReviewForm = (props) => {
   };
 
   const required = () => {
-    let req = {...require};
-    if (form.text !== "" && form.author !== "" && form.grade !== -1 && score.homework !== -1 && score.how !== -1 && score.interest !== -1 && require.rude && require.other) {
-      setRequire(initialRequire)
-      setDialog(true)
-      modal(true)
-    }
-    else {
-      if (form.text === "") 
-        req.text = true
-      else
-        req.text = false
-      if (score.homework === -1 || score.how === -1 || score.interest === -1) 
-        req.score = true
-      else
-        req.score = false
-      if (form.grade === -1) 
-        req.grade = true
-      else
-        req.grade = false
-      if (form.author === "") 
-        req.author = true
-      else
-        req.author = false
-      setRequire(req)
+    let req = { ...require };
+    if (
+      form.text !== "" &&
+      form.author !== "" &&
+      form.grade !== -1 &&
+      score.homework !== -1 &&
+      score.how !== -1 &&
+      score.interest !== -1 &&
+      require.rude &&
+      require.other
+    ) {
+      setRequire(initialRequire);
+      setDialog(true);
+      modal(true);
+    } else {
+      if (form.text === "") req.text = true;
+      else req.text = false;
+      if (score.homework === -1 || score.how === -1 || score.interest === -1)
+        req.score = true;
+      else req.score = false;
+      if (form.grade === -1) req.grade = true;
+      else req.grade = false;
+      if (form.author === "") req.author = true;
+      else req.author = false;
+      setRequire(req);
     }
   };
 
@@ -329,7 +330,7 @@ const ReviewForm = (props) => {
     <Container isEnable={enable}>
       <FormTitle>
         <DetailTitle>
-          รีวิววิชานี้ 
+          รีวิววิชานี้
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
         </DetailTitle>
         <Button onClick={() => back("details")}>ย้อนกลับ</Button>
@@ -341,7 +342,7 @@ const ReviewForm = (props) => {
         onChange={(e) => setForm({ ...form, text: e.target.value })}
       />
       <DetailTitle>
-        ให้คะแนนวิชา 
+        ให้คะแนนวิชา
         <Warning required={require.score}>กรุณาเลือกทุกหัวข้อ</Warning>
       </DetailTitle>
       {Rate.map((item, key) => (
@@ -362,7 +363,7 @@ const ReviewForm = (props) => {
       ))}
       <InputContainer>
         <DetailTitle>
-          เกรดที่ได้ 
+          เกรดที่ได้
           <Warning required={require.grade}>กรุณาเลือกเกรด</Warning>
         </DetailTitle>
         <GradeBar>
@@ -379,7 +380,7 @@ const ReviewForm = (props) => {
       </InputContainer>
       <InputContainer>
         <DetailTitle>
-          นามปากกา 
+          นามปากกา
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
         </DetailTitle>
         <InputName
@@ -391,11 +392,21 @@ const ReviewForm = (props) => {
       <Caution>
         กรุณาตรวจสอบความถูกต้องก่อนรีวิว
         <CheckboxContainer>
-          <Checkbox color="primary" checked={require.rude} onChange={(e) => setRequire({...require, rude: e.target.checked})}/>
+          <Checkbox
+            color="primary"
+            checked={require.rude}
+            onChange={(e) => setRequire({ ...require, rude: e.target.checked })}
+          />
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
         <CheckboxContainer>
-          <Checkbox color="primary" checked={require.other} onChange={(e) => setRequire({...require, other: e.target.checked})}/>
+          <Checkbox
+            color="primary"
+            checked={require.other}
+            onChange={(e) =>
+              setRequire({ ...require, other: e.target.checked })
+            }
+          />
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
       </Caution>
