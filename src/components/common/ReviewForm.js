@@ -57,6 +57,8 @@ const ReviewField = styled.textarea`
   font-family: "Kanit", arial, sans-serif;
   resize: none;
   margin-bottom: 2.8rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 
   &::placeholder {
     color: #bdbdbd;

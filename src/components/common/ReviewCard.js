@@ -15,6 +15,8 @@ const Container = styled.div`
 const Content = styled.div`
   font-size: 2rem;
   color: #4f4f4f;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 `;
 
 const CardDetails = styled.div`
