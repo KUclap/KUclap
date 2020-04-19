@@ -163,7 +163,7 @@ const App = ({ classid }) => {
   const handleFormClosed = (page) => {
     setPaging({ ...paging, page: 1 });
     setShow(page);
-    handleFetchingReviewsAndClass(classSelected.classId);
+    handleFetchingReviewsAndClass(classid);
   };
 
   const handleSelected = (e) => {
@@ -178,6 +178,7 @@ const App = ({ classid }) => {
     console.log(classid);
     if (classid !== "main") {
       setShow("details");
+      setClassSelected({ ...classSelected, classId: classid });
     }
 
     APIs.getAllClasses((res) => {
@@ -282,14 +283,16 @@ const App = ({ classid }) => {
               )
             : null}
         </AdaptorReviews>
-        {(loading || loadMore) && !underflow && show !== "form" ? (
-          <>
-            <ReviewSkeleton />
-            <ReviewSkeleton />
-          </>
-        ) : (
-          <p style={{ fontSize: "30px", margin: "0" }}>หมดละ...</p>
-        )}
+        {show !== "form" ? (
+          (loading || loadMore) && !underflow ? (
+            <>
+              <ReviewSkeleton />
+              <ReviewSkeleton />
+            </>
+          ) : (
+            reviews && <p style={{ fontSize: "30px", margin: "0" }}>หมดละ...</p>
+          )
+        ) : null}
       </LastReview>
     </Container>
   );
