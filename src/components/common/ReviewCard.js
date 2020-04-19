@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Clap, Boo } from "../../assets/icons/Icons";
+import { Clap, Boo } from "../utillity/Icons";
 import { useState, useEffect } from "preact/hooks";
 import APIs from "../utillity/apis";
 

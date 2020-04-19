@@ -1,7 +1,7 @@
 import { useState, useEffect } from "preact/hooks";
 import styled from "styled-components";
 import APIs from "../utillity/apis";
-import { Worst, Bad, So, Good, Excellent } from "../../assets/icons/Icons";
+import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
