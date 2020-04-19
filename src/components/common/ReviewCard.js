@@ -151,33 +151,32 @@ const CancelButton = styled(ConfirmButton)`
   background-color: #bdbdbd;
 `;
 
+const months = [
+  "ม.ค.",
+  "ก.พ.",
+  "มี.ค.",
+  "เม.ย.",
+  "พ.ค.",
+  "มิ.ย.",
+  "ก.ค.",
+  "ส.ค.",
+  "ก.ย.",
+  "ต.ค.",
+  "พ.ย.",
+  "ธ.ค.",
+];
+
 const ReviewCard = (props) => {
   const { reviewId, text, clap, boo, grade, author, createdAt, modal } = props;
   const [clapAction, setClapAction] = useState(0);
   const [booAction, setBooAction] = useState(0);
-
   const [timeId, setTimeId] = useState({
     clap: null,
     boo: null,
   });
+
   const [showDialog, setDialog] = useState(false);
   const parseDate = (dateUTC) => {
-    const months = [
-      "ม.ค.",
-      "ก.พ.",
-      "มี.ค.",
-      "เม.ย.",
-      "พ.ค.",
-      "มิ.ย.",
-      "ก.ค.",
-      "ส.ค.",
-      "ก.ย.",
-      "ต.ค.",
-      "พ.ย.",
-      "ธ.ค.",
-    ];
-    // REQUIRE implement parser for better ux (convert utc timezone)
-    // 2020-04-15T01:25:52.150+00:00 => 15 เม.ย. 2020
     let date = dateUTC.split("-");
     let day = date[2].slice(0, 2);
     let month = months[parseInt(date[1]) - 1];
