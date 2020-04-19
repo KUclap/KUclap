@@ -10,7 +10,7 @@ import APIs from "../components/utillity/apis";
 import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
 import Details from "../components/common/Detail";
-import ReviewSkeleton from "../components/common/ReviewSkeleton";
+import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -294,8 +294,8 @@ const App = ({ classid }) => {
         {show !== "form" ? (
           (loading || loadMore) && !underflow ? (
             <>
-              <ReviewSkeleton />
-              <ReviewSkeleton />
+              <ReviewSkeletonA />
+              <ReviewSkeletonB />
             </>
           ) : (
             reviews && <p style={{ fontSize: "30px", margin: "0" }}>หมดละ...</p>
