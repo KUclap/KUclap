@@ -175,6 +175,8 @@ const ReviewCard = (props) => {
   const { reviewId, text, clap, boo, grade, author, createdAt, modal } = props;
   const [clapAction, setClapAction] = useState(0);
   const [booAction, setBooAction] = useState(0);
+  const [prevClapAction, setPrevClapAction] = useState(0);
+  const [prevBooAction, setPrevBooAction] = useState(0);
   const [timeId, setTimeId] = useState({
     clap: null,
     boo: null,
@@ -200,11 +202,11 @@ const ReviewCard = (props) => {
   };
 
   useEffect(() => {
-    setActionByKey("boo");
+    if (booAction !== 0) setActionByKey("boo");
   }, [booAction]);
 
   useEffect(() => {
-    setActionByKey("clap");
+    if (clapAction !== 0) setActionByKey("clap");
   }, [clapAction]);
 
   const setActionByKey = (action) => {
@@ -215,11 +217,23 @@ const ReviewCard = (props) => {
       setTimeout(() => {
         switch (action) {
           case "clap": {
-            APIs.putClapReviewByReviewId(reviewId, clapAction);
+            APIs.putClapReviewByReviewId(
+              reviewId,
+              clapAction - prevClapAction,
+              () => {
+                setPrevClapAction(clapAction);
+              }
+            );
             break;
           }
           case "boo": {
-            APIs.putBooReviewByReviewId(reviewId, booAction);
+            APIs.putBooReviewByReviewId(
+              reviewId,
+              booAction - prevBooAction,
+              () => {
+                setPrevBooAction(booAction);
+              }
+            );
             break;
           }
         }

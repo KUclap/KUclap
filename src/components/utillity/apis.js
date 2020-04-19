@@ -68,19 +68,21 @@ const apis = {
     }
   },
   // PUT clap review by reviewid
-  putClapReviewByReviewId: async (reviewid, clap) => {
+  putClapReviewByReviewId: async (reviewid, clap, next) => {
     try {
       const res = await api.put(`/review/clap/${reviewid}/${clap}`);
       console.log(res, clap);
+      next();
     } catch (err) {
       console.log(err);
     }
   },
   // PUT boo review by reviewid
-  putBooReviewByReviewId: async (reviewid, boo) => {
+  putBooReviewByReviewId: async (reviewid, boo, next) => {
     try {
       const res = await api.put(`/review/boo/${reviewid}/${boo}`);
       console.log(res, boo);
+      next();
     } catch (err) {
       console.log(err);
     }
