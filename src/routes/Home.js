@@ -179,6 +179,14 @@ const App = ({ classid }) => {
     if (classid !== "main") {
       setShow("details");
       setClassSelected({ ...classSelected, classId: classid });
+      APIs.getClassDetailByClassId(classid, (res) => {
+        console.log(res.data);
+        setScore({
+          homework: res.data.stats.homework,
+          interest: res.data.stats.interest,
+          how: res.data.stats.how,
+        });
+      });
     }
 
     APIs.getAllClasses((res) => {
