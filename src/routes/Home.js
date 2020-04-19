@@ -10,8 +10,11 @@ import APIs from "../components/utillity/apis";
 import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
 import Details from "../components/common/Detail";
-import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
-import { GoToTop } from "../components/utillity/Icons";
+import {
+  ReviewSkeletonA,
+  ReviewSkeletonB,
+} from "../components/common/ReviewSkeleton";
+import { GoToTop, NoMore } from "../components/utillity/Icons";
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -113,6 +116,20 @@ const Button = styled.div`
   &:hover {
     background-color: #9ac1ee;
   }
+`;
+
+const ContainerNoMore = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5.2rem 0;
+  /* padding: 1.2rem 1.6rem; */
+  min-width: 27.6rem;
+  overflow: hidden;
+`;
+
+const NoMoreCustom = styled.div`
+  margin: 2.9rem auto;
 `;
 
 const App = ({ classid }) => {
@@ -319,7 +336,16 @@ const App = ({ classid }) => {
               <ReviewSkeletonB />
             </>
           ) : (
-            reviews && <p style={{ fontSize: "30px", margin: "0" }}>หมดละ...</p>
+            reviews && (
+              <ContainerNoMore>
+                <NoMoreCustom>
+                  <NoMore />
+                </NoMoreCustom>
+                {show === "details" ? (
+                  <Button onClick={() => setShow("form")}>เพิ่มรีวิว</Button>
+                ) : null}
+              </ContainerNoMore>
+            )
           )
         ) : null}
       </LastReview>
