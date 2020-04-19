@@ -1,7 +1,7 @@
 import { useState, useEffect } from "preact/hooks";
 import styled from "styled-components";
 import APIs from "../utillity/apis";
-import { Worst, Bad, So, Good, Excellent } from "../../assets/icons/Icons";
+import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
 import { Checkbox } from '@material-ui/core';
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
@@ -276,7 +276,7 @@ const ReviewForm = (props) => {
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
   const [require, setRequire] = useState(initialRequire)
-  modal(showDialog);
+  // modal(showDialog);
 
   const rate = (item, key) => {
     setScore({ ...score, [item.id]: key + 1 });
@@ -287,6 +287,7 @@ const ReviewForm = (props) => {
     if (form.text !== "" && form.author !== "" && form.grade !== -1 && score.homework !== -1 && score.how !== -1 && score.interest !== -1 && require.rude && require.other) {
       setRequire(initialRequire)
       setDialog(true)
+      modal(true)
     }
     else {
       if (form.text === "") 
@@ -310,11 +311,13 @@ const ReviewForm = (props) => {
   };
 
   const sendReview = () => {
-    APIs.createReview(form, score);
-    setDialog(false);
-    setForm({ ...initialForm, classId: classId });
-    setScore({ ...initialScore });
-    back("details");
+    APIs.createReview(form, score, () => {
+      setDialog(false);
+      modal(false);
+      setForm({ ...initialForm, classId: classId });
+      setScore({ ...initialScore });
+      back("details");
+    });
   };
 
   useEffect(() => {
@@ -397,12 +400,23 @@ const ReviewForm = (props) => {
         </CheckboxContainer>
       </Caution>
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
-      <ModalBackdrop show={showDialog} onClick={() => setDialog(false)} />
+      <ModalBackdrop
+        show={showDialog}
+        onClick={() => {
+          setDialog(false);
+          modal(false);
+        }}
+      />
       <Modal show={showDialog}>
         เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
         <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
         <ModalActions>
-          <CancelButton onClick={() => setDialog(false)}>
+          <CancelButton
+            onClick={() => {
+              setDialog(false);
+              modal(false);
+            }}
+          >
             กลับไปแก้ไข
           </CancelButton>
           <ReviewButton onClick={sendReview}>รีวิวเลย !</ReviewButton>

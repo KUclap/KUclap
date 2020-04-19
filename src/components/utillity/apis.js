@@ -34,13 +34,14 @@ const apis = {
     }
   },
   // POST & PUT create review then update stats class
-  createReview: async (payloadReview, payloadVote) => {
+  createReview: async (payloadReview, payloadVote, next) => {
     try {
       const resR = await api.post(`/review`, payloadReview);
       const resV = await api.put(
         `/class/${payloadReview.classId}/stats`,
         payloadVote
       );
+      next();
       console.log(resR, resV);
     } catch (err) {
       console.log(err);
@@ -49,8 +50,9 @@ const apis = {
   // GET reviews by classid when class selected
   getReviewsByClassId: async (classid, page, offset, next) => {
     try {
-      const URl = `/reviews/${classid}?page=${page}&offset=${offset}`;
-      const res = await api.get(URl);
+      const res = await api.get(
+        `/reviews/${classid}?page=${page}&offset=${offset}`
+      );
       next(res);
     } catch (err) {
       console.log(err);
@@ -69,7 +71,7 @@ const apis = {
   putClapReviewByReviewId: async (reviewid, clap) => {
     try {
       const res = await api.put(`/review/clap/${reviewid}/${clap}`);
-      console.log(res);
+      console.log(res, clap);
     } catch (err) {
       console.log(err);
     }
@@ -78,7 +80,7 @@ const apis = {
   putBooReviewByReviewId: async (reviewid, boo) => {
     try {
       const res = await api.put(`/review/boo/${reviewid}/${boo}`);
-      console.log(res);
+      console.log(res, boo);
     } catch (err) {
       console.log(err);
     }
