@@ -2,6 +2,7 @@ import { useState, useEffect } from "preact/hooks";
 import styled from "styled-components";
 import APIs from "../utillity/apis";
 import { Worst, Bad, So, Good, Excellent } from "../../assets/icons/Icons";
+import { Checkbox } from '@material-ui/core';
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
@@ -124,11 +125,12 @@ const InputContainer = styled.div`
   margin: 2rem 0;
 `;
 
-const Caution = styled.p`
-  font-size: 2rem;
+const Caution = styled.div`
+  font-size: 1.6rem;
   color: #bdbdbd;
   font-weight: 500;
   text-align: center;
+  align-self: center;
 `;
 
 const Button = styled.button`
@@ -232,6 +234,23 @@ const RateContainer = styled.div`
   }
 `;
 
+const CheckboxContainer = styled.div`
+  display: flex;
+  font-size: 1.6rem;
+  align-items: center;
+  margin: 1rem 0;
+  text-align: left;
+
+  .MuiSvgIcon-root {
+    width: 1.8em;
+    height: 1.8em;
+  }
+
+  .MuiCheckbox-colorSecondary.Mui-checked {
+    color: #2F80ED;
+  }
+`
+
 const ReviewForm = (props) => {
   const { enable, back, modal, classId } = props;
   const [showDialog, setDialog] = useState(false);
@@ -251,6 +270,8 @@ const ReviewForm = (props) => {
     score: false,
     grade: false,
     author: false,
+    rude: false,
+    other: false,
   }
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
@@ -263,7 +284,7 @@ const ReviewForm = (props) => {
 
   const required = () => {
     let req = {...require};
-    if (form.text !== "" && form.author !== "" && form.grade !== -1 && score.homework !== -1 && score.how !== -1 && score.interest !== -1 ) {
+    if (form.text !== "" && form.author !== "" && form.grade !== -1 && score.homework !== -1 && score.how !== -1 && score.interest !== -1 && require.rude && require.other) {
       setRequire(initialRequire)
       setDialog(true)
     }
@@ -364,7 +385,17 @@ const ReviewForm = (props) => {
           onChange={(e) => setForm({ ...form, author: e.target.value })}
         />
       </InputContainer>
-      <Caution>กรุณาตรวจสอบความถูกต้องก่อนรีวิว</Caution>
+      <Caution>
+        กรุณาตรวจสอบความถูกต้องก่อนรีวิว
+        <CheckboxContainer>
+          <Checkbox color="primary" checked={require.rude} onChange={(e) => setRequire({...require, rude: e.target.checked})}/>
+          เนื้อหาไม่มีคำหยาบคาย
+        </CheckboxContainer>
+        <CheckboxContainer>
+          <Checkbox color="primary" checked={require.other} onChange={(e) => setRequire({...require, other: e.target.checked})}/>
+          เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
+        </CheckboxContainer>
+      </Caution>
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
       <ModalBackdrop show={showDialog} onClick={() => setDialog(false)} />
       <Modal show={showDialog}>
