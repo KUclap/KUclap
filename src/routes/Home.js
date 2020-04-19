@@ -1,6 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import { route } from "preact-router";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { css, createGlobalStyle } from "styled-components";
 import Select from "react-virtualized-select";
 import "react-virtualized-select/styles.css";
 import "react-select/dist/react-select.css";
@@ -11,10 +11,12 @@ import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
 import Details from "../components/common/Detail";
 import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
+import { GoToTop } from "../components/utillity/Icons";
 
 const GlobalStyles = createGlobalStyle`
   html {
     font-size: 62.5%; /* 10px at html, body */
+    scroll-behavior: smooth
   } 
   body {
     font-family: 'Kanit', arial, sans-serif;
@@ -39,6 +41,7 @@ const Container = styled.div`
   height: 100%;
   max-width: 86rem;
   margin: 0 auto;
+  position: relative;
 `;
 
 const SelectCustom = styled(Select)`
@@ -113,6 +116,7 @@ const Button = styled.div`
 `;
 
 const App = ({ classid }) => {
+  const [goToTop, setGoToTop] = useState(false);
   const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [show, setShow] = useState("main");
@@ -135,6 +139,20 @@ const App = ({ classid }) => {
     page: 0,
     offset: 5,
   });
+
+  const handleFormClosed = (page) => {
+    setPaging({ ...paging, page: 1 });
+    setShow(page);
+    handleFetchingReviewsAndClass(classid);
+  };
+
+  const handleSelected = (e) => {
+    setPaging({ ...paging, page: 1 });
+    setShow("details");
+    handleFetchingReviewsAndClass(e.classId);
+    setClassSelected({ label: e.label, classId: e.classId });
+    route(`${e.classId}`);
+  };
 
   const handleFetchingReviewsAndClass = (classId) => {
     setReviews([]);
@@ -160,19 +178,15 @@ const App = ({ classid }) => {
     });
   };
 
-  const handleFormClosed = (page) => {
-    setPaging({ ...paging, page: 1 });
-    setShow(page);
-    handleFetchingReviewsAndClass(classid);
-  };
-
-  const handleSelected = (e) => {
-    setPaging({ ...paging, page: 1 });
-    setShow("details");
-    handleFetchingReviewsAndClass(e.classId);
-    setClassSelected({ label: e.label, classId: e.classId });
-    route(`${e.classId}`);
-  };
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > window.innerHeight - 100 && !goToTop) {
+        setGoToTop(true);
+      } else if (window.scrollY <= window.innerHeight - 100 && goToTop) {
+        setGoToTop(false);
+      }
+    });
+  });
 
   useEffect(() => {
     console.log(classid);
@@ -202,6 +216,7 @@ const App = ({ classid }) => {
       if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
         if (!loading) {
           setLoadMore(true);
+          setGoToTop(true);
         }
       }
     });
@@ -245,12 +260,18 @@ const App = ({ classid }) => {
 
   return (
     // <Router>
-    <Container>
+    <Container name="top">
       <link
         href="https://fonts.googleapis.com/css?family=Kanit&display=swap"
         rel="stylesheet"
       />
       <GlobalStyles overflow={scroll} />
+
+      {/* {goToTop && ( */}
+      <GoTopCustom goToTop={goToTop} href="#top">
+        <GoToTop />
+      </GoTopCustom>
+      {/* )} */}
       <Header />
       <SelectCustom
         name="major"
@@ -307,3 +328,20 @@ const App = ({ classid }) => {
 };
 
 export default App;
+
+const GoTopCustom = styled.a`
+  position: fixed;
+  z-index: 2;
+  right: 1.5rem;
+  bottom: 2.5rem;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  ${(props) =>
+    props.goToTop
+      ? css`
+          bottom: 2.5rem;
+        `
+      : css`
+          bottom: -10rem;
+        `}
+`;
