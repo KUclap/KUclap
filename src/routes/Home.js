@@ -287,7 +287,7 @@ const App = ({ classid }) => {
         enable={show}
         back={handleFormClosed}
         modal={setScroll}
-        classId={classSelected.classId}
+        classId={classSelected.classId || classid}
       />
       <Details score={score} enable={show} />
 
