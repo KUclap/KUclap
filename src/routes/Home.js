@@ -180,9 +180,9 @@ const App = ({ classid }) => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 114 && !goToTop) {
+      if (window.scrollY > window.innerHeight - 100 && !goToTop) {
         setGoToTop(true);
-      } else if (window.scrollY <= 114 && goToTop) {
+      } else if (window.scrollY <= window.innerHeight - 100 && goToTop) {
         setGoToTop(false);
       }
     });
