@@ -81,7 +81,7 @@ const Detail = ({ score, enable }) => {
             colorRight="#F0C3F7"
             value={score.homework}
           />
-          <ScoreTitle score>{Number(score.homework.toFixed(2))}%</ScoreTitle>
+          <ScoreTitle score>{Number(score.homework.toFixed(0))}%</ScoreTitle>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
@@ -93,7 +93,7 @@ const Detail = ({ score, enable }) => {
             colorRight="#B4D9F3"
             value={score.interest}
           />
-          <ScoreTitle score>{Number(score.interest.toFixed(2))}%</ScoreTitle>
+          <ScoreTitle score>{Number(score.interest.toFixed(0))}%</ScoreTitle>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
@@ -105,7 +105,7 @@ const Detail = ({ score, enable }) => {
             colorRight="#F6DEA2"
             value={score.how}
           />
-          <ScoreTitle score>{Number(score.how.toFixed(2))}%</ScoreTitle>
+          <ScoreTitle score>{Number(score.how.toFixed(0))}%</ScoreTitle>
         </ScoreBar>
       </ScoreContainter>
     </Details>
