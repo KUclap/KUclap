@@ -1,5 +1,4 @@
 import { useState, useEffect } from "preact/hooks";
-import { Suspense, lazy } from "preact/compat";
 import { route } from "preact-router";
 import styled, { createGlobalStyle } from "styled-components";
 import Select from "react-virtualized-select";
@@ -8,11 +7,10 @@ import "react-select/dist/react-select.css";
 import "react-virtualized/styles.css";
 import Header from "../components/common/Header";
 import APIs from "../components/utillity/apis";
-// import ReviewCard from "../components/common/ReviewCard";
+import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
 import Details from "../components/common/Detail";
-
-const ReviewCard = lazy(() => import("../components/common/ReviewCard"));
+import ReviewSkeleton from "../components/common/ReviewSkeleton";
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -180,12 +178,7 @@ const App = ({ classid }) => {
     console.log(classid);
     if (classid !== "main") {
       setShow("details");
-      //     setPaging({ ...paging, page: 1 });
-      //   setClassSelected({ ...classSelected, classId: classid });
-      //   handleFetchingReviewsAndClass(classid);
     }
-
-    // setClassSelected({ ...classSelected, label: "กำลังโหลดข้อมูลวิชา..." });
 
     APIs.getAllClasses((res) => {
       setClasses(res.data);
@@ -284,15 +277,16 @@ const App = ({ classid }) => {
             ? reviews.map(
                 (review, index) =>
                   review && (
-                    <Suspense fallback={<div>loading...</div>}>
-                      <ReviewCard key={index} modal={setScroll} {...review} />
-                    </Suspense>
+                    <ReviewCard key={index} modal={setScroll} {...review} />
                   )
               )
             : null}
         </AdaptorReviews>
         {(loading || loadMore) && !underflow && show !== "form" ? (
-          <p style={{ fontSize: "30px", margin: "0" }}>LOADING...</p>
+          <>
+            <ReviewSkeleton />
+            <ReviewSkeleton />
+          </>
         ) : (
           <p style={{ fontSize: "30px", margin: "0" }}>หมดละ...</p>
         )}

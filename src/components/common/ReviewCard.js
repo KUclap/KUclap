@@ -8,6 +8,7 @@ const Container = styled.div`
   border-radius: 1rem;
   margin: 2rem 0;
   padding: 1.2rem 1.6rem;
+  min-width: 27.6rem;
   overflow: hidden;
 `;
 
@@ -34,8 +35,12 @@ const DetailContainer = styled.div`
 
 const DetailRight = styled.div`
   display: flex;
-  width: 15rem;
+  width: 16rem;
+  white-space: nowrap;
   justify-content: space-between;
+  span {
+    margin-left: 1ch;
+  }
 `;
 
 const Button = styled.div`
