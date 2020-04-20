@@ -157,6 +157,11 @@ const App = ({ classid }) => {
     offset: 5,
   });
 
+  const handleNewReview = () => {
+    setShow("form");
+    setUnderFlow(false);
+  };
+
   const handleFormClosed = (page) => {
     setPaging({ ...paging, page: 1 });
     setShow(page);
@@ -179,10 +184,10 @@ const App = ({ classid }) => {
         setUnderFlow(true);
       } else {
         setReviews(res.data);
+        setUnderFlow(false);
       }
 
       setLoading(false);
-      setUnderFlow(false);
     });
 
     APIs.getClassDetailByClassId(classId, (res) => {
@@ -314,7 +319,7 @@ const App = ({ classid }) => {
         ) : show === "form" ? null : (
           <ReviewTitle>
             <DetailTitle>รีวิวทั้งหมด</DetailTitle>
-            <Button onClick={() => setShow("form")}>รีวิววิชานี้</Button>
+            <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
           </ReviewTitle>
         )}
         <AdaptorReviews id="adaptor">
@@ -336,13 +341,14 @@ const App = ({ classid }) => {
               <ReviewSkeletonB />
             </>
           ) : (
-            reviews && (
+            reviews &&
+            !loading && (
               <ContainerNoMore>
                 <NoMoreCustom>
                   <NoMore />
                 </NoMoreCustom>
                 {show === "details" ? (
-                  <Button onClick={() => setShow("form")}>เพิ่มรีวิว</Button>
+                  <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
                 ) : null}
               </ContainerNoMore>
             )
