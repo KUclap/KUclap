@@ -179,6 +179,7 @@ const App = ({ classid }) => {
   const handleFetchingReviewsAndClass = (classId) => {
     setReviews([]);
     setLoading(true);
+    setUnderFlow(false);
     APIs.getReviewsByClassId(classId, 0, paging.offset, (res) => {
       if (res.data === null) {
         setUnderFlow(true);
