@@ -221,4 +221,32 @@ const NoMore = () => (
   </svg>
 );
 
-export { Clap, Boo, Worst, Bad, So, Good, Excellent, GoToTop, NoMore };
+const DoneGreen = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="150"
+    height="150"
+    viewBox="0 0 150 150"
+    version="1.1"
+  >
+    <g id="surface1">
+      <path
+        style=" stroke:none;fill-rule:nonzero;fill:rgb(46.666667%,69.803922%,56.078431%);fill-opacity:1;"
+        d="M 56.25 101.25 L 30 75 L 21.25 83.75 L 56.25 118.75 L 131.25 43.75 L 122.5 35 Z M 56.25 101.25 "
+      />
+    </g>
+  </svg>
+);
+
+export {
+  Clap,
+  Boo,
+  Worst,
+  Bad,
+  So,
+  Good,
+  Excellent,
+  GoToTop,
+  NoMore,
+  DoneGreen,
+};

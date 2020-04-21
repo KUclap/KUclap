@@ -1,8 +1,10 @@
 import { Checkbox } from "@material-ui/core";
 import { useState, useEffect } from "preact/hooks";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import styled from "styled-components";
 
 import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
+import Alert from "./Alert";
 import APIs from "../utillity/apis";
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
@@ -138,7 +140,7 @@ const Caution = styled.div`
 
 const Button = styled.button`
   font-family: "Kanit", arial, sans-serif;
-  background-color: #bdbdbd;
+  background: rgba(0, 0, 0, 0.64);
   color: #fff;
   padding: 0.2rem 1.8rem;
   border-radius: 0.6rem;
@@ -155,6 +157,9 @@ const ReviewButton = styled(Button)`
   font-size: 2rem;
   align-self: center;
   margin: 1rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CancelButton = styled(Button)`
@@ -264,7 +269,9 @@ const CheckboxCustom = styled(Checkbox)`
 
 const ReviewForm = (props) => {
   const { enable, back, modal, classId } = props;
+  const [isDone, setIsDone] = useState(false);
   const [showDialog, setDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const initialForm = {
     classId: classId,
     text: "",
@@ -284,10 +291,20 @@ const ReviewForm = (props) => {
     rude: false,
     other: false,
   };
+
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
   const [require, setRequire] = useState(initialRequire);
   // modal(showDialog);
+
+  const handleCloseAlert = () => {
+    if (isDone) {
+      back("details");
+      setIsDone(false);
+    }
+    setDialog(false);
+    modal(false);
+  };
 
   const rate = (item, key) => {
     setScore({ ...score, [item.id]: key + 1 });
@@ -323,12 +340,14 @@ const ReviewForm = (props) => {
   };
 
   const sendReview = () => {
+    setIsLoading(true);
     APIs.createReview(form, score, () => {
-      setDialog(false);
-      modal(false);
+      // back("details");
+      setIsLoading(false);
+      setIsDone(true);
       setForm({ ...initialForm, classId: classId });
       setScore({ ...initialScore });
-      back("details");
+      // back("details");
     });
   };
 
@@ -422,28 +441,36 @@ const ReviewForm = (props) => {
         </CheckboxContainer>
       </Caution>
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
-      <ModalBackdrop
-        show={showDialog}
-        onClick={() => {
-          setDialog(false);
-          modal(false);
-        }}
-      />
-      <Modal show={showDialog}>
-        เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
-        <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
-        <ModalActions>
-          <CancelButton
-            onClick={() => {
-              setDialog(false);
-              modal(false);
-            }}
-          >
-            กลับไปแก้ไข
-          </CancelButton>
-          <ReviewButton onClick={sendReview}>รีวิวเลย !</ReviewButton>
-        </ModalActions>
-      </Modal>
+      <ModalBackdrop show={showDialog} onClick={handleCloseAlert} />
+      {isDone ? (
+        <Alert Close={handleCloseAlert} />
+      ) : (
+        <Modal show={showDialog}>
+          เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
+          <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
+          <ModalActions>
+            <CancelButton
+              onClick={() => {
+                setDialog(false);
+                modal(false);
+              }}
+            >
+              กลับไปแก้ไข
+            </CancelButton>
+            <ReviewButton
+              onClick={() => {
+                sendReview();
+              }}
+            >
+              {isLoading ? (
+                <CircularProgress color="white" size="3rem" />
+              ) : (
+                "รีวิวเลย !"
+              )}
+            </ReviewButton>
+          </ModalActions>
+        </Modal>
+      )}
     </Container>
   );
 };

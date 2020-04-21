@@ -13,11 +13,12 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const Content = styled.div`
+const Content = styled.p`
   font-size: 2rem;
   color: #4f4f4f;
-  white-space: pre-wrap;
+  white-space: pre-line;
   overflow-wrap: break-word;
+  margin: 0;
 `;
 
 const CardDetails = styled.div`
