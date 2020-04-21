@@ -1,15 +1,18 @@
-import { useState, useEffect } from "preact/hooks";
 import { route } from "preact-router";
-import styled, { css, createGlobalStyle } from "styled-components";
+import { useState, useEffect } from "preact/hooks";
 import Select from "react-virtualized-select";
-import "react-virtualized-select/styles.css";
+import styled, { css, createGlobalStyle } from "styled-components";
+
 import "react-select/dist/react-select.css";
+import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
-import Header from "../components/common/Header";
+
 import APIs from "../components/utillity/apis";
+import Details from "../components/common/Detail";
+import Header from "../components/common/Header";
 import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
-import Details from "../components/common/Detail";
+
 import {
   ReviewSkeletonA,
   ReviewSkeletonB,
@@ -19,6 +22,7 @@ import { GoToTop, NoMore } from "../components/utillity/Icons";
 const GlobalStyles = createGlobalStyle`
   html {
     font-size: 62.5%; /* 10px at html, body */
+    font-size: 52.5%; 
     scroll-behavior: smooth
   } 
   body {

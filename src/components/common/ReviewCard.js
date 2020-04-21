@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { Clap, Boo } from "../utillity/Icons";
 import { useState, useEffect } from "preact/hooks";
+import styled from "styled-components";
+
+import { Clap, Boo } from "../utillity/Icons";
 import APIs from "../utillity/apis";
 
 const Container = styled.div`

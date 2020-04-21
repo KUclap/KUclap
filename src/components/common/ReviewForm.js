@@ -1,8 +1,9 @@
+import { Checkbox } from "@material-ui/core";
 import { useState, useEffect } from "preact/hooks";
 import styled from "styled-components";
-import APIs from "../utillity/apis";
+
 import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
-import { Checkbox } from "@material-ui/core";
+import APIs from "../utillity/apis";
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
@@ -253,6 +254,14 @@ const CheckboxContainer = styled.div`
   }
 `;
 
+const CheckboxCustom = styled(Checkbox)`
+  && {
+    &.Mui-checked {
+      color: #2f80ed;
+    }
+  }
+`;
+
 const ReviewForm = (props) => {
   const { enable, back, modal, classId } = props;
   const [showDialog, setDialog] = useState(false);
@@ -394,7 +403,7 @@ const ReviewForm = (props) => {
       <Caution>
         กรุณาตรวจสอบความถูกต้องก่อนรีวิว
         <CheckboxContainer>
-          <Checkbox
+          <CheckboxCustom
             color="primary"
             checked={require.rude}
             onChange={(e) => setRequire({ ...require, rude: e.target.checked })}
@@ -402,7 +411,7 @@ const ReviewForm = (props) => {
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
         <CheckboxContainer>
-          <Checkbox
+          <CheckboxCustom
             color="primary"
             checked={require.other}
             onChange={(e) =>
