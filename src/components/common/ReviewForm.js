@@ -7,6 +7,8 @@ import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
 import Alert from "./Alert";
 import APIs from "../utillity/apis";
 
+import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
   {
@@ -178,7 +180,7 @@ const ModalBackdrop = styled.div`
   background-color: hsla(10, 10%, 10%, 50%);
   display: ${(props) => (props.show === true ? "block" : "none")};
   z-index: 1;
-  cursor: pointer;
+  cursor: url(${ic_cancel_white}) 205 205, auto;
 `;
 
 const Modal = styled.div`
@@ -216,7 +218,8 @@ const Rating = styled.div`
 
 const RateContainer = styled.div`
   cursor: pointer;
-
+  user-select: none;
+  outline: none;
   svg {
     #outer,
     #mouth {
@@ -237,6 +240,19 @@ const RateContainer = styled.div`
 
       #eye {
         fill: #9ac1ee;
+      }
+    }
+  }
+
+  &:active {
+    vg {
+      #outer,
+      #mouth {
+        stroke: #2f80ed;
+      }
+
+      #eye {
+        fill: #2f80ed;
       }
     }
   }
