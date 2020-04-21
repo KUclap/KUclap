@@ -1,5 +1,6 @@
 import { route } from "preact-router";
 import { useState, useEffect } from "preact/hooks";
+import media from "styled-media-query";
 import Select from "react-virtualized-select";
 import styled, { css, createGlobalStyle } from "styled-components";
 
@@ -22,8 +23,16 @@ import { GoToTop, NoMore } from "../components/utillity/Icons";
 const GlobalStyles = createGlobalStyle`
   html {
     font-size: 62.5%; /* 10px at html, body */
-    font-size: 52.5%; 
-    scroll-behavior: smooth
+    scroll-behavior: smooth;
+    
+    ${media.lessThan("medium")`
+        font-size: 55.5%; 
+    `}
+
+    ${media.lessThan("small")`
+        font-size: 48.5%; 
+    `}
+
   } 
   body {
     font-family: 'Kanit', arial, sans-serif;
