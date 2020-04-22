@@ -46,6 +46,7 @@ const GlobalStyles = createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    user-select: none; 
   }
 `;
 
@@ -399,6 +400,8 @@ const GoTopCustom = styled.a`
   bottom: 2.5rem;
   cursor: pointer;
   transition: all 0.5s ease;
+  -webkit-tap-highlight-color: transparent;
+
   ${(props) =>
     props.goToTop
       ? css`

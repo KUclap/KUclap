@@ -82,6 +82,7 @@ const ScoreBar = styled.div`
 `;
 
 const GradeButton = styled.div`
+  -webkit-tap-highlight-color: transparent;
   color: ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
   font-size: 1.6rem;
   border: 0.2rem solid
@@ -219,8 +220,9 @@ const Rating = styled.div`
 const RateContainer = styled.div`
   cursor: pointer;
   user-select: none;
-  outline: none;
+  -webkit-tap-highlight-color: transparent;
   svg {
+    fill: transparent;
     #outer,
     #mouth {
       stroke: ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
@@ -243,9 +245,9 @@ const RateContainer = styled.div`
       }
     }
   }
-
+  &:focus,
   &:active {
-    vg {
+    svg {
       #outer,
       #mouth {
         stroke: #2f80ed;
@@ -405,7 +407,10 @@ const ReviewForm = (props) => {
             {RateIcon.map((Rate, key_rate) => (
               <RateContainer
                 key={key_rate}
-                onClick={() => rate(item, key_rate)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  rate(item, key_rate);
+                }}
                 selected={score[item.id] - 1 === key_rate}
               >
                 <Rate />
@@ -422,7 +427,10 @@ const ReviewForm = (props) => {
         <GradeBar>
           {Grade.map((item, key) => (
             <GradeButton
-              onClick={() => setForm({ ...form, grade: item })}
+              onClick={(e) => {
+                e.preventDefault();
+                setForm({ ...form, grade: item });
+              }}
               key={key}
               selected={form.grade === item}
             >
