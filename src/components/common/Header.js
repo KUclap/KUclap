@@ -21,7 +21,7 @@ const Header = () => {
       <KUclapText>
         <b>KU</b>clap
       </KUclapText>
-      <DetailKUclap>ค้นหาและแบ่งปันรีวิววิชาเรียนด้วย KUclap</DetailKUclap>
+      <DetailKUclap>ค้นหาและแบ่งปันรีวิววิชาเรียน</DetailKUclap>
     </>
   );
 };

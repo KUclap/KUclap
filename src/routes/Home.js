@@ -132,6 +132,19 @@ const Button = styled.div`
   }
 `;
 
+const ButtonLastReview = styled(Button)`
+  border: 0.2rem solid #979797;
+  background: transparent;
+  color: #979797;
+  font-size: 1.7rem;
+  margin-right: 1.5rem;
+`;
+
+const ContainerBtns = styled.div`
+  margin: 0;
+  display: flex;
+`;
+
 const ContainerNoMore = styled.div`
   display: flex;
   flex-direction: column;
@@ -172,6 +185,10 @@ const App = ({ classid }) => {
     page: 0,
     offset: 5,
   });
+
+  const NavigateMain = () => {
+    window.location.href = "http://marsdev31.github.io/kuclap/"
+  }
 
   const handleNewReview = () => {
     window.scrollTo(0, 0);
@@ -348,7 +365,14 @@ const App = ({ classid }) => {
         ) : show === "form" ? null : (
           <ReviewTitle>
             <DetailTitle>รีวิวทั้งหมด</DetailTitle>
-            <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
+            <ContainerBtns>
+              <ButtonLastReview
+                onClick={NavigateMain}
+              >
+                ดูรีวิวล่าสุด
+              </ButtonLastReview>
+              <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
+            </ContainerBtns>
           </ReviewTitle>
         )}
         <AdaptorReviews id="adaptor">
@@ -378,9 +402,7 @@ const App = ({ classid }) => {
                   <NoMore />
                 </NoMoreCustom>
                 {show === "details" ? (
-                  <Button id="new_review" onClick={handleNewReview}>
-                    เพิ่มรีวิว
-                  </Button>
+                  <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
                 ) : null}
               </ContainerNoMore>
             )
