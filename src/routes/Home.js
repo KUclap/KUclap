@@ -1,5 +1,5 @@
 import { route } from "preact-router";
-import { useState, useEffect } from "preact/hooks";
+import { useState, useEffect, useRef } from "preact/hooks";
 import media from "styled-media-query";
 import Select from "react-virtualized-select";
 import styled, { css, createGlobalStyle } from "styled-components";
@@ -146,6 +146,8 @@ const NoMoreCustom = styled.div`
 `;
 
 const App = ({ classid }) => {
+  // const [tabIndex, setTabIndex] = useState(1);
+  const newEle = useRef(null);
   const [goToTop, setGoToTop] = useState(false);
   const [classes, setClasses] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -171,6 +173,7 @@ const App = ({ classid }) => {
   });
 
   const handleNewReview = () => {
+    window.scrollTo(0, 0);
     setShow("form");
     setUnderFlow(false);
   };
@@ -187,6 +190,7 @@ const App = ({ classid }) => {
     handleFetchingReviewsAndClass(e.classId);
     setClassSelected({ label: e.label, classId: e.classId });
     route(`${e.classId}`);
+    // getFocusWithoutScrolling();
   };
 
   const handleFetchingReviewsAndClass = (classId) => {
@@ -200,7 +204,6 @@ const App = ({ classid }) => {
         setReviews(res.data);
         setUnderFlow(false);
       }
-
       setLoading(false);
     });
 
@@ -223,6 +226,21 @@ const App = ({ classid }) => {
       }
     });
   });
+
+  const getFocusWithoutScrolling = () => {
+    if (
+      document.activeElement &&
+      document.activeElement.blur &&
+      typeof document.activeElement.blur === "function"
+    ) {
+      document.activeElement.blur();
+    }
+    console.log(newEle.current);
+  };
+
+  useEffect(() => {
+    getFocusWithoutScrolling();
+  }, [classSelected]);
 
   useEffect(() => {
     console.log(classid);
@@ -288,26 +306,21 @@ const App = ({ classid }) => {
 
   useEffect(() => {
     const adaptor = document.getElementById("adaptor");
-
     if (adaptor.clientHeight <= window.innerHeight && adaptor.clientHeight) {
       setLoadMore(true);
     }
   }, [reviews]);
 
   return (
-    // <Router>
     <Container name="top">
       <link
         href="https://fonts.googleapis.com/css?family=Kanit&display=swap"
         rel="stylesheet"
       />
       <GlobalStyles overflow={scroll} />
-
-      {/* {goToTop && ( */}
       <GoTopCustom goToTop={goToTop} href="#top">
         <GoToTop />
       </GoTopCustom>
-      {/* )} */}
       <Header />
       <SelectCustom
         name="major"
@@ -317,6 +330,7 @@ const App = ({ classid }) => {
         key={"classId"}
         placeholder={classSelected.label}
         onChange={handleSelected}
+        ref={newEle}
       />
       <SubjectTitle enable={show}>{classSelected.label}</SubjectTitle>
       <ReviewForm
@@ -353,6 +367,7 @@ const App = ({ classid }) => {
             <>
               <ReviewSkeletonA />
               <ReviewSkeletonB />
+              <ReviewSkeletonA />
             </>
           ) : (
             reviews &&
@@ -362,7 +377,9 @@ const App = ({ classid }) => {
                   <NoMore />
                 </NoMoreCustom>
                 {show === "details" ? (
-                  <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
+                  <Button id="new_review" onClick={handleNewReview}>
+                    เพิ่มรีวิว
+                  </Button>
                 ) : null}
               </ContainerNoMore>
             )

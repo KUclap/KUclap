@@ -379,7 +379,14 @@ const ReviewForm = (props) => {
           รีวิววิชานี้
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
         </DetailTitle>
-        <Button onClick={() => back("details")}>ย้อนกลับ</Button>
+        <Button
+          onClick={() => {
+            window.scrollTo(0, 0);
+            back("details");
+          }}
+        >
+          ย้อนกลับ
+        </Button>
       </FormTitle>
       <ReviewField
         type="textarea"
