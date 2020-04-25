@@ -142,6 +142,10 @@ const CancelButton = styled(ConfirmButton)`
   background-color: #bdbdbd;
 `;
 
+const NumberAction = styled.span`
+  color: ${(props) => props.color || black};
+`;
+
 const months = [
   "ม.ค.",
   "ก.พ.",
@@ -275,7 +279,13 @@ const ReviewCard = (props) => {
             >
               <Clap />
             </ButtonIcon>
-            <span>{clapAction + clap}</span>
+            {clapAction === prevClapAction ? (
+              <span>{clapAction + clap}</span>
+            ) : (
+              <NumberAction color="#2f80ed">
+                {clapAction - prevClapAction}
+              </NumberAction>
+            )}
           </ButtonContainer>
           <ButtonContainer>
             <ButtonIcon
@@ -286,7 +296,13 @@ const ReviewCard = (props) => {
             >
               <Boo />
             </ButtonIcon>
-            <span>{booAction + boo}</span>
+            {booAction === prevBooAction ? (
+              <span>{booAction + boo}</span>
+            ) : (
+              <NumberAction color="#eb5757">
+                {booAction - prevBooAction}
+              </NumberAction>
+            )}
           </ButtonContainer>
         </Actions>
       </CardDetails>
@@ -340,7 +356,7 @@ const ButtonIcon = styled(Button)`
   }
 
   svg {
-    #fill {
+    #bg {
       fill: ${(props) =>
         props.valueAction === false
           ? props.type === "clap"
