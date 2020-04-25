@@ -46,7 +46,7 @@ const GlobalStyles = createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    user-select: none; 
+    /* user-select: none;  */
   }
 `;
 
@@ -80,6 +80,7 @@ const SelectCustom = styled(Select)`
 
   .Select-input {
     width: 100%;
+    font-size: 16px;
   }
 `;
 
@@ -187,8 +188,8 @@ const App = ({ classid }) => {
   });
 
   const NavigateMain = () => {
-    window.location.href = "http://marsdev31.github.io/kuclap/"
-  }
+    window.location.href = "http://marsdev31.github.io/kuclap/";
+  };
 
   const handleNewReview = () => {
     window.scrollTo(0, 0);
@@ -366,9 +367,7 @@ const App = ({ classid }) => {
           <ReviewTitle>
             <DetailTitle>รีวิวทั้งหมด</DetailTitle>
             <ContainerBtns>
-              <ButtonLastReview
-                onClick={NavigateMain}
-              >
+              <ButtonLastReview onClick={NavigateMain}>
                 ดูรีวิวล่าสุด
               </ButtonLastReview>
               <Button onClick={handleNewReview}>รีวิววิชานี้</Button>

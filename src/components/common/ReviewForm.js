@@ -58,7 +58,7 @@ const ReviewField = styled.textarea`
   border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   height: 14rem;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
   resize: none;
   margin-bottom: 2.8rem;
@@ -118,7 +118,7 @@ const InputName = styled.input`
   height: 3.4rem;
   width: 20rem;
   padding: 1.2rem 1.6rem;
-  font-size: 1.6rem;
+  font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
 
   &::placeholder {
