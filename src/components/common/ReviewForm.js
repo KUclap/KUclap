@@ -37,6 +37,12 @@ const DetailTitle = styled.div`
   font-size: 2rem;
   font-weight: 600;
   margin: 1.2rem 2rem 1.2rem 0;
+  color: #4F4F4F;
+
+  span {
+    font-size: 1.6rem;
+    color: #BDBDBD;
+  }
 `;
 
 const Warning = styled(DetailTitle)`
@@ -112,11 +118,13 @@ const GradeBar = styled.div`
   justify-content: space-between;
 `;
 
-const InputName = styled.input`
+const Input = styled.input`
   border: 0.2rem solid #e0e0e0;
   border-radius: 1rem;
   height: 3.4rem;
-  width: 20rem;
+  width: ${props => props.password ? 9 : 20}rem;
+  margin-top: ${props => props.password ? '1.2rem' : 0};
+  align-self: ${props => props.password ? 'flex-start' : 'center'};
   padding: 1.2rem 1.6rem;
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
@@ -134,8 +142,8 @@ const InputContainer = styled.div`
 `;
 
 const Caution = styled.div`
-  font-size: 1.6rem;
-  color: #bdbdbd;
+  font-size: 1.8rem;
+  color: #4f4f4f;
   font-weight: 500;
   text-align: center;
   align-self: center;
@@ -262,10 +270,11 @@ const RateContainer = styled.div`
 
 const CheckboxContainer = styled.div`
   display: flex;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   align-items: center;
   margin: 1rem 0;
   text-align: left;
+  color: ${props => props.warning ? '#EB5757' : '#4F4F4F'};
 
   .MuiSvgIcon-root {
     width: 1.8em;
@@ -295,23 +304,30 @@ const ReviewForm = (props) => {
     text: "",
     author: "",
     grade: -1,
+    auth: "",
   };
   const initialScore = {
     how: -1,
     homework: -1,
     interest: -1,
   };
+  const initialChecklist = {
+    rude: false,
+    other: false,
+  }
   const initialRequire = {
     text: false,
     score: false,
     grade: false,
     author: false,
+    auth: false,
     rude: false,
     other: false,
   };
 
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
+  const [checklist, setChecklist] = useState(initialChecklist);
   const [require, setRequire] = useState(initialRequire);
   // modal(showDialog);
 
@@ -334,11 +350,12 @@ const ReviewForm = (props) => {
       form.text !== "" &&
       form.author !== "" &&
       form.grade !== -1 &&
+      form.auth !== "" &&
       score.homework !== -1 &&
       score.how !== -1 &&
       score.interest !== -1 &&
-      require.rude &&
-      require.other
+      checklist.rude &&
+      checklist.other 
     ) {
       setRequire(initialRequire);
       setDialog(true);
@@ -353,6 +370,10 @@ const ReviewForm = (props) => {
       else req.grade = false;
       if (form.author === "") req.author = true;
       else req.author = false;
+      if (form.auth.length < 4) req.auth = true;
+      else req.auth = false;
+      req.rude = !checklist.rude;
+      req.other = !checklist.other;
       setRequire(req);
     }
   };
@@ -365,13 +386,23 @@ const ReviewForm = (props) => {
       setIsDone(true);
       setForm({ ...initialForm, classId: classId });
       setScore({ ...initialScore });
+      setChecklist({ ...initialChecklist });
       // back("details");
     });
   };
 
+  const handleOnChange = (e) => {
+    const newForm = { ...form }
+    if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 4) {
+      newForm.auth = e.target.value
+    }
+    setForm(newForm)
+  }
+
   useEffect(() => {
     setForm({ ...initialForm, classId: classId });
     setScore({ ...initialScore });
+    setChecklist({ ...initialChecklist });
   }, [classId]);
 
   return (
@@ -444,29 +475,47 @@ const ReviewForm = (props) => {
           นามปากกา
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
         </DetailTitle>
-        <InputName
+        <Input
           placeholder="ใส่ชื่อผู้เขียน"
           value={form.author}
           onChange={(e) => setForm({ ...form, author: e.target.value })}
         />
       </InputContainer>
+      <InputContainer>
+        <DetailTitle>
+          รหัสนิสิต 4 ตัวท้าย 
+          <Warning required={require.auth}>กรุณากรอกรหัส 4 หลัก</Warning> <br />
+          <span>เพื่อใช้แก้ไขรีวิวในภายหลัง</span>
+        </DetailTitle>
+        <Input
+          password
+          type='text'
+          placeholder="ใส่รหัส"
+          value={form.auth}
+          onChange={handleOnChange}
+        />
+      </InputContainer>
       <Caution>
         กรุณาตรวจสอบความถูกต้องก่อนรีวิว
-        <CheckboxContainer>
+        <CheckboxContainer
+          warning = {require.rude}
+          onClick={() =>
+            setChecklist({ ...checklist, rude: !checklist.rude })
+          }>
           <CheckboxCustom
             color="primary"
-            checked={require.rude}
-            onChange={(e) => setRequire({ ...require, rude: e.target.checked })}
+            checked={checklist.rude}
           />
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
-        <CheckboxContainer>
+        <CheckboxContainer 
+          warning = {require.other}
+          onClick={() =>
+            setChecklist({ ...checklist, other: !checklist.other })
+          }>
           <CheckboxCustom
             color="primary"
-            checked={require.other}
-            onChange={(e) =>
-              setRequire({ ...require, other: e.target.checked })
-            }
+            checked={checklist.other}
           />
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
