@@ -274,6 +274,7 @@ const CheckboxContainer = styled.div`
   align-items: center;
   margin: 1rem 0;
   text-align: left;
+  color: ${props => props.warning ? '#EB5757' : '#4F4F4F'};
 
   .MuiSvgIcon-root {
     width: 1.8em;
@@ -310,6 +311,10 @@ const ReviewForm = (props) => {
     homework: -1,
     interest: -1,
   };
+  const initialChecklist = {
+    rude: false,
+    other: false,
+  }
   const initialRequire = {
     text: false,
     score: false,
@@ -322,6 +327,7 @@ const ReviewForm = (props) => {
 
   const [form, setForm] = useState(initialForm);
   const [score, setScore] = useState(initialScore);
+  const [checklist, setChecklist] = useState(initialChecklist);
   const [require, setRequire] = useState(initialRequire);
   // modal(showDialog);
 
@@ -348,8 +354,8 @@ const ReviewForm = (props) => {
       score.homework !== -1 &&
       score.how !== -1 &&
       score.interest !== -1 &&
-      require.rude &&
-      require.other 
+      checklist.rude &&
+      checklist.other 
     ) {
       setRequire(initialRequire);
       setDialog(true);
@@ -366,6 +372,8 @@ const ReviewForm = (props) => {
       else req.author = false;
       if (form.auth.length < 4) req.auth = true;
       else req.auth = false;
+      req.rude = !checklist.rude;
+      req.other = !checklist.other;
       setRequire(req);
     }
   };
@@ -378,6 +386,7 @@ const ReviewForm = (props) => {
       setIsDone(true);
       setForm({ ...initialForm, classId: classId });
       setScore({ ...initialScore });
+      setChecklist({ ...initialChecklist });
       // back("details");
     });
   };
@@ -393,6 +402,7 @@ const ReviewForm = (props) => {
   useEffect(() => {
     setForm({ ...initialForm, classId: classId });
     setScore({ ...initialScore });
+    setChecklist({ ...initialChecklist });
   }, [classId]);
 
   return (
@@ -488,22 +498,24 @@ const ReviewForm = (props) => {
       <Caution>
         กรุณาตรวจสอบความถูกต้องก่อนรีวิว
         <CheckboxContainer
-          onClick={(e) =>
-            setRequire({ ...require, rude: !require.rude })
+          warning = {require.rude}
+          onClick={() =>
+            setChecklist({ ...checklist, rude: !checklist.rude })
           }>
           <CheckboxCustom
             color="primary"
-            checked={require.rude}
+            checked={checklist.rude}
           />
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
         <CheckboxContainer 
-          onClick={(e) =>
-            setRequire({ ...require, other: !require.other })
+          warning = {require.other}
+          onClick={() =>
+            setChecklist({ ...checklist, other: !checklist.other })
           }>
           <CheckboxCustom
             color="primary"
-            checked={require.other}
+            checked={checklist.other}
           />
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
