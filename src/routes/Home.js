@@ -135,10 +135,13 @@ const Button = styled.div`
 
 const ButtonLastReview = styled(Button)`
   border: 0.2rem solid #979797;
-  background: transparent;
+  background: white;
   color: #979797;
   font-size: 1.7rem;
   margin-right: 1.5rem;
+  &:hover {
+    background: #f2f2f2;
+  }
 `;
 
 const ContainerBtns = styled.div`
@@ -391,7 +394,6 @@ const App = ({ classid }) => {
             <>
               <ReviewSkeletonA />
               <ReviewSkeletonB />
-              <ReviewSkeletonA />
             </>
           ) : (
             reviews &&

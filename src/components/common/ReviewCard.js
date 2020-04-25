@@ -1,7 +1,8 @@
 import { useState, useEffect } from "preact/hooks";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { Clap, Boo } from "../utillity/Icons";
+import { pulse } from "../utillity/keyframs";
 import APIs from "../utillity/apis";
 
 const Container = styled.div`
@@ -58,25 +59,6 @@ const Button = styled.div`
 
   &:hover {
     color: #9ac1ee;
-    svg {
-      #clap {
-        fill: #9ac1ee;
-      }
-      #boo {
-        fill: #eea99a;
-      }
-    }
-  }
-
-  &:active {
-    svg {
-      #clap {
-        fill: #2f80ed;
-      }
-      #boo {
-        fill: #eb5757;
-      }
-    }
   }
 `;
 
@@ -160,6 +142,10 @@ const CancelButton = styled(ConfirmButton)`
   background-color: #bdbdbd;
 `;
 
+const NumberAction = styled.span`
+  color: ${(props) => props.color || black};
+`;
+
 const months = [
   "ม.ค.",
   "ก.พ.",
@@ -177,6 +163,8 @@ const months = [
 
 const ReviewCard = (props) => {
   const { reviewId, text, clap, boo, grade, author, createdAt, modal } = props;
+  const [clapAni, setClapAni] = useState(false);
+  const [booAni, setBooAni] = useState(false);
   const [clapAction, setClapAction] = useState(0);
   const [booAction, setBooAction] = useState(0);
   const [prevClapAction, setPrevClapAction] = useState(0);
@@ -213,10 +201,26 @@ const ReviewCard = (props) => {
     if (clapAction !== 0) setActionByKey("clap");
   }, [clapAction]);
 
+  const handleActionClick = (key) => {
+    switch (key) {
+      case "clap": {
+        setClapAni(true);
+        setClapAction(clapAction + 1);
+        break;
+      }
+      case "boo": {
+        setBooAni(true);
+        setBooAction(booAction + 1);
+        break;
+      }
+    }
+  };
+
   const setActionByKey = (action) => {
     if (timeId[action] !== null) {
       clearTimeout(timeId[action]);
     }
+
     const timer = () =>
       setTimeout(() => {
         switch (action) {
@@ -245,6 +249,10 @@ const ReviewCard = (props) => {
       }, 2500);
     const id = timer();
     setTimeId({ ...timeId, [action]: id });
+    setTimeout(() => {
+      setClapAni(false);
+      setBooAni(false);
+    }, 500);
   };
 
   return (
@@ -263,16 +271,38 @@ const ReviewCard = (props) => {
         </DetailContainer>
         <Actions>
           <ButtonContainer>
-            <Button onClick={() => setClapAction(clapAction + 1)}>
+            <ButtonIcon
+              type="clap"
+              onClick={() => handleActionClick("clap")}
+              valueAction={clapAction === prevClapAction}
+              clapAni={clapAni}
+            >
               <Clap />
-            </Button>
-            <span>{clapAction + clap}</span>
+            </ButtonIcon>
+            {clapAction === prevClapAction ? (
+              <span>{clapAction + clap}</span>
+            ) : (
+              <NumberAction color="#2f80ed">
+                {clapAction - prevClapAction}
+              </NumberAction>
+            )}
           </ButtonContainer>
           <ButtonContainer>
-            <Button onClick={() => setBooAction(booAction + 1)}>
+            <ButtonIcon
+              type="boo"
+              onClick={() => handleActionClick("boo")}
+              valueAction={booAction === prevBooAction}
+              booAni={booAni}
+            >
               <Boo />
-            </Button>
-            <span>{booAction + boo}</span>
+            </ButtonIcon>
+            {booAction === prevBooAction ? (
+              <span>{booAction + boo}</span>
+            ) : (
+              <NumberAction color="#eb5757">
+                {booAction - prevBooAction}
+              </NumberAction>
+            )}
           </ButtonContainer>
         </Actions>
       </CardDetails>
@@ -288,3 +318,84 @@ const ReviewCard = (props) => {
   );
 };
 export default ReviewCard;
+
+const ButtonIcon = styled(Button)`
+  -webkit-tap-highlight-color: transparent;
+
+  &:before {
+    content: "";
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    z-index: -1;
+    display: inline-block;
+    transition: 0.25s ease-in;
+    position: absolute;
+    ${(props) =>
+      props.clapAni === true
+        ? css`
+            animation: ${pulse("rgba(36, 87, 156, 25%)")} 0.75s ease;
+          `
+        : props.booAni === true
+        ? css`
+            animation: ${pulse("rgba(173, 66, 16, 25%)")} 0.75s ease;
+          `
+        : null}
+  }
+
+  &:hover:before {
+    width: 52px;
+    height: 52px;
+    transform: scale(1.1);
+    background: ${(props) =>
+      props.type === "clap"
+        ? "rgba(47, 128, 237, 9%)"
+        : props.type === "boo"
+        ? "rgba(241, 191, 157, 9%)"
+        : "#fff"};
+  }
+
+  svg {
+    #bg {
+      fill: ${(props) =>
+        props.valueAction === false
+          ? props.type === "clap"
+            ? "#9ec7ff"
+            : props.type === "boo"
+            ? "rgba(191, 82, 31, 50%)"
+            : "white"
+          : "white"};
+      transition: all 0.2s ease-in-out;
+    }
+    #clap {
+      fill: ${(props) => (props.valueAction === false ? "#2f80ed" : null)};
+    }
+    #boo {
+      fill: ${(props) => (props.valueAction === false ? "#eb5757" : null)};
+    }
+  }
+
+  &:hover {
+    svg {
+      #clap {
+        fill: ${(props) =>
+          props.valueAction === false ? "#2f80ed" : "#9ac1ee"};
+      }
+      #boo {
+        fill: ${(props) =>
+          props.valueAction === false ? "#eb5757" : "#eea99a"};
+      }
+    }
+  }
+
+  &:active {
+    svg {
+      #clap {
+        fill: #2f80ed;
+      }
+      #boo {
+        fill: #eb5757;
+      }
+    }
+  }
+`;
