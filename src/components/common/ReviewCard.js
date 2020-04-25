@@ -143,7 +143,7 @@ const CancelButton = styled(ConfirmButton)`
 `;
 
 const NumberAction = styled.span`
-  color: ${(props) => props.color || black};
+  color: ${(props) => props.color || "black"};
 `;
 
 const months = [
