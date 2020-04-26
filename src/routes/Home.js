@@ -361,7 +361,7 @@ const App = ({ classid }) => {
   return (
     <Container name="top">
       <link
-        href="https://fonts.googleapis.com/css?family=Kanit&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"
         rel="stylesheet"
       />
       <GlobalStyles overflow={scroll} />
