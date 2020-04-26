@@ -18,8 +18,6 @@ export default class App extends Component {
       <Router onChange={this.handleRoute}>
         <Home path="/" classid="main" />
         <Home path="/:classid" />
-        {/* <Profile path="/profile/" user="me" />
-          <Profile path="/profile/:user" /> */}
       </Router>
     );
   }

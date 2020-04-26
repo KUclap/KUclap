@@ -1,3 +1,4 @@
+import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import styled, { css } from "styled-components";
 import { Clap, Boo, RightArrow } from "../utillity/Icons";
@@ -396,9 +397,7 @@ const ReviewCard = (props) => {
         <Subject color={colorHash(classId)} onClick={RedirctToClassName}>
           {classId}
         </Subject>
-      ) : (
-        <></>
-      )}
+      ) : null}
       <Content> {text} </Content>
       <CardDetails>
         <Actions>

@@ -1,6 +1,6 @@
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import styled from "styled-components";
-import { KUClap } from "../utillity/Icons"
+import { KUClap } from "../utillity/Icons";
 
 const KUclapText = styled.p`
   font-size: 6rem;
@@ -14,22 +14,22 @@ const KUclapText = styled.p`
 const DetailKUclap = styled.span`
   font-size: 2.5rem;
   text-transform: uppercase;
-  color: #4F4F4F;
+  color: #4f4f4f;
   text-align: center;
   font-weight: 400;
 `;
 
 const Header = () => {
   return (
-    <>
+    <Fragment>
       <KUclapText>
         <KUClap />
-        <span> 
+        <span>
           <b>KU</b>CLAP
         </span>
         <DetailKUclap>ค้นหาและแบ่งปันรีวิววิชาเรียน</DetailKUclap>
       </KUclapText>
-    </>
+    </Fragment>
   );
 };
 

@@ -1,3 +1,4 @@
+import { h } from "preact";
 import styled from "styled-components";
 import LinearProgress from "@material-ui/core/LinearProgress";
 

@@ -1,3 +1,4 @@
+import { h, Fragment } from "preact";
 import { route } from "preact-router";
 import { useState, useEffect, useRef } from "preact/hooks";
 import media from "styled-media-query";
@@ -425,15 +426,15 @@ const App = ({ classid }) => {
         </AdaptorReviews>
         {show !== "form" ? (
           (loading || loadMore) && !underflow ? (
-            <>
+            <Fragment>
               <ReviewSkeletonA />
               <ReviewSkeletonB />
-            </>
+            </Fragment>
           ) : (
             reviews &&
             !loading &&
             underflow && (
-              <>
+              <Fragment>
                 <ContainerNoMore>
                   <NoMoreCustom>
                     <NoMore />
@@ -443,7 +444,7 @@ const App = ({ classid }) => {
                   ) : null}
                 </ContainerNoMore>
                 <Footer />
-              </>
+              </Fragment>
             )
           )
         ) : null}
