@@ -1,19 +1,22 @@
 import styled from "styled-components";
 import img_marsdev from "../../assets/icons/marsdev31.png";
 import { Github } from "../utillity/Icons";
+
 const Container = styled.footer`
   display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 7.5rem;
   margin-bottom: 4rem;
+  border-top: 0.475rem dashed #e0e0e0;
 `;
 
 const MoreProductionText = styled.p`
   color: #000;
   font-size: 2.6rem;
-  margin: 2rem 0 0 0;
+  margin: 4rem 0 0 0;
 `;
 
 const Button = styled.button`
