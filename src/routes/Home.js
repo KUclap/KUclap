@@ -192,11 +192,12 @@ const App = ({ classid }) => {
   });
 
   const NavigateMain = () => {
-    window.location.href = "http://marsdev31.github.io/kuclap/";
+    if (typeof window !== "undefined")
+      window.location.href = "http://marsdev31.github.io/kuclap/";
   };
 
   const handleNewReview = () => {
-    window.scrollTo(0, 0);
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
     setShow("form");
     setUnderFlow(false);
   };
@@ -208,21 +209,19 @@ const App = ({ classid }) => {
   };
 
   const handleCardDeleted = (showType) => {
-    console.log(showType, classid)
-    
+    console.log(showType, classid);
+
     setShow(showType);
 
-    if(showType === "details"){
+    if (showType === "details") {
       setPaging({ ...paging, page: 1 });
       handleFetchingReviewsAndClass(classid);
-    }else if(showType === "main"){
+    } else if (showType === "main") {
       setPaging({ ...paging, page: 0 });
-      setReviews([])
-      setUnderFlow(false)
-      setLoadMore(true)
+      setReviews([]);
+      setUnderFlow(false);
+      setLoadMore(true);
     }
-
-
   };
 
   const handleSelected = (e) => {
@@ -259,13 +258,14 @@ const App = ({ classid }) => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > window.innerHeight - 100 && !goToTop) {
-        setGoToTop(true);
-      } else if (window.scrollY <= window.innerHeight - 100 && goToTop) {
-        setGoToTop(false);
-      }
-    });
+    if (typeof window !== "undefined")
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > window.innerHeight - 100 && !goToTop) {
+          setGoToTop(true);
+        } else if (window.scrollY <= window.innerHeight - 100 && goToTop) {
+          setGoToTop(false);
+        }
+      });
   });
 
   const getFocusWithoutScrolling = () => {
@@ -292,8 +292,8 @@ const App = ({ classid }) => {
         console.log(res.data);
         setClassSelected({
           classId: res.data.classId,
-          label: res.data.label
-        })
+          label: res.data.label,
+        });
         setScore({
           homework: res.data.stats.homework,
           interest: res.data.stats.interest,
@@ -304,7 +304,7 @@ const App = ({ classid }) => {
 
     APIs.getAllClasses((res) => {
       setClasses(res.data);
-      if (classid === 'main') {
+      if (classid === "main") {
         setClassSelected({
           ...classSelected,
           label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
@@ -313,14 +313,15 @@ const App = ({ classid }) => {
     });
 
     const adaptor = document.getElementById("adaptor");
-    window.addEventListener("scroll", () => {
-      if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
-        if (!loading) {
-          setLoadMore(true);
-          setGoToTop(true);
+    if (typeof window !== "undefined")
+      window.addEventListener("scroll", () => {
+        if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+          if (!loading) {
+            setLoadMore(true);
+            setGoToTop(true);
+          }
         }
-      }
-    });
+      });
   }, []);
 
   useEffect(() => {
@@ -353,9 +354,10 @@ const App = ({ classid }) => {
 
   useEffect(() => {
     const adaptor = document.getElementById("adaptor");
-    if (adaptor.clientHeight <= window.innerHeight && adaptor.clientHeight) {
-      setLoadMore(true);
-    }
+    if (typeof window !== "undefined")
+      if (adaptor.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+        setLoadMore(true);
+      }
   }, [reviews]);
 
   return (
@@ -409,7 +411,14 @@ const App = ({ classid }) => {
             ? reviews.map(
                 (review, index) =>
                   review && (
-                    <ReviewCard key={index} modal={setScroll} typeShow={show}  back={handleCardDeleted} {...classSelected} {...review} />
+                    <ReviewCard
+                      key={index}
+                      modal={setScroll}
+                      typeShow={show}
+                      back={handleCardDeleted}
+                      {...classSelected}
+                      {...review}
+                    />
                   )
               )
             : null}

@@ -37,11 +37,11 @@ const DetailTitle = styled.div`
   font-size: 2rem;
   font-weight: 600;
   margin: 1.2rem 2rem 1.2rem 0;
-  color: #4F4F4F;
+  color: #4f4f4f;
 
   span {
     font-size: 1.6rem;
-    color: #BDBDBD;
+    color: #bdbdbd;
   }
 `;
 
@@ -122,9 +122,9 @@ const Input = styled.input`
   border: 0.2rem solid #e0e0e0;
   border-radius: 1rem;
   height: 3.4rem;
-  width: ${props => props.password ? 9 : 20}rem;
-  margin-top: ${props => props.password ? '1.2rem' : 0};
-  align-self: ${props => props.password ? 'flex-start' : 'center'};
+  width: ${(props) => (props.password ? 9 : 20)}rem;
+  margin-top: ${(props) => (props.password ? "1.2rem" : 0)};
+  align-self: ${(props) => (props.password ? "flex-start" : "center")};
   padding: 1.2rem 1.6rem;
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
@@ -275,7 +275,7 @@ const CheckboxContainer = styled.div`
   align-items: center;
   margin: 1rem 0;
   text-align: left;
-  color: ${props => props.warning ? '#EB5757' : '#4F4F4F'};
+  color: ${(props) => (props.warning ? "#EB5757" : "#4F4F4F")};
 
   .MuiSvgIcon-root {
     width: 1.8em;
@@ -315,7 +315,7 @@ const ReviewForm = (props) => {
   const initialChecklist = {
     rude: false,
     other: false,
-  }
+  };
   const initialRequire = {
     text: false,
     score: false,
@@ -356,7 +356,7 @@ const ReviewForm = (props) => {
       score.how !== -1 &&
       score.interest !== -1 &&
       checklist.rude &&
-      checklist.other 
+      checklist.other
     ) {
       setRequire(initialRequire);
       setDialog(true);
@@ -393,12 +393,12 @@ const ReviewForm = (props) => {
   };
 
   const handleOnChange = (e) => {
-    const newForm = { ...form }
+    const newForm = { ...form };
     if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 4) {
-      newForm.auth = e.target.value
+      newForm.auth = e.target.value;
     }
-    setForm(newForm)
-  }
+    setForm(newForm);
+  };
 
   useEffect(() => {
     setForm({ ...initialForm, classId: classId });
@@ -415,7 +415,7 @@ const ReviewForm = (props) => {
         </DetailTitle>
         <Button
           onClick={() => {
-            window.scrollTo(0, 0);
+            if (typeof window !== "undefined") window.scrollTo(0, 0);
             back("details");
           }}
         >
@@ -484,13 +484,13 @@ const ReviewForm = (props) => {
       </InputContainer>
       <InputContainer>
         <DetailTitle>
-          รหัสนิสิต 4 ตัวท้าย 
+          รหัสนิสิต 4 ตัวท้าย
           <Warning required={require.auth}>กรุณากรอกรหัส 4 หลัก</Warning> <br />
           <span>เพื่อใช้แก้ไขรีวิวในภายหลัง</span>
         </DetailTitle>
         <Input
           password
-          type='text'
+          type="text"
           placeholder="ใส่รหัส"
           value={form.auth}
           onChange={handleOnChange}
@@ -499,25 +499,19 @@ const ReviewForm = (props) => {
       <Caution>
         กรุณาตรวจสอบความถูกต้องก่อนรีวิว
         <CheckboxContainer
-          warning = {require.rude}
-          onClick={() =>
-            setChecklist({ ...checklist, rude: !checklist.rude })
-          }>
-          <CheckboxCustom
-            color="primary"
-            checked={checklist.rude}
-          />
+          warning={require.rude}
+          onClick={() => setChecklist({ ...checklist, rude: !checklist.rude })}
+        >
+          <CheckboxCustom color="primary" checked={checklist.rude} />
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
-        <CheckboxContainer 
-          warning = {require.other}
+        <CheckboxContainer
+          warning={require.other}
           onClick={() =>
             setChecklist({ ...checklist, other: !checklist.other })
-          }>
-          <CheckboxCustom
-            color="primary"
-            checked={checklist.other}
-          />
+          }
+        >
+          <CheckboxCustom color="primary" checked={checklist.other} />
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
       </Caution>

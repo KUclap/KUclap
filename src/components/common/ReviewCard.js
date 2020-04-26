@@ -157,7 +157,7 @@ const NumberAction = styled.span`
 `;
 
 const Menu = styled.div`
-  display: ${props => props.openMenu ? 'flex' : 'none'};
+  display: ${(props) => (props.openMenu ? "flex" : "none")};
   background: white;
   position: absolute;
   flex-direction: column;
@@ -166,7 +166,7 @@ const Menu = styled.div`
   border: 0.2rem solid #e0e0e0;
   right: 0rem;
   transform: translate(-84%, 62%);
-`
+`;
 
 const MenuItem = styled.div`
   padding: 1rem;
@@ -183,7 +183,7 @@ const MenuItem = styled.div`
     background: hsl(214, 84%, 90%);
     color: #4f4f4f;
   }
-`
+`;
 
 const Input = styled.input`
   border: 0.2rem solid #e0e0e0;
@@ -204,7 +204,7 @@ const Input = styled.input`
 
 const Warning = styled.div`
   color: #eb5757;
-`
+`;
 
 const Subject = styled.div`
   font-size: 1.6rem;
@@ -214,12 +214,12 @@ const Subject = styled.div`
   width: 8rem;
   border-radius: 0.6rem;
   text-align: center;
-  background: ${props => props.color};
+  background: ${(props) => props.color};
   color: white;
   position: absolute;
   transform: translateY(-3.2rem);
-  cursor: pointer
-`
+  cursor: pointer;
+`;
 
 const months = [
   "ม.ค.",
@@ -236,20 +236,20 @@ const months = [
   "ธ.ค.",
 ];
 
-function colorHash(inputString){
-	let sum = 0;
-	for (let i in inputString){
-		sum += inputString.charCodeAt(i);
-	}
-	let hex = "#";
-	hex += ("00" + (~~(('0.'+Math.sin(sum+1).toString().substr(6))*256)).toString(16)).substr(-2,2).toUpperCase();
-	hex += ("00" + (~~(('0.'+Math.sin(sum+2).toString().substr(6))*256)).toString(16)).substr(-2,2).toUpperCase();
-	hex += ("00" + (~~(('0.'+Math.sin(sum+3).toString().substr(6))*256)).toString(16)).substr(-2,2).toUpperCase();
-	return hex
-}
-
 const ReviewCard = (props) => {
-  const { reviewId, text, clap, boo, grade, author, createdAt, modal, back, typeShow, classId } = props;
+  const {
+    reviewId,
+    text,
+    clap,
+    boo,
+    grade,
+    author,
+    createdAt,
+    modal,
+    back,
+    typeShow,
+    classId,
+  } = props;
   const [clapAni, setClapAni] = useState(false);
   const [booAni, setBooAni] = useState(false);
   const [clapAction, setClapAction] = useState(0);
@@ -258,16 +258,16 @@ const ReviewCard = (props) => {
   const [prevBooAction, setPrevBooAction] = useState(0);
   const [menu, setMenu] = useState(false);
   const defaultAuth = {
-    value: '',
+    value: "",
     isMatch: true,
     require: false,
-  }
+  };
   const [auth, setAuth] = useState(defaultAuth);
   const [timeId, setTimeId] = useState({
     clap: null,
     boo: null,
   });
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [showReport, setReport] = useState(false);
   const [showEdit, setEdit] = useState(false);
   const parseDate = (dateUTC) => {
@@ -291,30 +291,29 @@ const ReviewCard = (props) => {
   const closeEdit = () => {
     setEdit(false);
     setAuth(defaultAuth);
-  }
+  };
 
   const deleteReview = () => {
-    if (auth.value === "") setAuth({...auth, require: true})
+    if (auth.value === "") setAuth({ ...auth, require: true });
     else {
-      const newAuth = {...auth}
+      const newAuth = { ...auth };
       const config = {
         reviewId: reviewId,
-        auth: auth.value
-      }
+        auth: auth.value,
+      };
       newAuth.require = false;
-      setIsLoading(true)
+      setIsLoading(true);
       APIs.deleteReviewByReviewId(config, (res) => {
-        setIsLoading(false)
-        if (res.data != undefined && 'result' in res.data) { 
-          closeEdit()
-          newAuth.isMatch = true
-          back(typeShow)
-        }
-        else if ('error' in res) newAuth.isMatch = false;
-        setAuth(newAuth)
+        setIsLoading(false);
+        if (res.data != undefined && "result" in res.data) {
+          closeEdit();
+          newAuth.isMatch = true;
+          back(typeShow);
+        } else if ("error" in res) newAuth.isMatch = false;
+        setAuth(newAuth);
       });
     }
-  }
+  };
 
   useEffect(() => {
     if (booAction !== 0) setActionByKey("boo");
@@ -379,20 +378,27 @@ const ReviewCard = (props) => {
   };
 
   const onInput = (e) => {
-    const inputAuth = { ...auth }
+    const inputAuth = { ...auth };
     if (/^[0-9]*$/.test(e.target.value)) {
-      inputAuth.value = e.target.value  
+      inputAuth.value = e.target.value;
     }
-    setAuth(inputAuth)
-  }
+    setAuth(inputAuth);
+  };
 
   const RedirctToClassName = () => {
-    window.location.href = `http://marsdev31.github.io/kuclap/${classId}`
-  }
+    if (typeof window !== "undefined")
+      window.location.href = `http://marsdev31.github.io/kuclap/${classId}`;
+  };
 
   return (
-    <Container >
-      {typeShow === 'main' ? <Subject color={colorHash(classId)} onClick={RedirctToClassName} >{classId}</Subject> : <></>}
+    <Container>
+      {typeShow === "main" ? (
+        <Subject color={colorHash(classId)} onClick={RedirctToClassName}>
+          {classId}
+        </Subject>
+      ) : (
+        <></>
+      )}
       <Content> {text} </Content>
       <CardDetails>
         <Actions>
@@ -437,14 +443,19 @@ const ReviewCard = (props) => {
             เกรด {grade}
             <span>{parseDate(createdAt)}</span>
           </DetailRight>
-          <Button type="report" tabIndex="0" onClick={() => setMenu(true)} onBlur={() => setMenu(false)}>
+          <Button
+            type="report"
+            tabIndex="0"
+            onClick={() => setMenu(true)}
+            onBlur={() => setMenu(false)}
+          >
             เพิ่มเติม
             <RightArrow />
             <Menu openMenu={menu}>
               <MenuItem onClick={() => setReport(true)}>แจ้งลบ</MenuItem>
               <MenuItem onClick={() => setEdit(true)}>แก้ไข</MenuItem>
             </Menu>
-          </Button> 
+          </Button>
         </DetailContainer>
       </CardDetails>
       <ModalBackdrop show={showReport} onClick={() => setReport(false)} />
@@ -458,9 +469,15 @@ const ReviewCard = (props) => {
       <ModalBackdrop show={showEdit} onClick={() => setEdit(false)} />
       <Modal show={showEdit}>
         กรอกรหัสนิสิต 4 ตัวท้ายเพื่อแก้ไข
-        <Warning>{ !auth.isMatch ? 'รหัสไม่ถูกต้อง' : '' || auth.require ?  'กรุณากรอกรหัส' : ''}</Warning>
+        <Warning>
+          {!auth.isMatch
+            ? "รหัสไม่ถูกต้อง"
+            : "" || auth.require
+            ? "กรุณากรอกรหัส"
+            : ""}
+        </Warning>
         <Input
-          type='text'
+          type="text"
           placeholder="ใส่รหัส 4 หลัก"
           value={auth.value}
           onInput={onInput}
@@ -468,7 +485,13 @@ const ReviewCard = (props) => {
         />
         <ModalActions>
           <CancelButton onClick={() => closeEdit()}>ย้อนกลับ</CancelButton>
-          <ConfirmButton onClick={deleteReview}>{isLoading ? <CircularProgress color="white" size="3rem" />:"ลบรีวิว" }</ConfirmButton>
+          <ConfirmButton onClick={deleteReview}>
+            {isLoading ? (
+              <CircularProgress color="white" size="3rem" />
+            ) : (
+              "ลบรีวิว"
+            )}
+          </ConfirmButton>
         </ModalActions>
       </Modal>
     </Container>
@@ -560,3 +583,48 @@ const ButtonIcon = styled(Button)`
     }
   }
 `;
+
+const colorHash = (inputString) => {
+  let sum = 0;
+  for (let i in inputString) {
+    sum += inputString.charCodeAt(i);
+  }
+  let hex = "#";
+  hex += (
+    "00" +
+    (~~(
+      ("0." +
+        Math.sin(sum + 1)
+          .toString()
+          .substr(6)) *
+      256
+    )).toString(16)
+  )
+    .substr(-2, 2)
+    .toUpperCase();
+  hex += (
+    "00" +
+    (~~(
+      ("0." +
+        Math.sin(sum + 2)
+          .toString()
+          .substr(6)) *
+      256
+    )).toString(16)
+  )
+    .substr(-2, 2)
+    .toUpperCase();
+  hex += (
+    "00" +
+    (~~(
+      ("0." +
+        Math.sin(sum + 3)
+          .toString()
+          .substr(6)) *
+      256
+    )).toString(16)
+  )
+    .substr(-2, 2)
+    .toUpperCase();
+  return hex;
+};
