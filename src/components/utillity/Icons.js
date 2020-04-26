@@ -238,6 +238,12 @@ const DoneGreen = () => (
   </svg>
 );
 
+const RightArrow = () => (
+  <svg transform="rotate(90)" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path id="arrow" fill-rule="evenodd" clip-rule="evenodd" d="M8.42872 4.27842L15.2754 10.3278C15.6022 10.6991 15.6022 11.3009 15.2754 11.6722L8.42872 17.7216C8.10188 18.0928 7.57197 18.0928 7.24513 17.7216C6.91829 17.3504 6.91829 16.7485 7.24513 16.3773L13.5 11L7.24513 5.62273C6.91829 5.25151 6.91829 4.64964 7.24513 4.27842C7.57197 3.90719 8.10188 3.90719 8.42872 4.27842Z" fill="#BDBDBD" stroke="#BDBDBD"/>
+  </svg>
+)
+
 export {
   Clap,
   Boo,
@@ -249,4 +255,5 @@ export {
   GoToTop,
   NoMore,
   DoneGreen,
+  RightArrow,
 };

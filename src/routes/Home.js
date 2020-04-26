@@ -203,6 +203,24 @@ const App = ({ classid }) => {
     handleFetchingReviewsAndClass(classid);
   };
 
+  const handleCardDeleted = (showType) => {
+    console.log(showType, classid)
+    
+    setShow(showType);
+
+    if(showType === "details"){
+      setPaging({ ...paging, page: 1 });
+      handleFetchingReviewsAndClass(classid);
+    }else if(showType === "main"){
+      setPaging({ ...paging, page: 0 });
+      setReviews([])
+      setUnderFlow(false)
+      setLoadMore(true)
+    }
+
+
+  };
+
   const handleSelected = (e) => {
     setPaging({ ...paging, page: 1 });
     setShow("details");
@@ -381,7 +399,7 @@ const App = ({ classid }) => {
             ? reviews.map(
                 (review, index) =>
                   review && (
-                    <ReviewCard key={index} modal={setScroll} {...review} />
+                    <ReviewCard key={index} modal={setScroll} typeShow={show}  back={handleCardDeleted} {...review} />
                   )
               )
             : null}

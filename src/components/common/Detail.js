@@ -68,8 +68,8 @@ const Detail = ({ score, enable }) => {
       <ScoreContainter>
         <DetailTitle>คะแนนภาพรวม</DetailTitle>
         <ScoreBar title>
-          <DetailTitle desc>มาก</DetailTitle>
           <DetailTitle desc>น้อย</DetailTitle>
+          <DetailTitle desc>มาก</DetailTitle>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
