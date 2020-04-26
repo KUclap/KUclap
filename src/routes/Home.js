@@ -8,6 +8,7 @@ import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
+import Footer from "../components/common/Footer";
 import APIs from "../components/utillity/apis";
 import Details from "../components/common/Detail";
 import Header from "../components/common/Header";
@@ -397,15 +398,19 @@ const App = ({ classid }) => {
             </>
           ) : (
             reviews &&
-            !loading && (
-              <ContainerNoMore>
-                <NoMoreCustom>
-                  <NoMore />
-                </NoMoreCustom>
-                {show === "details" ? (
-                  <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
-                ) : null}
-              </ContainerNoMore>
+            !loading &&
+            underflow && (
+              <>
+                <ContainerNoMore>
+                  <NoMoreCustom>
+                    <NoMore />
+                  </NoMoreCustom>
+                  {show === "details" ? (
+                    <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
+                  ) : null}
+                </ContainerNoMore>
+                <Footer />
+              </>
             )
           )
         ) : null}
