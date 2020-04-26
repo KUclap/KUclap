@@ -94,7 +94,7 @@ const SubjectTitle = styled.p`
 
 const DetailTitle = styled.p`
   font-size: 2rem;
-  margin: 1.2rem 0;
+  margin: 2rem 0;
   font-weight: 600;
   color: ${(props) => (props.desc ? "#BDBDBD" : "#4F4F4F")};
   padding: ${(props) => (props.desc ? "0 1rem" : 0)};
@@ -207,6 +207,24 @@ const App = ({ classid }) => {
     handleFetchingReviewsAndClass(classid);
   };
 
+  const handleCardDeleted = (showType) => {
+    console.log(showType, classid)
+    
+    setShow(showType);
+
+    if(showType === "details"){
+      setPaging({ ...paging, page: 1 });
+      handleFetchingReviewsAndClass(classid);
+    }else if(showType === "main"){
+      setPaging({ ...paging, page: 0 });
+      setReviews([])
+      setUnderFlow(false)
+      setLoadMore(true)
+    }
+
+
+  };
+
   const handleSelected = (e) => {
     setPaging({ ...paging, page: 1 });
     setShow("details");
@@ -272,6 +290,10 @@ const App = ({ classid }) => {
       setClassSelected({ ...classSelected, classId: classid });
       APIs.getClassDetailByClassId(classid, (res) => {
         console.log(res.data);
+        setClassSelected({
+          classId: res.data.classId,
+          label: res.data.label
+        })
         setScore({
           homework: res.data.stats.homework,
           interest: res.data.stats.interest,
@@ -282,10 +304,12 @@ const App = ({ classid }) => {
 
     APIs.getAllClasses((res) => {
       setClasses(res.data);
-      setClassSelected({
-        ...classSelected,
-        label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
-      });
+      if (classid === 'main') {
+        setClassSelected({
+          ...classSelected,
+          label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
+        });
+      }
     });
 
     const adaptor = document.getElementById("adaptor");
@@ -385,7 +409,7 @@ const App = ({ classid }) => {
             ? reviews.map(
                 (review, index) =>
                   review && (
-                    <ReviewCard key={index} modal={setScroll} {...review} />
+                    <ReviewCard key={index} modal={setScroll} typeShow={show}  back={handleCardDeleted} {...classSelected} {...review} />
                   )
               )
             : null}

@@ -88,5 +88,18 @@ const apis = {
       console.log(err);
     }
   },
+  // DELETE review by reviewid
+  deleteReviewByReviewId: async (config, next) => {
+    try {
+      const res = await api.delete(`/review/${config.reviewId}`,  {
+      headers: {
+        Authorization: `Bearer ${config.auth}`
+      }});
+      next(res);
+    } catch (err) {
+        console.log(err.response.data);
+        next(err.response.data)
+    }
+  }
 };
 export default apis;

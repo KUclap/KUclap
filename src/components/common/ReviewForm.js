@@ -171,6 +171,7 @@ const ReviewButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
+  outline: none;
 `;
 
 const CancelButton = styled(Button)`
