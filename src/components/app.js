@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { Router } from "preact-router";
-
+import baseroute from "../baseroute";
 // Code-splitting is automated for routes
 import Home from "../routes/Home";
 
@@ -16,8 +16,8 @@ export default class App extends Component {
   render() {
     return (
       <Router onChange={this.handleRoute}>
-        <Home path="/" classid="main" />
-        <Home path="/:classid" />
+        <Home path={`${baseroute}/`} classid="main" />
+        {/* <Home path={`${baseroute}/:classid`} /> */}
       </Router>
     );
   }

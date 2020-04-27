@@ -388,7 +388,7 @@ const ReviewCard = (props) => {
 
   const RedirctToClassName = () => {
     if (typeof window !== "undefined")
-      window.location.href = `http://marsdev31.github.io/kuclap/${classId}`;
+      window.location.href = `http://marsdev31.github.io/KUclap/?classid=${classId}`;
   };
 
   return (

@@ -9,6 +9,7 @@ import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
+import baseroute from "../baseroute";
 import Footer from "../components/common/Footer";
 import APIs from "../components/utillity/apis";
 import Details from "../components/common/Detail";
@@ -194,7 +195,7 @@ const App = ({ classid }) => {
 
   const NavigateMain = () => {
     if (typeof window !== "undefined")
-      window.location.href = "http://marsdev31.github.io/kuclap/";
+      window.location.href = "https://marsdev31.github.io/KUclap/";
   };
 
   const handleNewReview = () => {
@@ -230,7 +231,7 @@ const App = ({ classid }) => {
     setShow("details");
     handleFetchingReviewsAndClass(e.classId);
     setClassSelected({ label: e.label, classId: e.classId });
-    route(`${e.classId}`);
+    route(`${baseroute}/?classid=${e.classId}`, true);
     // getFocusWithoutScrolling();
   };
 
@@ -331,22 +332,26 @@ const App = ({ classid }) => {
       console.log("FETCH", show, paging);
       if (show === "main" && classid === "main") {
         APIs.getLastReviews(paging.page, paging.offset, (res) => {
-          console.log(res.data);
-          if (!res.data && res !== []) {
-            setUnderFlow(true);
+          if (res) {
+            console.log(res.data);
+            if (!res.data && res !== []) {
+              setUnderFlow(true);
+            }
+            setPaging({ ...paging, page: paging.page + 1 });
+            setReviews((prevReview) => [...prevReview, ...res.data]);
+            setLoading(false);
           }
-          setPaging({ ...paging, page: paging.page + 1 });
-          setReviews((prevReview) => [...prevReview, ...res.data]);
-          setLoading(false);
         });
       } else if (show === "details" || classid !== "main") {
         APIs.getReviewsByClassId(classid, paging.page, paging.offset, (res) => {
-          if (!res.data && res !== []) {
-            setUnderFlow(true);
+          if (res) {
+            if (!res.data && res !== []) {
+              setUnderFlow(true);
+            }
+            setPaging({ ...paging, page: paging.page + 1 });
+            setReviews((prevReview) => [...prevReview, ...res.data]);
+            setLoading(false);
           }
-          setPaging({ ...paging, page: paging.page + 1 });
-          setReviews((prevReview) => [...prevReview, ...res.data]);
-          setLoading(false);
         });
       }
     }

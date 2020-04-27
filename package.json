@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "kuclap",
+  "name": "KUclap",
   "version": "0.0.0",
   "license": "MIT",
   "homepage": "https://marsdev31.github.io/KUclap/",
@@ -10,8 +10,9 @@
     "dev": "preact watch",
     "lint": "eslint src",
     "test": "jest",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build:gh",
+    "deploy": "gh-pages -d build",
+    "build:gh": "GITHUB_PAGES=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\""
   },
   "eslintConfig": {
     "extends": "preact",
@@ -20,6 +21,7 @@
     ]
   },
   "devDependencies": {
+    "dot-json": "^1.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-preact-pure": "^2.0.0",
     "eslint": "^6.0.1",
