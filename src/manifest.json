@@ -1,7 +1,7 @@
 {
   "name": "KUclap",
   "short_name": "KUclap",
-  "start_url": "/",
+  "start_url": "/KUclap",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fff",
