@@ -155,6 +155,7 @@ const CancelButton = styled(ConfirmButton)`
 
 const NumberAction = styled.span`
   color: ${(props) => props.color || "black"};
+  white-space: nowrap;
 `;
 
 const Menu = styled.div`
@@ -251,6 +252,8 @@ const ReviewCard = (props) => {
     typeShow,
     classId,
   } = props;
+  const [clapActioning, setClapActioning] = useState(false);
+  const [booActioning, setBooActioning] = useState(false);
   const [clapAni, setClapAni] = useState(false);
   const [booAni, setBooAni] = useState(false);
   const [clapAction, setClapAction] = useState(0);
@@ -317,23 +320,27 @@ const ReviewCard = (props) => {
   };
 
   useEffect(() => {
-    if (booAction !== 0) setActionByKey("boo");
+    if (booAction !== 0 && !clapActioning) setActionByKey("boo");
   }, [booAction]);
 
   useEffect(() => {
-    if (clapAction !== 0) setActionByKey("clap");
+    if (clapAction !== 0 && !booActioning) setActionByKey("clap");
   }, [clapAction]);
 
   const handleActionClick = (key) => {
     switch (key) {
       case "clap": {
-        setClapAni(true);
-        setClapAction(clapAction + 1);
+        if (!clapActioning) {
+          setClapAni(true);
+          setClapAction(clapAction + 1);
+        }
         break;
       }
       case "boo": {
-        setBooAni(true);
-        setBooAction(booAction + 1);
+        if (!booActioning) {
+          setBooAni(true);
+          setBooAction(booAction + 1);
+        }
         break;
       }
     }
@@ -348,20 +355,24 @@ const ReviewCard = (props) => {
       setTimeout(() => {
         switch (action) {
           case "clap": {
+            setClapActioning(true);
             APIs.putClapReviewByReviewId(
               reviewId,
               clapAction - prevClapAction,
               () => {
+                setClapActioning(false);
                 setPrevClapAction(clapAction);
               }
             );
             break;
           }
           case "boo": {
+            setBooActioning(true);
             APIs.putBooReviewByReviewId(
               reviewId,
               booAction - prevBooAction,
               () => {
+                setBooActioning(false);
                 setPrevBooAction(booAction);
               }
             );
@@ -414,7 +425,7 @@ const ReviewCard = (props) => {
               <span>{clapAction + clap}</span>
             ) : (
               <NumberAction color="#2f80ed">
-                {clapAction - prevClapAction}
+                + {clapAction - prevClapAction}
               </NumberAction>
             )}
           </ButtonContainer>
@@ -431,7 +442,7 @@ const ReviewCard = (props) => {
               <span>{booAction + boo}</span>
             ) : (
               <NumberAction color="#eb5757">
-                {booAction - prevBooAction}
+                + {booAction - prevBooAction}
               </NumberAction>
             )}
           </ButtonContainer>
@@ -536,14 +547,14 @@ const ButtonIcon = styled(Button)`
 
   svg {
     #bg {
-      fill: ${(props) =>
+      /* fill: ${(props) =>
         props.valueAction === false
           ? props.type === "clap"
             ? "#9ec7ff"
             : props.type === "boo"
             ? "rgba(191, 82, 31, 50%)"
             : "white"
-          : "white"};
+          : "white"}; */
       transition: all 0.2s ease-in-out;
     }
     #clap {
