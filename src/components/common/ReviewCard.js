@@ -4,6 +4,7 @@ import { Clap, Boo, RightArrow } from "../utillity/Icons";
 import { pulse } from "../utillity/keyframs";
 import APIs from "../utillity/apis";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
 const Container = styled.div`
   border: 0.2rem solid #e0e0e0;
@@ -102,7 +103,7 @@ const ModalBackdrop = styled.div`
   background-color: hsla(10, 10%, 10%, 50%);
   display: ${(props) => (props.show === true ? "block" : "none")};
   z-index: 1;
-  cursor: pointer;
+  cursor: url(${ic_cancel_white}) 205 205, auto;
 `;
 
 const Modal = styled.div`
