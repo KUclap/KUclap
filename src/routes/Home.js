@@ -332,26 +332,27 @@ const App = ({ classid }) => {
       console.log("FETCH", show, paging);
       if (show === "main" && classid === "main") {
         APIs.getLastReviews(paging.page, paging.offset, (res) => {
-          if (res) {
-            console.log(res.data);
-            if (!res.data && res !== []) {
-              setUnderFlow(true);
-            }
+          const { data } = res;
+          // if (!data && res !== []) {
+          if (!data) {
+            setUnderFlow(true);
+          } else {
             setPaging({ ...paging, page: paging.page + 1 });
-            setReviews((prevReview) => [...prevReview, ...res.data]);
-            setLoading(false);
+            setReviews([...reviews, ...data]);
           }
+          setLoading(false);
         });
       } else if (show === "details" || classid !== "main") {
         APIs.getReviewsByClassId(classid, paging.page, paging.offset, (res) => {
-          if (res) {
-            if (!res.data && res !== []) {
-              setUnderFlow(true);
-            }
+          const { data } = res;
+          console.log(res, res.data);
+          if (!data) {
+            setUnderFlow(true);
+          } else {
             setPaging({ ...paging, page: paging.page + 1 });
-            setReviews((prevReview) => [...prevReview, ...res.data]);
-            setLoading(false);
+            setReviews([...reviews, ...data]);
           }
+          setLoading(false);
         });
       }
     }
