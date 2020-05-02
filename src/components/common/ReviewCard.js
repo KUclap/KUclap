@@ -524,11 +524,11 @@ const ButtonIcon = styled(Button)`
     ${(props) =>
       props.clapAni === true
         ? css`
-            animation: ${pulse("rgba(36, 87, 156, 25%)")} 0.75s ease;
+            animation: ${pulse("rgba(36, 87, 156, 25%)")} 0.5s ease;
           `
         : props.booAni === true
         ? css`
-            animation: ${pulse("rgba(173, 66, 16, 25%)")} 0.75s ease;
+            animation: ${pulse("rgba(173, 66, 16, 25%)")} 0.5s ease;
           `
         : null}
   }
