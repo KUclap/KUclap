@@ -15,7 +15,7 @@ const Container = styled.footer`
 `;
 
 const MoreProductionText = styled.p`
-  color: #000;
+  color: #4F4F4F;
   font-size: 2.6rem;
   margin: 4rem 0 0 0;
 `;
@@ -43,7 +43,7 @@ const Button = styled.button`
 
 const ExternalLink = styled.a`
   text-decoration: none;
-  color: #000;
+  color: #4F4F4F;
   font-size: 1.4rem;
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@ const ExternalLink = styled.a`
 const MarsDev = styled.img`
   width: 22px;
   height: 22px;
-  maring: 0;
+  margin: 0;
 `;
 
 const Footer = () => {
@@ -75,7 +75,7 @@ const Footer = () => {
         rel="noopener noreferrer"
       >
         <Button>
-          KUnit <span> | เว็บไซต์สำหรับคำนวนณหน่วยกิตวิชาบูรฯ </span>
+          KUnit <span> | เว็บไซต์สำหรับคำนวณหน่วยกิตวิชาบูรฯ </span>
         </Button>
       </a>
       <ExternalLink
@@ -83,7 +83,7 @@ const Footer = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span className="highlight">Welcome&nbsp;</span> to PRs at{" "}
+        <span className="highlight">PRs Welcome&nbsp;</span> at{" "}
         <span className="img">
           <Github />
         </span>

@@ -5,6 +5,7 @@ import { Clap, Boo, RightArrow } from "../utillity/Icons";
 import { pulse } from "../utillity/keyframs";
 import APIs from "../utillity/apis";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
 const Container = styled.div`
   border: 0.2rem solid #e0e0e0;
@@ -24,6 +25,7 @@ const Content = styled.p`
   white-space: pre-line;
   overflow-wrap: break-word;
   margin: 0;
+  margin-top: ${(props) => (props.typeShow === "main" ? "1rem" : 0)};
 `;
 
 const CardDetails = styled.div`
@@ -44,10 +46,11 @@ const DetailContainer = styled.div`
 `;
 
 const DetailRight = styled.div`
-  margin-left: 1rem;
+  margin-left: 0.8rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+
   span {
     margin-left: 1ch;
   }
@@ -55,7 +58,6 @@ const DetailRight = styled.div`
 
 const Button = styled.div`
   display: flex;
-  width: ${(props) => (props.type === "report" ? "8rem" : "auto")};
   text-align: right;
   align-items: center;
   justify-content: space-between;
@@ -63,6 +65,10 @@ const Button = styled.div`
   cursor: pointer;
   align-self: flex-end;
   outline: none;
+
+  span {
+    margin-right: 1ch;
+  }
 
   &:hover {
     color: #9ac1ee;
@@ -78,16 +84,15 @@ const ButtonContainer = styled.div`
   span {
     user-select: none;
     margin-left: 0.6rem;
-    width: 2.6rem;
+    width: 3.6rem;
     font-size: 2rem;
   }
 `;
 
 const Actions = styled.div`
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  width: 19.4rem;
+  width: 19rem;
 `;
 
 const ModalBackdrop = styled.div`
@@ -99,7 +104,7 @@ const ModalBackdrop = styled.div`
   background-color: hsla(10, 10%, 10%, 50%);
   display: ${(props) => (props.show === true ? "block" : "none")};
   z-index: 1;
-  cursor: pointer;
+  cursor: url(${ic_cancel_white}) 205 205, auto;
 `;
 
 const Modal = styled.div`
@@ -238,6 +243,36 @@ const months = [
   "ธ.ค.",
 ];
 
+function colorHash(inputString) {
+  let sum = 0;
+  for (let i in inputString) {
+    sum += inputString.charCodeAt(i);
+  }
+  let hex = "#";
+  hex += `00${(~~(
+    `0.${Math.sin(sum + 1)
+      .toString()
+      .substr(6)}` * 256
+  )).toString(16)}`
+    .substr(-2, 2)
+    .toUpperCase();
+  hex += `00${(~~(
+    `0.${Math.sin(sum + 2)
+      .toString()
+      .substr(6)}` * 256
+  )).toString(16)}`
+    .substr(-2, 2)
+    .toUpperCase();
+  hex += `00${(~~(
+    `0.${Math.sin(sum + 3)
+      .toString()
+      .substr(6)}` * 256
+  )).toString(16)}`
+    .substr(-2, 2)
+    .toUpperCase();
+  return hex;
+}
+
 const ReviewCard = (props) => {
   const {
     reviewId,
@@ -280,7 +315,7 @@ const ReviewCard = (props) => {
     let month = months[parseInt(date[1]) - 1];
     let year = date[0];
     if (day[0] === "0") day = day[1];
-    return day + " " + month + " " + year;
+    return `${day} ${month} ${year}`;
   };
 
   useEffect(() => {
@@ -302,7 +337,7 @@ const ReviewCard = (props) => {
     else {
       const newAuth = { ...auth };
       const config = {
-        reviewId: reviewId,
+        reviewId,
         auth: auth.value,
       };
       newAuth.require = false;
@@ -408,8 +443,10 @@ const ReviewCard = (props) => {
         <Subject color={colorHash(classId)} onClick={RedirctToClassName}>
           {classId}
         </Subject>
-      ) : null}
-      <Content> {text} </Content>
+      ) : (
+        <></>
+      )}
+      <Content typeShow={typeShow}> {text} </Content>
       <CardDetails>
         <Actions>
           <ButtonContainer>
@@ -459,7 +496,7 @@ const ReviewCard = (props) => {
             onClick={() => setMenu(true)}
             onBlur={() => setMenu(false)}
           >
-            เพิ่มเติม
+            <span> เพิ่มเติม </span>
             <RightArrow />
             <Menu openMenu={menu}>
               <MenuItem onClick={() => setReport(true)}>แจ้งลบ</MenuItem>
@@ -593,48 +630,3 @@ const ButtonIcon = styled(Button)`
     }
   }
 `;
-
-const colorHash = (inputString) => {
-  let sum = 0;
-  for (let i in inputString) {
-    sum += inputString.charCodeAt(i);
-  }
-  let hex = "#";
-  hex += (
-    "00" +
-    (~~(
-      ("0." +
-        Math.sin(sum + 1)
-          .toString()
-          .substr(6)) *
-      256
-    )).toString(16)
-  )
-    .substr(-2, 2)
-    .toUpperCase();
-  hex += (
-    "00" +
-    (~~(
-      ("0." +
-        Math.sin(sum + 2)
-          .toString()
-          .substr(6)) *
-      256
-    )).toString(16)
-  )
-    .substr(-2, 2)
-    .toUpperCase();
-  hex += (
-    "00" +
-    (~~(
-      ("0." +
-        Math.sin(sum + 3)
-          .toString()
-          .substr(6)) *
-      256
-    )).toString(16)
-  )
-    .substr(-2, 2)
-    .toUpperCase();
-  return hex;
-};

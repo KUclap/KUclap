@@ -92,6 +92,8 @@ const SubjectTitle = styled.p`
   margin: 3rem 6.4rem;
   min-width: 86%;
   display: ${(props) => (props.enable !== "main" ? "block" : "none")};
+  color: #4F4F4F;
+  font-weight: 500;
 `;
 
 const DetailTitle = styled.p`

@@ -96,9 +96,10 @@ const GradeButton = styled.div`
     ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
   height: 3rem;
   width: 3rem;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 18%;
-  text-align: center;
   cursor: pointer;
 
   &:active {
@@ -109,6 +110,11 @@ const GradeButton = styled.div`
   &:hover {
     color: #9ac1ee;
     border: 0.2rem solid #9ac1ee;
+  }
+
+  p {
+    margin: 0;
+    line-height: 0.9rem;
   }
 `;
 
@@ -277,6 +283,7 @@ const CheckboxContainer = styled.div`
   margin: 1rem 0;
   text-align: left;
   color: ${(props) => (props.warning ? "#EB5757" : "#4F4F4F")};
+  cursor: pointer;
 
   .MuiSvgIcon-root {
     width: 1.8em;
@@ -302,16 +309,16 @@ const ReviewForm = (props) => {
   const [showDialog, setDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const initialForm = {
-    classId: classId,
+    classId,
     text: "",
     author: "",
     grade: -1,
     auth: "",
-  };
-  const initialScore = {
-    how: -1,
-    homework: -1,
-    interest: -1,
+    stats: {
+      how: -1,
+      homework: -1,
+      interest: -1,
+    },
   };
   const initialChecklist = {
     rude: false,
@@ -319,7 +326,7 @@ const ReviewForm = (props) => {
   };
   const initialRequire = {
     text: false,
-    score: false,
+    stats: false,
     grade: false,
     author: false,
     auth: false,
@@ -328,7 +335,6 @@ const ReviewForm = (props) => {
   };
 
   const [form, setForm] = useState(initialForm);
-  const [score, setScore] = useState(initialScore);
   const [checklist, setChecklist] = useState(initialChecklist);
   const [require, setRequire] = useState(initialRequire);
   // modal(showDialog);
@@ -343,7 +349,7 @@ const ReviewForm = (props) => {
   };
 
   const rate = (item, key) => {
-    setScore({ ...score, [item.id]: key + 1 });
+    setForm({ ...form, stats: { ...form.stats, [item.id]: key + 1 } });
   };
 
   const required = () => {
@@ -353,9 +359,9 @@ const ReviewForm = (props) => {
       form.author !== "" &&
       form.grade !== -1 &&
       form.auth !== "" &&
-      score.homework !== -1 &&
-      score.how !== -1 &&
-      score.interest !== -1 &&
+      form.stats.homework !== -1 &&
+      form.stats.how !== -1 &&
+      form.stats.interest !== -1 &&
       checklist.rude &&
       checklist.other
     ) {
@@ -365,9 +371,13 @@ const ReviewForm = (props) => {
     } else {
       if (form.text === "") req.text = true;
       else req.text = false;
-      if (score.homework === -1 || score.how === -1 || score.interest === -1)
-        req.score = true;
-      else req.score = false;
+      if (
+        form.stats.homework === -1 ||
+        form.stats.how === -1 ||
+        form.stats.interest === -1
+      )
+        req.stats = true;
+      else req.stats = false;
       if (form.grade === -1) req.grade = true;
       else req.grade = false;
       if (form.author === "") req.author = true;
@@ -382,12 +392,10 @@ const ReviewForm = (props) => {
 
   const sendReview = () => {
     setIsLoading(true);
-    APIs.createReview(form, score, () => {
-      // back("details");
+    APIs.createReview(form, () => {
       setIsLoading(false);
       setIsDone(true);
-      setForm({ ...initialForm, classId: classId });
-      setScore({ ...initialScore });
+      setForm({ ...initialForm, classId });
       setChecklist({ ...initialChecklist });
       // back("details");
     });
@@ -402,8 +410,7 @@ const ReviewForm = (props) => {
   };
 
   useEffect(() => {
-    setForm({ ...initialForm, classId: classId });
-    setScore({ ...initialScore });
+    setForm({ ...initialForm, classId });
     setChecklist({ ...initialChecklist });
   }, [classId]);
 
@@ -431,7 +438,7 @@ const ReviewForm = (props) => {
       />
       <DetailTitle>
         ให้คะแนนวิชา
-        <Warning required={require.score}>กรุณาเลือกทุกหัวข้อ</Warning>
+        <Warning required={require.stats}>กรุณาเลือกทุกหัวข้อ</Warning>
       </DetailTitle>
       {Rate.map((item, key) => (
         <ScoreBar key={key}>
@@ -444,7 +451,7 @@ const ReviewForm = (props) => {
                   e.preventDefault();
                   rate(item, key_rate);
                 }}
-                selected={score[item.id] - 1 === key_rate}
+                selected={form.stats[item.id] - 1 === key_rate}
               >
                 <Rate />
               </RateContainer>
@@ -467,7 +474,7 @@ const ReviewForm = (props) => {
               key={key}
               selected={form.grade === item}
             >
-              {item}
+              <p>{item}</p>
             </GradeButton>
           ))}
         </GradeBar>
