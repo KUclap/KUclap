@@ -438,44 +438,6 @@ const ReviewCard = (props) => {
       setClapAni(false);
       setBooAni(false);
     }, 500);
-
-    // const timer = () =>
-    //   setTimeout(() => {
-    //     switch (action) {
-    //       case "clap": {
-    //         setClapActioning(true);
-    //         APIs.putClapReviewByReviewId(
-    //           reviewId,
-    //           clapAction - prevClapAction,
-    //           () => {
-    //             setClapActioning(false);
-    //             setPrevClapAction(clapAction);
-    //           }
-    //         );
-    //         break;
-    //       }
-    //       case "boo": {
-    //         setBooActioning(true);
-    //         APIs.putBooReviewByReviewId(
-    //           reviewId,
-    //           booAction - prevBooAction,
-    //           () => {
-    //             setBooActioning(false);
-    //             setPrevBooAction(booAction);
-    //           }
-    //         );
-    //         break;
-    //       }
-    //     }
-    //     setTimeId({ ...timeId, [action]: null });
-    //   }, 2500);
-
-    // const id = timer();
-    // setTimeId({ ...timeId, [action]: id });
-    // setTimeout(() => {
-    //   setClapAni(false);
-    //   setBooAni(false);
-    // }, 500);
   };
 
   const onInput = (e) => {
@@ -495,7 +457,7 @@ const ReviewCard = (props) => {
     <Container>
       {typeShow === "main" ? (
         <Subject color={colorHash(classId)} onClick={RedirctToClassName}>
-          {classId} 
+          {classId}
           <span> | {classNameTH}</span>
         </Subject>
       ) : (

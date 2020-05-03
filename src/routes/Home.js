@@ -92,7 +92,7 @@ const SubjectTitle = styled.p`
   margin: 3rem 6.4rem;
   min-width: 86%;
   display: ${(props) => (props.enable !== "main" ? "block" : "none")};
-  color: #4F4F4F;
+  color: #4f4f4f;
   font-weight: 500;
 `;
 
@@ -213,8 +213,6 @@ const App = ({ classid }) => {
   };
 
   const handleCardDeleted = (showType) => {
-    console.log(showType, classid);
-
     setShow(showType);
 
     if (showType === "details") {
@@ -252,7 +250,6 @@ const App = ({ classid }) => {
     });
 
     APIs.getClassDetailByClassId(classId, (res) => {
-      console.log(res.data);
       setScore({
         homework: res.data.stats.homework,
         interest: res.data.stats.interest,
@@ -280,7 +277,6 @@ const App = ({ classid }) => {
     ) {
       document.activeElement.blur();
     }
-    console.log(newEle.current);
   };
 
   useEffect(() => {
@@ -288,12 +284,10 @@ const App = ({ classid }) => {
   }, [classSelected]);
 
   useEffect(() => {
-    console.log(classid);
     if (classid !== "main") {
       setShow("details");
       setClassSelected({ ...classSelected, classId: classid });
       APIs.getClassDetailByClassId(classid, (res) => {
-        console.log(res.data);
         setClassSelected({
           classId: res.data.classId,
           label: res.data.label,
@@ -331,7 +325,6 @@ const App = ({ classid }) => {
   useEffect(() => {
     if (!underflow && !loading && loadMore) {
       setLoading(true);
-      console.log("FETCH", show, paging);
       if (show === "main" && classid === "main") {
         APIs.getLastReviews(paging.page, paging.offset, (res) => {
           const { data } = res;
@@ -347,7 +340,6 @@ const App = ({ classid }) => {
       } else if (show === "details" || classid !== "main") {
         APIs.getReviewsByClassId(classid, paging.page, paging.offset, (res) => {
           const { data } = res;
-          console.log(res, res.data);
           if (!data) {
             setUnderFlow(true);
           } else {

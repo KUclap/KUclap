@@ -56,7 +56,6 @@ const AlertComponent = (props) => {
 
   function callbackCount() {
     setCount(count - 1);
-    // console.log(count)
     if (count === 0) {
       handleClose();
     }

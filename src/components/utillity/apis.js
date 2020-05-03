@@ -37,9 +37,8 @@ const apis = {
   // POST & PUT create review then update stats class
   createReview: async (payloadReview, next) => {
     try {
-      const res = await api.post(`/review`, payloadReview);
+      await api.post(`/review`, payloadReview);
       next();
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -58,8 +57,7 @@ const apis = {
   // PUT report review by reviewid
   putReportReviewByReviewId: async (reviewid) => {
     try {
-      const res = await api.put(`/review/report/${reviewid}`);
-      console.log(res);
+      await api.put(`/review/report/${reviewid}`);
     } catch (err) {
       console.log(err);
     }
@@ -67,8 +65,7 @@ const apis = {
   // PUT clap review by reviewid
   putClapReviewByReviewId: async (reviewid, clap, next) => {
     try {
-      const res = await api.put(`/review/clap/${reviewid}/${clap}`);
-      console.log(res, clap);
+      await api.put(`/review/clap/${reviewid}/${clap}`);
       next();
     } catch (err) {
       console.log(err);
@@ -77,8 +74,7 @@ const apis = {
   // PUT boo review by reviewid
   putBooReviewByReviewId: async (reviewid, boo, next) => {
     try {
-      const res = await api.put(`/review/boo/${reviewid}/${boo}`);
-      console.log(res, boo);
+      await api.put(`/review/boo/${reviewid}/${boo}`);
       next();
     } catch (err) {
       console.log(err);
@@ -87,15 +83,16 @@ const apis = {
   // DELETE review by reviewid
   deleteReviewByReviewId: async (config, next) => {
     try {
-      const res = await api.delete(`/review/${config.reviewId}`,  {
-      headers: {
-        Authorization: `Bearer ${config.auth}`
-      }});
+      const res = await api.delete(`/review/${config.reviewId}`, {
+        headers: {
+          Authorization: `Bearer ${config.auth}`,
+        },
+      });
       next(res);
     } catch (err) {
-        console.log(err.response.data);
-        next(err.response.data)
+      console.log(err.response.data);
+      next(err.response.data);
     }
-  }
+  },
 };
 export default apis;
