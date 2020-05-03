@@ -480,7 +480,7 @@ const ReviewForm = (props) => {
         onChange={(e) => handleOnchange(e, "text")}
       />
       <DetailTitle>
-        ให้คะแนนวิชา
+        ให้คะแนนความพอใจวิชา
         <Warning required={require.stats}>กรุณาเลือกทุกหัวข้อ</Warning>
       </DetailTitle>
       {Rate.map((item, key) => (
@@ -536,14 +536,14 @@ const ReviewForm = (props) => {
       </InputContainer>
       <InputContainer>
         <DetailTitle>
-          รหัสนิสิต 4 ตัวท้าย
-          <Warning required={require.auth}>กรุณากรอกรหัส 4 หลัก</Warning> <br />
+          ตัวเลข 4 หลัก
+          <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning> <br />
           <span>เพื่อใช้แก้ไขรีวิวในภายหลัง</span>
         </DetailTitle>
         <Input
           password
           type="text"
-          placeholder="ใส่รหัส"
+          placeholder="ใส่เลข"
           value={form.auth}
           onChange={handleOnChangePassword}
         />

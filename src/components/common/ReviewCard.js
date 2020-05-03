@@ -543,17 +543,17 @@ const ReviewCard = (props) => {
       </Modal>
       <ModalBackdrop show={showEditModal} onClick={() => setEditModal(false)} />
       <Modal show={showEditModal}>
-        กรอกรหัสนิสิต 4 ตัวท้ายเพื่อลบรีวิว
+        กรอกตัวเลข 4 หลักของคุณเพื่อลบรีวิว
         <Warning>
           {!auth.isMatch
-            ? "รหัสไม่ถูกต้อง"
+            ? "ตัวเลขไม่ถูกต้อง"
             : "" || auth.require
-            ? "กรุณากรอกรหัส"
+            ? "กรุณากรอกตัวเลข"
             : ""}
         </Warning>
         <Input
           type="text"
-          placeholder="ใส่รหัส 4 หลัก"
+          placeholder="ใส่ตัวเลข 4 หลัก"
           value={auth.value}
           onInput={onInput}
           maxLength={4}
