@@ -112,6 +112,13 @@ const GradeButton = styled.div`
     border: 0.2rem solid #9ac1ee;
   }
 
+  @media (hover: none) {
+    &:hover {
+      color: #2f80ed;
+      border: 0.2rem solid #2f80ed;
+    }
+  }
+
   p {
     margin: 0;
     line-height: 0.9rem;
@@ -261,6 +268,7 @@ const RateContainer = styled.div`
       }
     }
   }
+
   &:focus,
   &:active {
     svg {
@@ -272,6 +280,21 @@ const RateContainer = styled.div`
       #eye {
         fill: #2f80ed;
       }
+    }
+  }
+
+  @media (hover: none) {
+      &:hover {
+        svg {
+          #outer,
+          #mouth {
+            stroke: #2f80ed;
+          }
+
+          #eye {
+            fill: #2f80ed;
+          }
+        }
     }
   }
 `;
@@ -401,13 +424,21 @@ const ReviewForm = (props) => {
     });
   };
 
-  const handleOnChange = (e) => {
+  const handleOnChangePassword = (e) => {
     const newForm = { ...form };
     if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 4) {
       newForm.auth = e.target.value;
     }
     setForm(newForm);
   };
+
+  const handleOnchange = (e, field) => {
+    let value = e.target.value;
+    if (/^\s/.test(value)) {
+      value = "";
+    }
+    setForm({ ...form, [field]: value});
+  }
 
   useEffect(() => {
     setForm({ ...initialForm, classId });
@@ -434,7 +465,7 @@ const ReviewForm = (props) => {
         type="textarea"
         placeholder="เขียนรีวิว..."
         value={form.text}
-        onChange={(e) => setForm({ ...form, text: e.target.value })}
+        onChange={(e) => handleOnchange(e, "text")}
       />
       <DetailTitle>
         ให้คะแนนวิชา
@@ -487,7 +518,8 @@ const ReviewForm = (props) => {
         <Input
           placeholder="ใส่ชื่อผู้เขียน"
           value={form.author}
-          onChange={(e) => setForm({ ...form, author: e.target.value })}
+          onChange={(e) => handleOnchange(e, "author")}
+          maxLength={16}
         />
       </InputContainer>
       <InputContainer>
@@ -501,7 +533,7 @@ const ReviewForm = (props) => {
           type="text"
           placeholder="ใส่รหัส"
           value={form.auth}
-          onChange={handleOnChange}
+          onChange={handleOnChangePassword}
         />
       </InputContainer>
       <Caution>

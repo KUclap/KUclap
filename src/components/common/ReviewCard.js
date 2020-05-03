@@ -215,10 +215,9 @@ const Warning = styled.div`
 
 const Subject = styled.div`
   font-size: 1.6rem;
-  padding: 0.2rem;
+  padding: 0.2rem 1.6rem;
   margin-bottom: 0.8rem;
   margin-left: 0.8rem;
-  width: 8rem;
   border-radius: 0.6rem;
   text-align: center;
   background: ${(props) => props.color};
@@ -226,6 +225,16 @@ const Subject = styled.div`
   position: absolute;
   transform: translateY(-3.2rem);
   cursor: pointer;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 49%;
+  white-space: nowrap;
+
+  span {
+    font-weight: 300;
+    margin-left: 0.2rem;
+  }
 `;
 
 const months = [
@@ -286,6 +295,7 @@ const ReviewCard = (props) => {
     back,
     typeShow,
     classId,
+    classNameTH,
   } = props;
   const [clapActioning, setClapActioning] = useState(false);
   const [booActioning, setBooActioning] = useState(false);
@@ -319,6 +329,10 @@ const ReviewCard = (props) => {
   useEffect(() => {
     modal(showReport);
   }, [showReport]);
+
+  useEffect(() => {
+    modal(showEdit);
+  }, [showEdit]);
 
   const sendReport = () => {
     APIs.putReportReviewByReviewId(reviewId);
@@ -481,7 +495,8 @@ const ReviewCard = (props) => {
     <Container>
       {typeShow === "main" ? (
         <Subject color={colorHash(classId)} onClick={RedirctToClassName}>
-          {classId}
+          {classId} 
+          <span> | {classNameTH}</span>
         </Subject>
       ) : (
         <></>
@@ -530,7 +545,7 @@ const ReviewCard = (props) => {
             เกรด {grade}
             <span>{parseDate(createdAt)}</span>
           </DetailRight>
-          <Button
+          <ButtonIcon
             type="report"
             tabIndex="0"
             onClick={() => setMenu(true)}
@@ -540,9 +555,9 @@ const ReviewCard = (props) => {
             <RightArrow />
             <Menu openMenu={menu}>
               <MenuItem onClick={() => setReport(true)}>แจ้งลบ</MenuItem>
-              <MenuItem onClick={() => setEdit(true)}>แก้ไข</MenuItem>
+              <MenuItem onClick={() => setEdit(true)}>ลบรีวิว</MenuItem>
             </Menu>
-          </Button>
+          </ButtonIcon>
         </DetailContainer>
       </CardDetails>
       <ModalBackdrop show={showReport} onClick={() => setReport(false)} />
@@ -555,7 +570,7 @@ const ReviewCard = (props) => {
       </Modal>
       <ModalBackdrop show={showEdit} onClick={() => setEdit(false)} />
       <Modal show={showEdit}>
-        กรอกรหัสนิสิต 4 ตัวท้ายเพื่อแก้ไข
+        กรอกรหัสนิสิต 4 ตัวท้ายเพื่อลบรีวิว
         <Warning>
           {!auth.isMatch
             ? "รหัสไม่ถูกต้อง"
