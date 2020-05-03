@@ -302,10 +302,8 @@ const ReviewCard = (props) => {
     require: false,
   };
   const [auth, setAuth] = useState(defaultAuth);
-  const [timeId, setTimeId] = useState({
-    clap: null,
-    boo: null,
-  });
+  const [clapTimeId, setClapTimeId] = useState(null);
+  const [booTimeId, setBooTimeId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showReport, setReport] = useState(false);
   const [showEdit, setEdit] = useState(false);
@@ -382,14 +380,11 @@ const ReviewCard = (props) => {
   };
 
   const setActionByKey = (action) => {
-    if (timeId[action] !== null) {
-      clearTimeout(timeId[action]);
-    }
-
-    const timer = () =>
-      setTimeout(() => {
-        switch (action) {
-          case "clap": {
+    switch (action) {
+      case "clap": {
+        if (clapTimeId !== null) clearTimeout(clapTimeId);
+        const timer = () =>
+          setTimeout(() => {
             setClapActioning(true);
             APIs.putClapReviewByReviewId(
               reviewId,
@@ -399,9 +394,16 @@ const ReviewCard = (props) => {
                 setPrevClapAction(clapAction);
               }
             );
-            break;
-          }
-          case "boo": {
+            setClapTimeId(null);
+          }, 1500);
+        const id = timer();
+        setClapTimeId(id);
+        break;
+      }
+      case "boo": {
+        if (booTimeId !== null) clearTimeout(booTimeId);
+        const timer = () =>
+          setTimeout(() => {
             setBooActioning(true);
             APIs.putBooReviewByReviewId(
               reviewId,
@@ -411,17 +413,55 @@ const ReviewCard = (props) => {
                 setPrevBooAction(booAction);
               }
             );
-            break;
-          }
-        }
-        setTimeId({ ...timeId, [action]: null });
-      }, 2500);
-    const id = timer();
-    setTimeId({ ...timeId, [action]: id });
+            setBooTimeId(null);
+          }, 1500);
+        const id = timer();
+        setBooTimeId(id);
+        break;
+      }
+    }
     setTimeout(() => {
       setClapAni(false);
       setBooAni(false);
     }, 500);
+
+    // const timer = () =>
+    //   setTimeout(() => {
+    //     switch (action) {
+    //       case "clap": {
+    //         setClapActioning(true);
+    //         APIs.putClapReviewByReviewId(
+    //           reviewId,
+    //           clapAction - prevClapAction,
+    //           () => {
+    //             setClapActioning(false);
+    //             setPrevClapAction(clapAction);
+    //           }
+    //         );
+    //         break;
+    //       }
+    //       case "boo": {
+    //         setBooActioning(true);
+    //         APIs.putBooReviewByReviewId(
+    //           reviewId,
+    //           booAction - prevBooAction,
+    //           () => {
+    //             setBooActioning(false);
+    //             setPrevBooAction(booAction);
+    //           }
+    //         );
+    //         break;
+    //       }
+    //     }
+    //     setTimeId({ ...timeId, [action]: null });
+    //   }, 2500);
+
+    // const id = timer();
+    // setTimeId({ ...timeId, [action]: id });
+    // setTimeout(() => {
+    //   setClapAni(false);
+    //   setBooAni(false);
+    // }, 500);
   };
 
   const onInput = (e) => {
@@ -462,7 +502,7 @@ const ReviewCard = (props) => {
               <span>{clapAction + clap}</span>
             ) : (
               <NumberAction color="#2f80ed">
-                + {clapAction - prevClapAction}
+                {`+${clapAction - prevClapAction}`}
               </NumberAction>
             )}
           </ButtonContainer>
@@ -479,7 +519,7 @@ const ReviewCard = (props) => {
               <span>{booAction + boo}</span>
             ) : (
               <NumberAction color="#eb5757">
-                + {booAction - prevBooAction}
+                {`+${booAction - prevBooAction}`}
               </NumberAction>
             )}
           </ButtonContainer>
@@ -551,8 +591,8 @@ const ButtonIcon = styled(Button)`
 
   &:before {
     content: "";
-    width: 52px;
-    height: 52px;
+    width: 5.2rem;
+    height: 5.2rem;
     border-radius: 50%;
     z-index: -1;
     display: inline-block;
@@ -571,8 +611,8 @@ const ButtonIcon = styled(Button)`
   }
 
   &:hover:before {
-    width: 52px;
-    height: 52px;
+    width: 5.2rem;
+    height: 5.2rem;
     transform: scale(1.1);
     background: ${(props) =>
       props.type === "clap"
