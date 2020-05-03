@@ -214,7 +214,7 @@ const App = ({ classid }) => {
 
   const handleCardDeleted = (showType) => {
     setShow(showType);
-
+    setScroll(false);
     if (showType === "details") {
       setPaging({ ...paging, page: 1 });
       handleFetchingReviewsAndClass(classid);

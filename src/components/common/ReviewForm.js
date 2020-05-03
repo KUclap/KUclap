@@ -51,6 +51,7 @@ const Warning = styled(DetailTitle)`
   font-size: 1.6rem;
   color: #eb5757;
   display: ${(props) => (props.required ? "inline" : "none")};
+  text-align: center;
 `;
 
 const FormTitle = styled.div`
@@ -284,17 +285,17 @@ const RateContainer = styled.div`
   }
 
   @media (hover: none) {
-      &:hover {
-        svg {
-          #outer,
-          #mouth {
-            stroke: #2f80ed;
-          }
-
-          #eye {
-            fill: #2f80ed;
-          }
+    &:hover {
+      svg {
+        #outer,
+        #mouth {
+          stroke: #2f80ed;
         }
+
+        #eye {
+          fill: #2f80ed;
+        }
+      }
     }
   }
 `;
@@ -326,10 +327,16 @@ const CheckboxCustom = styled(Checkbox)`
   }
 `;
 
+const CircularProgressCustom = styled(CircularProgress)`
+  && {
+    color: white;
+  }
+`;
+
 const ReviewForm = (props) => {
   const { enable, back, modal, classId } = props;
   const [isDone, setIsDone] = useState(false);
-  const [showDialog, setDialog] = useState(false);
+  const [showReviewModal, setReviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const initialForm = {
     classId,
@@ -348,6 +355,7 @@ const ReviewForm = (props) => {
     other: false,
   };
   const initialRequire = {
+    enableReview: false,
     text: false,
     stats: false,
     grade: false,
@@ -360,14 +368,14 @@ const ReviewForm = (props) => {
   const [form, setForm] = useState(initialForm);
   const [checklist, setChecklist] = useState(initialChecklist);
   const [require, setRequire] = useState(initialRequire);
-  // modal(showDialog);
+  // modal(showReviewModal);
 
   const handleCloseAlert = () => {
     if (isDone) {
       back("details");
       setIsDone(false);
     }
-    setDialog(false);
+    setReviewModal(false);
     modal(false);
   };
 
@@ -380,6 +388,7 @@ const ReviewForm = (props) => {
     if (
       form.text !== "" &&
       form.author !== "" &&
+      form.auth.length == 4 &&
       form.grade !== -1 &&
       form.auth !== "" &&
       form.stats.homework !== -1 &&
@@ -389,7 +398,7 @@ const ReviewForm = (props) => {
       checklist.other
     ) {
       setRequire(initialRequire);
-      setDialog(true);
+      setReviewModal(true);
       modal(true);
     } else {
       if (form.text === "") req.text = true;
@@ -409,19 +418,22 @@ const ReviewForm = (props) => {
       else req.auth = false;
       req.rude = !checklist.rude;
       req.other = !checklist.other;
+      req.enableReview = true;
       setRequire(req);
     }
   };
 
   const sendReview = () => {
-    setIsLoading(true);
-    APIs.createReview(form, () => {
-      setIsLoading(false);
-      setIsDone(true);
-      setForm({ ...initialForm, classId });
-      setChecklist({ ...initialChecklist });
-      // back("details");
-    });
+    if (!isLoading) {
+      setIsLoading(true);
+      APIs.createReview(form, () => {
+        setIsLoading(false);
+        setIsDone(true);
+        setForm({ ...initialForm, classId });
+        setChecklist({ ...initialChecklist });
+        // back("details");
+      });
+    }
   };
 
   const handleOnChangePassword = (e) => {
@@ -437,8 +449,8 @@ const ReviewForm = (props) => {
     if (/^\s/.test(value)) {
       value = "";
     }
-    setForm({ ...form, [field]: value});
-  }
+    setForm({ ...form, [field]: value });
+  };
 
   useEffect(() => {
     setForm({ ...initialForm, classId });
@@ -555,18 +567,21 @@ const ReviewForm = (props) => {
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
       </Caution>
+      <Warning required={require.enableReview}>
+        กรุณากรอกข้อมูลให้ครบถ้วน
+      </Warning>
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
-      <ModalBackdrop show={showDialog} onClick={handleCloseAlert} />
+      <ModalBackdrop show={showReviewModal} onClick={handleCloseAlert} />
       {isDone ? (
         <Alert Close={handleCloseAlert} />
       ) : (
-        <Modal show={showDialog}>
+        <Modal show={showReviewModal}>
           เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
           <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
           <ModalActions>
             <CancelButton
               onClick={() => {
-                setDialog(false);
+                setReviewModal(false);
                 modal(false);
               }}
             >
@@ -578,7 +593,7 @@ const ReviewForm = (props) => {
               }}
             >
               {isLoading ? (
-                <CircularProgress color="white" size="3rem" />
+                <CircularProgressCustom size="3rem" />
               ) : (
                 "รีวิวเลย !"
               )}

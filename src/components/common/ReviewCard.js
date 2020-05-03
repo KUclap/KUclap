@@ -237,6 +237,12 @@ const Subject = styled.div`
   }
 `;
 
+const CircularProgressCustom = styled(CircularProgress)`
+  && {
+    color: white;
+  }
+`;
+
 const months = [
   "ม.ค.",
   "ก.พ.",
@@ -315,8 +321,8 @@ const ReviewCard = (props) => {
   const [clapTimeId, setClapTimeId] = useState(null);
   const [booTimeId, setBooTimeId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [showReport, setReport] = useState(false);
-  const [showEdit, setEdit] = useState(false);
+  const [showReportModal, setReportModal] = useState(false);
+  const [showEditModal, setEditModal] = useState(false);
   const parseDate = (dateUTC) => {
     let date = dateUTC.split("-");
     let day = date[2].slice(0, 2);
@@ -327,20 +333,20 @@ const ReviewCard = (props) => {
   };
 
   useEffect(() => {
-    modal(showReport);
-  }, [showReport]);
+    modal(showReportModal);
+  }, [showReportModal]);
 
   useEffect(() => {
-    modal(showEdit);
-  }, [showEdit]);
+    modal(showEditModal);
+  }, [showEditModal]);
 
   const sendReport = () => {
     APIs.putReportReviewByReviewId(reviewId);
-    setReport(false);
+    setReportModal(false);
   };
 
-  const closeEdit = () => {
-    setEdit(false);
+  const closeEditModal = () => {
+    setEditModal(false);
     setAuth(defaultAuth);
   };
 
@@ -357,7 +363,7 @@ const ReviewCard = (props) => {
       APIs.deleteReviewByReviewId(config, (res) => {
         setIsLoading(false);
         if (res.data != undefined && "result" in res.data) {
-          closeEdit();
+          closeEditModal();
           newAuth.isMatch = true;
           back(typeShow);
         } else if ("error" in res) newAuth.isMatch = false;
@@ -516,22 +522,27 @@ const ReviewCard = (props) => {
             <span> เพิ่มเติม </span>
             <RightArrow />
             <Menu openMenu={menu}>
-              <MenuItem onClick={() => setReport(true)}>แจ้งลบ</MenuItem>
-              <MenuItem onClick={() => setEdit(true)}>ลบรีวิว</MenuItem>
+              <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
+              <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
             </Menu>
           </ButtonIcon>
         </DetailContainer>
       </CardDetails>
-      <ModalBackdrop show={showReport} onClick={() => setReport(false)} />
-      <Modal show={showReport}>
+      <ModalBackdrop
+        show={showReportModal}
+        onClick={() => setReportModal(false)}
+      />
+      <Modal show={showReportModal}>
         แจ้งลบรีวิวหรือไม่ ?
         <ModalActions>
-          <CancelButton onClick={() => setReport(false)}>ยกเลิก</CancelButton>
+          <CancelButton onClick={() => setReportModal(false)}>
+            ยกเลิก
+          </CancelButton>
           <ConfirmButton onClick={sendReport}>แจ้งลบ</ConfirmButton>
         </ModalActions>
       </Modal>
-      <ModalBackdrop show={showEdit} onClick={() => setEdit(false)} />
-      <Modal show={showEdit}>
+      <ModalBackdrop show={showEditModal} onClick={() => setEditModal(false)} />
+      <Modal show={showEditModal}>
         กรอกรหัสนิสิต 4 ตัวท้ายเพื่อลบรีวิว
         <Warning>
           {!auth.isMatch
@@ -548,13 +559,9 @@ const ReviewCard = (props) => {
           maxLength={4}
         />
         <ModalActions>
-          <CancelButton onClick={() => closeEdit()}>ย้อนกลับ</CancelButton>
+          <CancelButton onClick={() => closeEditModal()}>ย้อนกลับ</CancelButton>
           <ConfirmButton onClick={deleteReview}>
-            {isLoading ? (
-              <CircularProgress color="white" size="3rem" />
-            ) : (
-              "ลบรีวิว"
-            )}
+            {isLoading ? <CircularProgressCustom size="3rem" /> : "ลบรีวิว"}
           </ConfirmButton>
         </ModalActions>
       </Modal>
