@@ -54,10 +54,11 @@ const apis = {
       console.log(err);
     }
   },
-  // PUT report review by reviewid
-  putReportReviewByReviewId: async (reviewid) => {
+  // POST report review by reviewid
+  createReportReview: async (payloadReport, next) => {
     try {
-      await api.put(`/review/report/${reviewid}`);
+      await api.post(`/report`, payloadReport);
+      next();
     } catch (err) {
       console.log(err);
     }

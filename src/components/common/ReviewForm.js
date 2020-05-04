@@ -81,6 +81,7 @@ const ReviewField = styled.textarea`
 const ScoreTitle = styled.p`
   font-size: 1.8rem;
   margin-right: 1.2rem;
+  color: #4F4F4F;
 `;
 
 const ScoreBar = styled.div`
@@ -538,7 +539,7 @@ const ReviewForm = (props) => {
         <DetailTitle>
           ตัวเลข 4 หลัก
           <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning> <br />
-          <span>เพื่อใช้แก้ไขรีวิวในภายหลัง</span>
+          <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
         </DetailTitle>
         <Input
           password

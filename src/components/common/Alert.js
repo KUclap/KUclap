@@ -25,23 +25,24 @@ const Card = styled.div`
 
 const Thankyou = styled.p`
   color: #77b28f;
-  font-size: 1.6rem;
+  font-size: 2.6rem;
   font-weight: 600;
   white-space: nowrap;
   text-align: center;
   margin-bottom: 0.3rem;
+  color: #A3E0B5;
 `;
 
 const TextCount = styled.p`
   color: white;
-  font-size: 1.4rem;
+  font-size: 2rem;
   white-space: nowrap;
   margin-bottom: 2rem;
 `;
 
 const Text = styled.p`
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   white-space: nowrap;
   margin-bottom: 2rem;
 `;
