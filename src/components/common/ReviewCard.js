@@ -214,7 +214,7 @@ const Input = styled.input`
   border: 0.2rem solid #e0e0e0;
   border-radius: 1rem;
   height: 3.4rem;
-  width: 16rem;
+  width: 18rem;
   height: 4rem;
   margin-top: 1.2rem;
   align-self: flex-start;
