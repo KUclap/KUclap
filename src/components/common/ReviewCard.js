@@ -6,6 +6,7 @@ import { pulse } from "../utillity/keyframs";
 import APIs from "../utillity/apis";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+import ColorHash from '../utillity/ColorHash';
 
 const Container = styled.div`
   border: 0.2rem solid #e0e0e0;
@@ -276,36 +277,6 @@ const months = [
   "ธ.ค.",
 ];
 
-function colorHash(inputString) {
-  let sum = 0;
-  for (let i in inputString) {
-    sum += inputString.charCodeAt(i);
-  }
-  let hex = "#";
-  hex += `00${(~~(
-    `0.${Math.sin(sum + 1)
-      .toString()
-      .substr(6)}` * 256
-  )).toString(16)}`
-    .substr(-2, 2)
-    .toUpperCase();
-  hex += `00${(~~(
-    `0.${Math.sin(sum + 2)
-      .toString()
-      .substr(6)}` * 256
-  )).toString(16)}`
-    .substr(-2, 2)
-    .toUpperCase();
-  hex += `00${(~~(
-    `0.${Math.sin(sum + 3)
-      .toString()
-      .substr(6)}` * 256
-  )).toString(16)}`
-    .substr(-2, 2)
-    .toUpperCase();
-  return hex;
-}
-
 const ReviewCard = (props) => {
   const {
     reviewId,
@@ -520,7 +491,7 @@ const ReviewCard = (props) => {
   return (
     <Container>
       {typeShow === "main" ? (
-        <Subject color={colorHash(classId)} onClick={RedirctToClassName}>
+        <Subject color={ColorHash(classId)} onClick={RedirctToClassName}>
           {classId}
           <span> | {classNameTH}</span>
         </Subject>

@@ -22,6 +22,7 @@ import {
   ReviewSkeletonB,
 } from "../components/common/ReviewSkeleton";
 import { GoToTop, NoMoreReview, NoReview } from "../components/utillity/Icons";
+import ColorHash from '../components/utillity/ColorHash';
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -94,6 +95,15 @@ const SubjectTitle = styled.p`
   display: ${(props) => (props.enable !== "main" ? "block" : "none")};
   color: #4f4f4f;
   font-weight: 600;
+  line-height: 180%;
+
+  span {
+    background: ${props => props.color};
+    color: white;
+    padding: 0.1rem 1.4rem;
+    border-radius: 0.6rem;
+    margin-right: 1ch;
+  }
 `;
 
 const DetailTitle = styled.p`
@@ -158,7 +168,7 @@ const ContainerNoMore = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 5.2rem 0;
+  margin: 1.6rem 0;
   /* padding: 1.2rem 1.6rem; */
   min-width: 27.6rem;
   overflow: hidden;
@@ -257,6 +267,15 @@ const App = ({ classid }) => {
       });
     });
   };
+
+  const getClassName = (label) => {
+    const labelSplit = label.split(" ")
+    let labelName = label
+    if (labelSplit.length > 1)
+      labelSplit.shift();
+      labelName = labelSplit.join(" ");
+    return labelName
+  }
 
   useEffect(() => {
     if (typeof window !== "undefined")
@@ -382,7 +401,10 @@ const App = ({ classid }) => {
         onChange={handleSelected}
         ref={newEle}
       />
-      <SubjectTitle enable={show}>{classSelected.label}</SubjectTitle>
+      <SubjectTitle enable={show} color={ColorHash(classSelected.classId)}>
+        <span>{classSelected.classId}</span>
+        {getClassName(classSelected.label)}
+      </SubjectTitle>
       <ReviewForm
         enable={show}
         back={handleFormClosed}
