@@ -88,12 +88,12 @@ const SelectCustom = styled(Select)`
 `;
 
 const SubjectTitle = styled.p`
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin: 3rem 6.4rem;
   min-width: 86%;
   display: ${(props) => (props.enable !== "main" ? "block" : "none")};
   color: #4f4f4f;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 const DetailTitle = styled.p`

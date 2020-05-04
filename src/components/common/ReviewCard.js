@@ -84,7 +84,7 @@ const ButtonContainer = styled.div`
   span {
     user-select: none;
     margin-left: 0.6rem;
-    width: 3.6rem;
+    width: 3.8rem;
     font-size: 2rem;
   }
 `;
@@ -192,6 +192,24 @@ const MenuItem = styled.div`
   }
 `;
 
+const ReportField = styled.textarea`
+  border: 0.2rem solid #e0e0e0;
+  border-radius: 1rem;
+  padding: 1.2rem 1.6rem;
+  height: 12rem;
+  width: 30rem;
+  font-size: 16px;
+  font-family: "Kanit", arial, sans-serif;
+  resize: none;
+  margin-top: 1.6rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+
+  &::placeholder {
+    color: #bdbdbd;
+  }
+`;
+
 const Input = styled.input`
   border: 0.2rem solid #e0e0e0;
   border-radius: 1rem;
@@ -232,7 +250,7 @@ const Subject = styled.div`
   white-space: nowrap;
 
   span {
-    font-weight: 300;
+    font-weight: 400;
     margin-left: 0.2rem;
   }
 `;
@@ -317,10 +335,16 @@ const ReviewCard = (props) => {
     isMatch: true,
     require: false,
   };
+  const defaultReportReason = {
+    reason: "",
+    require: false,
+  }
   const [auth, setAuth] = useState(defaultAuth);
+  const [reportReason, setReportReason] = useState(defaultReportReason);
   const [clapTimeId, setClapTimeId] = useState(null);
   const [booTimeId, setBooTimeId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [showReportModal, setReportModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
   const parseDate = (dateUTC) => {
@@ -341,9 +365,26 @@ const ReviewCard = (props) => {
   }, [showEditModal]);
 
   const sendReport = () => {
-    APIs.putReportReviewByReviewId(reviewId);
-    setReportModal(false);
+    if (reportReason.reason.length < 10) 
+      setReportReason({...reportReason, require: true})
+    else {
+      const report = {
+        reviewId,
+        classId,
+        text: reportReason.reason
+      }
+      setIsLoadingReport(true);
+      APIs.createReportReview(report, () => {
+        setIsLoadingReport(false);
+        closeReportModal();
+      });
+    }
   };
+
+  const closeReportModal = () => {
+    setReportModal(false);
+    setReportReason(defaultReportReason);
+  }
 
   const closeEditModal = () => {
     setEditModal(false);
@@ -359,9 +400,9 @@ const ReviewCard = (props) => {
         auth: auth.value,
       };
       newAuth.require = false;
-      setIsLoading(true);
+      setIsLoadingDelete(true);
       APIs.deleteReviewByReviewId(config, (res) => {
-        setIsLoading(false);
+        setIsLoadingDelete(false);
         if (res.data != undefined && "result" in res.data) {
           closeEditModal();
           newAuth.isMatch = true;
@@ -446,7 +487,7 @@ const ReviewCard = (props) => {
     }, 500);
   };
 
-  const onInput = (e) => {
+  const handleOnchangePassword = (e) => {
     const inputAuth = { ...auth };
     if (/^[0-9]*$/.test(e.target.value)) {
       inputAuth.value = e.target.value;
@@ -454,10 +495,27 @@ const ReviewCard = (props) => {
     setAuth(inputAuth);
   };
 
+  const handleOnchange = (e) => {
+    let value = e.target.value;
+    if (/^\s/.test(value)) {
+      value = "";
+    }
+    setReportReason({...reportReason, reason: value});
+  };
+
   const RedirctToClassName = () => {
     if (typeof window !== "undefined")
       window.location.href = `http://marsdev31.github.io/KUclap/?classid=${classId}`;
   };
+
+  const numberFormat = (value) => {
+    let newValue = value;
+    if (value >= 1000) {
+      value  /= 1000
+      newValue = `${value.toFixed(1)}k`;
+    }
+    return newValue
+  }
 
   return (
     <Container>
@@ -482,7 +540,7 @@ const ReviewCard = (props) => {
               <Clap />
             </ButtonIcon>
             {clapAction === prevClapAction ? (
-              <span>{clapAction + clap}</span>
+              <span>{numberFormat(clapAction + clap)}</span>
             ) : (
               <NumberAction color="#2f80ed">
                 {`+${clapAction - prevClapAction}`}
@@ -499,7 +557,7 @@ const ReviewCard = (props) => {
               <Boo />
             </ButtonIcon>
             {booAction === prevBooAction ? (
-              <span>{booAction + boo}</span>
+              <span>{numberFormat(booAction + boo)}</span>
             ) : (
               <NumberAction color="#eb5757">
                 {`+${booAction - prevBooAction}`}
@@ -530,18 +588,28 @@ const ReviewCard = (props) => {
       </CardDetails>
       <ModalBackdrop
         show={showReportModal}
-        onClick={() => setReportModal(false)}
+        onClick={closeReportModal}
       />
       <Modal show={showReportModal}>
-        แจ้งลบรีวิวหรือไม่ ?
+        เหตุผลในการแจ้งลบ
+        <Warning>
+          {reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}
+        </Warning>
+        <ReportField
+          placeholder="อย่างน้อย 10 ตัวอักษร"
+          value={reportReason.reason}
+          onChange={(e) => handleOnchange(e)}
+        />
         <ModalActions>
-          <CancelButton onClick={() => setReportModal(false)}>
+          <CancelButton onClick={closeReportModal}>
             ยกเลิก
           </CancelButton>
-          <ConfirmButton onClick={sendReport}>แจ้งลบ</ConfirmButton>
+          <ConfirmButton onClick={sendReport}>
+            {isLoadingReport ? <CircularProgressCustom size="3rem" /> : "แจ้งลบ"}
+          </ConfirmButton>
         </ModalActions>
       </Modal>
-      <ModalBackdrop show={showEditModal} onClick={() => setEditModal(false)} />
+      <ModalBackdrop show={showEditModal} onClick={closeEditModal} />
       <Modal show={showEditModal}>
         กรอกตัวเลข 4 หลักของคุณเพื่อลบรีวิว
         <Warning>
@@ -555,13 +623,13 @@ const ReviewCard = (props) => {
           type="text"
           placeholder="ใส่ตัวเลข 4 หลัก"
           value={auth.value}
-          onInput={onInput}
+          onInput={handleOnchangePassword}
           maxLength={4}
         />
         <ModalActions>
-          <CancelButton onClick={() => closeEditModal()}>ย้อนกลับ</CancelButton>
+          <CancelButton onClick={closeEditModal}>ย้อนกลับ</CancelButton>
           <ConfirmButton onClick={deleteReview}>
-            {isLoading ? <CircularProgressCustom size="3rem" /> : "ลบรีวิว"}
+            {isLoadingDelete ? <CircularProgressCustom size="3rem" /> : "ลบรีวิว"}
           </ConfirmButton>
         </ModalActions>
       </Modal>
