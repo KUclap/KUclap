@@ -9,6 +9,7 @@ const KUclapText = styled.p`
   flex-direction: column;
   align-items: center;
   margin-bottom: 3rem;
+  cursor: pointer;
 `;
 
 const DetailKUclap = styled.span`
@@ -20,14 +21,19 @@ const DetailKUclap = styled.span`
 `;
 
 const Header = () => {
+  const NavigateMain = () => {
+    if (typeof window !== "undefined")
+      window.location.href = "https://marsdev31.github.io/KUclap/";
+  };
+
   return (
     <Fragment>
-      <KUclapText>
+      <KUclapText onClick={NavigateMain}>
         <KUClap />
         <span>
           <b>KU</b>CLAP
         </span>
-        <DetailKUclap>ค้นหาและแบ่งปันรีวิววิชาเรียน</DetailKUclap>
+        <DetailKUclap>ค้นหาและแบ่งปันรีวิววิชาบูรณาการ</DetailKUclap>
       </KUclapText>
     </Fragment>
   );
