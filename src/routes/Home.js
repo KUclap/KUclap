@@ -21,7 +21,7 @@ import {
   ReviewSkeletonA,
   ReviewSkeletonB,
 } from "../components/common/ReviewSkeleton";
-import { GoToTop, NoMore } from "../components/utillity/Icons";
+import { GoToTop, NoMoreReview, NoReview } from "../components/utillity/Icons";
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -399,7 +399,7 @@ const App = ({ classid }) => {
             <DetailTitle>รีวิวทั้งหมด</DetailTitle>
             <ContainerBtns>
               <ButtonLastReview onClick={NavigateMain}>
-                ดูรีวิวล่าสุด
+                หน้าแรก
               </ButtonLastReview>
               <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
             </ContainerBtns>
@@ -437,7 +437,7 @@ const App = ({ classid }) => {
               <Fragment>
                 <ContainerNoMore>
                   <NoMoreCustom>
-                    <NoMore />
+                    {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
                   </NoMoreCustom>
                   {show === "details" ? (
                     <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
@@ -458,7 +458,7 @@ export default App;
 const GoTopCustom = styled.a`
   position: fixed;
   z-index: 2;
-  right: 1.5rem;
+  right: 2.5rem;
   bottom: 2.5rem;
   cursor: pointer;
   transition: all 0.5s ease;

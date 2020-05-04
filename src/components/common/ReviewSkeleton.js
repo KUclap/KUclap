@@ -27,7 +27,7 @@ const ReviewSkeletonA = () => (
         height="100%"
         clip-path="url(#clip-path)"
         style='fill: url("#fill");'
-      ></rect>
+       />
       <defs>
         <clipPath id="clip-path">
           <rect x="8" y="156" rx="3" ry="3" width="68" height="12" />
@@ -47,7 +47,7 @@ const ReviewSkeletonA = () => (
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-            ></animate>
+             />
           </stop>
           <stop offset="1.59996" stop-color="#ecebeb" stop-opacity="1">
             <animate
@@ -56,7 +56,7 @@ const ReviewSkeletonA = () => (
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-            ></animate>
+             />
           </stop>
           <stop offset="2.59996" stop-color="#f3f3f3" stop-opacity="1">
             <animate
@@ -65,7 +65,7 @@ const ReviewSkeletonA = () => (
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-            ></animate>
+             />
           </stop>
         </linearGradient>
       </defs>
@@ -91,7 +91,7 @@ const ReviewSkeletonB = () => (
         height="100%"
         clip-path="url(#clip-path-b)"
         style='fill: url("#fill-b");'
-      ></rect>
+       />
       <defs>
         <clipPath id="clip-path-b">
           <rect x="8" y="130" rx="3" ry="3" width="68" height="12" />
@@ -109,7 +109,7 @@ const ReviewSkeletonB = () => (
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-            ></animate>
+             />
           </stop>
           <stop offset="1.59996" stop-color="#ecebeb" stop-opacity="1">
             <animate
@@ -118,7 +118,7 @@ const ReviewSkeletonB = () => (
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-            ></animate>
+             />
           </stop>
           <stop offset="2.59996" stop-color="#f3f3f3" stop-opacity="1">
             <animate
@@ -127,7 +127,7 @@ const ReviewSkeletonB = () => (
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-            ></animate>
+             />
           </stop>
         </linearGradient>
       </defs>
