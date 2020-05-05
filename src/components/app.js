@@ -11,25 +11,25 @@ export default class App extends Component {
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
    *	@param {string} event.url	The newly routed URL
    */
-  
-  state = {
-    theme: "light"
-  };
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
-    if (Object.keys(themes).includes(localStorage.theme)) this.setState({ theme: localStorage.theme });
-    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      this.setState({ theme: "dark" });
-      localStorage.setItem("theme", "dark");
-    }
-  };
+    let theme = "light";
+    if (Object.keys(themes).includes(localStorage.theme)) theme = localStorage.theme;
+    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) theme = "dark";
+
+    this.state = {
+      theme
+    };
+  }
 
   toggleTheme = (e) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState(prev => {
-      if (prev.theme === "dark") return { theme: "light" };
-      else return { theme: "dark" };
+      const newTheme = prev.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", newTheme);
+      return { theme: newTheme };
     });
   };
 
