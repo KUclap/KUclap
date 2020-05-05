@@ -1,4 +1,6 @@
 export default {
+  name: "light",
+
   solid: "white",
   body: "white",
   bodyText: "black",

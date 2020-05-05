@@ -1,4 +1,6 @@
 export default {
+  name: "dark",
+
   solid: "black",
   body: "#191b1f",
   bodyText: "#f5f5f5",
