@@ -173,10 +173,6 @@ const ButtonLastReview = styled(Button)`
   }
 `;
 
-const ButtonDarkMode = styled(ButtonLastReview)`
-  margin-top: 10px;
-`
-
 const ContainerBtns = styled.div`
   margin: 0;
   display: flex;
@@ -408,7 +404,7 @@ const App = ({ classid, toggleTheme }) => {
       <GoTopCustom goToTop={goToTop} href="#top">
         <GoToTop />
       </GoTopCustom>
-      <Header />
+      <Header toggleTheme={toggleTheme} />
       <SelectCustom
         name="major"
         autosize={false}
@@ -419,7 +415,6 @@ const App = ({ classid, toggleTheme }) => {
         onChange={handleSelected}
         ref={newEle}
       />
-      <ButtonDarkMode onClick={toggleTheme}>เปิด/ปิด Dark Mode</ButtonDarkMode>
       <SubjectTitle enable={show} color={ColorHash(classSelected.classId)}>
         <span>{classSelected.classId}</span>
         {getClassName(classSelected.label)}
