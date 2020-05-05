@@ -51,7 +51,7 @@ const Boo = ({ bgColor }) => (
   </svg>
 );
 
-const Worst = () => (
+const Worst = ({ bgColor }) => (
   <svg
     width="30"
     height="30"
@@ -59,7 +59,7 @@ const Worst = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect x="8" y="9" width="14" height="2" fill="white" />
+    <rect x="8" y="9" width="14" height="2" fill={bgColor || "white"} />
     <circle id="outer" cx="15" cy="15" r="14" stroke="black" stroke-width="2" />
     <circle id="eye" cx="9" cy="10" r="1" fill="black" />
     <circle id="eye" cx="21" cy="10" r="1" fill="black" />
@@ -73,7 +73,7 @@ const Worst = () => (
   </svg>
 );
 
-const Bad = () => (
+const Bad = ({ bgColor }) => (
   <div>
     <svg
       width="30"
@@ -90,7 +90,7 @@ const Bad = () => (
         stroke="black"
         stroke-width="2"
       />
-      <rect x="8" y="9" width="14" height="2" fill="white" />
+      <rect x="8" y="9" width="14" height="2" fill={bgColor || "white"} />
       <circle id="eye" cx="9" cy="10" r="1" fill="black" />
       <circle id="eye" cx="21" cy="10" r="1" fill="black" />
       <path
@@ -104,7 +104,7 @@ const Bad = () => (
   </div>
 );
 
-const So = () => (
+const So = ({ bgColor }) => (
   <svg
     width="30"
     height="30"
@@ -113,7 +113,7 @@ const So = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <circle id="outer" cx="15" cy="15" r="14" stroke="black" stroke-width="2" />
-    <rect x="8" y="9" width="14" height="2" fill="white" />
+    <rect x="8" y="9" width="14" height="2" fill={bgColor || "white"} />
     <circle id="eye" cx="9" cy="10" r="1" fill="black" />
     <circle id="eye" cx="21" cy="10" r="1" fill="black" />
     <path
@@ -126,7 +126,7 @@ const So = () => (
   </svg>
 );
 
-const Good = () => (
+const Good = ({ bgColor }) => (
   <svg
     width="30"
     height="30"
@@ -135,7 +135,7 @@ const Good = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <circle id="outer" cx="15" cy="15" r="14" stroke="black" stroke-width="2" />
-    <rect x="8" y="9" width="14" height="2" fill="white" />
+    <rect x="8" y="9" width="14" height="2" fill={bgColor || "white"} />
     <circle id="eye" cx="9" cy="10" r="1" fill="black" />
     <circle id="eye" cx="21" cy="10" r="1" fill="black" />
     <path
@@ -148,7 +148,7 @@ const Good = () => (
   </svg>
 );
 
-const Excellent = () => (
+const Excellent = ({ bgColor }) => (
   <svg
     width="30"
     height="30"
@@ -157,7 +157,7 @@ const Excellent = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <circle id="outer" cx="15" cy="15" r="14" stroke="black" stroke-width="2" />
-    <rect x="8" y="9" width="14" height="2" fill="white" />
+    <rect x="8" y="9" width="14" height="2" fill={bgColor || "white"} />
     <circle id="eye" cx="9" cy="10" r="1" fill="black" />
     <circle id="eye" cx="21" cy="10" r="1" fill="black" />
     <path

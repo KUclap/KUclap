@@ -503,7 +503,7 @@ const ReviewForm = (props) => {
                 }}
                 selected={form.stats[item.id] - 1 === key_rate}
               >
-                <Rate />
+                <Rate bgColor={props.theme.body} />
               </RateContainer>
             ))}
           </Rating>
