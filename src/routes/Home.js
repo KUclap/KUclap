@@ -3,7 +3,7 @@ import { route } from "preact-router";
 import { useState, useEffect, useRef } from "preact/hooks";
 import media from "styled-media-query";
 import Select from "react-virtualized-select";
-import styled, { css, createGlobalStyle } from "styled-components";
+import styled, { css, createGlobalStyle, withTheme } from "styled-components";
 
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
@@ -39,6 +39,8 @@ const GlobalStyles = createGlobalStyle`
 
   } 
   body {
+    color: ${(props) => props.theme.bodyText};
+    background: ${(props) => props.theme.body};
     font-family: 'Kanit', arial, sans-serif;
     font-weight: 400; 
     height: auto;
@@ -75,16 +77,28 @@ const SelectCustom = styled(Select)`
     height: 5.2rem;
   }
 
+  &, &.is-open, &.is-focused, &.is-focused:not(.is-open) {
+    .Select-control {
+      background-color: ${(props) => props.theme.body};
+    }
+  }
   .Select-control {
     width: 100%;
     margin: 0 auto;
-    border: 0.2rem solid #e0e0e0;
+    border: 0.2rem solid ${(props) => props.theme.lightColor};
     border-radius: 10px;
   }
 
   .Select-input {
     width: 100%;
     font-size: 16px;
+  }
+  .Select-input > input {
+    color: ${(props) => props.theme.bodyText};
+  }
+  
+  .Select-menu-outer, .Select-option {
+    background-color: ${(props) => props.theme.body};
   }
 `;
 
@@ -93,12 +107,12 @@ const SubjectTitle = styled.p`
   margin: 3rem 6.4rem;
   min-width: 86%;
   display: ${(props) => (props.enable !== "main" ? "block" : "none")};
-  color: #4f4f4f;
+  color: ${(props) => props.theme.mainText};
   font-weight: 600;
   line-height: 180%;
 
   span {
-    background: ${props => props.color};
+    background: ${(props) => props.color};
     color: white;
     padding: 0.1rem 1.4rem;
     border-radius: 0.6rem;
@@ -110,7 +124,7 @@ const DetailTitle = styled.p`
   font-size: 2rem;
   margin: 2rem 0;
   font-weight: 600;
-  color: ${(props) => (props.desc ? "#BDBDBD" : "#4F4F4F")};
+  color: ${(props) => (props.desc ? props.theme.placeholderText : props.theme.mainText)};
   padding: ${(props) => (props.desc ? "0 1rem" : 0)};
 `;
 
@@ -150,12 +164,12 @@ const Button = styled.div`
 
 const ButtonLastReview = styled(Button)`
   border: 0.2rem solid #979797;
-  background: white;
+  background: ${(props) => props.theme.body};
   color: #979797;
   font-size: 1.7rem;
   margin-right: 1.5rem;
   &:hover {
-    background: #f2f2f2;
+    background: ${(props) => props.theme.lightColor2};
   }
 `;
 
@@ -178,7 +192,7 @@ const NoMoreCustom = styled.div`
   margin: 2.9rem auto;
 `;
 
-const App = ({ classid }) => {
+const App = ({ classid, toggleTheme }) => {
   // const [tabIndex, setTabIndex] = useState(1);
   const newEle = useRef(null);
   const [goToTop, setGoToTop] = useState(false);
@@ -390,7 +404,7 @@ const App = ({ classid }) => {
       <GoTopCustom goToTop={goToTop} href="#top">
         <GoToTop />
       </GoTopCustom>
-      <Header />
+      <Header toggleTheme={toggleTheme} />
       <SelectCustom
         name="major"
         autosize={false}
@@ -475,7 +489,7 @@ const App = ({ classid }) => {
   );
 };
 
-export default App;
+export default withTheme(App);
 
 const GoTopCustom = styled.a`
   position: fixed;
