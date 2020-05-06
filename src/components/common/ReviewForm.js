@@ -214,7 +214,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
-  border: 0.3rem solid ${(props) => props.theme.lightColor};
+  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
   background-color: ${(props) => props.theme.body};
   position: fixed;
