@@ -109,7 +109,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
-  border: 1px solid white;
+  border: 0.3rem solid ${(props) => props.theme.lightColor};
   border-radius: 10px;
   background-color: ${(props) => props.theme.body};
   position: fixed;

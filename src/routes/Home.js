@@ -101,6 +101,7 @@ const SelectCustom = styled(Select)`
   
   .Select-menu-outer, .Select-option {
     background-color: ${(props) => props.theme.body};
+    border-color: #888;
   }
 `;
 

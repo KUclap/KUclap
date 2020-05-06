@@ -3,12 +3,10 @@ import { Dark, Light } from "../utillity/Icons";
 
 const Button = styled.div`
   background: white;
-
+  cursor: pointer;
   width: 7.2rem;
-  height: 3.5rem;
+  height: 3.6rem;
   border-radius: 1.8rem;
-  /* border: ${(props) => props.theme.name === 'light' ? `0.2rem solid ${props.theme.bodyText}` : 0}; */
-  /* border: 0.2rem solid ${(props) => props.theme.bodyText}; */
   box-shadow: ${(props) => props.theme.name === 'dark' ? 0 : `0 0 0 0.25rem ${props.theme.bodyText}`};
   
   ${(props) => props.right ? `
