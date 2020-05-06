@@ -41,6 +41,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     color: ${(props) => props.theme.bodyText};
     background: ${(props) => props.theme.body};
+    transition: background .2s ease-in-out;
     font-family: 'Kanit', arial, sans-serif;
     font-weight: 400; 
     height: auto;
@@ -75,6 +76,7 @@ const SelectCustom = styled(Select)`
   .Select-placeholder {
     color: #888;
     height: 5.2rem;
+    user-select: none;
   }
 
   &, &.is-open, &.is-focused, &.is-focused:not(.is-open) {

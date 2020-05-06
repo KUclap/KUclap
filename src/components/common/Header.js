@@ -11,6 +11,7 @@ const KUclapText = styled.p`
   align-items: center;
   margin-bottom: 3rem;
   cursor: pointer;
+  user-select: none;
 `;
 
 const DetailKUclap = styled.span`
