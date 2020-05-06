@@ -13,7 +13,8 @@
     "test": "jest",
     "predeploy": "npm run build:gh",
     "deploy": "gh-pages -d build",
-    "build:gh": "GITHUB_PAGES=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\""
+    "build:gh": "GITHUB_PAGES=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\"",
+    "start:server": "babel-node server.js"
   },
   "eslintConfig": {
     "extends": "preact",
@@ -22,6 +23,12 @@
     ]
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^3.10.0",
     "dot-json": "^1.2.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-preact-pure": "^2.0.0",
