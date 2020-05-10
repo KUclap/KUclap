@@ -22,7 +22,7 @@ const MoreProductionText = styled.p`
 
 const Button = styled.button`
   cursor: pointer;
-  background: ${(props) => props.theme.solid};
+  background: ${(props) => props.theme.body};
   color: #77b280;
   min-width: 27.6rem;
   font-size: 2rem;

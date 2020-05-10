@@ -1,25 +1,13 @@
 import styled, { withTheme } from "styled-components";
-import media from "styled-media-query";
 import { Dark, Light } from "../utillity/Icons";
 
 const Button = styled.div`
   background: white;
-
-  width: 72px;
-  height: 36px;
-  border-radius: 18px;
-  border: 2px solid ${(props) => props.theme.bodyText};
-  
-  ${media.lessThan("medium")`
-    width: 56px;
-    height: 28px;
-    border-width: 1.5px;
-  `}
-
-  ${media.lessThan("small")`
-    width: 48px;
-    height: 24px;
-  `}
+  cursor: pointer;
+  width: 7.2rem;
+  height: 3.6rem;
+  border-radius: 1.8rem;
+  box-shadow: ${(props) => props.theme.name === 'dark' ? 0 : `0 0 0 0.25rem ${props.theme.bodyText}`};
   
   ${(props) => props.right ? `
     position: absolute;
@@ -29,31 +17,18 @@ const Button = styled.div`
   ` : ''}
 `;
 const Circle = styled.div`
-  background ${(props) => props.theme.body};
-  float: ${(props) => props.theme.name === 'dark' ? 'right' : 'left'};
+  background: ${(props) => props.theme.body};
+  position: absolute;
+  left: ${(props) => props.theme.name === 'dark' ? '50%' : 0};
+  right: ${(props) => props.theme.name === 'dark' ? 0 : '50%'};
+  transition: all 300ms ease-in-out;
 
-  margin: 2px;
-  padding: 4px;
-  width: 28px;
-  height: 28px;
-  border-radius: 14px;
-  border: 2px solid black;
-
-  ${media.lessThan("medium")`
-    margin: 2.5px;
-    padding: 2px;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    border-width: 1.5px;
-  `}
-
-  ${media.lessThan("small")`
-    padding: 1px;
-    width: 16px;
-    height: 16px;
-    border-radius: 8px;
-  `}
+  margin: 0.4rem;
+  padding: 0.4rem;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 1.4rem;
+  border: 0.2rem solid black;
 
   svg {
     width: 100%;

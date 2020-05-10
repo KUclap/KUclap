@@ -183,6 +183,7 @@ const Button = styled.button`
 const ReviewButton = styled(Button)`
   padding: 0.4rem 2.4rem;
   width: 12.2rem;
+  color: white;
   background-color: #2f80ed;
   font-size: 2rem;
   align-self: center;
@@ -213,7 +214,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
-  border: 1px solid white;
+  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
   background-color: ${(props) => props.theme.body};
   position: fixed;
