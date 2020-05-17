@@ -17,7 +17,7 @@ const KUclapText = styled.p`
 const DetailKUclap = styled.span`
   font-size: 2.5rem;
   text-transform: uppercase;
-  color: ${(props) => props.theme.mainText};
+  color: ${(props) => props.theme.mainText || "#4f4f4f"};
   text-align: center;
   font-weight: 400;
 `;
@@ -27,10 +27,10 @@ const Header = ({ theme, toggleTheme }) => {
     if (typeof window !== "undefined")
       window.location.href = "https://marsdev31.github.io/KUclap/";
   };
-
+  
   return (
     <Fragment>
-      <ThemeToggleButton right onClick={toggleTheme} />
+      <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={NavigateMain}>
         <KUClap bgColor={theme.body} textColor={theme.bodyText} />
         <span>

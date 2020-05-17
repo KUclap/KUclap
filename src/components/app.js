@@ -3,8 +3,10 @@ import { Router } from "preact-router";
 import baseroute from "../baseroute";
 import { ThemeProvider } from "styled-components";
 import * as themes from "../assets/themes";
+import AsyncRoute from "preact-async-route";
+// import LazyRoute from "preact-lazy-route";
 // Code-splitting is automated for routes
-import Home from "../routes/Home";
+import Home from "../route/Home";
 
 export default class App extends Component {
   /** Gets fired when the route changes.
@@ -15,20 +17,30 @@ export default class App extends Component {
     super(props);
 
     let theme = "light";
-    if (Object.keys(themes).includes(localStorage.theme)) theme = localStorage.theme;
-    else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) theme = "dark";
-
+    // if (typeof localStorage === "object")
+    //   if (Object.keys(themes).includes(localStorage.theme)) {
+    //     theme = localStorage.theme;
+    //   } else if (
+    //     typeof window !== "undefined" &&
+    //     window.matchMedia &&
+    //     window.matchMedia("(prefers-color-scheme: dark)").matches
+    //   ) {
+    //     theme = "dark";
+    //   }
     this.state = {
-      theme
+      theme,
     };
+    // console.log(this.state.theme, themes[this.state.theme]);
   }
 
   toggleTheme = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState(prev => {
+
+    this.setState((prev) => {
       const newTheme = prev.theme === "dark" ? "light" : "dark";
-      localStorage.setItem("theme", newTheme);
+      if (typeof window !== "undefined")
+        localStorage.setItem("theme", newTheme);
       return { theme: newTheme };
     });
   };
@@ -41,8 +53,21 @@ export default class App extends Component {
     return (
       <ThemeProvider theme={themes[this.state.theme]}>
         <Router onChange={this.handleRoute}>
-          <Home path={`${baseroute}/`} classid="main" toggleTheme={this.toggleTheme} />
-          {/* <Home path={`${baseroute}/:classid`} /> */}
+          <AsyncRoute
+            path={`${baseroute}/`}
+            classid="main"
+            toggleTheme={this.toggleTheme}
+            component={Home}
+            // getComponent={() =>
+            //   typeof window !== "undefined"
+            //     ? require("../route/Home").then((module) => module.default)
+            //     : null
+          />
+          {/* <Home
+            path={`${baseroute}/`}
+            classid="main"
+            toggleTheme={this.toggleTheme}
+          /> */}
         </Router>
       </ThemeProvider>
     );

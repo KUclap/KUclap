@@ -22,7 +22,7 @@ import {
   ReviewSkeletonB,
 } from "../components/common/ReviewSkeleton";
 import { GoToTop, NoMoreReview, NoReview } from "../components/utillity/Icons";
-import ColorHash from '../components/utillity/ColorHash';
+import ColorHash from "../components/utillity/ColorHash";
 
 const GlobalStyles = createGlobalStyle`
   html {
@@ -39,9 +39,8 @@ const GlobalStyles = createGlobalStyle`
 
   } 
   body {
-    color: ${(props) => props.theme.bodyText};
-    background: ${(props) => props.theme.body};
-    transition: background .2s ease-in-out;
+    color: ${(props) => props.theme.bodyText || "#f5f5f5"};
+    background: ${(props) => props.theme.body || "#191b1f"};
     font-family: 'Kanit', arial, sans-serif;
     font-weight: 400; 
     height: auto;
@@ -76,10 +75,12 @@ const SelectCustom = styled(Select)`
   .Select-placeholder {
     color: #888;
     height: 5.2rem;
-    user-select: none;
   }
 
-  &, &.is-open, &.is-focused, &.is-focused:not(.is-open) {
+  &,
+  &.is-open,
+  &.is-focused,
+  &.is-focused:not(.is-open) {
     .Select-control {
       background-color: ${(props) => props.theme.body};
     }
@@ -98,10 +99,10 @@ const SelectCustom = styled(Select)`
   .Select-input > input {
     color: ${(props) => props.theme.bodyText};
   }
-  
-  .Select-menu-outer, .Select-option {
+
+  .Select-menu-outer,
+  .Select-option {
     background-color: ${(props) => props.theme.body};
-    border-color: #888;
   }
 `;
 
@@ -127,7 +128,8 @@ const DetailTitle = styled.p`
   font-size: 2rem;
   margin: 2rem 0;
   font-weight: 600;
-  color: ${(props) => (props.desc ? props.theme.placeholderText : props.theme.mainText)};
+  color: ${(props) =>
+    props.desc ? props.theme.placeholderText : props.theme.mainText};
   padding: ${(props) => (props.desc ? "0 1rem" : 0)};
 `;
 
@@ -286,13 +288,12 @@ const App = ({ classid, toggleTheme }) => {
   };
 
   const getClassName = (label) => {
-    const labelSplit = label.split(" ")
-    let labelName = label
-    if (labelSplit.length > 1)
-      labelSplit.shift();
-      labelName = labelSplit.join(" ");
-    return labelName
-  }
+    const labelSplit = label.split(" ");
+    let labelName = label;
+    if (labelSplit.length > 1) labelSplit.shift();
+    labelName = labelSplit.join(" ");
+    return labelName;
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined")
