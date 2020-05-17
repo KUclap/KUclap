@@ -17,16 +17,16 @@ export default class App extends Component {
     super(props);
 
     let theme = "light";
-    // if (typeof localStorage === "object")
-    //   if (Object.keys(themes).includes(localStorage.theme)) {
-    //     theme = localStorage.theme;
-    //   } else if (
-    //     typeof window !== "undefined" &&
-    //     window.matchMedia &&
-    //     window.matchMedia("(prefers-color-scheme: dark)").matches
-    //   ) {
-    //     theme = "dark";
-    //   }
+    if (typeof localStorage === "object")
+      if (Object.keys(themes).includes(localStorage.theme)) {
+        theme = localStorage.theme;
+      } else if (
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        theme = "dark";
+      }
     this.state = {
       theme,
     };
