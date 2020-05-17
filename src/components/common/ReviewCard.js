@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
-import styled, { css } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 import { Clap, Boo, RightArrow } from "../utillity/Icons";
 import { pulse } from "../utillity/keyframs";
 import APIs from "../utillity/apis";
@@ -9,7 +9,7 @@ import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 import ColorHash from '../utillity/ColorHash';
 
 const Container = styled.div`
-  border: 0.2rem solid #e0e0e0;
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   margin: 3rem 0;
   padding: 1.6rem;
@@ -22,7 +22,7 @@ const Container = styled.div`
 const Content = styled.p`
   padding: 0 1rem;
   font-size: 2rem;
-  color: #4f4f4f;
+  color: ${(props) => props.theme.mainText};
   white-space: pre-line;
   overflow-wrap: break-word;
   margin: 0;
@@ -109,8 +109,9 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
+  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
-  background-color: white;
+  background-color: ${(props) => props.theme.body};
   position: fixed;
   top: 50%;
   left: 50%;
@@ -156,7 +157,7 @@ const CancelButton = styled(ConfirmButton)`
   height: 3.9rem;
   font-size: 2rem;
   text-align: center;
-  background-color: #bdbdbd;
+  background-color: ${(props) => props.theme.placeholderText};
 `;
 
 const NumberAction = styled.span`
@@ -166,12 +167,12 @@ const NumberAction = styled.span`
 
 const Menu = styled.div`
   display: ${(props) => (props.openMenu ? "flex" : "none")};
-  background: white;
+  background: ${(props) => props.theme.body};
   position: absolute;
   flex-direction: column;
   text-align: center;
   border-radius: 8%;
-  border: 0.2rem solid #e0e0e0;
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   right: 0rem;
   transform: translate(-84%, 62%);
 `;
@@ -180,21 +181,22 @@ const MenuItem = styled.div`
   padding: 1rem;
   user-select: none;
   cursor: pointer;
-  color: #4f4f4f;
+  color: ${(props) => props.theme.mainText};
 
   &:hover {
-    background: hsl(212, 71%, 95%);
-    color: #4f4f4f;
+    background: ${(props) => props.theme.menuItem.hover};
+    color: ${(props) => props.theme.mainText};
   }
 
   &:active {
-    background: hsl(214, 84%, 90%);
-    color: #4f4f4f;
+    background: ${(props) => props.theme.menuItem.active};
+    color: ${(props) => props.theme.mainText};
   }
 `;
 
 const ReportField = styled.textarea`
-  border: 0.2rem solid #e0e0e0;
+  background-color: ${(props) => props.theme.body};
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   height: 12rem;
@@ -206,13 +208,15 @@ const ReportField = styled.textarea`
   white-space: pre-wrap;
   overflow-wrap: break-word;
 
+  color: ${(props) => props.theme.bodyText};
   &::placeholder {
-    color: #bdbdbd;
+    color: ${(props) => props.theme.placeholder};
   }
 `;
 
 const Input = styled.input`
-  border: 0.2rem solid #e0e0e0;
+  background-color: ${(props) => props.theme.body};
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   height: 3.4rem;
   width: 18rem;
@@ -223,8 +227,9 @@ const Input = styled.input`
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
 
+  color: ${(props) => props.theme.bodyText};
   &::placeholder {
-    color: #bdbdbd;
+    color: ${(props) => props.theme.placeholder};
   }
 `;
 
@@ -249,6 +254,7 @@ const Subject = styled.div`
   overflow: hidden;
   max-width: 49%;
   white-space: nowrap;
+  filter: brightness(${(props) => props.theme.subjectBrightness}%);
 
   span {
     font-weight: 400;
@@ -291,6 +297,7 @@ const ReviewCard = (props) => {
     typeShow,
     classId,
     classNameTH,
+    theme,
   } = props;
   const [clapActioning, setClapActioning] = useState(false);
   const [booActioning, setBooActioning] = useState(false);
@@ -508,7 +515,7 @@ const ReviewCard = (props) => {
               valueAction={clapAction === prevClapAction}
               clapAni={clapAni}
             >
-              <Clap />
+              <Clap bgColor={theme.body} />
             </ButtonIcon>
             {clapAction === prevClapAction ? (
               <span>{numberFormat(clapAction + clap)}</span>
@@ -525,7 +532,7 @@ const ReviewCard = (props) => {
               valueAction={booAction === prevBooAction}
               booAni={booAni}
             >
-              <Boo />
+              <Boo bgColor={theme.body} />
             </ButtonIcon>
             {booAction === prevBooAction ? (
               <span>{numberFormat(booAction + boo)}</span>
@@ -607,7 +614,7 @@ const ReviewCard = (props) => {
     </Container>
   );
 };
-export default ReviewCard;
+export default withTheme(ReviewCard);
 
 const ButtonIcon = styled(Button)`
   -webkit-tap-highlight-color: transparent;
@@ -642,7 +649,7 @@ const ButtonIcon = styled(Button)`
         ? "rgba(47, 128, 237, 9%)"
         : props.type === "boo"
         ? "rgba(241, 191, 157, 9%)"
-        : "#fff"};
+        : props.theme.solid};
   }
 
   svg {

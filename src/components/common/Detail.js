@@ -1,11 +1,11 @@
 import { h } from "preact";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 const ScoreTitle = styled.p`
   font-size: 1.7rem;
   width: ${(props) => (props.score ? "0rem" : "36%")};
-  color: ${(props) => (props.score ? "#BDBDBD" : "#4F4F4F")};
+  color: ${(props) => (props.score ? props.theme.placeholderText : props.theme.mainText)};
 `;
 
 const LinearProgressCustom = styled(LinearProgress)`
@@ -17,7 +17,7 @@ const LinearProgressCustom = styled(LinearProgress)`
   }
 
   &.MuiLinearProgress-colorPrimary {
-    background-color: #f2f2f2;
+    background-color: ${(props) => props.theme.lightColor2};
   }
 
   & .MuiLinearProgress-barColorPrimary {
@@ -59,7 +59,7 @@ const DetailTitle = styled.p`
   font-size: 2rem;
   margin: 1.2rem 0;
   font-weight: 600;
-  color: ${(props) => (props.desc ? "#BDBDBD" : "#4F4F4F")};
+  color: ${(props) => (props.desc ? props.theme.placeholderText : props.theme.mainText)};
   padding: ${(props) => (props.desc ? "0 1rem" : "0")};
 `;
 
@@ -113,4 +113,4 @@ const Detail = ({ score, enable }) => {
   );
 };
 
-export default Detail;
+export default withTheme(Detail);

@@ -1,7 +1,7 @@
 import { h } from "preact";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 const Container = styled.div`
-  border: 0.2rem solid #e0e0e0;
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   margin: 2rem 0;
   padding: 1.2rem 1.6rem;
@@ -9,7 +9,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const ReviewSkeletonA = () => (
+const ReviewSkeletonA = withTheme(({ theme }) => (
   <Container>
     <svg
       role="img"
@@ -40,7 +40,7 @@ const ReviewSkeletonA = () => (
           <rect x="8" y="12" rx="3" ry="3" width="60%" height="12" />
         </clipPath>
         <linearGradient id="fill">
-          <stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">
+          <stop offset="0.599964" stop-color={theme.skeleton[0]} stop-opacity="1">
             <animate
               attributeName="offset"
               values="-2; -2; 1"
@@ -49,7 +49,7 @@ const ReviewSkeletonA = () => (
               repeatCount="indefinite"
              />
           </stop>
-          <stop offset="1.59996" stop-color="#ecebeb" stop-opacity="1">
+          <stop offset="1.59996" stop-color={theme.skeleton[1]} stop-opacity="1">
             <animate
               attributeName="offset"
               values="-1; -1; 2"
@@ -58,7 +58,7 @@ const ReviewSkeletonA = () => (
               repeatCount="indefinite"
              />
           </stop>
-          <stop offset="2.59996" stop-color="#f3f3f3" stop-opacity="1">
+          <stop offset="2.59996" stop-color={theme.skeleton[0]} stop-opacity="1">
             <animate
               attributeName="offset"
               values="0; 0; 3"
@@ -71,9 +71,9 @@ const ReviewSkeletonA = () => (
       </defs>
     </svg>
   </Container>
-);
+));
 
-const ReviewSkeletonB = () => (
+const ReviewSkeletonB = withTheme(({ theme }) => (
   <Container>
     <svg
       role="img"
@@ -102,7 +102,7 @@ const ReviewSkeletonB = () => (
           <rect x="8" y="12" rx="3" ry="3" width="50%" height="12" />
         </clipPath>
         <linearGradient id="fill-b">
-          <stop offset="0.599964" stop-color="#f3f3f3" stop-opacity="1">
+          <stop offset="0.599964" stop-color={theme.skeleton[0]} stop-opacity="1">
             <animate
               attributeName="offset"
               values="-2; -2; 1"
@@ -111,7 +111,7 @@ const ReviewSkeletonB = () => (
               repeatCount="indefinite"
              />
           </stop>
-          <stop offset="1.59996" stop-color="#ecebeb" stop-opacity="1">
+          <stop offset="1.59996" stop-color={theme.skeleton[1]} stop-opacity="1">
             <animate
               attributeName="offset"
               values="-1; -1; 2"
@@ -120,7 +120,7 @@ const ReviewSkeletonB = () => (
               repeatCount="indefinite"
              />
           </stop>
-          <stop offset="2.59996" stop-color="#f3f3f3" stop-opacity="1">
+          <stop offset="2.59996" stop-color={theme.skeleton[0]} stop-opacity="1">
             <animate
               attributeName="offset"
               values="0; 0; 3"
@@ -133,6 +133,6 @@ const ReviewSkeletonB = () => (
       </defs>
     </svg>
   </Container>
-);
+));
 
 export { ReviewSkeletonA, ReviewSkeletonB };

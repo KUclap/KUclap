@@ -1,30 +1,36 @@
-const express = require("express");
+const sirv = require("sirv");
+const polka = require("polka");
 const { h } = require("preact");
+const { basename } = require("path");
+const { readFileSync } = require("fs");
+const compression = require("compression")();
 const render = require("preact-render-to-string");
-const App = require("./src/components/app");
-const path = require("path");
-// import express from "express";
-// import { h } from "preact";
-// import render from "preact-render-to-string";
-// import path from "path";
-// import App from "./src/components/app";
+const bundle = require("./build/ssr-build/ssr-bundle");
 
-const app = express();
+const App = bundle.default;
+const { PORT = 3000 } = process.env;
 
-app.use(express.static(path.join(__dirname, "dist")));
+// TODO: improve this?
+const RGX = /<div id="app"[^>]*>.*?(?=<script)/i;
+const template = readFileSync("build/index.html", "utf8");
 
-app.listen(8080);
+function setHeaders(res, file) {
+  let cache =
+    basename(file) === "sw.js"
+      ? "private,no-cache"
+      : "public,max-age=31536000,immutable";
+  res.setHeader("Cache-Control", cache); // don't cache service worker file
+}
 
-app.get("*", (req, res) => {
-  const html = render(<App url={req.url} />);
-
-  res.send(`
-      <!DOCTYPE html>
-      <html>
-          <body>
-              <div id="app">${html}</div>
-              <script src="./app.js"></script>
-          </body>
-      </html>
-    `);
-});
+polka()
+  .use(compression)
+  .use(sirv("build", { setHeaders }))
+  .get("*", (req, res) => {
+    let body = render(h(App, { url: req.url }));
+    res.setHeader("Content-Type", "text/html");
+    res.end(template.replace(RGX, body));
+  })
+  .listen(PORT, (err) => {
+    if (err) throw err;
+    console.log(`> Running on localhost:${PORT}`);
+  });

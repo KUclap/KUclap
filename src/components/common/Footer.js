@@ -1,5 +1,5 @@
 import { h } from "preact";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import img_marsdev from "../../assets/icons/marsdev31.png";
 import { Github } from "../utillity/Icons";
 
@@ -11,29 +11,29 @@ const Container = styled.footer`
   align-items: center;
   margin-top: 7.5rem;
   margin-bottom: 4rem;
-  border-top: 0.475rem dashed #e0e0e0;
+  border-top: 0.475rem dashed ${(props) => props.theme.lightColor};
 `;
 
 const MoreProductionText = styled.p`
-  color: #4F4F4F;
+  color: ${(props) => props.theme.mainText};
   font-size: 2.6rem;
   margin: 4rem 0 0 0;
 `;
 
 const Button = styled.button`
   cursor: pointer;
-  background: white;
+  background: ${(props) => props.theme.body};
   color: #77b280;
   min-width: 27.6rem;
   font-size: 2rem;
   font-family: "Kanit";
   padding: 1.2rem 1.6rem;
-  border: 0.35rem solid #e0e0e0;
+  border: 0.35rem solid ${(props) => props.theme.lightColor};
   border-radius: 7px;
   transition: 0.25s all ease-in;
   margin: 2rem auto;
   span {
-    color: #121112;
+    color: ${(props) => props.theme.footerButtonText};
     font-size: 1.6rem;
   }
   &:hover {
@@ -43,7 +43,7 @@ const Button = styled.button`
 
 const ExternalLink = styled.a`
   text-decoration: none;
-  color: #4F4F4F;
+  color: ${(props) => props.theme.mainText};
   font-size: 1.4rem;
   display: flex;
   align-items: center;
@@ -65,7 +65,7 @@ const MarsDev = styled.img`
   margin: 0;
 `;
 
-const Footer = () => {
+const Footer = ({ theme }) => {
   return (
     <Container>
       <MoreProductionText>ผลงานอื่นๆ ของพวกเรา</MoreProductionText>
@@ -85,7 +85,7 @@ const Footer = () => {
       >
         <span className="highlight">PRs Welcome&nbsp;</span> at{" "}
         <span className="img">
-          <Github />
+          <Github fill={theme.bodyText} />
         </span>
       </ExternalLink>
       <ExternalLink
@@ -108,4 +108,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default withTheme(Footer);

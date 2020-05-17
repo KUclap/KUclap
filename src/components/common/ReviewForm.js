@@ -2,7 +2,7 @@ import { h } from "preact";
 import { Checkbox } from "@material-ui/core";
 import { useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 
 import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
 import Alert from "./Alert";
@@ -38,7 +38,7 @@ const DetailTitle = styled.div`
   font-size: 2rem;
   font-weight: 600;
   margin: 1.2rem 2rem 1.2rem 0;
-  color: #4f4f4f;
+  color: ${(props) => props.theme.mainText};
 
   span {
     font-size: 1.6rem;
@@ -62,7 +62,8 @@ const FormTitle = styled.div`
 `;
 
 const ReviewField = styled.textarea`
-  border: 0.2rem solid #e0e0e0;
+  background-color: ${(props) => props.theme.body};
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   height: 14rem;
@@ -73,15 +74,16 @@ const ReviewField = styled.textarea`
   white-space: pre-wrap;
   overflow-wrap: break-word;
 
+  color: ${(props) => props.theme.bodyText};
   &::placeholder {
-    color: #bdbdbd;
+    color: ${(props) => props.theme.placeholderText};
   }
 `;
 
 const ScoreTitle = styled.p`
   font-size: 1.8rem;
   margin-right: 1.2rem;
-  color: #4F4F4F;
+  color: ${(props) => props.theme.mainText};
 `;
 
 const ScoreBar = styled.div`
@@ -92,10 +94,10 @@ const ScoreBar = styled.div`
 
 const GradeButton = styled.div`
   -webkit-tap-highlight-color: transparent;
-  color: ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
+  color: ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
   font-size: 1.6rem;
   border: 0.2rem solid
-    ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
+    ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
   height: 3rem;
   width: 3rem;
   display: flex;
@@ -135,7 +137,8 @@ const GradeBar = styled.div`
 `;
 
 const Input = styled.input`
-  border: 0.2rem solid #e0e0e0;
+  background-color: ${(props) => props.theme.body};
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   height: 3.4rem;
   width: ${(props) => (props.password ? 9 : 20)}rem;
@@ -145,8 +148,9 @@ const Input = styled.input`
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
 
+  color: ${(props) => props.theme.bodyText};
   &::placeholder {
-    color: #bdbdbd;
+    color: ${(props) => props.theme.placeholderText};
   }
 `;
 
@@ -159,7 +163,7 @@ const InputContainer = styled.div`
 
 const Caution = styled.div`
   font-size: 1.8rem;
-  color: #4f4f4f;
+  color: ${(props) => props.theme.mainText};
   font-weight: 500;
   text-align: center;
   align-self: center;
@@ -167,8 +171,7 @@ const Caution = styled.div`
 
 const Button = styled.button`
   font-family: "Kanit", arial, sans-serif;
-  background: rgba(0, 0, 0, 0.64);
-  color: #fff;
+  ${(props) => props.theme.lightButton}
   padding: 0.2rem 1.8rem;
   border-radius: 0.6rem;
   font-size: 1.4rem;
@@ -180,6 +183,7 @@ const Button = styled.button`
 const ReviewButton = styled(Button)`
   padding: 0.4rem 2.4rem;
   width: 12.2rem;
+  color: white;
   background-color: #2f80ed;
   font-size: 2rem;
   align-self: center;
@@ -210,8 +214,9 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
+  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
-  background-color: white;
+  background-color: ${(props) => props.theme.body};
   position: fixed;
   top: 50%;
   left: 50%;
@@ -250,11 +255,11 @@ const RateContainer = styled.div`
     fill: transparent;
     #outer,
     #mouth {
-      stroke: ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
+      stroke: ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
     }
 
     #eye {
-      fill: ${(props) => (props.selected === true ? "#2F80ED" : "#BDBDBD")};
+      fill: ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
     }
   }
 
@@ -307,14 +312,16 @@ const CheckboxContainer = styled.div`
   align-items: center;
   margin: 1rem 0;
   text-align: left;
-  color: ${(props) => (props.warning ? "#EB5757" : "#4F4F4F")};
+  color: ${(props) => (props.warning ? "#EB5757" : props.theme.mainText)};
   cursor: pointer;
 
   .MuiSvgIcon-root {
     width: 1.8em;
     height: 1.8em;
   }
-
+  .MuiCheckbox-colorPrimary {
+    color: ${(props) => props.theme.bodyText};
+  }
   .MuiCheckbox-colorSecondary.Mui-checked {
     color: #2f80ed;
   }
@@ -497,7 +504,7 @@ const ReviewForm = (props) => {
                 }}
                 selected={form.stats[item.id] - 1 === key_rate}
               >
-                <Rate />
+                <Rate bgColor={props.theme.body} />
               </RateContainer>
             ))}
           </Rating>
@@ -606,4 +613,4 @@ const ReviewForm = (props) => {
   );
 };
 
-export default ReviewForm;
+export default withTheme(ReviewForm);
