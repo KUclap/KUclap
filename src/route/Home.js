@@ -71,7 +71,7 @@ const SelectCustom = styled(Select)`
   width: 80%;
   max-width: 58rem;
   font-size: 1.45rem;
-
+  /* background-color: ${(props) => props.theme.body}; */
   .Select-placeholder {
     color: #888;
     height: 5.2rem;
@@ -97,7 +97,8 @@ const SelectCustom = styled(Select)`
     font-size: 16px;
   }
   .Select-input > input {
-    color: ${(props) => props.theme.bodyText};
+    /* color: ${(props) => props.theme.bodyText}; */
+    color: black;
   }
 
   .Select-menu-outer,
