@@ -1,12 +1,12 @@
 import { h } from "preact";
 import { useState, useEffect } from "preact/hooks";
 import styled, { css, withTheme } from "styled-components";
-import { Clap, Boo, RightArrow } from "../utillity/Icons";
-import { pulse } from "../utillity/keyframs";
-import APIs from "../utillity/apis";
+import { Clap, Boo, RightArrow } from "../utility/Icons";
+import { pulse } from "../utility/keyframs";
+import APIs from "../utility/apis";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
-import ColorHash from '../utillity/ColorHash';
+import ColorHash from "../utility/ColorHash";
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -109,7 +109,8 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
-  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
+  border: ${(props) =>
+    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
   background-color: ${(props) => props.theme.body};
   position: fixed;
@@ -316,7 +317,7 @@ const ReviewCard = (props) => {
   const defaultReportReason = {
     reason: "",
     require: false,
-  }
+  };
   const [auth, setAuth] = useState(defaultAuth);
   const [reportReason, setReportReason] = useState(defaultReportReason);
   const [clapTimeId, setClapTimeId] = useState(null);
@@ -343,14 +344,14 @@ const ReviewCard = (props) => {
   }, [showEditModal]);
 
   const sendReport = () => {
-    if (reportReason.reason.length < 10) 
-      setReportReason({...reportReason, require: true})
+    if (reportReason.reason.length < 10)
+      setReportReason({ ...reportReason, require: true });
     else {
       const report = {
         reviewId,
         classId,
-        text: reportReason.reason
-      }
+        text: reportReason.reason,
+      };
       setIsLoadingReport(true);
       APIs.createReportReview(report, () => {
         setIsLoadingReport(false);
@@ -362,7 +363,7 @@ const ReviewCard = (props) => {
   const closeReportModal = () => {
     setReportModal(false);
     setReportReason(defaultReportReason);
-  }
+  };
 
   const closeEditModal = () => {
     setEditModal(false);
@@ -478,7 +479,7 @@ const ReviewCard = (props) => {
     if (/^\s/.test(value)) {
       value = "";
     }
-    setReportReason({...reportReason, reason: value});
+    setReportReason({ ...reportReason, reason: value });
   };
 
   const RedirctToClassName = () => {
@@ -489,11 +490,11 @@ const ReviewCard = (props) => {
   const numberFormat = (value) => {
     let newValue = value;
     if (value >= 1000) {
-      value  /= 1000
+      value /= 1000;
       newValue = `${value.toFixed(1)}k`;
     }
-    return newValue
-  }
+    return newValue;
+  };
 
   return (
     <Container>
@@ -564,10 +565,7 @@ const ReviewCard = (props) => {
           </ButtonIcon>
         </DetailContainer>
       </CardDetails>
-      <ModalBackdrop
-        show={showReportModal}
-        onClick={closeReportModal}
-      />
+      <ModalBackdrop show={showReportModal} onClick={closeReportModal} />
       <Modal show={showReportModal}>
         เหตุผลในการแจ้งลบ
         <Warning>
@@ -579,11 +577,13 @@ const ReviewCard = (props) => {
           onChange={(e) => handleOnchange(e)}
         />
         <ModalActions>
-          <CancelButton onClick={closeReportModal}>
-            ยกเลิก
-          </CancelButton>
+          <CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
           <ConfirmButton onClick={sendReport}>
-            {isLoadingReport ? <CircularProgressCustom size="3rem" /> : "แจ้งลบ"}
+            {isLoadingReport ? (
+              <CircularProgressCustom size="3rem" />
+            ) : (
+              "แจ้งลบ"
+            )}
           </ConfirmButton>
         </ModalActions>
       </Modal>
@@ -607,7 +607,11 @@ const ReviewCard = (props) => {
         <ModalActions>
           <CancelButton onClick={closeEditModal}>ย้อนกลับ</CancelButton>
           <ConfirmButton onClick={deleteReview}>
-            {isLoadingDelete ? <CircularProgressCustom size="3rem" /> : "ลบรีวิว"}
+            {isLoadingDelete ? (
+              <CircularProgressCustom size="3rem" />
+            ) : (
+              "ลบรีวิว"
+            )}
           </ConfirmButton>
         </ModalActions>
       </Modal>

@@ -11,20 +11,20 @@ import "react-virtualized/styles.css";
 
 import baseroute from "../baseroute";
 import Footer from "../components/common/Footer";
-import APIs from "../components/utillity/apis";
+import APIs from "../components/utility/apis";
 import Details from "../components/common/Detail";
 import Header from "../components/common/Header";
 import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
 
-import GlobalStyles from "../components/utillity/GlobalStyles";
+import GlobalStyles from "../components/utility/GlobalStyles";
 
 import {
   ReviewSkeletonA,
   ReviewSkeletonB,
 } from "../components/common/ReviewSkeleton";
-import { GoToTop, NoMoreReview, NoReview } from "../components/utillity/Icons";
-import ColorHash from "../components/utillity/ColorHash";
+import { GoToTop, NoMoreReview, NoReview } from "../components/utility/Icons";
+import ColorHash from "../components/utility/ColorHash";
 
 const Container = styled.div`
   display: flex;

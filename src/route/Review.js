@@ -1,5 +1,5 @@
 import { h } from "preact";
-import GloblaStyles from "../components/utillity/GlobalStyles";
+import GloblaStyles from "../components/utility/GlobalStyles";
 
 const ReviewPage = () => {
   return (

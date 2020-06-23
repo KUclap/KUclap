@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect, useRef } from "preact/hooks";
 import styled from "styled-components";
-import { DoneGreen } from "../utillity/Icons";
+import { DoneGreen } from "../utility/Icons";
 import "animate.css";
 
 const Card = styled.div`
@@ -30,7 +30,7 @@ const Thankyou = styled.p`
   white-space: nowrap;
   text-align: center;
   margin-bottom: 0.3rem;
-  color: #A3E0B5;
+  color: #a3e0b5;
 `;
 
 const TextCount = styled.p`

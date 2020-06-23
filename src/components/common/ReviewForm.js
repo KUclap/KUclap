@@ -4,9 +4,9 @@ import { useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
 
-import { Worst, Bad, So, Good, Excellent } from "../utillity/Icons";
+import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 import Alert from "./Alert";
-import APIs from "../utillity/apis";
+import APIs from "../utility/apis";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
@@ -94,10 +94,12 @@ const ScoreBar = styled.div`
 
 const GradeButton = styled.div`
   -webkit-tap-highlight-color: transparent;
-  color: ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
+  color: ${(props) =>
+    props.selected === true ? "#2F80ED" : props.theme.placeholderText};
   font-size: 1.6rem;
   border: 0.2rem solid
-    ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
+    ${(props) =>
+      props.selected === true ? "#2F80ED" : props.theme.placeholderText};
   height: 3rem;
   width: 3rem;
   display: flex;
@@ -214,7 +216,8 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
-  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
+  border: ${(props) =>
+    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
   background-color: ${(props) => props.theme.body};
   position: fixed;
@@ -255,11 +258,13 @@ const RateContainer = styled.div`
     fill: transparent;
     #outer,
     #mouth {
-      stroke: ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
+      stroke: ${(props) =>
+        props.selected === true ? "#2F80ED" : props.theme.placeholderText};
     }
 
     #eye {
-      fill: ${(props) => (props.selected === true ? "#2F80ED" : props.theme.placeholderText)};
+      fill: ${(props) =>
+        props.selected === true ? "#2F80ED" : props.theme.placeholderText};
     }
   }
 
