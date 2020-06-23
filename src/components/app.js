@@ -17,41 +17,41 @@ export default class App extends Component {
     super(props);
 
     let theme = "light";
-    // if (typeof localStorage === "object")
-    //   if (Object.keys(themes).includes(localStorage.theme)) {
-    //     theme = localStorage.theme;
-    //   } else if (
-    //     typeof window !== "undefined" &&
-    //     window.matchMedia &&
-    //     window.matchMedia("(prefers-color-scheme: dark)").matches
-    //   ) {
-    //     theme = "dark";
-    //   }
+    if (typeof localStorage === "object")
+      if (Object.keys(themes).includes(localStorage.theme)) {
+        theme = localStorage.theme;
+      } else if (
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        theme = "dark";
+      }
     this.state = {
       theme,
     };
     // console.log(this.state.theme, themes[this.state.theme]);
   }
 
-  // toggleTheme = (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
+  toggleTheme = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  //   this.setState((prev) => {
-  //     const newTheme = prev.theme === "dark" ? "light" : "dark";
-  //     if (typeof window !== "undefined")
-  //       localStorage.setItem("theme", newTheme);
-  //     return { theme: newTheme };
-  //   });
-  // };
+    this.setState((prev) => {
+      const newTheme = prev.theme === "dark" ? "light" : "dark";
+      if (typeof window !== "undefined")
+        localStorage.setItem("theme", newTheme);
+      return { theme: newTheme };
+    });
+  };
 
-  // handleRoute = (e) => {
-  //   setTimeout(() => {
-  //     this.setState({
-  //       currentUrl: e.url,
-  //     });
-  //   }, 0);
-  // };
+  handleRoute = (e) => {
+    setTimeout(() => {
+      this.setState({
+        currentUrl: e.url,
+      });
+    }, 0);
+  };
 
   render() {
     return (
