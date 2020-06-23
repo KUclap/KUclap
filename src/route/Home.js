@@ -1,9 +1,9 @@
 import { h, Fragment } from "preact";
 import { route } from "preact-router";
 import { useState, useEffect, useRef } from "preact/hooks";
-import media from "styled-media-query";
+
 import Select from "react-virtualized-select";
-import styled, { css, createGlobalStyle, withTheme } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
@@ -17,44 +17,14 @@ import Header from "../components/common/Header";
 import ReviewCard from "../components/common/ReviewCard";
 import ReviewForm from "../components/common/ReviewForm";
 
+import GlobalStyles from "../components/utillity/GlobalStyles";
+
 import {
   ReviewSkeletonA,
   ReviewSkeletonB,
 } from "../components/common/ReviewSkeleton";
 import { GoToTop, NoMoreReview, NoReview } from "../components/utillity/Icons";
 import ColorHash from "../components/utillity/ColorHash";
-
-const GlobalStyles = createGlobalStyle`
-  html {
-    font-size: 62.5%; /* 10px at html, body */
-    scroll-behavior: smooth;
-    
-    ${media.lessThan("medium")`
-        font-size: 55.5%; 
-    `}
-
-    ${media.lessThan("small")`
-        font-size: 48.5%; 
-    `}
-
-  } 
-  body {
-    color: ${(props) => props.theme.bodyText || "#f5f5f5"};
-    background: ${(props) => props.theme.body || "#191b1f"};
-    font-family: 'Kanit', arial, sans-serif;
-    font-weight: 400; 
-    height: auto;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    overflow: ${(props) => (props.overflow === true ? "hidden" : "auto")}
-  } 
-
-  * {
-    box-sizing: border-box;
-    /* user-select: none;  */
-  }
-`;
 
 const Container = styled.div`
   display: flex;
