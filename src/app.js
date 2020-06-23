@@ -1,12 +1,11 @@
 import { h, Component } from "preact";
 import { Router } from "preact-router";
-import baseroute from "./utility/baseroute";
+import baseroute from "./components/utility/baseroute";
 import { ThemeProvider } from "styled-components";
-import * as themes from "../assets/themes";
+import * as themes from "./assets/themes";
 import AsyncRoute from "preact-async-route";
-// import LazyRoute from "preact-lazy-route";
-// Code-splitting is automated for routes
-import Home from "../route/Home";
+
+import Home from "./route/Home";
 
 export default class App extends Component {
   /** Gets fired when the route changes.
@@ -30,7 +29,6 @@ export default class App extends Component {
     this.state = {
       theme,
     };
-    // console.log(this.state.theme, themes[this.state.theme]);
   }
 
   toggleTheme = (e) => {
@@ -62,16 +60,7 @@ export default class App extends Component {
             classid="main"
             toggleTheme={this.toggleTheme}
             component={Home}
-            // getComponent={() =>
-            //   typeof window !== "undefined"
-            //     ? require("../route/Home").then((module) => module.default)
-            //     : null
           />
-          {/* <Home
-            path={`${baseroute}/`}
-            classid="main"
-            toggleTheme={this.toggleTheme}
-          /> */}
         </Router>
       </ThemeProvider>
     );
