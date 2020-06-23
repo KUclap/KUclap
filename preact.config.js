@@ -1,5 +1,8 @@
-import criticalCssPlugin from "preact-cli-plugin-critical-css";
-export default (config, env, helpers, options) => {
+export default (config, env, helpers) => {
+  // Define a `process.env.SSR` boolean constant:
+  const DefinePlugin = helpers.getPluginsByName(config, "DefinePlugin")[0];
+  DefinePlugin.plugin.definitions["process.env.SSR"] = String(env.ssr);
+
   const publicPath = process.env.GITHUB_PAGES
     ? `/${process.env.GITHUB_PAGES}/`
     : "/";
@@ -9,15 +12,4 @@ export default (config, env, helpers, options) => {
   config.output.publicPath = publicPath;
   const { plugin } = helpers.getPluginsByName(config, "DefinePlugin")[0];
   Object.assign(plugin.definitions, { ["process.env.GITHUB_PAGES"]: ghEnv });
-  criticalCssPlugin(config, env, options);
 };
-
-// import criticalCssPlugin from "preact-cli-plugin-critical-css";
-
-// export default (config, env) => {
-//   const options = {
-//     // Passed directly to the 'critical' module (this is optional)
-//   };
-
-//   criticalCssPlugin(config, env, options);
-// };

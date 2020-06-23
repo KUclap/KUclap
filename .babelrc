@@ -1,39 +1,10 @@
 {
-  "plugins": [["@babel/transform-react-jsx", { "pragma": "h" }]],
+  "plugins": [
+    ["@babel/transform-react-jsx", { "pragma": "h" }],
+    "babel-plugin-styled-components"
+  ],
   "presets": [
-    // [
-    //   "@babel/preset-env",
-    //   {
-    //     "targets": {
-    //       "node": "current",
-    //       "browsers": ["last 2 versions"]
-    //     }
-    //   }
-    // ],
     ["preact-cli/babel", { "modules": "commonjs" }],
     "@babel/preset-react"
   ]
 }
-// #################################
-// {
-//   "env": {
-//     "test": {
-//       "presets": [["preact-cli/babel", { "modules": "commonjs" }]]
-//     }
-//   }
-// }
-// #################################
-// {
-//   "plugins": [["transform-react-jsx", { "pragma": "h" }]],
-//   "presets": [
-//     [
-//       "env",
-//       {
-//         "targets": {
-//           "node": "current",
-//           "browsers": ["last 2 versions"]
-//         }
-//       }
-//     ]
-//   ]
-// }
