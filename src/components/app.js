@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { Router } from "preact-router";
-import baseroute from "../baseroute";
+import baseroute from "./utility/baseroute";
 import { ThemeProvider } from "styled-components";
 import * as themes from "../assets/themes";
 import AsyncRoute from "preact-async-route";

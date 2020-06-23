@@ -9,7 +9,7 @@ import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
-import baseroute from "../baseroute";
+import baseroute from "../components/utility/baseroute";
 import Footer from "../components/common/Footer";
 import APIs from "../components/utility/apis";
 import Details from "../components/common/Detail";
