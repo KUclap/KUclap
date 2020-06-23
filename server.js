@@ -9,7 +9,7 @@ const render = require("preact-render-to-string");
 const bundle = require("./build/ssr-build/ssr-bundle");
 
 const App = bundle.default;
-const { PORT = 3000 } = process.env;
+const { PORT = 8888 } = process.env;
 
 // TODO: improve this?
 const RGX = /<div id="app"[^>]*>.*?(?=<script)/i;
