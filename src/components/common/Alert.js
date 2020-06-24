@@ -19,10 +19,6 @@ const Card = styled.div`
   z-index: 3;
 `;
 
-// const Done = styled.img`
-//   width: 150px;
-// `;
-
 const Thankyou = styled.p`
   color: #77b28f;
   font-size: 2.6rem;

@@ -1,12 +1,14 @@
 import { h } from "preact";
+import { route } from "preact-router";
 import { useState, useEffect } from "preact/hooks";
 import styled, { css, withTheme } from "styled-components";
 import { Clap, Boo, RightArrow } from "../utility/Icons";
 import { pulse } from "../utility/keyframs";
+import baseroute from "../utility/baseroute";
 import APIs from "../utility/apis";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
-import ColorHash from "../utility/ColorHash";
+import { getColorHash } from "../utility/helper";
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -26,7 +28,7 @@ const Content = styled.p`
   white-space: pre-line;
   overflow-wrap: break-word;
   margin: 0;
-  margin-top: ${(props) => (props.typeShow === "main" ? "1rem" : 0)};
+  margin-top: ${(props) => (props.isBadge === true ? "1rem" : 0)};
 `;
 
 const CardDetails = styled.div`
@@ -293,11 +295,9 @@ const ReviewCard = (props) => {
     grade,
     author,
     createdAt,
-    modal,
-    back,
-    typeShow,
     classId,
     classNameTH,
+    isBadge,
     theme,
   } = props;
   const [clapActioning, setClapActioning] = useState(false);
@@ -335,13 +335,13 @@ const ReviewCard = (props) => {
     return `${day} ${month} ${year}`;
   };
 
-  useEffect(() => {
-    modal(showReportModal);
-  }, [showReportModal]);
+  // useEffect(() => {
+  //   modal(showReportModal);
+  // }, [showReportModal]);
 
-  useEffect(() => {
-    modal(showEditModal);
-  }, [showEditModal]);
+  // useEffect(() => {
+  //   modal(showEditModal);
+  // }, [showEditModal]);
 
   const sendReport = () => {
     if (reportReason.reason.length < 10)
@@ -385,7 +385,7 @@ const ReviewCard = (props) => {
         if (res.data != undefined && "result" in res.data) {
           closeEditModal();
           newAuth.isMatch = true;
-          back(typeShow);
+          // back(typeShow);
         } else if ("error" in res) newAuth.isMatch = false;
         setAuth(newAuth);
       });
@@ -483,8 +483,7 @@ const ReviewCard = (props) => {
   };
 
   const RedirctToClassName = () => {
-    if (typeof window !== "undefined")
-      window.location.href = `http://marsdev31.github.io/KUclap/?classid=${classId}`;
+    route(`${baseroute}/${classId}`, true);
   };
 
   const numberFormat = (value) => {
@@ -498,15 +497,13 @@ const ReviewCard = (props) => {
 
   return (
     <Container>
-      {typeShow === "main" ? (
-        <Subject color={ColorHash(classId)} onClick={RedirctToClassName}>
+      {isBadge && (
+        <Subject color={getColorHash(classId)} onClick={RedirctToClassName}>
           {classId}
           <span> | {classNameTH}</span>
         </Subject>
-      ) : (
-        <></>
       )}
-      <Content typeShow={typeShow}> {text} </Content>
+      <Content isBadge={isBadge}> {text} </Content>
       <CardDetails>
         <Actions>
           <ButtonContainer>

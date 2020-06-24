@@ -1,8 +1,10 @@
 import { h } from "preact";
+import { route } from "preact-router";
 import { Checkbox } from "@material-ui/core";
 import { useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
+import baseroute from "../utility/baseroute";
 
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 import Alert from "./Alert";
@@ -28,7 +30,7 @@ const Rate = [
 const RateIcon = [Worst, Bad, So, Good, Excellent];
 
 const Container = styled.div`
-  display: ${(props) => (props.isEnable === "form" ? "flex" : "none")};
+  display: flex;
   flex-direction: column;
   margin: 0 2rem 4rem;
   min-width: 86%;
@@ -347,12 +349,12 @@ const CircularProgressCustom = styled(CircularProgress)`
 `;
 
 const ReviewForm = (props) => {
-  const { enable, back, modal, classId } = props;
+  const { classID } = props;
   const [isDone, setIsDone] = useState(false);
   const [showReviewModal, setReviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const initialForm = {
-    classId,
+    classID,
     text: "",
     author: "",
     grade: -1,
@@ -385,11 +387,13 @@ const ReviewForm = (props) => {
 
   const handleCloseAlert = () => {
     if (isDone) {
-      back("details");
+      // back("details");
+
+      route(`${baseroute}/${classID}`, true);
       setIsDone(false);
     }
     setReviewModal(false);
-    modal(false);
+    // modal(false);
   };
 
   const rate = (item, key) => {
@@ -412,7 +416,7 @@ const ReviewForm = (props) => {
     ) {
       setRequire(initialRequire);
       setReviewModal(true);
-      modal(true);
+      // modal(true);
     } else {
       if (form.text === "") req.text = true;
       else req.text = false;
@@ -442,9 +446,10 @@ const ReviewForm = (props) => {
       APIs.createReview(form, () => {
         setIsLoading(false);
         setIsDone(true);
-        setForm({ ...initialForm, classId });
+        setForm({ ...initialForm, classID });
         setChecklist({ ...initialChecklist });
         // back("details");
+        route(`${baseroute}/${classID}`, true);
       });
     }
   };
@@ -466,12 +471,12 @@ const ReviewForm = (props) => {
   };
 
   useEffect(() => {
-    setForm({ ...initialForm, classId });
+    setForm({ ...initialForm, classID });
     setChecklist({ ...initialChecklist });
-  }, [classId]);
+  }, [classID]);
 
   return (
-    <Container isEnable={enable}>
+    <Container>
       <FormTitle>
         <DetailTitle>
           รีวิววิชานี้
@@ -480,7 +485,8 @@ const ReviewForm = (props) => {
         <Button
           onClick={() => {
             if (typeof window !== "undefined") window.scrollTo(0, 0);
-            back("details");
+            // back("details");
+            route(`${baseroute}/${classID}`, true);
           }}
         >
           ย้อนกลับ
@@ -595,7 +601,7 @@ const ReviewForm = (props) => {
             <CancelButton
               onClick={() => {
                 setReviewModal(false);
-                modal(false);
+                // modal(false);
               }}
             >
               กลับไปแก้ไข

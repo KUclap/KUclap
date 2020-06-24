@@ -2,6 +2,7 @@ import { h, Fragment } from "preact";
 import styled, { withTheme } from "styled-components";
 import { KUClap } from "../utility/Icons";
 import ThemeToggleButton from "./ThemeToggleButton";
+import { navigateToHome } from "../utility/helper";
 
 const KUclapText = styled.p`
   font-size: 6rem;
@@ -23,15 +24,10 @@ const DetailKUclap = styled.span`
 `;
 
 const Header = ({ theme, toggleTheme }) => {
-  const NavigateMain = () => {
-    if (typeof window !== "undefined")
-      window.location.href = "https://marsdev31.github.io/KUclap/";
-  };
-
   return (
     <Fragment>
       <ThemeToggleButton onClick={toggleTheme} right />
-      <KUclapText onClick={NavigateMain}>
+      <KUclapText onClick={navigateToHome}>
         <KUClap bgColor={theme.body} textColor={theme.bodyText} />
         <span>
           <b>KU</b>CLAP

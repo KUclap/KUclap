@@ -5,8 +5,11 @@ import { ThemeProvider } from "styled-components";
 import * as themes from "./assets/themes";
 import AsyncRoute from "preact-async-route";
 
-import Home from "./route/Home";
+import { SelectProvider } from "./context/SelectContext";
 
+import HomePage from "./route/HomePage";
+import ClassPage from "./route/ClassPage";
+import FormReviewCreatePage from "./route/FormReviewCreatePage";
 export default class App extends Component {
   /** Gets fired when the route changes.
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
@@ -14,7 +17,6 @@ export default class App extends Component {
    */
   constructor(props) {
     super(props);
-
     let theme = "light";
     if (typeof localStorage === "object")
       if (Object.keys(themes).includes(localStorage.theme)) {
@@ -53,16 +55,27 @@ export default class App extends Component {
 
   render() {
     return (
-      <ThemeProvider theme={themes[this.state.theme]}>
-        <Router onChange={this.handleRoute}>
-          <AsyncRoute
-            path={`${baseroute}/`}
-            classid="main"
-            toggleTheme={this.toggleTheme}
-            component={Home}
-          />
-        </Router>
-      </ThemeProvider>
+      <SelectProvider>
+        <ThemeProvider theme={themes[this.state.theme]}>
+          <Router onChange={this.handleRoute}>
+            <AsyncRoute
+              path={`${baseroute}/`}
+              toggleTheme={this.toggleTheme}
+              component={HomePage}
+            />
+            <AsyncRoute
+              path={`${baseroute}/:classID`}
+              toggleTheme={this.toggleTheme}
+              component={ClassPage}
+            />
+            <AsyncRoute
+              path={`${baseroute}/form/create/:classID`}
+              toggleTheme={this.toggleTheme}
+              component={FormReviewCreatePage}
+            />
+          </Router>
+        </ThemeProvider>
+      </SelectProvider>
     );
   }
 }

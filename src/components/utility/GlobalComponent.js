@@ -24,7 +24,7 @@ body {
   width: 100%;
   padding: 0;
   margin: 0;
-  overflow: ${(props) => (props.overflow === true ? "hidden" : "auto")}
+  overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")}
 } 
 
 * {
@@ -33,4 +33,17 @@ body {
 }
 `;
 
-export default GlobalStyles;
+const GlobalComponent = (props) => {
+  const { isOverflow } = props;
+  return (
+    <>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+      />
+      <GlobalStyles isOverflow={isOverflow} />
+    </>
+  );
+};
+
+export default GlobalComponent;
