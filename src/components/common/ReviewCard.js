@@ -1,14 +1,17 @@
 import { h } from "preact";
 import { route } from "preact-router";
-import { useState, useEffect } from "preact/hooks";
-import styled, { css, withTheme } from "styled-components";
-import { Clap, Boo, RightArrow } from "../utility/Icons";
-import { pulse } from "../utility/keyframs";
-import baseroute from "../utility/baseroute";
-import APIs from "../utility/apis";
+import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+import styled, { css, withTheme } from "styled-components";
+
+import { Clap, Boo, RightArrow } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
+import { ModalContext } from "../../context/ModalContext";
+import { pulse } from "../utility/keyframs";
+import APIs from "../utility/apis";
+import baseroute from "../utility/baseroute";
+
+import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -300,6 +303,8 @@ const ReviewCard = (props) => {
     isBadge,
     theme,
   } = props;
+
+  const { dispatch: dispatchShowModal } = useContext(ModalContext);
   const [clapActioning, setClapActioning] = useState(false);
   const [booActioning, setBooActioning] = useState(false);
   const [clapAni, setClapAni] = useState(false);
@@ -335,13 +340,15 @@ const ReviewCard = (props) => {
     return `${day} ${month} ${year}`;
   };
 
-  // useEffect(() => {
-  //   modal(showReportModal);
-  // }, [showReportModal]);
+  useEffect(() => {
+    // modal(showReportModal);
+    dispatchShowModal({ type: "setter", value: showReportModal });
+  }, [showReportModal]);
 
-  // useEffect(() => {
-  //   modal(showEditModal);
-  // }, [showEditModal]);
+  useEffect(() => {
+    // modal(showEditModal);
+    dispatchShowModal({ type: "setter", value: showEditModal });
+  }, [showEditModal]);
 
   const sendReport = () => {
     if (reportReason.reason.length < 10)

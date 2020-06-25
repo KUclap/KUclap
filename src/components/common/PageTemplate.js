@@ -15,6 +15,7 @@ import Header from "./Header";
 import APIs from "../utility/apis";
 
 import { SelectContext } from "../../context/SelectContext";
+import { ModalContext } from "../../context/ModalContext";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 
 const Container = styled.div`
@@ -68,7 +69,10 @@ const SelectCustom = styled(Select)`
 `;
 
 const PageTemplate = ({ classID, toggleTheme, children, isFormPage }) => {
-  const { state: selected, dispatch } = useContext(SelectContext);
+  const { state: selected, dispatch: dispatchSelected } = useContext(
+    SelectContext
+  );
+  const { state: modal } = useContext(ModalContext);
 
   const newEle = useRef(null);
   const [classes, setClasses] = useState([]);
@@ -109,7 +113,7 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage }) => {
   const handleSelected = (e) => {
     if (!isFormPage) {
       handleFetchingReviewsAndClass(e.classId);
-      dispatch({
+      dispatchSelected({
         type: "selected",
         value: { label: e.label, classID: e.classId },
       });
@@ -123,7 +127,7 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage }) => {
       setClasses(res.data);
       console.log(selected, classID);
       if (!classID)
-        dispatch({
+        dispatchSelected({
           type: "change_label",
           value: {
             label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
@@ -150,7 +154,7 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage }) => {
 
   return (
     <Container name="top">
-      <GlobalComponent isOverflow={scroll} />
+      <GlobalComponent isOverflow={modal.showModal} />
       <GoTopCustomStyle isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>

@@ -6,6 +6,7 @@ import * as themes from "./assets/themes";
 import AsyncRoute from "preact-async-route";
 
 import { SelectProvider } from "./context/SelectContext";
+import { ModalProvider } from "./context/ModalContext";
 
 import HomePage from "./route/HomePage";
 import ClassPage from "./route/ClassPage";
@@ -55,27 +56,29 @@ export default class App extends Component {
 
   render() {
     return (
-      <SelectProvider>
-        <ThemeProvider theme={themes[this.state.theme]}>
-          <Router onChange={this.handleRoute}>
-            <AsyncRoute
-              path={`${baseroute}/`}
-              toggleTheme={this.toggleTheme}
-              component={HomePage}
-            />
-            <AsyncRoute
-              path={`${baseroute}/:classID`}
-              toggleTheme={this.toggleTheme}
-              component={ClassPage}
-            />
-            <AsyncRoute
-              path={`${baseroute}/form/create/:classID`}
-              toggleTheme={this.toggleTheme}
-              component={FormReviewCreatePage}
-            />
-          </Router>
-        </ThemeProvider>
-      </SelectProvider>
+      <ModalProvider>
+        <SelectProvider>
+          <ThemeProvider theme={themes[this.state.theme]}>
+            <Router onChange={this.handleRoute}>
+              <AsyncRoute
+                path={`${baseroute}/`}
+                toggleTheme={this.toggleTheme}
+                component={HomePage}
+              />
+              <AsyncRoute
+                path={`${baseroute}/:classID`}
+                toggleTheme={this.toggleTheme}
+                component={ClassPage}
+              />
+              <AsyncRoute
+                path={`${baseroute}/form/create/:classID`}
+                toggleTheme={this.toggleTheme}
+                component={FormReviewCreatePage}
+              />
+            </Router>
+          </ThemeProvider>
+        </SelectProvider>
+      </ModalProvider>
     );
   }
 }
