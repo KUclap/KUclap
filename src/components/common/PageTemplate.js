@@ -121,6 +121,7 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage }) => {
   useEffect(() => {
     APIs.getAllClasses((res) => {
       setClasses(res.data);
+      console.log(selected, classID);
       if (!classID)
         dispatch({
           type: "change_label",

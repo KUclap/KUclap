@@ -99,7 +99,10 @@ const ClassPage = (props) => {
       <PageTemplate {...props}>
         <SubjectTitle color={getColorHash(classID)}>
           <span>{classID}</span>
-          {getClassName(selected.label)}
+          {selected.label ===
+          "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
+            ? "กำลังโหลดข้อมูลวิชา..."
+            : getClassName(selected.label)}
         </SubjectTitle>
         <Details score={score} />
         <LastReview>
