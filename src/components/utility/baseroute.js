@@ -1,7 +1,7 @@
 let basename = "";
 
-if (process.env.GITHUB_PAGES) {
-  basename = `/${process.env.GITHUB_PAGES}`;
-}
+// if (process.env.BASE_ROUTE) {
+//   basename = `/${process.env.BASE_ROUTE}`;
+// }
 
 export default basename;

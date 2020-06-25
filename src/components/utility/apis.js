@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const URL_API = "https://kuclap-api.herokuapp.com";
+// const URL_API = "https://kuclap-api.herokuapp.com";
+// const URL_API = "https://kuclap-api-staging.herokuapp.com";
+const URL_API = process.env.URL_API;
 
 const api = axios.create({
   baseURL: URL_API,

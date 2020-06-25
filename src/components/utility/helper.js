@@ -1,4 +1,4 @@
-import route from "preact-router";
+import { route } from "preact-router";
 import baseroute from "./baseroute";
 
 const getClassName = (label) => {

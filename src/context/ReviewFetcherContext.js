@@ -1,7 +1,7 @@
 import { h, createContext } from "preact";
 import useReviewFetcher from "../hooks/useReviewFetcher";
 
-const ReviewFetcherContext = createContext([{}, () => {}]);
+const ReviewFetcherContext = createContext();
 
 const ReviewFetcherProvider = (props) => {
   const state = useReviewFetcher(props);

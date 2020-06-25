@@ -67,7 +67,7 @@ const SelectCustom = styled(Select)`
   }
 `;
 
-const App = ({ classID, toggleTheme, children, isFormPage }) => {
+const PageTemplate = ({ classID, toggleTheme, children, isFormPage }) => {
   const { state: selected, dispatch } = useContext(SelectContext);
 
   const newEle = useRef(null);
@@ -170,7 +170,7 @@ const App = ({ classID, toggleTheme, children, isFormPage }) => {
   );
 };
 
-export default withTheme(App);
+export default withTheme(PageTemplate);
 
 const GoTopCustomStyle = styled.a`
   position: fixed;
