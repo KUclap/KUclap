@@ -8,6 +8,7 @@ import { Clap, Boo, RightArrow } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
+import useEngage from "../../hooks/useEngage";
 import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
 
@@ -305,14 +306,21 @@ const ReviewCard = (props) => {
   } = props;
 
   const { dispatch: dispatchShowModal } = useContext(ModalContext);
-  const [clapActioning, setClapActioning] = useState(false);
-  const [booActioning, setBooActioning] = useState(false);
-  const [clapAni, setClapAni] = useState(false);
-  const [booAni, setBooAni] = useState(false);
-  const [clapAction, setClapAction] = useState(0);
-  const [booAction, setBooAction] = useState(0);
-  const [prevClapAction, setPrevClapAction] = useState(0);
-  const [prevBooAction, setPrevBooAction] = useState(0);
+
+  const {
+    counter: clapCounter,
+    prevCounter: prevClapCounter,
+    animation: clapAnimation,
+    handleActionClick: handleClapActionClick,
+  } = useEngage(reviewId);
+
+  const {
+    counter: booCounter,
+    prevCounter: prevBooCounter,
+    animation: booAnimation,
+    handleActionClick: handleBooActionClick,
+  } = useEngage(reviewId, APIs.putBooReviewByReviewId);
+
   const [menu, setMenu] = useState(false);
   const defaultAuth = {
     value: "",
@@ -325,8 +333,6 @@ const ReviewCard = (props) => {
   };
   const [auth, setAuth] = useState(defaultAuth);
   const [reportReason, setReportReason] = useState(defaultReportReason);
-  const [clapTimeId, setClapTimeId] = useState(null);
-  const [booTimeId, setBooTimeId] = useState(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [showReportModal, setReportModal] = useState(false);
@@ -399,80 +405,6 @@ const ReviewCard = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (booAction !== 0 && !clapActioning) setActionByKey("boo");
-  }, [booAction]);
-
-  useEffect(() => {
-    if (clapAction !== 0 && !booActioning) setActionByKey("clap");
-  }, [clapAction]);
-
-  const handleActionClick = (key) => {
-    switch (key) {
-      case "clap": {
-        if (!clapActioning) {
-          setClapAni(true);
-          setClapAction(clapAction + 1);
-        }
-        break;
-      }
-      case "boo": {
-        if (!booActioning) {
-          setBooAni(true);
-          setBooAction(booAction + 1);
-        }
-        break;
-      }
-    }
-  };
-
-  const setActionByKey = (action) => {
-    switch (action) {
-      case "clap": {
-        if (clapTimeId !== null) clearTimeout(clapTimeId);
-        const timer = () =>
-          setTimeout(() => {
-            setClapActioning(true);
-            APIs.putClapReviewByReviewId(
-              reviewId,
-              clapAction - prevClapAction,
-              () => {
-                setClapActioning(false);
-                setPrevClapAction(clapAction);
-              }
-            );
-            setClapTimeId(null);
-          }, 1500);
-        const id = timer();
-        setClapTimeId(id);
-        break;
-      }
-      case "boo": {
-        if (booTimeId !== null) clearTimeout(booTimeId);
-        const timer = () =>
-          setTimeout(() => {
-            setBooActioning(true);
-            APIs.putBooReviewByReviewId(
-              reviewId,
-              booAction - prevBooAction,
-              () => {
-                setBooActioning(false);
-                setPrevBooAction(booAction);
-              }
-            );
-            setBooTimeId(null);
-          }, 1500);
-        const id = timer();
-        setBooTimeId(id);
-        break;
-      }
-    }
-    setTimeout(() => {
-      setClapAni(false);
-      setBooAni(false);
-    }, 500);
-  };
-
   const handleOnchangePassword = (e) => {
     const inputAuth = { ...auth };
     if (/^[0-9]*$/.test(e.target.value)) {
@@ -516,34 +448,34 @@ const ReviewCard = (props) => {
           <ButtonContainer>
             <ButtonIcon
               type="clap"
-              onClick={() => handleActionClick("clap")}
-              valueAction={clapAction === prevClapAction}
-              clapAni={clapAni}
+              onClick={() => handleClapActionClick()}
+              valueAction={clapCounter === prevClapCounter}
+              clapAnimation={clapAnimation}
             >
               <Clap bgColor={theme.body} />
             </ButtonIcon>
-            {clapAction === prevClapAction ? (
-              <span>{numberFormat(clapAction + clap)}</span>
+            {clapCounter === prevClapCounter ? (
+              <span>{numberFormat(clapCounter + clap)}</span>
             ) : (
               <NumberAction color="#2f80ed">
-                {`+${clapAction - prevClapAction}`}
+                {`+${clapCounter - prevClapCounter}`}
               </NumberAction>
             )}
           </ButtonContainer>
           <ButtonContainer>
             <ButtonIcon
               type="boo"
-              onClick={() => handleActionClick("boo")}
-              valueAction={booAction === prevBooAction}
-              booAni={booAni}
+              onClick={() => handleBooActionClick("boo")}
+              valueAction={booCounter === prevBooCounter}
+              booAnimation={booAnimation}
             >
               <Boo bgColor={theme.body} />
             </ButtonIcon>
-            {booAction === prevBooAction ? (
-              <span>{numberFormat(booAction + boo)}</span>
+            {booCounter === prevBooCounter ? (
+              <span>{numberFormat(booCounter + boo)}</span>
             ) : (
               <NumberAction color="#eb5757">
-                {`+${booAction - prevBooAction}`}
+                {`+${booCounter - prevBooCounter}`}
               </NumberAction>
             )}
           </ButtonContainer>
@@ -637,11 +569,11 @@ const ButtonIcon = styled(Button)`
     transition: 0.25s ease-in;
     position: absolute;
     ${(props) =>
-      props.clapAni === true
+      props.clapAnimation === true
         ? css`
             animation: ${pulse("rgba(36, 87, 156, 25%)")} 0.5s ease;
           `
-        : props.booAni === true
+        : props.booAnimation === true
         ? css`
             animation: ${pulse("rgba(173, 66, 16, 25%)")} 0.5s ease;
           `
