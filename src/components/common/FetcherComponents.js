@@ -32,7 +32,7 @@ const NoMoreCustom = styled.div`
   margin: 2.9rem auto;
 `;
 
-const SubjectTitle = styled.p`
+const SubjectTitle = styled.h1`
   font-size: 2.2rem;
   margin: 3rem 6.4rem;
   min-width: 86%;

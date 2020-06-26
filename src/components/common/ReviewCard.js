@@ -244,11 +244,10 @@ const Warning = styled.div`
   color: #eb5757;
 `;
 
-const Subject = styled.div`
+const Subject = styled.h1`
   font-size: 1.6rem;
   padding: 0.2rem 1.6rem;
-  margin-bottom: 0.8rem;
-  margin-left: 0.8rem;
+  margin: 0 0 0.8rem 0.8rem;
   border-radius: 0.6rem;
   text-align: center;
   background: ${(props) => props.color};
