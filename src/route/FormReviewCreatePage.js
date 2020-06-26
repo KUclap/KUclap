@@ -9,6 +9,8 @@ import ReviewForm from "../components/common/ReviewForm";
 import { SubjectTitle } from "../components/common/FetcherComponents";
 import { getClassName, getColorHash } from "../components/utility/helper";
 
+import { ReviewFetcherProvider } from "../context/ReviewFetcherContext";
+
 const FormReviewCreate = (props) => {
   const { classID } = props;
   const { state: selected, dispatch: dispatchSelected } = useContext(
@@ -16,8 +18,9 @@ const FormReviewCreate = (props) => {
   );
 
   useEffect(() => {
-    if (!classID)
+    if (classID)
       APIs.getClassDetailByClassId(classID, (res) => {
+        console.log(res);
         dispatchSelected({
           type: "selected",
           value: { label: res.data.label, classID: res.data.classId },
@@ -26,15 +29,23 @@ const FormReviewCreate = (props) => {
   }, []);
 
   return (
-    <>
-      <PageTemplate isFormPage={true} {...props}>
+    <ReviewFetcherProvider>
+      <PageTemplate
+        content={{
+          title: `เขียนรีวิววิชา : ${selected.label}`,
+          description: `เขียนรีวิววิชา : ${selected.label}`,
+          image: "https://kuclap.com/assets/img/meta-og-image.png",
+        }}
+        isFormPage={true}
+        {...props}
+      >
         <SubjectTitle color={getColorHash(classID)}>
           <span>{classID}</span>
           {getClassName(selected.label)}
         </SubjectTitle>
         <ReviewForm classID={selected.classID || classID} />
       </PageTemplate>
-    </>
+    </ReviewFetcherProvider>
   );
 };
 

@@ -39,7 +39,7 @@ const useReviewFetcherClass = ({ classID }) => {
     const adaptor = document.getElementById("adaptor");
     if (typeof window !== "undefined")
       window.addEventListener("scroll", () => {
-        if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+        if (adaptor?.getBoundingClientRect().bottom <= window.innerHeight) {
           if (!loading) {
             setLoadMore(true);
           }
@@ -84,7 +84,7 @@ const useReviewFetcherClass = ({ classID }) => {
   useEffect(() => {
     const adaptor = document.getElementById("adaptor");
     if (typeof window !== "undefined")
-      if (adaptor.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+      if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
         setLoadMore(true);
       }
   }, [reviews]);

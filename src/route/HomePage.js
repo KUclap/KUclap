@@ -32,7 +32,14 @@ const HomePage = (props) => {
 
   return (
     <>
-      <PageTemplate {...props}>
+      <PageTemplate
+        content={{
+          title: `เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
+          description: `kuclap.com แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
+          image: "https://kuclap.com/assets/img/meta-og-image.png",
+        }}
+        {...props}
+      >
         <LastReview>
           <DetailTitle>รีวิวล่าสุด</DetailTitle>
           <AdaptorReviews id="adaptor">
