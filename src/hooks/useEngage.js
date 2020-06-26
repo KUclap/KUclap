@@ -24,19 +24,14 @@ const useEngage = (reviewId, callback) => {
     const timer = () =>
       setTimeout(() => {
         setActioning(true);
-        if (callback) {
-          // This callback for change APIs URL or Method's Fetcher.
-          // At caller eg. ... = useEngage(reviewId, APIs.someMethod)
-          callback(reviewId, counter - prevCounter, () => {
-            setActioning(false);
-            setPrevCounter(counter);
-          });
-        } else {
-          APIs.putClapReviewByReviewId(reviewId, counter - prevCounter, () => {
-            setActioning(false);
-            setPrevCounter(counter);
-          });
-        }
+        // this callback for custom API's URL or Method's Fetcher.
+        // At caller :pass method to seccond argrument.
+        // eg. ... = useEngage(reviewId, APIs.someMethod)
+        let EngageFetcher = callback || APIs.putClapReviewByReviewId;
+        EngageFetcher(reviewId, counter - prevCounter, () => {
+          setActioning(false);
+          setPrevCounter(counter);
+        });
 
         setTimeId(null);
       }, 1500);
