@@ -5,15 +5,15 @@
   "license": "MIT",
   "homepage": "https://marsdev31.github.io/KUclap/",
   "scripts": {
-    "build:preact": "BASE_ROUTE=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\"",
-    "build": "NODE_ENV=production preact build ",
+    "build:github-page": "BASE_ROUTE=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\"",
+    "predeploy:github-page": "npm run build:github-page",
+    "deploy:github-page": "gh-pages -d build",
+    "build:production": "NODE_ENV=production preact build ",
+    "build:development": "NODE_ENV=development preact build ",
     "serve": "sirv build --cors --single",
     "dev": "NODE_ENV=development preact watch",
     "lint": "eslint src",
     "test": "jest",
-    "predeploy": "npm run build:gh",
-    "deploy": "gh-pages -d build",
-    "build:gh": "BASE_ROUTE=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\"",
     "start:server": "babel-node server.js"
   },
   "eslintConfig": {
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/node": "^7.8.7",
+    "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "dot-json": "^1.2.0",
     "dotenv": "^8.2.0",

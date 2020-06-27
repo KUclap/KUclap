@@ -6,6 +6,7 @@ const { readFileSync } = require("fs");
 const compression = require("compression")();
 const render = require("preact-render-to-string");
 const bundle = require("./build/ssr-build/ssr-bundle");
+// const Helmet = require("preact-helmet");
 
 const App = bundle.default;
 const { PORT = 8888 } = process.env;
@@ -26,9 +27,10 @@ polka()
   .use(compression)
   .use(sirv("build", { setHeaders }))
   .get("*", (req, res) => {
+    // const head = Helmet.rewind();
     let body = render(h(App, { url: req.url }));
     res.setHeader("Content-Type", "text/html");
-    console.log(template.replace(RGX, body));
+    console.log(body);
     res.end(template.replace(RGX, body));
   })
   .listen(PORT, (err) => {
