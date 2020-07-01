@@ -8,9 +8,10 @@ import { Clap, Boo, RightArrow } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
-import useEngage from "../../hooks/useEngage";
+import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
+import useEngage from "../../hooks/useEngage";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
@@ -291,6 +292,7 @@ const months = [
 
 const ReviewCard = (props) => {
   const {
+    currentRoute,
     reviewId,
     text,
     clap,
@@ -305,7 +307,7 @@ const ReviewCard = (props) => {
   } = props;
 
   const { dispatch: dispatchShowModal } = useContext(ModalContext);
-
+  const { handleCardDeleted } = useContext(ReviewFetcherContext);
   const {
     counter: clapCounter,
     prevCounter: prevClapCounter,
@@ -398,6 +400,7 @@ const ReviewCard = (props) => {
           closeEditModal();
           newAuth.isMatch = true;
           // back(typeShow);
+          handleCardDeleted(currentRoute, classId);
         } else if ("error" in res) newAuth.isMatch = false;
         setAuth(newAuth);
       });
