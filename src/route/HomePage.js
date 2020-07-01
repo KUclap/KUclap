@@ -34,8 +34,8 @@ const HomePage = (props) => {
     <>
       <PageTemplate
         content={{
-          title: `เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
-          description: `kuclap.com แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
+          title: `KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
+          description: `kuclap.com - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
           image: "https://kuclap.com/assets/img/meta-og-image.png",
         }}
         {...props}
@@ -47,7 +47,12 @@ const HomePage = (props) => {
               ? reviews.map(
                   (review, index) =>
                     review && (
-                      <ReviewCard key={index} isBadge={true} {...review} />
+                      <ReviewCard
+                        key={index}
+                        isBadge={true}
+                        currentRoute={"HOME"}
+                        {...review}
+                      />
                     )
                 )
               : null}
@@ -80,9 +85,11 @@ const HomePage = (props) => {
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <ReviewFetcherProvider classID={classID}>
-      <HomePage {...props} />
-    </ReviewFetcherProvider>
+    <>
+      <ReviewFetcherProvider classID={classID}>
+        <HomePage {...props} />
+      </ReviewFetcherProvider>
+    </>
   );
 };
 

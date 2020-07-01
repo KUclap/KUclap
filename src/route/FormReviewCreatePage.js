@@ -20,7 +20,6 @@ const FormReviewCreate = (props) => {
   useEffect(() => {
     if (classID)
       APIs.getClassDetailByClassId(classID, (res) => {
-        console.log(res);
         dispatchSelected({
           type: "selected",
           value: { label: res.data.label, classID: res.data.classId },
