@@ -32,8 +32,6 @@ export default class App extends Component {
     };
   }
 
-  componentDidMount() {}
-
   toggleTheme = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -47,11 +45,6 @@ export default class App extends Component {
 
   handleRoute = (e) => {
     this.currentUrl = e.url;
-    // setTimeout(() => {
-    //   this.setState({
-    //     currentUrl: e.url,
-    //   });
-    // }, 0);
   };
 
   render(props) {
