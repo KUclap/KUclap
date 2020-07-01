@@ -1,6 +1,9 @@
-import { h, render } from "preact";
+// import { h, render } from "preact";
 import App from "./app";
-import wrap from "./components/utility/styled-components-ssr";
+import withStyledComponentSSR from "./HOC/withStyledComponentSSR";
+import withClasses from "./HOC/withClasses";
 
-if (typeof window !== "undefined")
-  render(wrap(<App />), document.body, document.getElementById("app"));
+export default withStyledComponentSSR(withClasses(App));
+
+// if (typeof window !== "undefined")
+//   render(wrap(<App />), document.body, document.getElementById("app"));
