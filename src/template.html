@@ -1,7 +1,109 @@
 <!DOCTYPE html>
 <html lang="th">
   <head>
-    <% preact.headEnd %>
+    <meta charset="UTF-8" />
+
+    <% if (htmlWebpackPlugin.options.isClassPage) { %>
+    <title>
+      รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap
+    </title>
+    <meta
+      name="title"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+    />
+    <meta
+      name="description"
+      content="รีวิววิชา {CLASS_LABEL} แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap"
+    />
+    <!-- Open Graph / Facebook  -->
+    <meta
+      property="og:type"
+      content="<%= htmlWebpackPlugin.options.data.type %>"
+    />
+    <meta
+      property="og:url"
+      content="<%= htmlWebpackPlugin.options.data.url %>"
+    />
+    <meta
+      property="og:title"
+      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+    />
+    <meta
+      property="og:description"
+      content="รีวิววิชา {CLASS_LABEL} แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap"
+    />
+    <meta
+      property="og:image"
+      content="<%= htmlWebpackPlugin.options.data.image %>"
+    />
+    <!-- Twitter -->
+    <meta
+      property="twitter:card"
+      content="<%= htmlWebpackPlugin.options.data.card %>"
+    />
+    <meta
+      property="twitter:url"
+      content="<%= htmlWebpackPlugin.options.data.url %>"
+    />
+    <meta
+      property="twitter:title"
+      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก."
+    />
+    <meta
+      property="twitter:description"
+      content="รีวิววิชา {CLASS_LABEL} แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap"
+    />
+    <meta
+      property="twitter:image"
+      content="<%= htmlWebpackPlugin.options.data.image %>"
+    />
+    <!-- other profile-specific tags -->
+    <% } else if (htmlWebpackPlugin.options.data) { %>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- Open Graph / Facebook  -->
+    <meta
+      property="og:type"
+      content="<%= htmlWebpackPlugin.options.data.type %>"
+    />
+    <meta
+      property="og:url"
+      content="<%= htmlWebpackPlugin.options.data.url %>"
+    />
+    <meta
+      property="og:title"
+      content="<%= htmlWebpackPlugin.options.data.title %>"
+    />
+    <meta
+      property="og:description"
+      content="<%= htmlWebpackPlugin.options.data.description %>"
+    />
+    <meta
+      property="og:image"
+      content="<%= htmlWebpackPlugin.options.data.image %>"
+    />
+    <!-- Twitter -->
+    <meta
+      property="twitter:card"
+      content="<%= htmlWebpackPlugin.options.data.card %>"
+    />
+    <meta
+      property="twitter:url"
+      content="<%= htmlWebpackPlugin.options.data.url %>"
+    />
+    <meta
+      property="twitter:title"
+      content="<%= htmlWebpackPlugin.options.data.title %>"
+    />
+    <meta
+      property="twitter:description"
+      content="<%= htmlWebpackPlugin.options.data.description %>"
+    />
+    <meta
+      property="twitter:image"
+      content="<%= htmlWebpackPlugin.options.data.image %>"
+    />
+
+    <% } %> <% preact.headEnd %>
   </head>
   <body>
     <% preact.bodyEnd %>
