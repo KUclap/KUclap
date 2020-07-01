@@ -1,6 +1,18 @@
 import { route } from "preact-router";
 import baseroute from "./baseroute";
 
+const getDetailFromLabel = (label) => {
+  const list = label.split(" ");
+  const detailClass = list.slice(0, 2).concat(list.slice(2).join(" "));
+  return {
+    classID: detailClass[0],
+    nameTH: detailClass[1],
+    nameEN: detailClass[2]
+      ? detailClass[2].replace("(", "").replace(")", "")
+      : "",
+  };
+};
+
 const getClassName = (label) => {
   const labelSplit = label.split(" ");
   let labelName = label;
@@ -43,4 +55,4 @@ const navigateToHome = () => {
   route(`${baseroute}/`, true);
 };
 
-export { getClassName, getColorHash, navigateToHome };
+export { getClassName, getColorHash, navigateToHome, getDetailFromLabel };
