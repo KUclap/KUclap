@@ -4,7 +4,8 @@
     "babel-plugin-styled-components"
   ],
   "presets": [
-    ["preact-cli/babel", { "modules": "commonjs" }],
-    "@babel/preset-react"
+    "@babel/preset-env",
+    "@babel/preset-react",
+    ["preact-cli/babel", { "modules": "commonjs" }]
   ]
 }
