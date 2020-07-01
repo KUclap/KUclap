@@ -1,5 +1,6 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
+
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
@@ -27,7 +28,7 @@ const ReviewSkeletonA = withTheme(({ theme }) => (
         height="100%"
         clip-path="url(#clip-path)"
         style='fill: url("#fill");'
-       />
+      />
       <defs>
         <clipPath id="clip-path">
           <rect x="8" y="156" rx="3" ry="3" width="68" height="12" />
@@ -40,32 +41,44 @@ const ReviewSkeletonA = withTheme(({ theme }) => (
           <rect x="8" y="12" rx="3" ry="3" width="60%" height="12" />
         </clipPath>
         <linearGradient id="fill">
-          <stop offset="0.599964" stop-color={theme.skeleton[0]} stop-opacity="1">
+          <stop
+            offset="0.599964"
+            stop-color={theme.skeleton[0]}
+            stop-opacity="1"
+          >
             <animate
               attributeName="offset"
               values="-2; -2; 1"
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-             />
+            />
           </stop>
-          <stop offset="1.59996" stop-color={theme.skeleton[1]} stop-opacity="1">
+          <stop
+            offset="1.59996"
+            stop-color={theme.skeleton[1]}
+            stop-opacity="1"
+          >
             <animate
               attributeName="offset"
               values="-1; -1; 2"
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-             />
+            />
           </stop>
-          <stop offset="2.59996" stop-color={theme.skeleton[0]} stop-opacity="1">
+          <stop
+            offset="2.59996"
+            stop-color={theme.skeleton[0]}
+            stop-opacity="1"
+          >
             <animate
               attributeName="offset"
               values="0; 0; 3"
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-             />
+            />
           </stop>
         </linearGradient>
       </defs>
@@ -91,7 +104,7 @@ const ReviewSkeletonB = withTheme(({ theme }) => (
         height="100%"
         clip-path="url(#clip-path-b)"
         style='fill: url("#fill-b");'
-       />
+      />
       <defs>
         <clipPath id="clip-path-b">
           <rect x="8" y="130" rx="3" ry="3" width="68" height="12" />
@@ -102,32 +115,44 @@ const ReviewSkeletonB = withTheme(({ theme }) => (
           <rect x="8" y="12" rx="3" ry="3" width="50%" height="12" />
         </clipPath>
         <linearGradient id="fill-b">
-          <stop offset="0.599964" stop-color={theme.skeleton[0]} stop-opacity="1">
+          <stop
+            offset="0.599964"
+            stop-color={theme.skeleton[0]}
+            stop-opacity="1"
+          >
             <animate
               attributeName="offset"
               values="-2; -2; 1"
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-             />
+            />
           </stop>
-          <stop offset="1.59996" stop-color={theme.skeleton[1]} stop-opacity="1">
+          <stop
+            offset="1.59996"
+            stop-color={theme.skeleton[1]}
+            stop-opacity="1"
+          >
             <animate
               attributeName="offset"
               values="-1; -1; 2"
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-             />
+            />
           </stop>
-          <stop offset="2.59996" stop-color={theme.skeleton[0]} stop-opacity="1">
+          <stop
+            offset="2.59996"
+            stop-color={theme.skeleton[0]}
+            stop-opacity="1"
+          >
             <animate
               attributeName="offset"
               values="0; 0; 3"
               keyTimes="0; 0.25; 1"
               dur="2s"
               repeatCount="indefinite"
-             />
+            />
           </stop>
         </linearGradient>
       </defs>

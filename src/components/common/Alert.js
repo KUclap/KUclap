@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useEffect, useRef } from "preact/hooks";
-import styled from "styled-components";
+import styled, { withTheme } from "styled-components";
 import { DoneGreen } from "../utility/Icons";
 import "animate.css";
 
@@ -82,4 +82,4 @@ const AlertComponent = (props) => {
   );
 };
 
-export default AlertComponent;
+export default withTheme(AlertComponent);

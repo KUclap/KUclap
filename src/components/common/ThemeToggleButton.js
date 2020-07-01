@@ -11,15 +11,15 @@ const Button = styled.div`
     props.theme.name === "dark" ? 0 : `0 0 0 0.25rem ${props.theme.bodyText}`};
 
   ${(props) =>
-    props.right
-      ? `
+    props.right &&
+    `
     position: absolute;
     right: 0;
     margin-top: 3rem;
     margin-right: 3rem;
-  `
-      : ""}
+  `}
 `;
+
 const Circle = styled.div`
   background: ${(props) => props.theme.body};
   position: absolute;
