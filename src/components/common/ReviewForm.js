@@ -1,14 +1,15 @@
+import { Checkbox } from "@material-ui/core";
 import { h } from "preact";
 import { route } from "preact-router";
-import { Checkbox } from "@material-ui/core";
-import { useState, useEffect } from "preact/hooks";
+import { useContext, useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
-import baseroute from "../utility/baseroute";
 
+import { ModalContext } from "../../context/ModalContext";
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 import Alert from "./Alert";
 import APIs from "../utility/apis";
+import baseroute from "../utility/baseroute";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
@@ -350,6 +351,9 @@ const CircularProgressCustom = styled(CircularProgress)`
 
 const ReviewForm = (props) => {
   const { classID } = props;
+
+  const { dispatch: dispatchShowModal } = useContext(ModalContext);
+
   const [isDone, setIsDone] = useState(false);
   const [showReviewModal, setReviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -394,6 +398,7 @@ const ReviewForm = (props) => {
     }
     setReviewModal(false);
     // modal(false);
+    dispatchShowModal({ type: "close" });
   };
 
   const rate = (item, key) => {
@@ -417,6 +422,7 @@ const ReviewForm = (props) => {
       setRequire(initialRequire);
       setReviewModal(true);
       // modal(true);
+      dispatchShowModal({ type: "open" });
     } else {
       if (form.text === "") req.text = true;
       else req.text = false;
@@ -449,7 +455,7 @@ const ReviewForm = (props) => {
         setForm({ ...initialForm, classID });
         setChecklist({ ...initialChecklist });
         // back("details");
-        route(`${baseroute}/${classID}`, true);
+        // route(`${baseroute}/${classID}`, true);
       });
     }
   };
@@ -602,6 +608,7 @@ const ReviewForm = (props) => {
               onClick={() => {
                 setReviewModal(false);
                 // modal(false);
+                dispatchShowModal({ type: "close" });
               }}
             >
               กลับไปแก้ไข
