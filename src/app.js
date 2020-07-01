@@ -32,10 +32,11 @@ export default class App extends Component {
     };
   }
 
+  componentDidMount() {}
+
   toggleTheme = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
     this.setState((prev) => {
       const newTheme = prev.theme === "dark" ? "light" : "dark";
       if (typeof window !== "undefined")
@@ -45,34 +46,43 @@ export default class App extends Component {
   };
 
   handleRoute = (e) => {
-    setTimeout(() => {
-      this.setState({
-        currentUrl: e.url,
-      });
-    }, 0);
+    this.currentUrl = e.url;
+    // setTimeout(() => {
+    //   this.setState({
+    //     currentUrl: e.url,
+    //   });
+    // }, 0);
   };
 
-  render() {
+  render(props) {
+    const { classes } = props;
     return (
-      <Provider theme={themes[this.state.theme]} {...this.props}>
-        <Router onChange={this.handleRoute}>
-          <AsyncRoute
-            path={`${baseroute}/`}
-            toggleTheme={this.toggleTheme}
-            component={HomePage}
-          />
-          <AsyncRoute
-            path={`${baseroute}/:classID`}
-            toggleTheme={this.toggleTheme}
-            component={ClassPage}
-          />
-          <AsyncRoute
-            path={`${baseroute}/form/create/:classID`}
-            toggleTheme={this.toggleTheme}
-            component={FormReviewCreatePage}
-          />
-        </Router>
-      </Provider>
+      <>
+        <div id="app">
+          <Provider theme={themes[this.state.theme]} {...this.props}>
+            <Router url={this.props.url} onChange={this.handleRoute}>
+              <AsyncRoute
+                path={`${baseroute}/`}
+                toggleTheme={this.toggleTheme}
+                component={HomePage}
+                classes={classes}
+              />
+              <AsyncRoute
+                path={`${baseroute}/:classID`}
+                toggleTheme={this.toggleTheme}
+                component={ClassPage}
+                classes={classes}
+              />
+              <AsyncRoute
+                path={`${baseroute}/form/create/:classID`}
+                toggleTheme={this.toggleTheme}
+                component={FormReviewCreatePage}
+                classes={classes}
+              />
+            </Router>
+          </Provider>
+        </div>
+      </>
     );
   }
 }
