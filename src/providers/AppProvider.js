@@ -1,5 +1,6 @@
 import { h } from "preact";
-import { ThemeProvider } from "styled-components";
+
+import { withTheme, ThemeProvider } from "styled-components";
 
 import { ModalProvider } from "../context/ModalContext";
 import { SelectProvider } from "../context/SelectContext";
@@ -14,4 +15,4 @@ const AppProvider = ({ children, theme }) => {
   );
 };
 
-export default AppProvider;
+export default withTheme(AppProvider);
