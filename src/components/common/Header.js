@@ -1,4 +1,4 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import { KUClap } from "../utility/Icons";
 import ThemeToggleButton from "./ThemeToggleButton";
@@ -25,7 +25,7 @@ const DetailKUclap = styled.span`
 
 const Header = ({ theme, toggleTheme }) => {
   return (
-    <Fragment>
+    <>
       <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={navigateToHome}>
         <KUClap bgColor={theme.body} textColor={theme.bodyText} />
@@ -34,7 +34,7 @@ const Header = ({ theme, toggleTheme }) => {
         </span>
         <DetailKUclap>ค้นหาและแบ่งปันรีวิววิชาบูรณาการ</DetailKUclap>
       </KUclapText>
-    </Fragment>
+    </>
   );
 };
 
