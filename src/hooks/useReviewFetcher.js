@@ -89,6 +89,56 @@ const useReviewFetcherClass = ({ classID }) => {
       }
   }, [reviews]);
 
+  // #### Helper function for manage on context.
+
+  const handleFetchingReviewsAndClass = (classID) => {
+    setPaging({ ...paging, page: 1 });
+    setReviews([]);
+    setLoading(true);
+    setUnderFlow(false);
+    APIs.getReviewsByClassId(classID, 0, paging.offset, (res) => {
+      if (res.data === null) {
+        setUnderFlow(true);
+      } else {
+        setReviews(res.data);
+        setUnderFlow(false);
+      }
+      setLoading(false);
+    });
+
+    APIs.getClassDetailByClassId(classID, (res) => {
+      setScore({
+        homework: res.data.stats.homework,
+        interest: res.data.stats.interest,
+        how: res.data.stats.how,
+      });
+    });
+  };
+
+  const handleCardDeleted = (currentRoute, classID = null) => {
+    // Each page will pass currentRoute's prop on ReviewCard's component.
+    // currentRoute's prop use for tracking ReviewCard's component mountinhg what route.
+    switch (currentRoute) {
+      case "HOME": {
+        // Q: Why didn't use handleFetchingReviewsAndClass function
+        // A: handleFetchingReviewsAndClass use for fetching review when you need review and detail from some class.
+        //    On Home page,you just make some interupt on loadMore state that loadMore state will fetching review on current page.
+        //    This statement use for reset state and interupt on loadMore.
+        setPaging({ ...paging, page: 0 });
+        setReviews([]);
+        setUnderFlow(false);
+        setLoadMore(true);
+        break;
+      }
+      case "CLASS": {
+        handleFetchingReviewsAndClass(classID);
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
   return {
     reviews,
     setReviews,
@@ -102,6 +152,8 @@ const useReviewFetcherClass = ({ classID }) => {
     setPaging,
     score,
     setScore,
+    handleFetchingReviewsAndClass,
+    handleCardDeleted,
   };
 };
 
