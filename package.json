@@ -8,7 +8,7 @@
     "build:github-page": "BASE_ROUTE=KUclap preact build --no-prerender && dot-json ./build/manifest.json start_url \"/KUclap/\"",
     "predeploy:github-page": "npm run build:github-page",
     "deploy:github-page": "gh-pages -d build",
-    "build:production": "NODE_ENV=production preact build ",
+    "build:production": "NODE_ENV=production preact build --prerenderUrls ./src/prerender-urls.js --template ./src/template.html",
     "build:development_pre": "NODE_ENV=development preact build --prerenderUrls ./src/prerender-urls.js --template ./src/template.html",
     "build:development_nopre": "NODE_ENV=development preact build",
     "serve": "sirv build --cors --single",
