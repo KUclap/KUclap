@@ -47,8 +47,8 @@ export default class App extends Component {
     this.currentUrl = e.url;
   };
 
-  render(props) {
-    const { classes } = props;
+  render() {
+    const { classes } = this.props;
     return (
       <>
         <div id="app">

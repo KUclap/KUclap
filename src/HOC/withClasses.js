@@ -1,4 +1,5 @@
 import { h } from "preact";
+
 import useClasses from "../hooks/useClasses";
 
 const withClasses = (Component) => {

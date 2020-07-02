@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, withTheme } from "styled-components";
 import media from "styled-media-query";
 
 const GlobalStyles = createGlobalStyle`
@@ -46,4 +46,4 @@ const GlobalComponent = (props) => {
   );
 };
 
-export default GlobalComponent;
+export default withTheme(GlobalComponent);
