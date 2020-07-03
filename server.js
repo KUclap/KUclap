@@ -1,3 +1,4 @@
+const dotenv = require("dotenv");
 const axios = require("axios");
 const sirv = require("sirv");
 const polka = require("polka");
@@ -10,6 +11,7 @@ const bundle = require("./build/ssr-build/ssr-bundle");
 
 const App = bundle.default;
 
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 const { PORT = 8000 } = process.env;
 
 let templateClassPage = readFileSync("./build/class/index.html", "utf8");
@@ -50,7 +52,7 @@ async function ApplicationEndpoint(req, res) {
   if (classID) {
     try {
       const response = await axios.get(
-        `https://kuclap-api-staging.herokuapp.com/class/${classID}`
+        `${process.env.URL_API}/class/${classID}`
       );
       detailClass = response.data;
     } catch (error) {
