@@ -97,14 +97,14 @@ const PageTemplate = ({
   };
 
   useEffect(() => {
-    if (!classID)
+    if (!classID && classes.length !== 0)
       dispatchSelected({
         type: "change_label",
         value: {
           label: "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ",
         },
       });
-  }, []);
+  }, [classes]);
 
   useEffect(() => {
     if (typeof window !== "undefined")

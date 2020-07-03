@@ -9,7 +9,9 @@ import FormReviewCreatePage from "./route/FormReviewCreatePage";
 import HomePage from "./route/HomePage";
 import Provider from "./providers/AppProvider";
 
-export default class App extends Component {
+import withClasses from "./HOC/withClasses";
+
+class App extends Component {
   /** Gets fired when the route changes.
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
    *	@param {string} event.url	The newly routed URL
@@ -79,3 +81,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default withClasses(App);
