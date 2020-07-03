@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect, useRef } from "preact/hooks";
-import styled from "styled-components";
-import { DoneGreen } from "../utillity/Icons";
+import styled, { withTheme } from "styled-components";
+import { DoneGreen } from "../utility/Icons";
 import "animate.css";
 
 const Card = styled.div`
@@ -19,10 +19,6 @@ const Card = styled.div`
   z-index: 3;
 `;
 
-// const Done = styled.img`
-//   width: 150px;
-// `;
-
 const Thankyou = styled.p`
   color: #77b28f;
   font-size: 2.6rem;
@@ -30,7 +26,7 @@ const Thankyou = styled.p`
   white-space: nowrap;
   text-align: center;
   margin-bottom: 0.3rem;
-  color: #A3E0B5;
+  color: #a3e0b5;
 `;
 
 const TextCount = styled.p`
@@ -86,4 +82,4 @@ const AlertComponent = (props) => {
   );
 };
 
-export default AlertComponent;
+export default withTheme(AlertComponent);

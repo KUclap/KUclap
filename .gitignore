@@ -1,7 +1,8 @@
 node_modules
 /build
+/dist
 /*.log
 *.lock
 
 package-lock.json
-.env
+.env*

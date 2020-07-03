@@ -1,7 +1,7 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import img_marsdev from "../../assets/icons/marsdev31.png";
-import { Github } from "../utillity/Icons";
+import { Github } from "../utility/Icons";
 
 const Container = styled.footer`
   display: flex;

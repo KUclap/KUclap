@@ -1,12 +1,19 @@
 import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
-import styled, { css, withTheme } from "styled-components";
-import { Clap, Boo, RightArrow } from "../utillity/Icons";
-import { pulse } from "../utillity/keyframs";
-import APIs from "../utillity/apis";
+import { route } from "preact-router";
+import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import styled, { css, withTheme } from "styled-components";
+
+import { Clap, Boo, RightArrow } from "../utility/Icons";
+import { getColorHash } from "../utility/helper";
+import { ModalContext } from "../../context/ModalContext";
+import { pulse } from "../utility/keyframs";
+import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
+import APIs from "../utility/apis";
+import baseroute from "../utility/baseroute";
+import useEngage from "../../hooks/useEngage";
+
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
-import ColorHash from '../utillity/ColorHash';
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -26,7 +33,7 @@ const Content = styled.p`
   white-space: pre-line;
   overflow-wrap: break-word;
   margin: 0;
-  margin-top: ${(props) => (props.typeShow === "main" ? "1rem" : 0)};
+  margin-top: ${(props) => (props.isBadge === true ? "1rem" : 0)};
 `;
 
 const CardDetails = styled.div`
@@ -109,7 +116,8 @@ const ModalBackdrop = styled.div`
 `;
 
 const Modal = styled.div`
-  border: ${(props) => props.theme.name === 'dark' ? `0.3rem solid ${props.theme.lightColor}` : 0};
+  border: ${(props) =>
+    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
   border-radius: 10px;
   background-color: ${(props) => props.theme.body};
   position: fixed;
@@ -237,11 +245,10 @@ const Warning = styled.div`
   color: #eb5757;
 `;
 
-const Subject = styled.div`
+const Subject = styled.h1`
   font-size: 1.6rem;
   padding: 0.2rem 1.6rem;
-  margin-bottom: 0.8rem;
-  margin-left: 0.8rem;
+  margin: 0 0 0.8rem 0.8rem;
   border-radius: 0.6rem;
   text-align: center;
   background: ${(props) => props.color};
@@ -285,6 +292,7 @@ const months = [
 
 const ReviewCard = (props) => {
   const {
+    currentRoute,
     reviewId,
     text,
     clap,
@@ -292,21 +300,28 @@ const ReviewCard = (props) => {
     grade,
     author,
     createdAt,
-    modal,
-    back,
-    typeShow,
     classId,
     classNameTH,
+    isBadge,
     theme,
   } = props;
-  const [clapActioning, setClapActioning] = useState(false);
-  const [booActioning, setBooActioning] = useState(false);
-  const [clapAni, setClapAni] = useState(false);
-  const [booAni, setBooAni] = useState(false);
-  const [clapAction, setClapAction] = useState(0);
-  const [booAction, setBooAction] = useState(0);
-  const [prevClapAction, setPrevClapAction] = useState(0);
-  const [prevBooAction, setPrevBooAction] = useState(0);
+
+  const { dispatch: dispatchShowModal } = useContext(ModalContext);
+  const { handleCardDeleted } = useContext(ReviewFetcherContext);
+  const {
+    counter: clapCounter,
+    prevCounter: prevClapCounter,
+    animation: clapAnimation,
+    handleActionClick: handleClapActionClick,
+  } = useEngage(reviewId);
+
+  const {
+    counter: booCounter,
+    prevCounter: prevBooCounter,
+    animation: booAnimation,
+    handleActionClick: handleBooActionClick,
+  } = useEngage(reviewId, APIs.putBooReviewByReviewId);
+
   const [menu, setMenu] = useState(false);
   const defaultAuth = {
     value: "",
@@ -316,11 +331,9 @@ const ReviewCard = (props) => {
   const defaultReportReason = {
     reason: "",
     require: false,
-  }
+  };
   const [auth, setAuth] = useState(defaultAuth);
   const [reportReason, setReportReason] = useState(defaultReportReason);
-  const [clapTimeId, setClapTimeId] = useState(null);
-  const [booTimeId, setBooTimeId] = useState(null);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [showReportModal, setReportModal] = useState(false);
@@ -335,22 +348,24 @@ const ReviewCard = (props) => {
   };
 
   useEffect(() => {
-    modal(showReportModal);
+    // modal(showReportModal);
+    dispatchShowModal({ type: "setter", value: showReportModal });
   }, [showReportModal]);
 
   useEffect(() => {
-    modal(showEditModal);
+    // modal(showEditModal);
+    dispatchShowModal({ type: "setter", value: showEditModal });
   }, [showEditModal]);
 
   const sendReport = () => {
-    if (reportReason.reason.length < 10) 
-      setReportReason({...reportReason, require: true})
+    if (reportReason.reason.length < 10)
+      setReportReason({ ...reportReason, require: true });
     else {
       const report = {
         reviewId,
         classId,
-        text: reportReason.reason
-      }
+        text: reportReason.reason,
+      };
       setIsLoadingReport(true);
       APIs.createReportReview(report, () => {
         setIsLoadingReport(false);
@@ -362,7 +377,7 @@ const ReviewCard = (props) => {
   const closeReportModal = () => {
     setReportModal(false);
     setReportReason(defaultReportReason);
-  }
+  };
 
   const closeEditModal = () => {
     setEditModal(false);
@@ -384,85 +399,12 @@ const ReviewCard = (props) => {
         if (res.data != undefined && "result" in res.data) {
           closeEditModal();
           newAuth.isMatch = true;
-          back(typeShow);
+          // back(typeShow);
+          handleCardDeleted(currentRoute, classId);
         } else if ("error" in res) newAuth.isMatch = false;
         setAuth(newAuth);
       });
     }
-  };
-
-  useEffect(() => {
-    if (booAction !== 0 && !clapActioning) setActionByKey("boo");
-  }, [booAction]);
-
-  useEffect(() => {
-    if (clapAction !== 0 && !booActioning) setActionByKey("clap");
-  }, [clapAction]);
-
-  const handleActionClick = (key) => {
-    switch (key) {
-      case "clap": {
-        if (!clapActioning) {
-          setClapAni(true);
-          setClapAction(clapAction + 1);
-        }
-        break;
-      }
-      case "boo": {
-        if (!booActioning) {
-          setBooAni(true);
-          setBooAction(booAction + 1);
-        }
-        break;
-      }
-    }
-  };
-
-  const setActionByKey = (action) => {
-    switch (action) {
-      case "clap": {
-        if (clapTimeId !== null) clearTimeout(clapTimeId);
-        const timer = () =>
-          setTimeout(() => {
-            setClapActioning(true);
-            APIs.putClapReviewByReviewId(
-              reviewId,
-              clapAction - prevClapAction,
-              () => {
-                setClapActioning(false);
-                setPrevClapAction(clapAction);
-              }
-            );
-            setClapTimeId(null);
-          }, 1500);
-        const id = timer();
-        setClapTimeId(id);
-        break;
-      }
-      case "boo": {
-        if (booTimeId !== null) clearTimeout(booTimeId);
-        const timer = () =>
-          setTimeout(() => {
-            setBooActioning(true);
-            APIs.putBooReviewByReviewId(
-              reviewId,
-              booAction - prevBooAction,
-              () => {
-                setBooActioning(false);
-                setPrevBooAction(booAction);
-              }
-            );
-            setBooTimeId(null);
-          }, 1500);
-        const id = timer();
-        setBooTimeId(id);
-        break;
-      }
-    }
-    setTimeout(() => {
-      setClapAni(false);
-      setBooAni(false);
-    }, 500);
   };
 
   const handleOnchangePassword = (e) => {
@@ -478,67 +420,64 @@ const ReviewCard = (props) => {
     if (/^\s/.test(value)) {
       value = "";
     }
-    setReportReason({...reportReason, reason: value});
+    setReportReason({ ...reportReason, reason: value });
   };
 
   const RedirctToClassName = () => {
-    if (typeof window !== "undefined")
-      window.location.href = `http://marsdev31.github.io/KUclap/?classid=${classId}`;
+    route(`${baseroute}/${classId}`, true);
   };
 
   const numberFormat = (value) => {
     let newValue = value;
     if (value >= 1000) {
-      value  /= 1000
+      value /= 1000;
       newValue = `${value.toFixed(1)}k`;
     }
-    return newValue
-  }
+    return newValue;
+  };
 
   return (
     <Container>
-      {typeShow === "main" ? (
-        <Subject color={ColorHash(classId)} onClick={RedirctToClassName}>
+      {isBadge && (
+        <Subject color={getColorHash(classId)} onClick={RedirctToClassName}>
           {classId}
           <span> | {classNameTH}</span>
         </Subject>
-      ) : (
-        <></>
       )}
-      <Content typeShow={typeShow}> {text} </Content>
+      <Content isBadge={isBadge}> {text} </Content>
       <CardDetails>
         <Actions>
           <ButtonContainer>
             <ButtonIcon
               type="clap"
-              onClick={() => handleActionClick("clap")}
-              valueAction={clapAction === prevClapAction}
-              clapAni={clapAni}
+              onClick={() => handleClapActionClick()}
+              valueAction={clapCounter === prevClapCounter}
+              clapAnimation={clapAnimation}
             >
               <Clap bgColor={theme.body} />
             </ButtonIcon>
-            {clapAction === prevClapAction ? (
-              <span>{numberFormat(clapAction + clap)}</span>
+            {clapCounter === prevClapCounter ? (
+              <span>{numberFormat(clapCounter + clap)}</span>
             ) : (
               <NumberAction color="#2f80ed">
-                {`+${clapAction - prevClapAction}`}
+                {`+${clapCounter - prevClapCounter}`}
               </NumberAction>
             )}
           </ButtonContainer>
           <ButtonContainer>
             <ButtonIcon
               type="boo"
-              onClick={() => handleActionClick("boo")}
-              valueAction={booAction === prevBooAction}
-              booAni={booAni}
+              onClick={() => handleBooActionClick("boo")}
+              valueAction={booCounter === prevBooCounter}
+              booAnimation={booAnimation}
             >
               <Boo bgColor={theme.body} />
             </ButtonIcon>
-            {booAction === prevBooAction ? (
-              <span>{numberFormat(booAction + boo)}</span>
+            {booCounter === prevBooCounter ? (
+              <span>{numberFormat(booCounter + boo)}</span>
             ) : (
               <NumberAction color="#eb5757">
-                {`+${booAction - prevBooAction}`}
+                {`+${booCounter - prevBooCounter}`}
               </NumberAction>
             )}
           </ButtonContainer>
@@ -564,10 +503,7 @@ const ReviewCard = (props) => {
           </ButtonIcon>
         </DetailContainer>
       </CardDetails>
-      <ModalBackdrop
-        show={showReportModal}
-        onClick={closeReportModal}
-      />
+      <ModalBackdrop show={showReportModal} onClick={closeReportModal} />
       <Modal show={showReportModal}>
         เหตุผลในการแจ้งลบ
         <Warning>
@@ -579,11 +515,13 @@ const ReviewCard = (props) => {
           onChange={(e) => handleOnchange(e)}
         />
         <ModalActions>
-          <CancelButton onClick={closeReportModal}>
-            ยกเลิก
-          </CancelButton>
+          <CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
           <ConfirmButton onClick={sendReport}>
-            {isLoadingReport ? <CircularProgressCustom size="3rem" /> : "แจ้งลบ"}
+            {isLoadingReport ? (
+              <CircularProgressCustom size="3rem" />
+            ) : (
+              "แจ้งลบ"
+            )}
           </ConfirmButton>
         </ModalActions>
       </Modal>
@@ -607,7 +545,11 @@ const ReviewCard = (props) => {
         <ModalActions>
           <CancelButton onClick={closeEditModal}>ย้อนกลับ</CancelButton>
           <ConfirmButton onClick={deleteReview}>
-            {isLoadingDelete ? <CircularProgressCustom size="3rem" /> : "ลบรีวิว"}
+            {isLoadingDelete ? (
+              <CircularProgressCustom size="3rem" />
+            ) : (
+              "ลบรีวิว"
+            )}
           </ConfirmButton>
         </ModalActions>
       </Modal>
@@ -629,11 +571,11 @@ const ButtonIcon = styled(Button)`
     transition: 0.25s ease-in;
     position: absolute;
     ${(props) =>
-      props.clapAni === true
+      props.clapAnimation === true
         ? css`
             animation: ${pulse("rgba(36, 87, 156, 25%)")} 0.5s ease;
           `
-        : props.booAni === true
+        : props.booAnimation === true
         ? css`
             animation: ${pulse("rgba(173, 66, 16, 25%)")} 0.5s ease;
           `

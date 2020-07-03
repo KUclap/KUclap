@@ -5,7 +5,8 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 const ScoreTitle = styled.p`
   font-size: 1.7rem;
   width: ${(props) => (props.score ? "0rem" : "36%")};
-  color: ${(props) => (props.score ? props.theme.placeholderText : props.theme.mainText)};
+  color: ${(props) =>
+    props.score ? props.theme.placeholderText : props.theme.mainText};
 `;
 
 const LinearProgressCustom = styled(LinearProgress)`
@@ -52,20 +53,20 @@ const ScoreBar = styled.div`
 const Details = styled.div`
   width: 86%;
   margin: 0 2.4rem;
-  display: ${(props) => (props.enable === "details" ? "block" : "none")};
 `;
 
 const DetailTitle = styled.p`
   font-size: 2rem;
   margin: 1.2rem 0;
   font-weight: 600;
-  color: ${(props) => (props.desc ? props.theme.placeholderText : props.theme.mainText)};
+  color: ${(props) =>
+    props.desc ? props.theme.placeholderText : props.theme.mainText};
   padding: ${(props) => (props.desc ? "0 1rem" : "0")};
 `;
 
-const Detail = ({ score, enable }) => {
+const Detail = ({ score }) => {
   return (
-    <Details enable={enable}>
+    <Details>
       <ScoreContainter>
         <DetailTitle>คะแนนภาพรวม</DetailTitle>
         <ScoreBar title>
