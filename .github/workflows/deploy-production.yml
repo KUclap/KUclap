@@ -1,0 +1,37 @@
+name: build
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Publish to Github Packages Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: kuclap/KUclap/kuclap-web
+          registry: docker.pkg.github.com
+          username: ${{ secrets.GITHUB_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: Dockerfile
+          tags: latest
+    #  - name: Deploy package to digitalocean
+    #    uses: appleboy/ssh-action@master
+    #    env:
+    #      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #    with:
+    #      host: ${{ secrets.HOST }}
+    #      username: ${{ secrets.USERNAME }}
+    #      password: ${{ secrets.PASSWORD }}
+    #      port: ${{ secrets.PORT }}
+    #      envs: GITHUB_USERNAME, GITHUB_TOKEN
+    #      script: |
+    #        docker stop $(docker ps -a -q)
+    #        docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+    #        docker pull docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
+    #        docker run -dit -p 80:80 docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
