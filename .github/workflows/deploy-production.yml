@@ -15,7 +15,7 @@ jobs:
         with:
           name: kuclap/KUclap/kuclap-web
           registry: docker.pkg.github.com
-          username: ${{ secrets.GITHUB_USERNAME }}
+          username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
           tags: latest
