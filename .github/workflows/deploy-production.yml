@@ -21,6 +21,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          context: ./
           dockerfile: CI.Dockerfile
           tags: latest
           buildargs: URL_API,SERVER_PORT,SSR
