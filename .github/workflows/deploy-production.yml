@@ -1,4 +1,4 @@
-name: build
+name: Deploy-to-DO-production
 
 on:
   push:
@@ -12,26 +12,32 @@ jobs:
       - uses: actions/checkout@v1
       - name: Publish to Github Packages Registry
         uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          URL_API: ${{ secrets.ENV_URL_API }}
+          SERVER_PORT: ${{ secrets.ENV_SERVER_PORT }}
+          SSR: ${{ secrets.ENV_SSR }}
         with:
           name: kuclap/KUclap/kuclap-web
           registry: docker.pkg.github.com
           username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: Dockerfile
+          context: ./docker
+          dockerfile: CI.Dockerfile
           tags: latest
-    #  - name: Deploy package to digitalocean
-    #    uses: appleboy/ssh-action@master
-    #    env:
-    #      GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #    with:
-    #      host: ${{ secrets.HOST }}
-    #      username: ${{ secrets.USERNAME }}
-    #      password: ${{ secrets.PASSWORD }}
-    #      port: ${{ secrets.PORT }}
-    #      envs: GITHUB_USERNAME, GITHUB_TOKEN
-    #      script: |
-    #        docker stop $(docker ps -a -q)
-    #        docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-    #        docker pull docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
-    #        docker run -dit -p 80:80 docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
+          buildargs: URL_API,SERVER_PORT,SSR
+      - name: Deploy package to digitalocean
+        uses: appleboy/ssh-action@master
+        env:
+          GITHUB_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          password: ${{ secrets.DO_PASSWORD }}
+          port: ${{ secrets.DO_PORT }}
+          envs: GITHUB_USERNAME, GITHUB_TOKEN
+          script: |
+            docker stop $(docker ps -a -q)
+            docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+            docker pull docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
+            docker run -dit -p 80:80 docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
