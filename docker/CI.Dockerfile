@@ -19,8 +19,6 @@ RUN npm install
 RUN ls -al
 RUN npm run build:production
 
-COPY build build/
-
 EXPOSE 8000 8000
 
 CMD [ "npm", "start:production"]
