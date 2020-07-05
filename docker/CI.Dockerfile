@@ -29,5 +29,5 @@ FROM nginx:1.17-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 # COPY --from=build /usr/src/app/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
-EXPOSE 8000 8000
+EXPOSE 80 80
 CMD ["nginx", "-g", "daemon off;"]
