@@ -5,15 +5,15 @@ WORKDIR /usr/src/app
 ARG URL_API
 ARG SERVER_PORT
 ARG SSR
-ENV url_api=${URL_API}
-ENV server_port=${SERVER_PORT}
-ENV ssr=${SSR}
+# ENV url_api=$URL_API
+# ENV server_port=$SERVER_PORT
+# ENV ssr=$SSR
 
 COPY package*.json ./
 COPY *.js ./
 COPY src src/
 COPY .babelrc ./
-RUN printf "${url_api}\n${server_port}\n${ssr}" > .env.production
+RUN printf "$URL_API\n$SERVER_PORT\n$SSR\n" > .env.production
 RUN npm install -g preact-cli
 RUN npm install
 
