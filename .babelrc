@@ -4,14 +4,7 @@
     "babel-plugin-styled-components"
   ],
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "esmodules": true
-        }
-      }
-    ],
+    "@babel/preset-env",
     "@babel/preset-react",
     ["preact-cli/babel", { "modules": "commonjs" }]
   ]

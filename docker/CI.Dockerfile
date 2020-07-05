@@ -14,9 +14,11 @@ COPY *.js ./
 COPY src src/
 COPY .babelrc ./
 RUN printf "${url_api}\n${server_port}\n${ssr}" > .env.production
+RUN cat .env.production
+RUN ls -al
 RUN npm install -g preact-cli
 RUN npm install
-RUN ls -al
+
 RUN npm run build:production
 
 EXPOSE 8000 8000
