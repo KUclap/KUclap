@@ -1,4 +1,4 @@
-FROM node:14.5 as build
+FROM node:14.5-slim as build
 
 WORKDIR /usr/src/app
 
@@ -14,6 +14,7 @@ COPY *.js ./
 COPY src src/
 COPY .babelrc ./
 RUN printf "${url_api}\n${server_port}\n${ssr}" > .env.production
+RUN npm install -g preact-cli
 RUN npm install
 RUN ls -al
 RUN npm run build:production
