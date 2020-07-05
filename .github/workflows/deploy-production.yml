@@ -36,7 +36,7 @@ jobs:
           port: ${{ secrets.DO_PORT }}
           envs: GITHUB_USERNAME, GITHUB_TOKEN
           script: |
-            docker stop $(docker ps -a -q)
+            docker container prune --force
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
             docker pull docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
             docker run -dit -p 80:80 docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
