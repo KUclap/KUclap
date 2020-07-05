@@ -17,7 +17,7 @@ jobs:
           SERVER_PORT: ${{ secrets.ENV_SERVER_PORT }}
           SSR: ${{ secrets.ENV_SSR }}
         with:
-          name: kuclap/KUclap/kuclap-web
+          name: kuclap/kuclap/kuclap-web
           registry: docker.pkg.github.com
           username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -38,5 +38,5 @@ jobs:
           script: |
             docker container prune --force
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-            docker pull docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
-            docker run -dit -p 80:80 docker.pkg.github.com/kuclap/KUclap/kuclap-web:latest
+            docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
+            docker run -dit -p 80:80 docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
