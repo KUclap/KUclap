@@ -13,8 +13,7 @@ COPY package*.json ./
 COPY *.js ./
 COPY src src/
 COPY .babelrc ./
-RUN touch .env.production && printf "${url_api}\n${server_port}\n${ssr}" > .env.production
-COPY .env.production ./
+RUN printf "${url_api}\n${server_port}\n${ssr}" > .env.production
 RUN npm install
 RUN npm run build:production
 COPY build build/
