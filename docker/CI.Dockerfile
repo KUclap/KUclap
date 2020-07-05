@@ -26,7 +26,7 @@ CMD [ "npm", "start:production"]
 
 # Stage : Production 
 FROM nginx:1.17-alpine
-COPY nginx.conf /etc/nginx/nginx.conf
+# COPY nginx.conf /etc/nginx/nginx.conf
 # COPY --from=build /usr/src/app/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80 80
