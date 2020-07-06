@@ -26,8 +26,9 @@ CMD [ "npm", "start:production"]
 
 # Stage : Production 
 FROM nginx:1.17-alpine
+COPY kuclap.conf /etc/nginx/conf.d/
 # COPY nginx.conf /etc/nginx/nginx.conf
 # COPY --from=build /usr/src/app/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+# COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80 80
 CMD ["nginx", "-g", "daemon off;"]
