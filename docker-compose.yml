@@ -1,0 +1,45 @@
+version: "3.8"
+
+networks:
+  default:
+    external:
+      name: kuclap-network
+
+services:
+  kuclap-web:
+    container_name: kuclap-web
+    image: kuclap-web:v1
+    build:
+      context: ./
+      dockerfile: ./docker/Web.Dockerfile
+      args:
+        URL_API: "https://kuclap-api.herokuapp.com"
+        SERVER_PORT: 8080
+        SSR: "true"
+    restart: always
+    ports:
+      - 8000:8000
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+
+  nginx:
+    container_name: nginx
+    image: nginx:v1
+    build:
+      context: ./
+      dockerfile: ./docker/Nginx.Dockerfile
+    restart: always
+    links:
+      - kuclap-web:kuclap-web
+    depends_on:
+      - kuclap-web
+    ports:
+      - 80:80
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"

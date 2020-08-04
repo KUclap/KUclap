@@ -4,11 +4,16 @@ TAG_KUCLAP_WEB = v1
 REPO_OWNER = kuclap
 REPO_NAME = kuclap
 
+
+#### Utils
+docker-compose-with-args:
+	docker-compose build --build-arg URL_API="https://kuclap-api.herokuapp.com" --build-arg SERVER_PORT="8080" --build-arg SSR=true
+
 #### Manual command
 
 ## Push image to kuclpa's github pkg.
 handon-login-github-pkg-for-push-image-to-repo:
-	# Prerequire: you have to already exist image builded.
+	# Prerequire: you have to already exist image built.
 	# suggest: use kuclap-web:v1 for building image from dockerfile.
 	@ docker tag ${IMAGE_KUCLAP_WEB}:${TAG_KUCLAP_WEB} docker.pkg.github.com/${REPO_OWNER}/${REPO_NAME}/${IMAGE_KUCLAP_WEB}:${TAG_KUCLAP_WEB}
 	@ cat ./TOKEN_GITHUB_PKG_REGISTRY.txt | docker login https://docker.pkg.github.com -u ${GUTHUB_USERNAME} --password-stdin
