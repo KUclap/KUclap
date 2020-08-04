@@ -10,7 +10,8 @@ COPY package*.json ./
 COPY *.js ./
 COPY src src/
 COPY .babelrc ./
-RUN printf "URL_API=\"$URL_API\"\nSERVER_PORT=$SERVER_PORT\nSSR=$SSR\n" > .env.production && cat .env.production
+RUN printf "URL_API=\"$URL_API\"\nSERVER_PORT=$SERVER_PORT\nSSR=$SSR\n" > .env.production
+RUN npm install -g preact-cli
 RUN npm install
 RUN npm run build:production
 
