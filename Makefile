@@ -9,6 +9,9 @@ REPO_NAME = kuclap
 docker-compose-with-args:
 	docker-compose build --build-arg URL_API="https://kuclap-api.herokuapp.com" --build-arg SERVER_PORT="8080" --build-arg SSR=true
 
+docker-with-args-web:
+	docker build --build-arg URL_API="https://kuclap-api.herokuapp.com" --build-arg SERVER_PORT="8080" --build-arg SSR=true -f ./docker/Web.Dockerfile .
+
 #### Manual command
 
 ## Push image to kuclpa's github pkg.
