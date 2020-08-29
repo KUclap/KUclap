@@ -15,7 +15,7 @@ RUN npm install
 RUN npm run build:production
 
 # Starting stage
-FROM node:14.5-slim
+FROM node:14
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/ .
 RUN ls -al
