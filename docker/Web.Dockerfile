@@ -1,5 +1,5 @@
 # Building stage
-FROM node:14.5-slim as builder
+FROM node:14 as builder
 WORKDIR /usr/src/app
 
 ARG URL_API
