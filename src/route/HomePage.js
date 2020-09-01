@@ -85,11 +85,11 @@ const HomePage = (props) => {
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <>
+    <Fragment>
       <ReviewFetcherProvider classID={classID}>
         <HomePage {...props} />
       </ReviewFetcherProvider>
-    </>
+    </Fragment>
   );
 };
 

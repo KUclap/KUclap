@@ -1,3 +1,4 @@
+import {h, Fragment} from 'preact'
 import { createGlobalStyle, withTheme } from "styled-components";
 import media from "styled-media-query";
 
@@ -36,13 +37,13 @@ body {
 const GlobalComponent = (props) => {
   const { isOverflow } = props;
   return (
-    <>
+    <Fragment>
       <link
         href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"
         rel="stylesheet"
       />
       <GlobalStyles isOverflow={isOverflow} />
-    </>
+    </Fragment>
   );
 };
 

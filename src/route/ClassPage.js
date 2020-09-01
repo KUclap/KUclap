@@ -96,7 +96,7 @@ const ClassPage = (props) => {
   };
 
   return (
-    <>
+    <Fragment>
       <PageTemplate
         content={{
           title: `รีวิววิชา ${getDetailFromLabel(selected.label).nameTH} ${
@@ -163,18 +163,18 @@ const ClassPage = (props) => {
           )}
         </LastReview>
       </PageTemplate>
-    </>
+    </Fragment>
   );
 };
 
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <>
+    <Fragment>
       <ReviewFetcherProvider classID={classID}>
         <ClassPage {...props} />
       </ReviewFetcherProvider>
-    </>
+    </Fragment>
   );
 };
 
