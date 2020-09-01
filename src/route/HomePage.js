@@ -31,7 +31,7 @@ const HomePage = (props) => {
   );
 
   return (
-    <>
+    <Fragment>
       <PageTemplate
         content={{
           title: `KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
@@ -78,7 +78,7 @@ const HomePage = (props) => {
           )}
         </LastReview>
       </PageTemplate>
-    </>
+    </Fragment>
   );
 };
 
