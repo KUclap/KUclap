@@ -52,7 +52,7 @@ class App extends Component {
   render() {
     const { classes } = this.props;
     return (
-      // <>
+      <>
         <div id="app">
           <Provider theme={themes[this.state.theme]} {...this.props}>
             <Router url={this.props.url} onChange={this.handleRoute}>
@@ -77,7 +77,7 @@ class App extends Component {
             </Router>
           </Provider>
         </div>
-      // </>
+      </>
     );
   }
 }

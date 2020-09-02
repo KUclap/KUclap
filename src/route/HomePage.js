@@ -31,7 +31,7 @@ const HomePage = (props) => {
   );
 
   return (
-    <Fragment>
+    <>
       <PageTemplate
         content={{
           title: `KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
@@ -58,38 +58,38 @@ const HomePage = (props) => {
               : null}
           </AdaptorReviews>
           {(loading || loadMore) && !underflow ? (
-            <Fragment>
+            <>
               <ReviewSkeletonA />
               <ReviewSkeletonB />
-            </Fragment>
+            </>
           ) : (
             reviews &&
             !loading &&
             underflow && (
-              <Fragment>
+              <>
                 <ContainerNoMore>
                   <NoMoreCustom>
                     {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
                   </NoMoreCustom>
                 </ContainerNoMore>
                 <Footer />
-              </Fragment>
+              </>
             )
           )}
         </LastReview>
       </PageTemplate>
-    </Fragment>
+    </>
   );
 };
 
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <Fragment>
+    <>
       <ReviewFetcherProvider classID={classID}>
         <HomePage {...props} />
       </ReviewFetcherProvider>
-    </Fragment>
+    </>
   );
 };
 

@@ -4,8 +4,9 @@ import media from "styled-media-query";
 
 const GlobalStyles = createGlobalStyle`
 html {
-  font-size: 62.5%; /* 10px at html, body */
   scroll-behavior: smooth;
+ 
+  font-size: 62.5%; /* 10px at html, body */
   
   ${media.lessThan("medium")`
       font-size: 55.5%; 
@@ -14,7 +15,6 @@ html {
   ${media.lessThan("small")`
       font-size: 48.5%; 
   `}
-
 } 
 body {
   color: ${(props) => props.theme.bodyText || "#f5f5f5"};
@@ -37,13 +37,13 @@ body {
 const GlobalComponent = (props) => {
   const { isOverflow } = props;
   return (
-    <Fragment>
+    <>
       <link
         href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"
         rel="stylesheet"
       />
       <GlobalStyles isOverflow={isOverflow} />
-    </Fragment>
+    </>
   );
 };
 

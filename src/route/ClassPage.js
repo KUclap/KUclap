@@ -96,7 +96,7 @@ const ClassPage = (props) => {
   };
 
   return (
-    <Fragment>
+    <>
       <PageTemplate
         content={{
           title: `รีวิววิชา ${getDetailFromLabel(selected.label).nameTH} ${
@@ -142,15 +142,15 @@ const ClassPage = (props) => {
               : null}
           </AdaptorReviews>
           {(loading || loadMore) && !underflow ? (
-            <Fragment>
+            <>
               <ReviewSkeletonA />
               <ReviewSkeletonB />
-            </Fragment>
+            </>
           ) : (
             reviews &&
             !loading &&
             underflow && (
-              <Fragment>
+              <>
                 <ContainerNoMore>
                   <NoMoreCustom>
                     {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
@@ -158,23 +158,23 @@ const ClassPage = (props) => {
                   <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
                 </ContainerNoMore>
                 <Footer />
-              </Fragment>
+              </>
             )
           )}
         </LastReview>
       </PageTemplate>
-    </Fragment>
+    </>
   );
 };
 
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <Fragment>
+    <>
       <ReviewFetcherProvider classID={classID}>
         <ClassPage {...props} />
       </ReviewFetcherProvider>
-    </Fragment>
+    </>
   );
 };
 

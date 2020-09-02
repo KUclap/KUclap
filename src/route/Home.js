@@ -437,15 +437,15 @@ const App = ({ classid, toggleTheme }) => {
         </AdaptorReviews>
         {show !== "form" ? (
           (loading || loadMore) && !underflow ? (
-            <Fragment>
+            <>
               <ReviewSkeletonA />
               <ReviewSkeletonB />
-            </Fragment>
+            </>
           ) : (
             reviews &&
             !loading &&
             underflow && (
-              <Fragment>
+              <>
                 <ContainerNoMore>
                   <NoMoreCustom>
                     {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
@@ -455,7 +455,7 @@ const App = ({ classid, toggleTheme }) => {
                   ) : null}
                 </ContainerNoMore>
                 <Footer />
-              </Fragment>
+              </>
             )
           )
         ) : null}

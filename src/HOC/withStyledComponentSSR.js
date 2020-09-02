@@ -24,12 +24,12 @@ if (process.env.SSR) {
     };
 
     return (props) => (
-      <Fragment>
+      <>
         <StyleSheetManager sheet={sheet.instance}>
           <App {...props} />
         </StyleSheetManager>
         <StyleTags />
-      </Fragment>
+      </>
     );
   };
 }
