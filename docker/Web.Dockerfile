@@ -1,5 +1,5 @@
 # Building stage
-FROM node:14.2 as builder
+FROM node:14.2-slim as builder
 WORKDIR /usr/src/app
 
 ARG URL_API
@@ -16,7 +16,7 @@ RUN npm run build:production
 # CMD [ "npm", "run", "start:production"]
 
 # Starting stage
-FROM node:14.2
+FROM node:14.2-slim
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/ .
 RUN ls -al
