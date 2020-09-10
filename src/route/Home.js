@@ -1,4 +1,4 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import { route } from "preact-router";
 import { useState, useEffect, useRef } from "preact/hooks";
 

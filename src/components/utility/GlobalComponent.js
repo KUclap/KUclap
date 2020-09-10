@@ -1,11 +1,11 @@
-import {h, Fragment} from 'preact'
+import { h } from "preact";
 import { createGlobalStyle, withTheme } from "styled-components";
 import media from "styled-media-query";
 
 const GlobalStyles = createGlobalStyle`
 html {
   scroll-behavior: smooth;
- 
+
   font-size: 62.5%; /* 10px at html, body */
   
   ${media.lessThan("medium")`
@@ -16,6 +16,7 @@ html {
       font-size: 48.5%; 
   `}
 } 
+
 body {
   color: ${(props) => props.theme.bodyText || "#f5f5f5"};
   background: ${(props) => props.theme.body || "#191b1f"};
@@ -25,7 +26,8 @@ body {
   width: 100%;
   padding: 0;
   margin: 0;
-  overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")}
+  overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")};
+  
 } 
 
 * {

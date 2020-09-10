@@ -1,4 +1,4 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import { KUClap } from "../utility/Icons";
 import ThemeToggleButton from "./ThemeToggleButton";

@@ -1,4 +1,4 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import { useContext } from "preact/hooks";
 import { withTheme } from "styled-components";
 
@@ -31,65 +31,61 @@ const HomePage = (props) => {
   );
 
   return (
-    <>
-      <PageTemplate
-        content={{
-          title: `KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
-          description: `kuclap.com - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
-          image: "https://kuclap.com/assets/img/meta-og-image.png",
-        }}
-        {...props}
-      >
-        <LastReview>
-          <DetailTitle>รีวิวล่าสุด</DetailTitle>
-          <AdaptorReviews id="adaptor">
-            {reviews
-              ? reviews.map(
-                  (review, index) =>
-                    review && (
-                      <ReviewCard
-                        key={index}
-                        isBadge={true}
-                        currentRoute={"HOME"}
-                        {...review}
-                      />
-                    )
-                )
-              : null}
-          </AdaptorReviews>
-          {(loading || loadMore) && !underflow ? (
+    <PageTemplate
+      content={{
+        title: `KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
+        description: `kuclap.com - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
+        image: "https://kuclap.com/assets/img/meta-og-image.png",
+      }}
+      {...props}
+    >
+      <LastReview>
+        <DetailTitle>รีวิวล่าสุด</DetailTitle>
+        <AdaptorReviews id="adaptor">
+          {reviews
+            ? reviews.map(
+                (review, index) =>
+                  review && (
+                    <ReviewCard
+                      key={index}
+                      isBadge={true}
+                      currentRoute={"HOME"}
+                      {...review}
+                    />
+                  )
+              )
+            : null}
+        </AdaptorReviews>
+        {(loading || loadMore) && !underflow ? (
+          <>
+            <ReviewSkeletonA />
+            <ReviewSkeletonB />
+          </>
+        ) : (
+          reviews &&
+          !loading &&
+          underflow && (
             <>
-              <ReviewSkeletonA />
-              <ReviewSkeletonB />
+              <ContainerNoMore>
+                <NoMoreCustom>
+                  {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
+                </NoMoreCustom>
+              </ContainerNoMore>
+              <Footer />
             </>
-          ) : (
-            reviews &&
-            !loading &&
-            underflow && (
-              <>
-                <ContainerNoMore>
-                  <NoMoreCustom>
-                    {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
-                  </NoMoreCustom>
-                </ContainerNoMore>
-                <Footer />
-              </>
-            )
-          )}
-        </LastReview>
-      </PageTemplate>
-    </>
+          )
+        )}
+      </LastReview>
+    </PageTemplate>
   );
 };
 
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <>
-      <ReviewFetcherProvider classID={classID}>
-        <HomePage {...props} />
-      </ReviewFetcherProvider>
-    </>
+    <ReviewFetcherProvider classID={classID}>
+      <HomePage {...props} />
+    </ReviewFetcherProvider>
   );
 };
 

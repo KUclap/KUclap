@@ -1,4 +1,4 @@
-import { h, Fragment } from "preact";
+import { h } from "preact";
 import { route } from "preact-router";
 import { useContext } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
@@ -96,85 +96,80 @@ const ClassPage = (props) => {
   };
 
   return (
-    <>
-      <PageTemplate
-        content={{
-          title: `รีวิววิชา ${getDetailFromLabel(selected.label).nameTH} ${
-            getDetailFromLabel(selected.label).nameEN
-          } (${getDetailFromLabel(selected.label).classID}) มก. - KUclap`,
-          description: `รีวิววิชา ${selected.label} - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
-          image: "https://kuclap.com/assets/img/meta-og-image.png",
-        }}
-        {...props}
-      >
-        <SubjectTitle color={getColorHash(classID)}>
-          <span>{classID}</span>
-          {selected.label ===
-          "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
-            ? "กำลังโหลดข้อมูลวิชา..."
-            : getClassName(selected.label)}
-        </SubjectTitle>
-        <Details score={score} />
-        <LastReview>
-          <ReviewTitle>
-            <DetailTitle>รีวิวทั้งหมด</DetailTitle>
-            <ContainerBtns>
-              <ButtonLastReview onClick={navigateToHome}>
-                หน้าแรก
-              </ButtonLastReview>
-              <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
-            </ContainerBtns>
-          </ReviewTitle>
+    <PageTemplate
+      content={{
+        title: `รีวิววิชา ${getDetailFromLabel(selected.label).nameTH} ${
+          getDetailFromLabel(selected.label).nameEN
+        } (${getDetailFromLabel(selected.label).classID}) มก. - KUclap`,
+        description: `รีวิววิชา ${selected.label} - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
+        image: "https://kuclap.com/assets/img/meta-og-image.png",
+      }}
+      {...props}
+    >
+      <SubjectTitle color={getColorHash(classID)}>
+        <span>{classID}</span>
+        {selected.label === "ค้นหาวิชาด้วยรหัสวิชา ชื่อวิชาภาษาไทย / ภาษาอังกฤษ"
+          ? "กำลังโหลดข้อมูลวิชา..."
+          : getClassName(selected.label)}
+      </SubjectTitle>
+      <Details score={score} />
+      <LastReview>
+        <ReviewTitle>
+          <DetailTitle>รีวิวทั้งหมด</DetailTitle>
+          <ContainerBtns>
+            <ButtonLastReview onClick={navigateToHome}>
+              หน้าแรก
+            </ButtonLastReview>
+            <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
+          </ContainerBtns>
+        </ReviewTitle>
 
-          <AdaptorReviews id="adaptor">
-            {reviews
-              ? reviews.map(
-                  (review, index) =>
-                    review && (
-                      <ReviewCard
-                        key={index}
-                        isBadge={false}
-                        currentRoute={"CLASS"}
-                        {...review}
-                      />
-                    )
-                )
-              : null}
-          </AdaptorReviews>
-          {(loading || loadMore) && !underflow ? (
+        <AdaptorReviews id="adaptor">
+          {reviews
+            ? reviews.map(
+                (review, index) =>
+                  review && (
+                    <ReviewCard
+                      key={index}
+                      isBadge={false}
+                      currentRoute={"CLASS"}
+                      {...review}
+                    />
+                  )
+              )
+            : null}
+        </AdaptorReviews>
+        {(loading || loadMore) && !underflow ? (
+          <>
+            <ReviewSkeletonA />
+            <ReviewSkeletonB />
+          </>
+        ) : (
+          reviews &&
+          !loading &&
+          underflow && (
             <>
-              <ReviewSkeletonA />
-              <ReviewSkeletonB />
+              <ContainerNoMore>
+                <NoMoreCustom>
+                  {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
+                </NoMoreCustom>
+                <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
+              </ContainerNoMore>
+              <Footer />
             </>
-          ) : (
-            reviews &&
-            !loading &&
-            underflow && (
-              <>
-                <ContainerNoMore>
-                  <NoMoreCustom>
-                    {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
-                  </NoMoreCustom>
-                  <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
-                </ContainerNoMore>
-                <Footer />
-              </>
-            )
-          )}
-        </LastReview>
-      </PageTemplate>
-    </>
+          )
+        )}
+      </LastReview>
+    </PageTemplate>
   );
 };
 
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <>
-      <ReviewFetcherProvider classID={classID}>
-        <ClassPage {...props} />
-      </ReviewFetcherProvider>
-    </>
+    <ReviewFetcherProvider classID={classID}>
+      <ClassPage {...props} />
+    </ReviewFetcherProvider>
   );
 };
 

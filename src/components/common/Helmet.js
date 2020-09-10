@@ -4,7 +4,7 @@ import Helmet from "preact-helmet";
 const HelmetComponent = ({ content }) => {
   return (
     <Helmet
-      htmlAttributes={{ lang: "th", amp: undefined }} // amp takes no value
+      htmlAttributes={{ lang: "th" }} // amp takes no value
       title="KUclap"
       titleTemplate={content.title}
       defaultTitle="KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก."
