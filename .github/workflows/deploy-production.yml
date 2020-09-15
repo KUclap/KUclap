@@ -49,5 +49,5 @@ jobs:
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
-            docker run -dit --name kuclap-web -p 8000:8000 docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
+            docker run -dit --name kuclap-web -p 8000:8000 docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest --restart=always
             docker run -dit --name kuclap-nginx -p 80:80 docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
