@@ -52,4 +52,4 @@ jobs:
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
             docker run --name kuclap-web --network=kuclap --restart=always  -dit -p 8000:8000 docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest 
-            docker run --name kuclap-nginx --network=kuclap --restart=always -v /srv/kuclap.com:/srv/kuclap.com -dit  -p 80:80 docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
+            docker run --name kuclap-nginx --network=kuclap --restart=always -v /srv/kuclap.com:/srv/kuclap.com -dit -p 443:443 -p 80:80 docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
