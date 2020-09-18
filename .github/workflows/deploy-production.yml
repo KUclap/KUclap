@@ -46,6 +46,8 @@ jobs:
           envs: GITHUB_USERNAME, GITHUB_TOKEN
           script: |
             docker stop $(docker ps -a -q)
+            docker container prune -f 
+            docker image prune -f
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
