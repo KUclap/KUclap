@@ -70,9 +70,36 @@ async function ApplicationEndpoint(req, res) {
   }
 }
 
+async function SitemapEndpoint(req, res) {
+  try {
+    const { data: classes } = await axios.get(`${process.env.URL_API}/classes`);
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        ${classes
+          .map(({ classId }) => {
+            return `
+                    <url>
+                        <loc>https://kuclap.com/${classId}</loc>
+                        <changefreq>monthly</changefreq>
+                    </url>
+                `;
+          })
+          .join("")}
+    </urlset>
+    `;
+    res.setHeader("Content-Type", "text/xml");
+    res.write(sitemap);
+    res.end();
+  } catch (error) {
+    res.setHeader("Content-Type", "text/html");
+    res.end(`error: fetching from daatabase`);
+  }
+}
+
 polka()
   .use(compression)
   .use(sirv("build", { setHeaders }))
+  .get("/sitemap", SitemapEndpoint)
   .get("/:classID", ApplicationEndpoint)
   .get("/form/create/:classID", ApplicationEndpoint)
   .listen(PORT, (err) => {
