@@ -57,7 +57,7 @@ async function ApplicationEndpoint(req, res) {
       detailClass = response.data;
     } catch (error) {
       res.setHeader("Content-Type", "text/html");
-      res.end(`error: Invalid classId on your url.`);
+      res.end(`ERROR: Invalid classId on your url.`);
     }
     replaceMetaOnTemplate(detailClass);
     let body = render(h(App, { url: req.url }));
@@ -92,7 +92,7 @@ async function SitemapEndpoint(req, res) {
     res.end();
   } catch (error) {
     res.setHeader("Content-Type", "text/html");
-    res.end(`error: fetching from daatabase`);
+    res.end(`ERROR: Fetching from daatabase`);
   }
 }
 
