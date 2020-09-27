@@ -26,6 +26,32 @@ function setHeaders(res, file) {
   res.setHeader("Cache-Control", cache); // don't cache service worker file
 }
 
+async function SitemapEndpoint(req, res) {
+  try {
+    const { data: classes } = await axios.get(`${process.env.URL_API}/classes`);
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        ${classes
+          .map(({ classId }) => {
+            return `
+                    <url>
+                        <loc>https://kuclap.com/${classId}</loc>
+                        <changefreq>monthly</changefreq>
+                    </url>
+                `;
+          })
+          .join("")}
+    </urlset>
+    `;
+    res.setHeader("Content-Type", "text/xml");
+    res.write(sitemap);
+    res.end();
+  } catch (error) {
+    res.setHeader("Content-Type", "text/html");
+    res.end(`ERROR: Fetching from daatabase`);
+  }
+}
+
 function replaceMetaOnTemplate(detailClass) {
   templateClassPage = templateClassPage.replace(
     /\{CLASS_ID\}/g,
@@ -57,7 +83,7 @@ async function ApplicationEndpoint(req, res) {
       detailClass = response.data;
     } catch (error) {
       res.setHeader("Content-Type", "text/html");
-      res.end(`error: Invalid classId on your url.`);
+      res.end(`ERROR: Invalid classId on your url.`);
     }
     replaceMetaOnTemplate(detailClass);
     let body = render(h(App, { url: req.url }));
@@ -67,32 +93,6 @@ async function ApplicationEndpoint(req, res) {
     let body = render(h(App, { url: req.url }));
     res.setHeader("Content-Type", "text/html");
     res.end(template.replace(RGX, body));
-  }
-}
-
-async function SitemapEndpoint(req, res) {
-  try {
-    const { data: classes } = await axios.get(`${process.env.URL_API}/classes`);
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-        ${classes
-          .map(({ classId }) => {
-            return `
-                    <url>
-                        <loc>https://kuclap.com/${classId}</loc>
-                        <changefreq>monthly</changefreq>
-                    </url>
-                `;
-          })
-          .join("")}
-    </urlset>
-    `;
-    res.setHeader("Content-Type", "text/xml");
-    res.write(sitemap);
-    res.end();
-  } catch (error) {
-    res.setHeader("Content-Type", "text/html");
-    res.end(`error: fetching from daatabase`);
   }
 }
 
