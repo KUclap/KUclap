@@ -53,7 +53,6 @@ async function SitemapEndpoint(req, res) {
 }
 
 function replaceMetaOnTemplate(detailClass) {
-  console.log(detailClass);
   templateClassPage = templateClassPage.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
@@ -81,7 +80,7 @@ function validatorClassId(classID) {
 async function ApplicationEndpoint(req, res) {
   let detailClass;
   let { classID } = req.params;
-
+  console.log("class-id from req :", classID);
   if (classID) {
     if (validatorClassId(classID)) {
       try {

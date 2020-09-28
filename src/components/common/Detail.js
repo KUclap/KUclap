@@ -10,18 +10,18 @@ const ScoreTitle = styled.p`
 `;
 
 const LinearProgressCustom = styled(LinearProgress)`
-  &&.MuiLinearProgress-root {
+  &.MuiLinearProgress-root {
     height: 1.2rem;
     width: 72%;
     border-radius: 0.6rem;
     margin-left: 1rem;
   }
 
-  &&.MuiLinearProgress-colorPrimary {
+  &.MuiLinearProgress-colorPrimary {
     background-color: ${(props) => props.theme.lightColor2};
   }
 
-  && .MuiLinearProgress-barColorPrimary {
+  & .MuiLinearProgress-barColorPrimary {
     background-image: linear-gradient(
       89.94deg,
       ${(props) => props.colorLeft} 0.01%,
