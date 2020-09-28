@@ -53,6 +53,7 @@ async function SitemapEndpoint(req, res) {
 }
 
 function replaceMetaOnTemplate(detailClass) {
+  console.log(detailClass);
   templateClassPage = templateClassPage.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
@@ -71,24 +72,35 @@ function replaceMetaOnTemplate(detailClass) {
   );
 }
 
+function validatorClassId(classID) {
+  let reg = new RegExp("^[0-9]+$");
+  if (classID.length === 8 && reg.test(classID)) return true;
+  return false;
+}
+
 async function ApplicationEndpoint(req, res) {
   let detailClass;
   let { classID } = req.params;
 
   if (classID) {
-    try {
-      const response = await axios.get(
-        `${process.env.URL_API}/class/${classID}`
-      );
-      detailClass = response.data;
-    } catch (error) {
+    if (validatorClassId(classID)) {
+      try {
+        const response = await axios.get(
+          `${process.env.URL_API}/class/${classID}`
+        );
+        detailClass = response.data;
+        replaceMetaOnTemplate(detailClass);
+        let body = render(h(App, { url: req.url }));
+        res.setHeader("Content-Type", "text/html");
+        res.end(templateClassPage.replace(RGX, body));
+      } catch (error) {
+        res.setHeader("Content-Type", "text/html");
+        res.end(`ERROR: ${classID} is invalid classId.`);
+      }
+    } else {
       res.setHeader("Content-Type", "text/html");
-      res.end(`ERROR: Invalid classId on your url.`);
+      res.end(`ERROR: ${classID} is invalid classId.`);
     }
-    replaceMetaOnTemplate(detailClass);
-    let body = render(h(App, { url: req.url }));
-    res.setHeader("Content-Type", "text/html");
-    res.end(templateClassPage.replace(RGX, body));
   } else {
     let body = render(h(App, { url: req.url }));
     res.setHeader("Content-Type", "text/html");
