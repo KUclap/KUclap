@@ -64,7 +64,7 @@
     "express": "^4.17.1",
     "module-alias": "^2.2.2",
     "polka": "^0.5.2",
-    "preact": "^10.4.8",
+    "preact": "^10.5.3",
     "preact-helmet": "^4.0.0-alpha-3",
     "preact-lazy-route": "^1.0.1",
     "preact-render-to-string": "^5.1.4",

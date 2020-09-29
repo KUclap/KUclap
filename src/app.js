@@ -52,30 +52,32 @@ class App extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div id="app">
-        <Provider theme={themes[this.state.theme]} {...this.props}>
-          <Router url={this.props.url} onChange={this.handleRoute}>
-            <AsyncRoute
-              path={`${baseroute}/`}
-              toggleTheme={this.toggleTheme}
-              component={HomePage}
-              classes={classes}
-            />
-            <AsyncRoute
-              path={`${baseroute}/:classID`}
-              toggleTheme={this.toggleTheme}
-              component={ClassPage}
-              classes={classes}
-            />
-            <AsyncRoute
-              path={`${baseroute}/form/create/:classID`}
-              toggleTheme={this.toggleTheme}
-              component={FormReviewCreatePage}
-              classes={classes}
-            />
-          </Router>
-        </Provider>
-      </div>
+      <>
+        <div id="app">
+          <Provider theme={themes[this.state.theme]} {...this.props}>
+            <Router url={this.props.url} onChange={this.handleRoute}>
+              <AsyncRoute
+                path={`${baseroute}/`}
+                toggleTheme={this.toggleTheme}
+                component={HomePage}
+                classes={classes}
+              />
+              <AsyncRoute
+                path={`${baseroute}/:classID`}
+                toggleTheme={this.toggleTheme}
+                component={ClassPage}
+                classes={classes}
+              />
+              <AsyncRoute
+                path={`${baseroute}/form/create/:classID`}
+                toggleTheme={this.toggleTheme}
+                component={FormReviewCreatePage}
+                classes={classes}
+              />
+            </Router>
+          </Provider>
+        </div>
+      </>
     );
   }
 }
