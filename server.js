@@ -94,8 +94,8 @@ function replaceMetaOnReviewTemplate(detailClass, detailReview) {
     detailClass.label
   );
   templateReviewPage = templateReviewPage.replace(
-    /\{CLASS_URL\}/g,
-    `https://www.kuclap.com/${detailClass.classId}`
+    /\{REVIEW_URL\}/g,
+    `https://www.kuclap.com/review/${detailReview.reviewId}`
   );
   templateReviewPage = templateReviewPage.replace(
     /\{REVIEW_TEXT\}/g,
