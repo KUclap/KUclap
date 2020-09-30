@@ -10,6 +10,7 @@ import HomePage from "./route/HomePage";
 import Provider from "./providers/AppProvider";
 
 import withClasses from "./HOC/withClasses";
+import ReviewPage from "./route/ReviewPage";
 
 class App extends Component {
   /** Gets fired when the route changes.
@@ -52,6 +53,7 @@ class App extends Component {
   render() {
     const { classes } = this.props;
     return (
+      // <>
       <div id="app">
         <Provider theme={themes[this.state.theme]} {...this.props}>
           <Router url={this.props.url} onChange={this.handleRoute}>
@@ -73,9 +75,16 @@ class App extends Component {
               component={FormReviewCreatePage}
               classes={classes}
             />
+            <AsyncRoute
+              path={`${baseroute}/review/:reviewID`}
+              toggleTheme={this.toggleTheme}
+              component={ReviewPage}
+              classes={classes}
+            />
           </Router>
         </Provider>
       </div>
+      // </>
     );
   }
 }

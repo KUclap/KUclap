@@ -33,7 +33,7 @@ const FormReviewCreate = (props) => {
         content={{
           title: `เขียนรีวิววิชา : ${selected.label}`,
           description: `เขียนรีวิววิชา : ${selected.label}`,
-          image: "https://kuclap.com/assets/img/meta-og-image.png",
+          image: "https://www.kuclap.com/assets/img/meta-og-image.png",
         }}
         isFormPage={true}
         {...props}

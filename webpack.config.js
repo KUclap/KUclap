@@ -39,6 +39,7 @@ module.exports = {
       react: "preact/compat",
       "react-dom/test-utils": "preact/test-utils",
       "react-dom": "preact/compat",
+      React: "preact/compat",
       // alias: require("./package.json")._moduleAliases,
     },
   },
