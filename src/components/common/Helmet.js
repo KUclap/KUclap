@@ -9,7 +9,7 @@ const HelmetComponent = ({ content }) => {
       titleTemplate={content.title}
       defaultTitle="KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก."
       titleAttributes={{ itemprop: "name", lang: "th" }}
-      //base={{ target: "_blank", href: "https://kuclap.com/" }}
+      //base={{ target: "_blank", href: "https://www.kuclap.com/" }}
       meta={[
         // Robot
         // { name: "robots", content: "noindex" },
@@ -18,7 +18,7 @@ const HelmetComponent = ({ content }) => {
         { name: "description", content: `${content.description}` },
         // Open Graph / Facebook
         { property: "og:type", content: "website" },
-        { property: "og:url", content: "https://kuclap.com/" },
+        { property: "og:url", content: "https://www.kuclap.com/" },
         { property: "og:title", content: `KUclap - ${content.title}` },
         {
           property: "og:description",
@@ -27,7 +27,7 @@ const HelmetComponent = ({ content }) => {
         { property: "og:image", content: content.image },
         // Twitter
         { property: "twitter:card", content: "summary_large_image" },
-        { property: "twitter:url", content: "https://kuclap.com/" },
+        { property: "twitter:url", content: "https://www.kuclap.com/" },
         { property: "twitter:title", content: `KUclap - ${content.title}` },
         {
           property: "twitter:description",

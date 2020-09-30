@@ -100,7 +100,7 @@ const ReviewPage = (props) => {
             )}.png?classId=${review.classId}&classNameTH=${encodeURIComponent(
               review.classNameTH
             )}`
-          : "https://kuclap.com/assets/img/meta-og-image.png",
+          : "https://www.kuclap.com/assets/img/meta-og-image.png",
         // format for generate og-image
         // https://og-image.kuclap.com/%E0%B8%7.png?classId=01371111&classNameTH=%E0
       }}
