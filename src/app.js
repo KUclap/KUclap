@@ -10,6 +10,7 @@ import HomePage from "./route/HomePage";
 import Provider from "./providers/AppProvider";
 
 import withClasses from "./HOC/withClasses";
+import ReviewPage from "./route/ReviewPage";
 
 class App extends Component {
   /** Gets fired when the route changes.
@@ -72,6 +73,12 @@ class App extends Component {
               path={`${baseroute}/form/create/:classID`}
               toggleTheme={this.toggleTheme}
               component={FormReviewCreatePage}
+              classes={classes}
+            />
+            <AsyncRoute
+              path={`${baseroute}/review/:reviewID`}
+              toggleTheme={this.toggleTheme}
+              component={ReviewPage}
               classes={classes}
             />
           </Router>
