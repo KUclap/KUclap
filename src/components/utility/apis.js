@@ -54,6 +54,16 @@ const apis = {
       console.log(err);
     }
   },
+  // GET review by reviewID
+  getReviewByReviewID: async (reviewID, next, reject) => {
+    try {
+      const res = await api.get(`/review/${reviewID}`);
+      next(res);
+    } catch (err) {
+      reject();
+      console.log(err);
+    }
+  },
   // POST report review by reviewid
   createReportReview: async (payloadReport, next) => {
     try {
