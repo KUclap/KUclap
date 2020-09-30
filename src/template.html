@@ -22,13 +22,10 @@
       property="og:type"
       content="<%= htmlWebpackPlugin.options.data.type %>"
     />
-    <meta
-      property="og:url"
-      content="<%= htmlWebpackPlugin.options.data.url %>"
-    />
+    <meta property="og:url" content="{CLASS_URL}" />
     <meta
       property="og:title"
-      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
     />
     <meta
       property="og:description"
@@ -43,10 +40,7 @@
       property="twitter:card"
       content="<%= htmlWebpackPlugin.options.data.card %>"
     />
-    <meta
-      property="twitter:url"
-      content="<%= htmlWebpackPlugin.options.data.url %>"
-    />
+    <meta property="twitter:url" content="{CLASS_URL}" />
     <meta
       property="twitter:title"
       content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก."
@@ -59,6 +53,50 @@
       property="twitter:image"
       content="<%= htmlWebpackPlugin.options.data.image %>"
     />
+    <% } else if (htmlWebpackPlugin.options.isReviewPage) { %>
+    <title>
+      {REVIEW_TEXT} โดย {REVIEW_AUTHOR} - รีวิววิชา {CLASS_NAME_TH}
+      {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap
+    </title>
+    <meta
+      name="title"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+    />
+    <meta
+      name="description"
+      content="{REVIEW_TEXT} โดย {REVIEW_AUTHOR} - รีวิววิชา {CLASS_LABEL} แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap"
+    />
+    <!-- Open Graph / Facebook  -->
+    <meta
+      property="og:type"
+      content="<%= htmlWebpackPlugin.options.data.type %>"
+    />
+    <meta property="og:url" content="{CLASS_URL}" />
+    <meta
+      property="og:title"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+    />
+    <meta
+      property="og:description"
+      content="{REVIEW_TEXT} โดย {REVIEW_AUTHOR} - รีวิววิชา {CLASS_LABEL} แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap"
+    />
+    <meta property="og:image" content="{REVIEW_IMAGE}" />
+    <!-- Twitter -->
+    <meta
+      property="twitter:card"
+      content="<%= htmlWebpackPlugin.options.data.card %>"
+    />
+    <meta property="twitter:url" content="{CLASS_URL}" />
+    <meta
+      property="twitter:title"
+      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก."
+    />
+    <meta
+      property="twitter:description"
+      content="{REVIEW_TEXT} โดย {REVIEW_AUTHOR} - รีวิววิชา {CLASS_LABEL} แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap"
+    />
+    <meta property="twitter:image" content="{REVIEW_IMAGE}" />
+
     <!-- other profile-specific tags -->
     <% } else if (htmlWebpackPlugin.options.data) { %>
     <title><%= htmlWebpackPlugin.options.title %></title>
