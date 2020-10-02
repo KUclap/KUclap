@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: ./docker/Web.Dockerfile
-          tags: "1.0.0,latest"
+          tags: "1.0.0, latest"
           buildargs: URL_API,SERVER_PORT,SSR
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master
