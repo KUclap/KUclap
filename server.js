@@ -14,8 +14,6 @@ const App = bundle.default;
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 const { PORT = 8000 } = process.env;
 
-let templateClassPage = readFileSync("./build/class/index.html", "utf8");
-let templateReviewPage = readFileSync("./build/review/index.html", "utf8");
 const template = readFileSync("./build/index.html", "utf8");
 const RGX = /<div id="app"[^>]*>.*?(?=<script)/i;
 
@@ -53,7 +51,7 @@ async function SitemapEndpoint(req, res) {
   }
 }
 
-function replaceMetaOnClassTemplate(detailClass) {
+function replaceMetaOnClassTemplate(templateClassPage, detailClass) {
   templateClassPage = templateClassPage.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
@@ -76,7 +74,11 @@ function replaceMetaOnClassTemplate(detailClass) {
   );
 }
 
-function replaceMetaOnReviewTemplate(detailClass, detailReview) {
+function replaceMetaOnReviewTemplate(
+  templateReviewPage,
+  detailClass,
+  detailReview
+) {
   templateReviewPage = templateReviewPage.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
@@ -126,13 +128,14 @@ async function ApplicationEndpoint(req, res) {
   let { classID } = req.params;
   console.log("class-id from req :", classID);
   if (classID) {
+    let templateClassPage = readFileSync("./build/class/index.html", "utf8");
     if (validatorClassId(classID)) {
       try {
         const response = await axios.get(
           `${process.env.URL_API}/class/${classID}`
         );
         detailClass = response.data;
-        replaceMetaOnClassTemplate(detailClass);
+        replaceMetaOnClassTemplate(templateClassPage, detailClass);
         let body = render(h(App, { url: req.url }));
         res.setHeader("Content-Type", "text/html");
         res.end(templateClassPage.replace(RGX, body));
@@ -152,6 +155,7 @@ async function ApplicationEndpoint(req, res) {
 }
 
 async function ReviewPageEndpoint(req, res) {
+  let templateReviewPage = readFileSync("./build/review/index.html", "utf8");
   let { reviewID } = req.params;
   console.log("review-id from req :", reviewID);
   if (reviewID) {
@@ -164,7 +168,11 @@ async function ReviewPageEndpoint(req, res) {
       );
       let detailReview = reviewResponse.data;
       let detailClass = classResponse.data;
-      replaceMetaOnReviewTemplate(detailClass, detailReview);
+      replaceMetaOnReviewTemplate(
+        templateReviewPage,
+        detailClass,
+        detailReview
+      );
       let body = render(h(App, { url: req.url }));
       res.setHeader("Content-Type", "text/html");
       res.end(templateReviewPage.replace(RGX, body));
