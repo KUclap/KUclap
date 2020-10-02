@@ -62,7 +62,7 @@ function replaceMetaOnClassTemplate(templateClassPage, detailClass) {
   );
   templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_NAME_EN\}/g,
-    detailClass.nameEn.html
+    detailClass.nameEn
   );
   templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_LABEL\}/g,
