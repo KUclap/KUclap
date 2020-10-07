@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, RightArrow } from "../utility/Icons";
+import { Clap, Boo, RightArrow, Share } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
@@ -40,7 +40,7 @@ const CardDetails = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 0.6rem;
+  margin-top: 0.7rem;
 `;
 
 const DetailContainer = styled.div`
@@ -53,7 +53,7 @@ const DetailContainer = styled.div`
   text-align: right;
 `;
 
-const DetailRight = styled.div`
+const SubDetail = styled.div`
   margin-left: 0.8rem;
   display: flex;
   flex-wrap: wrap;
@@ -133,6 +133,17 @@ const Modal = styled.div`
   z-index: 1;
   max-width: 42rem;
   width: 84%;
+
+  ${(props) => props.type === "BottomModal" ?
+    css`
+      bottom: 0;
+      transform: translate(-50%, 0);
+      width: 100%;
+      max-width: 100%;
+      border-radius: 22px 22px 0px 0px;
+    `
+    : null
+  }
 `;
 
 const ModalActions = styled.div`
@@ -275,6 +286,25 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
+const ShareButton = styled.div `
+  display: flex;
+  align-items: center;
+  border: 0.1rem solid ${(props) => props.theme.placeholderText};
+  border-radius: 1.5rem;
+  padding: 0 0.8rem;
+
+  svg {
+    margin-left: 0.3rem;
+  }
+`;
+
+const ShareSelectContainer = styled.div`
+
+`
+
+const ShareSelect = styled.div`
+`
+
 const months = [
   "ม.ค.",
   "ก.พ.",
@@ -338,6 +368,7 @@ const ReviewCard = (props) => {
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [showReportModal, setReportModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
+  const [showShareModal, setShareModal] = useState(false);
   const parseDate = (dateUTC) => {
     let date = dateUTC.split("-");
     let day = date[2].slice(0, 2);
@@ -356,6 +387,11 @@ const ReviewCard = (props) => {
     // modal(showEditModal);
     dispatchShowModal({ type: "setter", value: showEditModal });
   }, [showEditModal]);
+
+  useEffect(() => {
+    // modal(showShareModal);
+    dispatchShowModal({ type: "setter", value: showShareModal });
+  }, [showShareModal]);
 
   const sendReport = () => {
     if (reportReason.reason.length < 10)
@@ -382,6 +418,10 @@ const ReviewCard = (props) => {
   const closeEditModal = () => {
     setEditModal(false);
     setAuth(defaultAuth);
+  };
+
+  const closeShareModal = () => {
+    setShareModal(false);
   };
 
   const deleteReview = () => {
@@ -484,23 +524,31 @@ const ReviewCard = (props) => {
         </Actions>
         <DetailContainer>
           โดย {author}
-          <DetailRight>
+          <SubDetail>
             เกรด {grade}
             <span>{parseDate(createdAt)}</span>
-          </DetailRight>
-          <ButtonIcon
-            type="report"
-            tabIndex="0"
-            onClick={() => setMenu(true)}
-            onBlur={() => setMenu(false)}
-          >
-            <span> เพิ่มเติม </span>
-            <RightArrow />
-            <Menu openMenu={menu}>
-              <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
-              <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
-            </Menu>
-          </ButtonIcon>
+          </SubDetail>
+          <SubDetail>
+            <ShareButton
+              onClick={() => setShareModal(true)}
+            >
+              แชร์
+              <Share />
+            </ShareButton>
+            <ButtonIcon
+              type="report"
+              tabIndex="0"
+              onClick={() => setMenu(true)}
+              onBlur={() => setMenu(false)}
+            >
+              <span> เพิ่มเติม </span>
+              <RightArrow />
+              <Menu openMenu={menu}>
+                <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
+                <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
+              </Menu>
+            </ButtonIcon>
+          </SubDetail>
         </DetailContainer>
       </CardDetails>
       <ModalBackdrop show={showReportModal} onClick={closeReportModal} />
@@ -552,6 +600,25 @@ const ReviewCard = (props) => {
             )}
           </ConfirmButton>
         </ModalActions>
+      </Modal>
+      <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
+      <Modal show={showShareModal} type='BottomModal'>
+        แบ่งปันรีวืว 
+        <Share />
+        <ShareSelectContainer>
+          <ShareSelect>
+            Facebook
+          </ShareSelect>
+          <ShareSelect>
+            Twitter
+          </ShareSelect>
+          <ShareSelect>
+            LINE
+          </ShareSelect>
+          <ShareSelect>
+            คัดลอกลิงก์
+          </ShareSelect>
+        </ShareSelectContainer>
       </Modal>
     </Container>
   );
