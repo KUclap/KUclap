@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, RightArrow } from "../utility/Icons";
+import { Clap, Boo, RightArrow, Share, Facebook, Twitter, Line, CopyLink } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
@@ -12,6 +12,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
 import useEngage from "../../hooks/useEngage";
+import media from "styled-media-query";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
@@ -40,7 +41,7 @@ const CardDetails = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 0.6rem;
+  margin-top: 0.7rem;
 `;
 
 const DetailContainer = styled.div`
@@ -53,7 +54,7 @@ const DetailContainer = styled.div`
   text-align: right;
 `;
 
-const DetailRight = styled.div`
+const SubDetail = styled.div`
   margin-left: 0.8rem;
   display: flex;
   flex-wrap: wrap;
@@ -124,7 +125,7 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 2.8rem 1.2rem;
+  padding: ${(props) => props.type === "ShareModal" ? '0 1.2rem 2.8rem' : '2.8rem 1.2rem'};
   font-weight: 500;
   font-size: 2rem;
   line-height: 3.4rem;
@@ -133,7 +134,46 @@ const Modal = styled.div`
   z-index: 1;
   max-width: 42rem;
   width: 84%;
-`;
+
+  ${(props) => props.type === "ShareModal" ? 
+    css`
+      padding: 0 1.2rem 2.8rem;
+
+      ${media.lessThan("medium") `
+        top: auto;
+        bottom: 0;
+        transform: translate(-50%, 0);
+        width: 100%;
+        max-width: 100%;
+        border-radius: 22px 22px 0px 0px;
+        padding: 0;
+        height: fit-content;
+      `}
+    ` : null 
+    }
+  `
+
+const ModalHeader = styled.div`
+  font-size: 2.4rem;
+  font-weight: 500;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 1.4rem 0;
+  border-bottom: 0.3rem solid ${(props) => props.theme.lightColor};
+  color: ${(props) => props.theme.mainText};
+
+  svg {
+    width: 4.1rem;
+    height: 4.1rem;
+    margin-left: 0.6rem;
+
+    path {
+      fill: ${(props) => props.theme.mainText};
+      stroke: ${(props) => props.theme.mainText};
+    }
+  }
+`
 
 const ModalActions = styled.div`
   align-self: center;
@@ -275,6 +315,55 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
+const ShareButton = styled.div `
+  display: flex;
+  align-items: center;
+  border: 0.1rem solid ${(props) => props.theme.placeholderText};
+  border-radius: 1.5rem;
+  padding: 0 0.8rem;
+  cursor: pointer;
+
+  svg {
+    margin-left: 0.3rem;
+  }
+
+  &:hover {
+    color: #9ac1ee;
+    border: 0.1rem solid #9ac1ee;
+
+    svg > path {
+      fill: #9ac1ee;
+    }
+  }
+`;
+
+const ShareSelect = styled.div`
+  font-size: 2.2rem;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 3.2rem;
+  border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
+  cursor: pointer;
+  user-select: none;
+  color: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
+
+  svg {
+    margin-right: 2.6rem;
+
+    path {
+      fill: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
+    }
+  }
+
+  &:hover {
+    background-color: ${(props) => props.theme.menuItem.hover};
+  } 
+
+  &:active {
+    background-color: ${(props) => props.theme.menuItem.active};
+  }
+`
+
 const months = [
   "ม.ค.",
   "ก.พ.",
@@ -338,6 +427,8 @@ const ReviewCard = (props) => {
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [showReportModal, setReportModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
+  const [showShareModal, setShareModal] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const parseDate = (dateUTC) => {
     let date = dateUTC.split("-");
     let day = date[2].slice(0, 2);
@@ -346,6 +437,25 @@ const ReviewCard = (props) => {
     if (day[0] === "0") day = day[1];
     return `${day} ${month} ${year}`;
   };
+
+  // useEffect(() => {
+  //   window.fbAsyncInit = function() {
+  //     FB.init({
+  //       appId      : '784451072347559',
+  //       xfbml      : true,
+  //       version    : 'v8.0'
+  //     });
+  //     FB.AppEvents.logPageView();
+  //   };
+
+  //   (function(d, s, id){
+  //     let js, fjs = d.getElementsByTagName(s)[0];
+  //     if (d.getElementById(id)) {return;}
+  //     js = d.createElement(s); js.id = id;
+  //     js.src = "https://connect.facebook.net/en_US/sdk.js";
+  //     fjs.parentNode.insertBefore(js, fjs);
+  //   }(document, 'script', 'facebook-jssdk'));
+  // }, [])
 
   useEffect(() => {
     // modal(showReportModal);
@@ -356,6 +466,11 @@ const ReviewCard = (props) => {
     // modal(showEditModal);
     dispatchShowModal({ type: "setter", value: showEditModal });
   }, [showEditModal]);
+
+  useEffect(() => {
+    // modal(showShareModal);
+    dispatchShowModal({ type: "setter", value: showShareModal });
+  }, [showShareModal]);
 
   const sendReport = () => {
     if (reportReason.reason.length < 10)
@@ -382,6 +497,10 @@ const ReviewCard = (props) => {
   const closeEditModal = () => {
     setEditModal(false);
     setAuth(defaultAuth);
+  };
+
+  const closeShareModal = () => {
+    setShareModal(false);
   };
 
   const deleteReview = () => {
@@ -436,6 +555,46 @@ const ReviewCard = (props) => {
     return newValue;
   };
 
+  const shareReview = (type) => {
+    const href = `https://kuclap.com/review/${reviewId}`
+    let url;
+    switch(type) {
+      case 'facebook':
+        {
+          const appId = '784451072347559';
+          url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
+          window.open(url)
+          break;
+        }
+      case 'twitter':
+        {
+          const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`
+          const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`
+          window.open(url)
+          break;
+        }
+      case 'line':
+        {
+          const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(href)}`
+          window.open(url)
+          break;
+        }
+      default:
+        {
+          const tmpTextArea = document.createElement('textarea');
+          tmpTextArea.value = href;
+          document.body.appendChild(tmpTextArea);
+          tmpTextArea.select()
+          document.execCommand("copy")
+          document.body.removeChild(tmpTextArea);
+          setIsCopied(true)
+          setTimeout(() => {
+            setIsCopied(false)
+          }, 2000);
+        }
+    }
+  }
+
   return (
     <Container>
       {isBadge && (
@@ -484,23 +643,31 @@ const ReviewCard = (props) => {
         </Actions>
         <DetailContainer>
           โดย {author}
-          <DetailRight>
+          <SubDetail>
             เกรด {grade}
             <span>{parseDate(createdAt)}</span>
-          </DetailRight>
-          <ButtonIcon
-            type="report"
-            tabIndex="0"
-            onClick={() => setMenu(true)}
-            onBlur={() => setMenu(false)}
-          >
-            <span> เพิ่มเติม </span>
-            <RightArrow />
-            <Menu openMenu={menu}>
-              <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
-              <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
-            </Menu>
-          </ButtonIcon>
+          </SubDetail>
+          <SubDetail>
+            <ShareButton
+              onClick={() => setShareModal(true)}
+            >
+              แชร์
+              <Share />
+            </ShareButton>
+            <ButtonIcon
+              type="report"
+              tabIndex="0"
+              onClick={() => setMenu(true)}
+              onBlur={() => setMenu(false)}
+            >
+              <span> เพิ่มเติม </span>
+              <RightArrow />
+              <Menu openMenu={menu}>
+                <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
+                <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
+              </Menu>
+            </ButtonIcon>
+          </SubDetail>
         </DetailContainer>
       </CardDetails>
       <ModalBackdrop show={showReportModal} onClick={closeReportModal} />
@@ -552,6 +719,29 @@ const ReviewCard = (props) => {
             )}
           </ConfirmButton>
         </ModalActions>
+      </Modal>
+      <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
+      <Modal show={showShareModal} type='ShareModal'>
+        <ModalHeader>
+          แบ่งปันรีวิว 
+          <Share />
+        </ModalHeader>
+        <ShareSelect onClick={() => shareReview("facebook")}  >
+          <Facebook />
+          Facebook
+        </ShareSelect>
+        <ShareSelect onClick={() => shareReview("twitter")}>
+          <Twitter />
+          Twitter
+        </ShareSelect>
+        <ShareSelect onClick={() => shareReview("line")}>
+          <Line />
+          LINE
+        </ShareSelect>
+        <ShareSelect isCopied={isCopied} onClick={shareReview}>
+          <CopyLink />
+          {isCopied ? 'คัดลอกเรียบร้อย!' : 'คัดลอกลิงก์'}
+        </ShareSelect>
       </Modal>
     </Container>
   );
