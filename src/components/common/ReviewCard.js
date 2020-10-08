@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, RightArrow, Share } from "../utility/Icons";
+import { Clap, Boo, RightArrow, Share, Facebook, Twitter, Line, CopyLink } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
@@ -136,15 +136,39 @@ const Modal = styled.div`
 
   ${(props) => props.type === "BottomModal" ?
     css`
+      top: auto;
       bottom: 0;
       transform: translate(-50%, 0);
       width: 100%;
       max-width: 100%;
       border-radius: 22px 22px 0px 0px;
+      padding: 0;
+      height: fit-content;
     `
     : null
   }
 `;
+
+const ModalHeader = styled.div`
+  font-size: 2.4rem;
+  font-weight: 500;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 1.4rem 0;
+  border-bottom: 0.3rem solid ${(props) => props.theme.lightColor};
+
+  svg {
+    width: 4.1rem;
+    height: 4.1rem;
+    margin-left: 0.6rem;
+
+    path {
+      fill: ${(props) => props.theme.mainText};
+      stroke: ${(props) => props.theme.mainText};
+    }
+  }
+`
 
 const ModalActions = styled.div`
   align-self: center;
@@ -292,6 +316,7 @@ const ShareButton = styled.div `
   border: 0.1rem solid ${(props) => props.theme.placeholderText};
   border-radius: 1.5rem;
   padding: 0 0.8rem;
+  cursor: pointer;
 
   svg {
     margin-left: 0.3rem;
@@ -303,6 +328,16 @@ const ShareSelectContainer = styled.div`
 `
 
 const ShareSelect = styled.div`
+  font-size: 2.2rem;
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 3.2rem;
+  border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
+  cursor: pointer;
+
+  svg {
+    margin-right: 2.6rem;
+  }
 `
 
 const months = [
@@ -377,6 +412,25 @@ const ReviewCard = (props) => {
     if (day[0] === "0") day = day[1];
     return `${day} ${month} ${year}`;
   };
+
+  // useEffect(() => {
+  //   window.fbAsyncInit = function() {
+  //     FB.init({
+  //       appId      : '784451072347559',
+  //       xfbml      : true,
+  //       version    : 'v8.0'
+  //     });
+  //     FB.AppEvents.logPageView();
+  //   };
+
+  //   (function(d, s, id){
+  //     let js, fjs = d.getElementsByTagName(s)[0];
+  //     if (d.getElementById(id)) {return;}
+  //     js = d.createElement(s); js.id = id;
+  //     js.src = "https://connect.facebook.net/en_US/sdk.js";
+  //     fjs.parentNode.insertBefore(js, fjs);
+  //   }(document, 'script', 'facebook-jssdk'));
+  // }, [])
 
   useEffect(() => {
     // modal(showReportModal);
@@ -475,6 +529,38 @@ const ReviewCard = (props) => {
     }
     return newValue;
   };
+
+  const shareToFacebook = () => {
+    const appId = '784451072347559'
+    const href = `https://kuclap.com/review/${reviewId}`
+    const url = `https://www.facebook.com/dialog/share?app_id=${appId}&
+      href=${href}&
+      display=page`
+    window.open(url)
+  }
+
+  const shareToTwitter = () => {
+    const href = `https://kuclap.com/review/${reviewId}`
+    const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`
+    window.open(url)
+  }
+
+  const shareToLine = () => {
+    const href = `https://kuclap.com/review/${reviewId}`
+    const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(href)}`
+    window.open(url)
+  }
+
+  const copyToClipboard = () => {
+    const href = `https://kuclap.com/review/${reviewId}`
+    const tmpTextArea = document.createElement('textarea');
+    tmpTextArea.value = href;
+    document.body.appendChild(tmpTextArea);
+    tmpTextArea.select()
+    document.execCommand("copy")
+     document.body.removeChild(tmpTextArea);
+  }
 
   return (
     <Container>
@@ -603,19 +689,25 @@ const ReviewCard = (props) => {
       </Modal>
       <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
       <Modal show={showShareModal} type='BottomModal'>
-        แบ่งปันรีวืว 
-        <Share />
+        <ModalHeader>
+          แบ่งปันรีวิว 
+          <Share />
+        </ModalHeader>
         <ShareSelectContainer>
-          <ShareSelect>
+          <ShareSelect onClick={shareToFacebook}  >
+            <Facebook />
             Facebook
           </ShareSelect>
-          <ShareSelect>
+          <ShareSelect onClick={shareToTwitter}>
+            <Twitter />
             Twitter
           </ShareSelect>
-          <ShareSelect>
+          <ShareSelect onClick={shareToLine}>
+            <Line />
             LINE
           </ShareSelect>
-          <ShareSelect>
+          <ShareSelect onClick={copyToClipboard}>
+            <CopyLink />
             คัดลอกลิงก์
           </ShareSelect>
         </ShareSelectContainer>
