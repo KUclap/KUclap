@@ -334,9 +334,23 @@ const ShareSelect = styled.div`
   padding: 1.5rem 3.2rem;
   border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
   cursor: pointer;
+  user-select: none;
+  color: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : 'inherit'};
 
   svg {
     margin-right: 2.6rem;
+
+    path {
+      fill: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : 'black'};
+    }
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+  } 
+
+  &:active {
+    background-color: #e0e0e0;
   }
 `
 
@@ -404,6 +418,7 @@ const ReviewCard = (props) => {
   const [showReportModal, setReportModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
   const [showShareModal, setShareModal] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const parseDate = (dateUTC) => {
     let date = dateUTC.split("-");
     let day = date[2].slice(0, 2);
@@ -530,36 +545,44 @@ const ReviewCard = (props) => {
     return newValue;
   };
 
-  const shareToFacebook = () => {
-    const appId = '784451072347559'
+  const shareReview = (type) => {
     const href = `https://kuclap.com/review/${reviewId}`
-    const url = `https://www.facebook.com/dialog/share?app_id=${appId}&
-      href=${href}&
-      display=page`
-    window.open(url)
-  }
-
-  const shareToTwitter = () => {
-    const href = `https://kuclap.com/review/${reviewId}`
-    const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`
-    window.open(url)
-  }
-
-  const shareToLine = () => {
-    const href = `https://kuclap.com/review/${reviewId}`
-    const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(href)}`
-    window.open(url)
-  }
-
-  const copyToClipboard = () => {
-    const href = `https://kuclap.com/review/${reviewId}`
-    const tmpTextArea = document.createElement('textarea');
-    tmpTextArea.value = href;
-    document.body.appendChild(tmpTextArea);
-    tmpTextArea.select()
-    document.execCommand("copy")
-     document.body.removeChild(tmpTextArea);
+    let url;
+    switch(type) {
+      case 'facebook':
+        {
+          const appId = '784451072347559';
+          url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
+          window.open(url)
+          break;
+        }
+      case 'twitter':
+        {
+          const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`
+          const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`
+          window.open(url)
+          break;
+        }
+      case 'line':
+        {
+          const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(href)}`
+          window.open(url)
+          break;
+        }
+      default:
+        {
+          const tmpTextArea = document.createElement('textarea');
+          tmpTextArea.value = href;
+          document.body.appendChild(tmpTextArea);
+          tmpTextArea.select()
+          document.execCommand("copy")
+          document.body.removeChild(tmpTextArea);
+          setIsCopied(true)
+          setTimeout(() => {
+            setIsCopied(false)
+          }, 2000);
+        }
+    }
   }
 
   return (
@@ -694,21 +717,21 @@ const ReviewCard = (props) => {
           <Share />
         </ModalHeader>
         <ShareSelectContainer>
-          <ShareSelect onClick={shareToFacebook}  >
+          <ShareSelect onClick={() => shareReview("facebook")}  >
             <Facebook />
             Facebook
           </ShareSelect>
-          <ShareSelect onClick={shareToTwitter}>
+          <ShareSelect onClick={() => shareReview("twitter")}>
             <Twitter />
             Twitter
           </ShareSelect>
-          <ShareSelect onClick={shareToLine}>
+          <ShareSelect onClick={() => shareReview("line")}>
             <Line />
             LINE
           </ShareSelect>
-          <ShareSelect onClick={copyToClipboard}>
+          <ShareSelect isCopied={isCopied} onClick={shareReview}>
             <CopyLink />
-            คัดลอกลิงก์
+            {isCopied ? 'คัดลอกเรียบร้อย!' : 'คัดลอกลิงก์'}
           </ShareSelect>
         </ShareSelectContainer>
       </Modal>
