@@ -12,6 +12,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
 import useEngage from "../../hooks/useEngage";
+import media from "styled-media-query";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
@@ -124,7 +125,7 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 2.8rem 1.2rem;
+  padding: ${(props) => props.type === "ShareModal" ? '0 1.2rem 2.8rem' : '2.8rem 1.2rem'};
   font-weight: 500;
   font-size: 2rem;
   line-height: 3.4rem;
@@ -134,20 +135,23 @@ const Modal = styled.div`
   max-width: 42rem;
   width: 84%;
 
-  ${(props) => props.type === "BottomModal" ?
+  ${(props) => props.type === "ShareModal" ? 
     css`
-      top: auto;
-      bottom: 0;
-      transform: translate(-50%, 0);
-      width: 100%;
-      max-width: 100%;
-      border-radius: 22px 22px 0px 0px;
-      padding: 0;
-      height: fit-content;
-    `
-    : null
-  }
-`;
+      padding: 0 1.2rem 2.8rem;
+
+      ${media.lessThan("medium") `
+        top: auto;
+        bottom: 0;
+        transform: translate(-50%, 0);
+        width: 100%;
+        max-width: 100%;
+        border-radius: 22px 22px 0px 0px;
+        padding: 0;
+        height: fit-content;
+      `}
+    ` : null 
+    }
+  `
 
 const ModalHeader = styled.div`
   font-size: 2.4rem;
@@ -157,6 +161,7 @@ const ModalHeader = styled.div`
   display: flex;
   padding: 1.4rem 0;
   border-bottom: 0.3rem solid ${(props) => props.theme.lightColor};
+  color: ${(props) => props.theme.mainText};
 
   svg {
     width: 4.1rem;
@@ -321,11 +326,16 @@ const ShareButton = styled.div `
   svg {
     margin-left: 0.3rem;
   }
+
+  &:hover {
+    color: #9ac1ee;
+    border: 0.1rem solid #9ac1ee;
+
+    svg > path {
+      fill: #9ac1ee;
+    }
+  }
 `;
-
-const ShareSelectContainer = styled.div`
-
-`
 
 const ShareSelect = styled.div`
   font-size: 2.2rem;
@@ -335,22 +345,22 @@ const ShareSelect = styled.div`
   border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
   cursor: pointer;
   user-select: none;
-  color: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : 'inherit'};
+  color: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
 
   svg {
     margin-right: 2.6rem;
 
     path {
-      fill: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : 'black'};
+      fill: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
     }
   }
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${(props) => props.theme.menuItem.hover};
   } 
 
   &:active {
-    background-color: #e0e0e0;
+    background-color: ${(props) => props.theme.menuItem.active};
   }
 `
 
@@ -711,29 +721,27 @@ const ReviewCard = (props) => {
         </ModalActions>
       </Modal>
       <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
-      <Modal show={showShareModal} type='BottomModal'>
+      <Modal show={showShareModal} type='ShareModal'>
         <ModalHeader>
           แบ่งปันรีวิว 
           <Share />
         </ModalHeader>
-        <ShareSelectContainer>
-          <ShareSelect onClick={() => shareReview("facebook")}  >
-            <Facebook />
-            Facebook
-          </ShareSelect>
-          <ShareSelect onClick={() => shareReview("twitter")}>
-            <Twitter />
-            Twitter
-          </ShareSelect>
-          <ShareSelect onClick={() => shareReview("line")}>
-            <Line />
-            LINE
-          </ShareSelect>
-          <ShareSelect isCopied={isCopied} onClick={shareReview}>
-            <CopyLink />
-            {isCopied ? 'คัดลอกเรียบร้อย!' : 'คัดลอกลิงก์'}
-          </ShareSelect>
-        </ShareSelectContainer>
+        <ShareSelect onClick={() => shareReview("facebook")}  >
+          <Facebook />
+          Facebook
+        </ShareSelect>
+        <ShareSelect onClick={() => shareReview("twitter")}>
+          <Twitter />
+          Twitter
+        </ShareSelect>
+        <ShareSelect onClick={() => shareReview("line")}>
+          <Line />
+          LINE
+        </ShareSelect>
+        <ShareSelect isCopied={isCopied} onClick={shareReview}>
+          <CopyLink />
+          {isCopied ? 'คัดลอกเรียบร้อย!' : 'คัดลอกลิงก์'}
+        </ShareSelect>
       </Modal>
     </Container>
   );
