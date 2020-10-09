@@ -150,7 +150,7 @@ export default withTheme(PageTemplate);
 
 const GoTopCustomStyle = styled.a`
   position: fixed;
-  z-index: 2;
+  z-index: 0;
   right: 2.5rem;
   bottom: 2.5rem;
   cursor: pointer;
