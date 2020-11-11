@@ -126,7 +126,7 @@ const PageTemplate = ({
     <Container name="top">
       {/* <Helmet content={content} /> */}
       <GlobalComponent isOverflow={modal.showModal} />
-      <GoTopCustomStyle isBottomViewport={isBottomViewport} href="#top">
+      <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
 
@@ -140,6 +140,8 @@ const PageTemplate = ({
         placeholder={selected.label}
         onChange={handleSelected}
         ref={newEle}
+        id="subject-input"
+        aria-label="search"
       />
       {children}
     </Container>

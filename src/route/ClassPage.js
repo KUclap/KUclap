@@ -55,9 +55,9 @@ const Button = styled.div`
 `;
 
 const ButtonLastReview = styled(Button)`
-  border: 0.2rem solid #979797;
+  border: 0.2rem solid hsl(0, 0%, 46%);
   background: ${(props) => props.theme.body};
-  color: #979797;
+  color: hsl(0, 0%, 46%);;
   font-size: 1.7rem;
   margin-right: 1.5rem;
   &:hover {

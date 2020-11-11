@@ -37,7 +37,7 @@ const Container = styled.div`
   min-width: 86%;
 `;
 
-const DetailTitle = styled.div`
+const DetailTitle = styled.label`
   font-size: 2rem;
   font-weight: 600;
   margin: 1.2rem 2rem 1.2rem 0;
@@ -484,7 +484,7 @@ const ReviewForm = (props) => {
   return (
     <Container>
       <FormTitle>
-        <DetailTitle>
+        <DetailTitle for="review-field">
           รีวิววิชานี้
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
         </DetailTitle>
@@ -503,6 +503,7 @@ const ReviewForm = (props) => {
         placeholder="เขียนรีวิว..."
         value={form.text}
         onChange={(e) => handleOnchange(e, "text")}
+        id="review-field"
       />
       <DetailTitle>
         ให้คะแนนความพอใจวิชา
@@ -548,7 +549,7 @@ const ReviewForm = (props) => {
         </GradeBar>
       </InputContainer>
       <InputContainer>
-        <DetailTitle>
+        <DetailTitle for="author-field">
           นามปากกา
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
         </DetailTitle>
@@ -557,10 +558,11 @@ const ReviewForm = (props) => {
           value={form.author}
           onChange={(e) => handleOnchange(e, "author")}
           maxLength={16}
+          id="author-field"
         />
       </InputContainer>
       <InputContainer>
-        <DetailTitle>
+        <DetailTitle for="pin-field">
           ตัวเลข 4 หลัก
           <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning> <br />
           <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
@@ -571,6 +573,7 @@ const ReviewForm = (props) => {
           placeholder="ใส่เลข"
           value={form.auth}
           onChange={handleOnChangePassword}
+          id="pin-field"
         />
       </InputContainer>
       <Caution>
@@ -579,7 +582,7 @@ const ReviewForm = (props) => {
           warning={require.rude}
           onClick={() => setChecklist({ ...checklist, rude: !checklist.rude })}
         >
-          <CheckboxCustom color="primary" checked={checklist.rude} />
+          <CheckboxCustom inputProps={{ 'aria-label': 'rude-checkbox' }} color="primary" checked={checklist.rude} />
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
         <CheckboxContainer
@@ -588,7 +591,7 @@ const ReviewForm = (props) => {
             setChecklist({ ...checklist, other: !checklist.other })
           }
         >
-          <CheckboxCustom color="primary" checked={checklist.other} />
+          <CheckboxCustom inputProps={{ 'aria-label': 'other-checkbox' }} color="primary" checked={checklist.other} />
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
       </Caution>
