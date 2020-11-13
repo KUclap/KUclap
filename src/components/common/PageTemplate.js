@@ -15,7 +15,6 @@ import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import GlobalComponent from "../utility/GlobalComponent";
 import Header from "./Header";
-import Helmet from "./Helmet";
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +72,7 @@ const PageTemplate = ({
   children,
   isFormPage,
   classes,
-  content,
+  // content,
 }) => {
   const { state: selected, dispatch: dispatchSelected } = useContext(
     SelectContext

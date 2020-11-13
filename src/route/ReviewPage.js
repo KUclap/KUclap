@@ -75,12 +75,6 @@ const ReviewPage = (props) => {
   const { review, loading, isAvailable } = props;
   const { state: selected } = useContext(SelectContext);
 
-  const handleNewReview = () => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
-    route(`${baseroute}/form/create/${review.classId}`);
-    setUnderFlow(false);
-  };
-
   const routeToClassPage = () => {
     route(`${baseroute}/${review.classId}`);
   }
