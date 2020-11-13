@@ -1,5 +1,6 @@
-import { Checkbox } from "@material-ui/core/Checkbox";
 import { h } from "preact";
+import { lazy, Suspense } from 'preact/compat'
+import  Checkbox  from "@material-ui/core/Checkbox";
 import { route } from "preact-router";
 import { useContext, useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -7,11 +8,13 @@ import styled, { withTheme } from "styled-components";
 
 import { ModalContext } from "../../context/ModalContext";
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
-import Alert from "./Alert";
+
 import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+
+const Alert = lazy(() => import("./Alert"))
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
@@ -601,9 +604,11 @@ const ReviewForm = (props) => {
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
       <ModalBackdrop show={showReviewModal} onClick={handleCloseAlert} />
       {isDone ? (
-        <Alert Close={handleCloseAlert} />
+        <Suspense>
+          <Alert Close={handleCloseAlert} />
+        </Suspense>
       ) : (
-        <Modal show={showReviewModal}>
+          <Modal show={showReviewModal}>
           เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
           <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
           <ModalActions>
