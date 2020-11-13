@@ -548,7 +548,7 @@ const ReviewCard = (props) => {
   };
 
   const RedirctToClassName = () => {
-    route(`${baseroute}/${classId}`, true);
+    route(`${baseroute}/${classId}`);
   };
 
   const numberFormat = (value) => {

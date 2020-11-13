@@ -91,7 +91,7 @@ const ClassPage = (props) => {
 
   const handleNewReview = () => {
     if (typeof window !== "undefined") window.scrollTo(0, 0);
-    route(`${baseroute}/form/create/${classID}`, true);
+    route(`${baseroute}/form/create/${classID}`);
     setUnderFlow(false);
   };
 

@@ -393,7 +393,7 @@ const ReviewForm = (props) => {
     if (isDone) {
       // back("details");
 
-      route(`${baseroute}/${classID}`, true);
+      route(`${baseroute}/${classID}`);
       setIsDone(false);
     }
     setReviewModal(false);
@@ -492,7 +492,7 @@ const ReviewForm = (props) => {
           onClick={() => {
             if (typeof window !== "undefined") window.scrollTo(0, 0);
             // back("details");
-            route(`${baseroute}/${classID}`, true);
+            route(`${baseroute}/${classID}`);
           }}
         >
           ย้อนกลับ
