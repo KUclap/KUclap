@@ -1,4 +1,5 @@
 import { h } from "preact";
+
 import { route } from "preact-router";
 import { useState, useEffect, useRef, useContext } from "preact/hooks";
 import Select from "react-virtualized-select";
@@ -123,13 +124,12 @@ const PageTemplate = ({
 
   return (
     <Container name="top">
-      {/* <Helmet content={content} /> */}
       <GlobalComponent isOverflow={modal.showModal} />
       <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
-
       <Header toggleTheme={toggleTheme} />
+
       <SelectCustom
         name="major"
         autosize={false}
@@ -141,7 +141,7 @@ const PageTemplate = ({
         ref={newEle}
         id="subject-input"
         aria-label="search"
-      />
+        />
       {children}
     </Container>
   );
