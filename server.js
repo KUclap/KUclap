@@ -8,7 +8,7 @@ const { readFileSync } = require("fs");
 const compression = require("compression")();
 const render = require("preact-render-to-string");
 const bundle = require("./build/ssr-build/ssr-bundle");
-
+// const prepass = require('preact-ssr-prepass')
 const App = bundle.default;
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
