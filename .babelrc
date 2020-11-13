@@ -4,7 +4,12 @@
       "@babel/plugin-transform-react-jsx",
       { "pragma": "h", "pragmaFrag": "Fragment" }
     ],
-    "babel-plugin-styled-components"
+    ["babel-plugin-styled-components",
+    {
+      "ssr": true,
+      "displayName": false,
+      "fileName": false
+    }]
   ],
   "presets": [
     [
