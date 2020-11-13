@@ -22,34 +22,23 @@ jobs:
           username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: ./docker/Web.Dockerfile
-          tags: latest
+          tags: "1.0.0, latest"
           buildargs: URL_API,SERVER_PORT,SSR
-      - name: Nginx - Publish to Github Packages Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          name: kuclap/kuclap/kuclap-nginx
-          registry: docker.pkg.github.com
-          username: ${{ secrets.GIT_USERNAME }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: ./docker/Nginx.Dockerfile
-          tags: latest
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master
         env:
-          GITHUB_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          host: ${{ secrets.DO_HOST }}
-          username: ${{ secrets.DO_USERNAME }}
-          password: ${{ secrets.DO_PASSWORD }}
-          port: ${{ secrets.DO_PORT }}
-          envs: GITHUB_USERNAME, GITHUB_TOKEN
+          host: ${{ secrets.DO_GANDALF_HOST }}
+          username: ${{ secrets.DO_GANDALF_USERNAME }}
+          password: ${{ secrets.DO_GANDALF_PASSWORD }}
+          port: ${{ secrets.DO_GANDALF_PORT }}
+          envs: GIT_USERNAME, GITHUB_TOKEN
           script: |
-            docker stop $(docker ps -a -q)
+            docker stop kuclap-web
             docker container prune -f 
             docker image prune -f
-            docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+            docker login docker.pkg.github.com -u $GIT_USERNAME -p $GITHUB_TOKEN
             docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest
-            docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
-            docker run --name kuclap-web --network=kuclap --restart=always  -dit -p 8000:8000 docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest 
-            docker run --name kuclap-nginx --network=kuclap --restart=always -v /srv/kuclap.com:/srv/kuclap.com -dit -p 443:443 -p 80:80 docker.pkg.github.com/kuclap/kuclap/kuclap-nginx:latest
+            docker run --name kuclap-web --network=kuclap --restart=always  -dit -p 8000:8000 docker.pkg.github.com/kuclap/kuclap/kuclap-web:latest

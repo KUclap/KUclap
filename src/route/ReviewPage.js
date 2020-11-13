@@ -32,7 +32,7 @@ import {
 } from "../components/common/FetcherComponents";
 
 const Button = styled.div`
-  background-color: #2f80ed;
+  background-color: hsl(145, 63%, 42%);
   color: #fff;
   padding: 0.2rem 1.8rem;
   border-radius: 0.6rem;
@@ -40,11 +40,11 @@ const Button = styled.div`
   cursor: pointer;
 
   &:active {
-    background-color: #2f80ed;
+    background-color: hsl(145, 63%, 32%);
   }
 
   &:hover {
-    background-color: #9ac1ee;
+    background-color: hsl(145, 63%, 52%);
   }
 `;
 
@@ -75,11 +75,9 @@ const ReviewPage = (props) => {
   const { review, loading, isAvailable } = props;
   const { state: selected } = useContext(SelectContext);
 
-  const handleNewReview = () => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
-    route(`${baseroute}/form/create/${review.classId}`, true);
-    setUnderFlow(false);
-  };
+  const routeToClassPage = () => {
+    route(`${baseroute}/${review.classId}`);
+  }
 
   return (
     <PageTemplate
@@ -126,11 +124,11 @@ const ReviewPage = (props) => {
             <ButtonLastReview onClick={navigateToHome}>
               หน้าแรก
             </ButtonLastReview>
-            <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
+            <Button onClick={routeToClassPage}>แสดงทุกรีวิว</Button>
           </ContainerBtns>
         </ReviewTitle>
 
-        <AdaptorReviews id="adaptor"></AdaptorReviews>
+        <AdaptorReviews id="adaptor" />
         {loading ? (
           <ReviewSkeletonA />
         ) : isAvailable ? (

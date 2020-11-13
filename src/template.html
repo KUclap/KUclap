@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta property="fb:app_id" content="784451072347559" />
     <% if (htmlWebpackPlugin.options.isClassPage) { %>
     <title>
       รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap
@@ -71,7 +72,7 @@
       property="og:type"
       content="<%= htmlWebpackPlugin.options.data.type %>"
     />
-    <meta property="og:url" content="{CLASS_URL}" />
+    <meta property="og:url" content="{REVIEW_URL}" />
     <meta
       property="og:title"
       content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
@@ -86,7 +87,7 @@
       property="twitter:card"
       content="<%= htmlWebpackPlugin.options.data.card %>"
     />
-    <meta property="twitter:url" content="{CLASS_URL}" />
+    <meta property="twitter:url" content="{REVIEW_URL}" />
     <meta
       property="twitter:title"
       content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก."
@@ -99,7 +100,7 @@
 
     <!-- other profile-specific tags -->
     <% } else if (htmlWebpackPlugin.options.data) { %>
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <title><%= htmlWebpackPlugin.options.data.title %></title>
     <!-- Open Graph / Facebook  -->
     <meta
       property="og:type"
@@ -144,6 +145,7 @@
     />
 
     <% } %> <% preact.headEnd %>
+    <!-- <script data-ad-client="ca-pub-7672740678800501" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
   </head>
   <body>
     <% preact.bodyEnd %>

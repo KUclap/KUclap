@@ -1,4 +1,5 @@
 import { h } from "preact";
+
 import { route } from "preact-router";
 import { useState, useEffect, useRef, useContext } from "preact/hooks";
 import Select from "react-virtualized-select";
@@ -15,7 +16,6 @@ import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import GlobalComponent from "../utility/GlobalComponent";
 import Header from "./Header";
-import Helmet from "./Helmet";
 
 const Container = styled.div`
   display: flex;
@@ -73,7 +73,7 @@ const PageTemplate = ({
   children,
   isFormPage,
   classes,
-  content,
+  // content,
 }) => {
   const { state: selected, dispatch: dispatchSelected } = useContext(
     SelectContext
@@ -93,7 +93,7 @@ const PageTemplate = ({
       });
     }
 
-    route(`${baseroute}/${e.classId}`, true);
+    route(`${baseroute}/${e.classId}`);
   };
 
   useEffect(() => {
@@ -124,13 +124,12 @@ const PageTemplate = ({
 
   return (
     <Container name="top">
-      {/* <Helmet content={content} /> */}
       <GlobalComponent isOverflow={modal.showModal} />
-      <GoTopCustomStyle isBottomViewport={isBottomViewport} href="#top">
+      <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
-
       <Header toggleTheme={toggleTheme} />
+
       <SelectCustom
         name="major"
         autosize={false}
@@ -140,7 +139,9 @@ const PageTemplate = ({
         placeholder={selected.label}
         onChange={handleSelected}
         ref={newEle}
-      />
+        id="subject-input"
+        aria-label="search"
+        />
       {children}
     </Container>
   );
@@ -150,7 +151,7 @@ export default withTheme(PageTemplate);
 
 const GoTopCustomStyle = styled.a`
   position: fixed;
-  z-index: 2;
+  z-index: 0;
   right: 2.5rem;
   bottom: 2.5rem;
   cursor: pointer;

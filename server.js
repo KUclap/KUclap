@@ -8,15 +8,13 @@ const { readFileSync } = require("fs");
 const compression = require("compression")();
 const render = require("preact-render-to-string");
 const bundle = require("./build/ssr-build/ssr-bundle");
-
+// const prepass = require('preact-ssr-prepass')
 const App = bundle.default;
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 const { PORT = 8000 } = process.env;
 
-let templateClassPage = readFileSync("./build/class/index.html", "utf8");
-let templateReviewPage = readFileSync("./build/review/index.html", "utf8");
-const template = readFileSync("./build/index.html", "utf8");
+const template = { html: readFileSync("./build/index.html", "utf8") };
 const RGX = /<div id="app"[^>]*>.*?(?=<script)/i;
 
 function setHeaders(res, file) {
@@ -53,59 +51,63 @@ async function SitemapEndpoint(req, res) {
   }
 }
 
-function replaceMetaOnClassTemplate(detailClass) {
-  templateClassPage = templateClassPage.replace(
+function replaceMetaOnClassTemplate(templateClassPage, detailClass) {
+  templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
   );
-  templateClassPage = templateClassPage.replace(
+  templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_NAME_TH\}/g,
     detailClass.nameTh
   );
-  templateClassPage = templateClassPage.replace(
+  templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_NAME_EN\}/g,
     detailClass.nameEn
   );
-  templateClassPage = templateClassPage.replace(
+  templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_LABEL\}/g,
     detailClass.label
   );
-  templateClassPage = templateClassPage.replace(
+  templateClassPage.html = templateClassPage.html.replace(
     /\{CLASS_URL\}/g,
     `https://www.kuclap.com/${detailClass.classId}`
   );
 }
 
-function replaceMetaOnReviewTemplate(detailClass, detailReview) {
-  templateReviewPage = templateReviewPage.replace(
+function replaceMetaOnReviewTemplate(
+  templateReviewPage,
+  detailClass,
+  detailReview
+) {
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
   );
-  templateReviewPage = templateReviewPage.replace(
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{CLASS_NAME_TH\}/g,
     detailClass.nameTh
   );
-  templateReviewPage = templateReviewPage.replace(
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{CLASS_NAME_EN\}/g,
     detailClass.nameEn
   );
-  templateReviewPage = templateReviewPage.replace(
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{CLASS_LABEL\}/g,
     detailClass.label
   );
-  templateReviewPage = templateReviewPage.replace(
-    /\{CLASS_URL\}/g,
-    `https://www.kuclap.com/${detailClass.classId}`
+  templateReviewPage.html = templateReviewPage.html.replace(
+    /\{REVIEW_URL\}/g,
+    `https://www.kuclap.com/review/${detailReview.reviewId}`
   );
-  templateReviewPage = templateReviewPage.replace(
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{REVIEW_TEXT\}/g,
     detailReview.text
   );
-  templateReviewPage = templateReviewPage.replace(
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{REVIEW_AUTHOR\}/g,
     detailReview.author
   );
-  templateReviewPage = templateReviewPage.replace(
+  templateReviewPage.html = templateReviewPage.html.replace(
     /\{REVIEW_IMAGE\}/g,
     `https://og-image.kuclap.com/${encodeURIComponent(
       detailReview.text
@@ -126,16 +128,19 @@ async function ApplicationEndpoint(req, res) {
   let { classID } = req.params;
   console.log("class-id from req :", classID);
   if (classID) {
+    let templateClassPage = {
+      html: readFileSync("./build/class/index.html", "utf8"),
+    };
     if (validatorClassId(classID)) {
       try {
         const response = await axios.get(
           `${process.env.URL_API}/class/${classID}`
         );
         detailClass = response.data;
-        replaceMetaOnClassTemplate(detailClass);
+        replaceMetaOnClassTemplate(templateClassPage, detailClass);
         let body = render(h(App, { url: req.url }));
         res.setHeader("Content-Type", "text/html");
-        res.end(templateClassPage.replace(RGX, body));
+        res.end(templateClassPage.html.replace(RGX, body));
       } catch (error) {
         res.setHeader("Content-Type", "text/html");
         res.end(`ERROR: ${classID} is invalid classId.`);
@@ -152,6 +157,9 @@ async function ApplicationEndpoint(req, res) {
 }
 
 async function ReviewPageEndpoint(req, res) {
+  let templateReviewPage = {
+    html: readFileSync("./build/review/index.html", "utf8"),
+  };
   let { reviewID } = req.params;
   console.log("review-id from req :", reviewID);
   if (reviewID) {
@@ -164,14 +172,18 @@ async function ReviewPageEndpoint(req, res) {
       );
       let detailReview = reviewResponse.data;
       let detailClass = classResponse.data;
-      replaceMetaOnReviewTemplate(detailClass, detailReview);
+      replaceMetaOnReviewTemplate(
+        templateReviewPage,
+        detailClass,
+        detailReview
+      );
       let body = render(h(App, { url: req.url }));
       res.setHeader("Content-Type", "text/html");
-      res.end(templateReviewPage.replace(RGX, body));
+      res.end(templateReviewPage.html.replace(RGX, body));
     } catch (error) {
       let body = render(h(App, { url: req.url }));
       res.setHeader("Content-Type", "text/html");
-      res.end(templateReviewPage.replace(RGX, body));
+      res.end(templateReviewPage.html.replace(RGX, body));
       // res.setHeader("Content-Type", "text/html");
       // res.end(`ERROR: ${reviewID} is invalid classId.`);
     }
