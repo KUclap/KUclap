@@ -93,7 +93,7 @@ const PageTemplate = ({
       });
     }
 
-    route(`${baseroute}/${e.classId}`, true);
+    route(`${baseroute}/${e.classId}`);
   };
 
   useEffect(() => {

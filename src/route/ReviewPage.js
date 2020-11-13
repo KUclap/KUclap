@@ -77,12 +77,12 @@ const ReviewPage = (props) => {
 
   const handleNewReview = () => {
     if (typeof window !== "undefined") window.scrollTo(0, 0);
-    route(`${baseroute}/form/create/${review.classId}`, true);
+    route(`${baseroute}/form/create/${review.classId}`);
     setUnderFlow(false);
   };
 
   const routeToClassPage = () => {
-    route(`${baseroute}/${review.classId}`, true);
+    route(`${baseroute}/${review.classId}`);
   }
 
   return (
