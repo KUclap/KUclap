@@ -19,5 +19,6 @@ export default {
   },
   subjectBrightness: 100,
   footerButtonText: "#121112",
-  placeholderText: "#bdbdbd",
+  placeholderText: "#BDBDBD",
+  cardDetailsText: "hsl(0, 0%, 34%)"
 }

@@ -47,7 +47,7 @@ const CardDetails = styled.div`
 const DetailContainer = styled.div`
   font-size: 1.6rem;
   display: flex;
-  color: #828282;
+  color: ${(props) => props.theme.cardDetailsText};
   justify-content: space-between;
   flex-direction: column;
   align-self: flex-end;
@@ -318,13 +318,18 @@ const CircularProgressCustom = styled(CircularProgress)`
 const ShareButton = styled.div `
   display: flex;
   align-items: center;
-  border: 0.1rem solid ${(props) => props.theme.placeholderText};
+  border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
   border-radius: 1.5rem;
   padding: 0 0.8rem;
   cursor: pointer;
+  user-select: none;
 
   svg {
     margin-left: 0.3rem;
+    
+    path {
+      fill: ${(props) => props.theme.cardDetailsText};
+    }
   }
 
   &:hover {
@@ -543,7 +548,7 @@ const ReviewCard = (props) => {
   };
 
   const RedirctToClassName = () => {
-    route(`${baseroute}/${classId}`, true);
+    route(`${baseroute}/${classId}`);
   };
 
   const numberFormat = (value) => {

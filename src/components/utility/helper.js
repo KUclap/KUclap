@@ -52,7 +52,7 @@ const getColorHash = (inputString) => {
 };
 
 const navigateToHome = () => {
-  route(`${baseroute}/`, true);
+  route(`${baseroute}/`);
 };
 
 export { getClassName, getColorHash, navigateToHome, getDetailFromLabel };

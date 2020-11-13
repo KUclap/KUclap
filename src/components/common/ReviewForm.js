@@ -1,5 +1,6 @@
-import { Checkbox } from "@material-ui/core";
 import { h } from "preact";
+import { lazy, Suspense } from 'preact/compat'
+import  Checkbox  from "@material-ui/core/Checkbox";
 import { route } from "preact-router";
 import { useContext, useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -7,11 +8,13 @@ import styled, { withTheme } from "styled-components";
 
 import { ModalContext } from "../../context/ModalContext";
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
-import Alert from "./Alert";
+
 import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+
+const Alert = lazy(() => import("./Alert"))
 
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
@@ -37,7 +40,7 @@ const Container = styled.div`
   min-width: 86%;
 `;
 
-const DetailTitle = styled.div`
+const DetailTitle = styled.label`
   font-size: 2rem;
   font-weight: 600;
   margin: 1.2rem 2rem 1.2rem 0;
@@ -393,7 +396,7 @@ const ReviewForm = (props) => {
     if (isDone) {
       // back("details");
 
-      route(`${baseroute}/${classID}`, true);
+      route(`${baseroute}/${classID}`);
       setIsDone(false);
     }
     setReviewModal(false);
@@ -484,7 +487,7 @@ const ReviewForm = (props) => {
   return (
     <Container>
       <FormTitle>
-        <DetailTitle>
+        <DetailTitle for="review-field">
           รีวิววิชานี้
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
         </DetailTitle>
@@ -492,7 +495,7 @@ const ReviewForm = (props) => {
           onClick={() => {
             if (typeof window !== "undefined") window.scrollTo(0, 0);
             // back("details");
-            route(`${baseroute}/${classID}`, true);
+            route(`${baseroute}/${classID}`);
           }}
         >
           ย้อนกลับ
@@ -503,6 +506,7 @@ const ReviewForm = (props) => {
         placeholder="เขียนรีวิว..."
         value={form.text}
         onChange={(e) => handleOnchange(e, "text")}
+        id="review-field"
       />
       <DetailTitle>
         ให้คะแนนความพอใจวิชา
@@ -548,7 +552,7 @@ const ReviewForm = (props) => {
         </GradeBar>
       </InputContainer>
       <InputContainer>
-        <DetailTitle>
+        <DetailTitle for="author-field">
           นามปากกา
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
         </DetailTitle>
@@ -557,10 +561,11 @@ const ReviewForm = (props) => {
           value={form.author}
           onChange={(e) => handleOnchange(e, "author")}
           maxLength={16}
+          id="author-field"
         />
       </InputContainer>
       <InputContainer>
-        <DetailTitle>
+        <DetailTitle for="pin-field">
           ตัวเลข 4 หลัก
           <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning> <br />
           <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
@@ -571,6 +576,7 @@ const ReviewForm = (props) => {
           placeholder="ใส่เลข"
           value={form.auth}
           onChange={handleOnChangePassword}
+          id="pin-field"
         />
       </InputContainer>
       <Caution>
@@ -579,7 +585,7 @@ const ReviewForm = (props) => {
           warning={require.rude}
           onClick={() => setChecklist({ ...checklist, rude: !checklist.rude })}
         >
-          <CheckboxCustom color="primary" checked={checklist.rude} />
+          <CheckboxCustom inputProps={{ 'aria-label': 'rude-checkbox' }} color="primary" checked={checklist.rude} />
           เนื้อหาไม่มีคำหยาบคาย
         </CheckboxContainer>
         <CheckboxContainer
@@ -588,7 +594,7 @@ const ReviewForm = (props) => {
             setChecklist({ ...checklist, other: !checklist.other })
           }
         >
-          <CheckboxCustom color="primary" checked={checklist.other} />
+          <CheckboxCustom inputProps={{ 'aria-label': 'other-checkbox' }} color="primary" checked={checklist.other} />
           เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
         </CheckboxContainer>
       </Caution>
@@ -598,9 +604,11 @@ const ReviewForm = (props) => {
       <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
       <ModalBackdrop show={showReviewModal} onClick={handleCloseAlert} />
       {isDone ? (
-        <Alert Close={handleCloseAlert} />
+        <Suspense>
+          <Alert Close={handleCloseAlert} />
+        </Suspense>
       ) : (
-        <Modal show={showReviewModal}>
+          <Modal show={showReviewModal}>
           เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
           <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
           <ModalActions>
