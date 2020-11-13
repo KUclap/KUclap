@@ -1,4 +1,4 @@
-import { Checkbox } from "@material-ui/core";
+import { Checkbox } from "@material-ui/core/Checkbox";
 import { h } from "preact";
 import { route } from "preact-router";
 import { useContext, useState, useEffect } from "preact/hooks";
