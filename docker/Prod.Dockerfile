@@ -12,7 +12,7 @@ COPY src src/
 COPY .babelrc ./
 RUN printf "URL_API=\"$URL_API\"\nSERVER_PORT=$SERVER_PORT\nSSR=$SSR\n" > .env.production
 RUN npm install
-RUN npm run build:production
+RUN npm run build:prod_prd
 
 # Starting stage
 FROM node:14.2-slim
