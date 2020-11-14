@@ -10,14 +10,12 @@ DYNO_PROCESS = web
 
 #### Server 
 WORKER_STAGING = kuclap-web-staging
-# WORKER_PRE_PRODUCTION = kuclap-web-pre-production
+WORKER_PRE_PRODUCTION = kuclap-web-pre-production
 
 #### Utils
 docker-compose-with-args:
 	docker-compose build --build-arg URL_API="https://kuclap-api.herokuapp.com" --build-arg SERVER_PORT="8080" --build-arg SSR=true
 docker-with-args-web:
-	docker build --build-arg URL_API="https://kuclap-api.herokuapp.com" --build-arg SERVER_PORT="8080" --build-arg SSR=true -f ./docker/Web.Dockerfile . --no-cache
-docker-with-args-web-nq:
 	docker build --build-arg URL_API=https://kuclap-api.herokuapp.com --build-arg SERVER_PORT=8080 --build-arg SSR=true -f ./docker/Web.Dockerfile . --no-cache
 
 #### Heroku On Hand
@@ -36,8 +34,8 @@ heroku-container-release-staging:
 ## Staging 
 deploy-to-staging:
 	heroku container:push ${DYNO_PROCESS} --recursive --context-path . --app ${WORKER_STAGING} && heroku container:release ${DYNO_PROCESS} --app ${WORKER_STAGING}
-# deploy-to-pre-production:
-# 	heroku container:push ${DYNO_PROCESS} --recursive --context-path . --app ${WORKER_PRE_PRODUCTION} && heroku container:release ${DYNO_PROCESS} --app ${WORKER_PRE_PRODUCTION}
+deploy-to-pre-production:
+	heroku container:push ${DYNO_PROCESS} --recursive --context-path . --app ${WORKER_PRE_PRODUCTION} && heroku container:release ${DYNO_PROCESS} --app ${WORKER_PRE_PRODUCTION}
 
 #### Manual command
 ## Push image to kuclpa's github pkg.
