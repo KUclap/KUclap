@@ -13,6 +13,7 @@
     "build:dev": "NODE_ENV=development preact build --analyze ",
     "serve": "sirv build --cors --single",
     "start:dev": "NODE_ENV=development node server.js",
+    "start:babel-dev": "babel server.js -d dist && mv ./dist/server.js ./server-babel.js && NODE_ENV=development node server-babel.js",
     "start:prod": "NODE_ENV=production node server.js",
     "webpack": "webpack --config webpack.config.js && babel-node ./dist/server.js",
     "predeploy:github-page": "npm run build:github-page",

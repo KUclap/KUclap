@@ -145,10 +145,15 @@
     />
 
     <% } %> <% preact.headEnd %>
+    <!-- {CURRENT_CLASS} -->
     <!-- <script data-ad-client="ca-pub-7672740678800501" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
   </head>
-  <body>
+  <body>    
     <% preact.bodyEnd %>
+    <script>
+      window.__GLOBAL_STATE__ = {GLOBAL_STATE};
+    </script>
+    <!-- EJS -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
       async

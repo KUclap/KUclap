@@ -13,10 +13,12 @@ import withClasses from "./HOC/withClasses";
 import ReviewPage from "./route/ReviewPage";
 
 class App extends Component {
+  
   /** Gets fired when the route changes.
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
    *	@param {string} event.url	The newly routed URL
    */
+
   constructor(props) {
     super(props);
     let theme = "light";
@@ -31,6 +33,7 @@ class App extends Component {
         theme = "dark";
       }
     this.state = {
+      // global: typeof window !== "undefined" ? window.__GLOBAL_STATE__ : {},
       theme,
     };
   }
@@ -51,9 +54,9 @@ class App extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes/* , detailClass, detailReview */ } = this.props;
+    // console.log("server side !",this.props)
     return (
-      // <>
       <div id="app">
         <Provider theme={themes[this.state.theme]} {...this.props}>
           <Router url={this.props.url} onChange={this.handleRoute}>
@@ -80,11 +83,20 @@ class App extends Component {
               toggleTheme={this.toggleTheme}
               component={ReviewPage}
               classes={classes}
+              // currentClass={detailReview}
+              // currentReview={detailClass}
             />
+            {/* <ReviewPage 
+              path={`/review/:reviewID`}
+              toggleTheme={this.toggleTheme}
+              // component={ReviewPage}
+              classes={classes}
+              currentClass={detailClass || this.state.global.detailClass}
+              currentReview={detailReview || this.state.global.Review}
+            /> */}
           </Router>
         </Provider>
       </div>
-      // </>
     );
   }
 }

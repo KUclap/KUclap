@@ -1,3 +1,4 @@
+require('module-alias/register');
 const dotenv = require("dotenv");
 const axios = require("axios");
 const sirv = require("sirv");
@@ -8,6 +9,7 @@ const { readFileSync } = require("fs");
 const compression = require("compression")();
 const render = require("preact-render-to-string");
 const bundle = require("./build/ssr-build/ssr-bundle");
+// const AppDOM = require('./src/index')
 // const prepass = require('preact-ssr-prepass')
 const App = bundle.default;
 
@@ -79,6 +81,13 @@ function replaceMetaOnReviewTemplate(
   detailClass,
   detailReview
 ) {
+  templateReviewPage.html = templateReviewPage.html.replace(
+    /\{GLOBAL_STATE\}/g,
+    JSON.stringify({ 
+      currentClass: detailClass, 
+      currentReview: detailReview, 
+    })
+  ); 
   templateReviewPage.html = templateReviewPage.html.replace(
     /\{CLASS_ID\}/g,
     detailClass.classId
@@ -177,7 +186,10 @@ async function ReviewPageEndpoint(req, res) {
         detailClass,
         detailReview
       );
+      // console.log(detailClass)
       let body = render(h(App, { url: req.url }));
+      // let body = render(App({ detailClass, detailReview }))
+      // let body = render(h(<App url={req.url} detailClass={detailClass} detailReview={detailReview} />))
       res.setHeader("Content-Type", "text/html");
       res.end(templateReviewPage.html.replace(RGX, body));
     } catch (error) {
@@ -197,9 +209,9 @@ polka()
   .use(compression)
   .use(sirv("build", { setHeaders }))
   .get("/sitemap", SitemapEndpoint)
-  .get("/:classID", ApplicationEndpoint)
   .get("/review/:reviewID", ReviewPageEndpoint)
   .get("/form/create/:classID", ApplicationEndpoint)
+  .get("/:classID", ApplicationEndpoint)
   .listen(PORT, (err) => {
     if (err) throw err;
     console.log(`> Running on localhost:${PORT}`);
