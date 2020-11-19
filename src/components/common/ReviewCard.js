@@ -250,11 +250,36 @@ const Menu = styled.div`
   position: absolute;
   flex-direction: column;
   text-align: center;
-  border-radius: 8%;
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  right: 0rem;
-  transform: translate(-84%, 62%);
+  border-radius: 0.4rem;
+  border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+  transform: translate(-43%, 58%);
+  z-index: 1;
+  color: ${(props) => props.theme.cardDetailsText};
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
 `;
+
+const MenuContentContainer = styled.div`
+  width: 12.7rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  margin: 0 0.7rem;
+  padding: 1rem 0;
+  border-bottom: 0.1rem solid ${(props) => props.theme.placeholderText};
+` 
+
+const MenuContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 0.2rem;
+  }
+
+  span:last-child {
+    color: #2F80ED;
+  }
+`
 
 const MenuItem = styled.div`
   padding: 1rem;
@@ -355,6 +380,7 @@ const ButtonWithIcon = styled.button`
   cursor: pointer;
   user-select: none;
   background: none;
+  color: ${(props) => props.theme.cardDetailsText};
 
   svg {
     margin-left: 0.3rem;
@@ -425,6 +451,10 @@ const ReviewCard = (props) => {
     boo,
     grade,
     author,
+    sec,
+    semester,
+    year,
+    recap,
     createdAt,
     classId,
     classNameTH,
@@ -703,6 +733,13 @@ const ReviewCard = (props) => {
             >
               <DownArrow />
               <Menu openMenu={menu}>
+                <MenuContentContainer>
+                  {sec !== 0 && <MenuContent><span>หมู่เรียน (เซค)</span><span>{sec}</span></MenuContent>}
+                  {semester !== 0 && <MenuContent><span>ภาคเรียน</span><span>{semester}</span></MenuContent>}
+                  {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>63</span></MenuContent>}
+                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>100</span></MenuContent>}
+                  <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
+                </MenuContentContainer>
                 <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
                 <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
               </Menu>
