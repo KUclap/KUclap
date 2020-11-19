@@ -19,6 +19,16 @@ import Radio from '@material-ui/core/Radio';
 
 const Alert = lazy(() => import("./Alert"))
 
+const RecommendWords = [ 
+  "ต้องแต่งตัวถูกระเบียบ",
+  "ไม่เคร่งเรื่องแต่งกาย",
+  "ไม่มีเช็คชื่อ",
+  "เช็คชื่อทุกคาบ",
+  "เหมาะเรียนเป็นกลุ่ม",
+  "เนื้อหาง่าย",       
+  "เนื้อหาต้องท่องจำ",
+  "ไม่มีสอบ"
+]
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
   {
@@ -54,7 +64,40 @@ const DetailTitle = styled.label`
     color: #bdbdbd;
     font-weight: 500;
   }
+
+  div {
+    display: flex;
+  }
 `;
+
+const RequiredDot = styled.div`
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: 0.4rem;
+  background: #EEA99A;
+  border-radius: 100%;
+`
+
+const RecommendReviewContainer = styled.div`
+  display: ${props => props.isShow ? "inline-flex" : "none"};
+  flex-flow: wrap;
+  margin: -1rem 0 2.4rem -1rem;
+  transition: all 0.3s ease-in-out;
+
+  > * {
+    margin: 1rem 0 0 1rem;
+  }
+`
+
+const WordTag = styled.button`
+  font-size: 1.4rem;
+  color: #2F80ED;
+  padding: 0.1rem 0.8rem;
+  background: #F1F6FE;
+  border: 0.1rem solid #2F80ED;
+  border-radius: 0.4rem;
+  width: fit-content;
+`
 
 const Warning = styled(DetailTitle)`
   margin-left: 1.2rem;
@@ -183,7 +226,7 @@ const InputContainer = styled.div`
 
   > * {
     margin: 1.2rem 0 0 1.9rem;
-}
+  }
 `;
 
 const RadioGroupCustom = styled(RadioGroup)`
@@ -422,6 +465,7 @@ const ReviewForm = (props) => {
   const [isDone, setIsDone] = useState(false);
   const [showReviewModal, setReviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [recommendWord, setRecommendWord] = useState(false);
   const initialForm = {
     classID,
     text: "",
@@ -542,6 +586,11 @@ const ReviewForm = (props) => {
     navigator.clipboard.readText().then(clipText => pasteTarget.value = clipText);
   } 
 
+  const addWordToReview = (word) => {
+    let review = form.text
+    setForm({...form, text: `${review} ${word}`})
+  }
+
   const handleOnchange = (e, field) => {
     let value = e.target.value;
     if (/^\s/.test(value)) {
@@ -560,6 +609,7 @@ const ReviewForm = (props) => {
       <FormTitle>
         <DetailTitle for="review-field">
           รีวิววิชานี้
+          <RequiredDot />
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
         </DetailTitle>
         <Button
@@ -577,10 +627,22 @@ const ReviewForm = (props) => {
         placeholder="เขียนรีวิว..."
         value={form.text}
         onChange={(e) => handleOnchange(e, "text")}
+        onFocus={() => setRecommendWord(true)}
+        onBlur={() => setRecommendWord(false)}
         id="review-field"
       />
+      <RecommendReviewContainer isShow={recommendWord}>
+        {
+          RecommendWords.map((word, index) => {
+            return (
+              <WordTag onClick={() => addWordToReview(word)} key={index}>{word}</WordTag>
+            )
+          })
+        }
+      </RecommendReviewContainer>
       <DetailTitle>
         ให้คะแนนความพอใจวิชา
+        <RequiredDot />
         <Warning required={require.stats}>กรุณาเลือกทุกหัวข้อ</Warning>
       </DetailTitle>
       <ScoreContainer>
@@ -607,6 +669,7 @@ const ReviewForm = (props) => {
       <InputContainer>
         <DetailTitle>
           เกรดที่ได้
+          <RequiredDot />
           <Warning required={require.grade}>กรุณาเลือกเกรด</Warning>
         </DetailTitle>
         <GradeBar>
@@ -627,6 +690,7 @@ const ReviewForm = (props) => {
       <InputContainer>
         <DetailTitle for="author-field">
           นามปากกา
+          <RequiredDot />
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
         </DetailTitle>
         <Input
@@ -689,7 +753,10 @@ const ReviewForm = (props) => {
       </InputContainer>
       <InputContainer>
         <DetailTitle for="pin-field" description>
-          ตัวเลข 4 หลัก
+          <div>
+            ตัวเลข 4 หลัก
+            <RequiredDot />
+          </div>
           <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning>
           <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
         </DetailTitle>
