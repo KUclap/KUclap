@@ -13,6 +13,9 @@ import APIs from "../utility/apis";
 import baseroute from "../utility/baseroute";
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from '@material-ui/core/Radio';
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -168,6 +171,28 @@ const InputContainer = styled.div`
   align-items: center;
   margin: 2rem 0;
 `;
+
+const RadioGroupCustom = styled(RadioGroup)`
+  &.MuiFormGroup-root {
+    flex-direction: row;
+
+    .MuiTypography-body1 {
+      font-family: "Kanit";
+      font-size: 16px;
+      color: ${(props) => props.theme.mainText};
+      font-weight: 500;
+    }
+
+    .MuiSvgIcon-root {
+      height: 20px;
+      width: 20px;
+    }
+
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: #2f80ed;
+    }
+  }
+`
 
 const Caution = styled.div`
   font-size: 1.8rem;
@@ -371,6 +396,9 @@ const ReviewForm = (props) => {
       homework: -1,
       interest: -1,
     },
+    year: "",
+    sec: "",
+    semester: ""
   };
   const initialChecklist = {
     rude: false,
@@ -563,6 +591,39 @@ const ReviewForm = (props) => {
           maxLength={16}
           id="author-field"
         />
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="year-field">
+          ปีการศึกษาที่เรียน
+        </DetailTitle>
+        <Input
+          placeholder="เช่น 64"
+          value={form.year}
+          onChange={(e) => handleOnchange(e, "year")}
+          maxLength={2}
+          id="year-field"
+        />
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="sec-field">
+          หมู่เรียน
+        </DetailTitle>
+        <Input
+          placeholder="ใส่เซค"
+          value={form.sec}
+          onChange={(e) => handleOnchange(e, "sec")}
+          id="sec-field"
+        />
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="semester-field">
+          เทอม
+        </DetailTitle>
+        <RadioGroupCustom aria-label="semester" name="semester" value={form.semester} onChange={(e) => handleOnchange(e, "semester")}>
+          <FormControlLabel value="1" control={<Radio inputProps={{ 'aria-label': 'semester-1' }} />} label="ต้น" />
+          <FormControlLabel value="2" control={<Radio inputProps={{ 'aria-label': 'semester-2' }} />} label="ปลาย" />
+          <FormControlLabel value="3" control={<Radio inputProps={{ 'aria-label': 'semester-summer' }} />} label="ฤดูร้อน" />
+        </RadioGroupCustom>
       </InputContainer>
       <InputContainer>
         <DetailTitle for="pin-field">

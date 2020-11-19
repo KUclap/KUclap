@@ -6,14 +6,15 @@ const GlobalStyles = createGlobalStyle`
 html {
   scroll-behavior: smooth;
 
-  font-size: 62.5%; /* 10px at html, body */
-  
+  font-size: 76.5%; /* 10px at html, body */
+
   ${media.lessThan("medium")`
-      font-size: 55.5%; 
+      font-size: 69.5%; 
   `}
 
   ${media.lessThan("small")`
-      font-size: 48.5%; 
+      /* font-size: 48.5%;  */
+      font-size: 62.5%;
   `}
 } 
 
