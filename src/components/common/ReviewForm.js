@@ -47,7 +47,7 @@ const DetailTitle = styled.label`
   font-size: 1.8rem;
   font-weight: 600;
   color: ${(props) => props.theme.mainText};
-  margin-right: 1.9rem;
+  display: ${(props) => props.description ? "grid" : "flex"};
 
   span {
     font-size: 1.2rem;
@@ -156,7 +156,6 @@ const GradeBar = styled.div`
   width: 100%;
   max-width: 46rem;
   justify-content: space-between;
-  margin-top: 1.4rem;
 `;
 
 const Input = styled.input`
@@ -177,10 +176,14 @@ const Input = styled.input`
 `;
 
 const InputContainer = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-flow: wrap;
   align-items: center;
-  margin-bottom: 3rem;
+  margin: -1.2rem 0 3rem -1.9rem;
+
+  > * {
+    margin: 1.2rem 0 0 1.9rem;
+}
 `;
 
 const RadioGroupCustom = styled(RadioGroup)`
@@ -202,6 +205,10 @@ const RadioGroupCustom = styled(RadioGroup)`
     .MuiRadio-colorSecondary.Mui-checked {
       color: #2f80ed;
     }
+
+    .MuiRadio-root {
+        color: ${(props) => props.theme.placeholderText}
+    }
   }
 `
 
@@ -212,6 +219,24 @@ const Caution = styled.div`
   text-align: center;
   align-self: center;
 `;
+
+const CopyInputContainer = styled.div`
+  width: fit-content;
+
+  input {
+    border-radius: 0.6rem 0 0 0.6rem;
+    border-right: 0;
+  }
+`
+
+const PasteButton = styled.button`
+  background: #2F80ED;
+  border: 0.1rem solid #2F80ED;
+  padding: 0.4rem 1.6rem;
+  border-radius: 0 0.6rem 0.6rem 0;
+  color: white;
+  font-size: 1.6rem;
+`
 
 const Button = styled.button`
   font-family: "Kanit", arial, sans-serif;
@@ -410,7 +435,8 @@ const ReviewForm = (props) => {
     },
     year: "",
     sec: "",
-    semester: ""
+    semester: "",
+    recap: "",
   };
   const initialChecklist = {
     rude: false,
@@ -510,6 +536,11 @@ const ReviewForm = (props) => {
     }
     setForm(newForm);
   };
+
+  const pasteURL = () => {
+    const pasteTarget = document.getElementById("recap-field");
+    navigator.clipboard.readText().then(clipText => pasteTarget.value = clipText);
+  } 
 
   const handleOnchange = (e, field) => {
     let value = e.target.value;
@@ -642,9 +673,24 @@ const ReviewForm = (props) => {
         </RadioGroupCustom>
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="pin-field">
+        <DetailTitle for="recap-field">
+          ลิงก์สรุปวิชา
+        </DetailTitle>
+        <CopyInputContainer>
+          <Input
+            type="text"
+            placeholder="วางลิงก์ที่นี่หรือกดปุ่มวาง"
+            value={form.recap}
+            onChange={(e) => handleOnchange(e, "recap")}
+            id="recap-field"
+          />
+          <PasteButton onClick={pasteURL}>วาง</PasteButton>
+        </CopyInputContainer>
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="pin-field" description>
           ตัวเลข 4 หลัก
-          <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning> <br />
+          <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning>
           <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
         </DetailTitle>
         <Input

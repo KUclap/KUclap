@@ -28,8 +28,11 @@ body {
   padding: 0;
   margin: 0;
   overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")};
-  
 } 
+
+button {
+  font-family: 'Kanit', arial, sans-serif;
+}
 
 * {
   box-sizing: border-box;
