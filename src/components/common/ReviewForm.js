@@ -44,14 +44,15 @@ const Container = styled.div`
 `;
 
 const DetailTitle = styled.label`
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  margin: 1.2rem 2rem 1.2rem 0;
   color: ${(props) => props.theme.mainText};
+  margin-right: 1.9rem;
 
   span {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #bdbdbd;
+    font-weight: 500;
   }
 `;
 
@@ -67,7 +68,6 @@ const FormTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
 `;
 
 const ReviewField = styled.textarea`
@@ -79,7 +79,8 @@ const ReviewField = styled.textarea`
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
   resize: none;
-  margin-bottom: 2.8rem;
+  margin-top: 1.4rem;
+  margin-bottom: 2.4rem;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 
@@ -90,8 +91,9 @@ const ReviewField = styled.textarea`
 `;
 
 const ScoreTitle = styled.p`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   margin-right: 1.2rem;
+  margin: 0;
   color: ${(props) => props.theme.mainText};
 `;
 
@@ -99,7 +101,16 @@ const ScoreBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 1.6rem;
+  }
 `;
+
+const ScoreContainer = styled.div`
+  margin-top: 1.4rem;
+  margin-bottom: 2.4rem;
+` 
 
 const GradeButton = styled.div`
   -webkit-tap-highlight-color: transparent;
@@ -145,6 +156,7 @@ const GradeBar = styled.div`
   width: 100%;
   max-width: 46rem;
   justify-content: space-between;
+  margin-top: 1.4rem;
 `;
 
 const Input = styled.input`
@@ -152,9 +164,8 @@ const Input = styled.input`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   height: 3.4rem;
-  width: ${(props) => (props.password ? 9 : 20)}rem;
-  margin-top: ${(props) => (props.password ? "1.2rem" : 0)};
-  align-self: ${(props) => (props.password ? "flex-start" : "center")};
+  width: ${(props) => (props.small ? 9 : 20)}rem;
+  align-self: ${(props) => (props.small ? "flex-start" : "center")};
   padding: 1.2rem 1.6rem;
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
@@ -169,7 +180,7 @@ const InputContainer = styled.div`
   display: flex;
   flex-flow: wrap;
   align-items: center;
-  margin: 2rem 0;
+  margin-bottom: 3rem;
 `;
 
 const RadioGroupCustom = styled(RadioGroup)`
@@ -195,7 +206,7 @@ const RadioGroupCustom = styled(RadioGroup)`
 `
 
 const Caution = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: ${(props) => props.theme.mainText};
   font-weight: 500;
   text-align: center;
@@ -205,20 +216,22 @@ const Caution = styled.div`
 const Button = styled.button`
   font-family: "Kanit", arial, sans-serif;
   ${(props) => props.theme.lightButton}
-  padding: 0.2rem 1.8rem;
+  background-color: transparent;
+  color: #2f80ed;
+  border: 1px solid #2f80ed;
+  padding: 0.2rem 1.4rem;
   border-radius: 0.6rem;
   font-size: 1.4rem;
   font-weight: 500;
-  border-width: 0;
   cursor: pointer;
+  align-self: flex-start;
 `;
 
 const ReviewButton = styled(Button)`
-  padding: 0.4rem 2.4rem;
-  width: 12.2rem;
+  padding: 0.3rem 1.6rem;
   color: white;
   background-color: #2f80ed;
-  font-size: 2rem;
+  font-size: 1.8rem;
   align-self: center;
   margin: 1rem 1rem;
   display: flex;
@@ -277,7 +290,7 @@ const ModalActions = styled.div`
 
 const Rating = styled.div`
   display: flex;
-  width: 24rem;
+  width: 18rem;
   justify-content: space-between;
 `;
 
@@ -344,9 +357,8 @@ const RateContainer = styled.div`
 
 const CheckboxContainer = styled.div`
   display: flex;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   align-items: center;
-  margin: 1rem 0;
   text-align: left;
   color: ${(props) => (props.warning ? "#EB5757" : props.theme.mainText)};
   cursor: pointer;
@@ -540,25 +552,27 @@ const ReviewForm = (props) => {
         ให้คะแนนความพอใจวิชา
         <Warning required={require.stats}>กรุณาเลือกทุกหัวข้อ</Warning>
       </DetailTitle>
-      {Rate.map((item, key) => (
-        <ScoreBar key={key}>
-          <ScoreTitle>{item.title}</ScoreTitle>
-          <Rating>
-            {RateIcon.map((Rate, key_rate) => (
-              <RateContainer
-                key={key_rate}
-                onClick={(e) => {
-                  e.preventDefault();
-                  rate(item, key_rate);
-                }}
-                selected={form.stats[item.id] - 1 === key_rate}
-              >
-                <Rate bgColor={props.theme.body} />
-              </RateContainer>
-            ))}
-          </Rating>
-        </ScoreBar>
-      ))}
+      <ScoreContainer>
+        {Rate.map((item, key) => (
+          <ScoreBar key={key}>
+            <ScoreTitle>{item.title}</ScoreTitle>
+            <Rating>
+              {RateIcon.map((Rate, key_rate) => (
+                <RateContainer
+                  key={key_rate}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    rate(item, key_rate);
+                  }}
+                  selected={form.stats[item.id] - 1 === key_rate}
+                >
+                  <Rate bgColor={props.theme.body} />
+                </RateContainer>
+              ))}
+            </Rating>
+          </ScoreBar>
+        ))}
+      </ScoreContainer>
       <InputContainer>
         <DetailTitle>
           เกรดที่ได้
@@ -597,6 +611,7 @@ const ReviewForm = (props) => {
           ปีการศึกษาที่เรียน
         </DetailTitle>
         <Input
+          small
           placeholder="เช่น 64"
           value={form.year}
           onChange={(e) => handleOnchange(e, "year")}
@@ -609,6 +624,7 @@ const ReviewForm = (props) => {
           หมู่เรียน
         </DetailTitle>
         <Input
+          small
           placeholder="ใส่เซค"
           value={form.sec}
           onChange={(e) => handleOnchange(e, "sec")}
@@ -632,7 +648,7 @@ const ReviewForm = (props) => {
           <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
         </DetailTitle>
         <Input
-          password
+          small
           type="text"
           placeholder="ใส่เลข"
           value={form.auth}
