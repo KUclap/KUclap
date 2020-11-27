@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
   <head>
     <meta charset="utf-8" />
@@ -148,10 +149,10 @@
     <!-- {CURRENT_CLASS} -->
     <!-- <script data-ad-client="ca-pub-7672740678800501" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
   </head>
-  <body>    
+  <body>
     <% preact.bodyEnd %>
     <script>
-      window.__GLOBAL_STATE__ = {GLOBAL_STATE};
+      window.__GLOBAL_STATE__ = {GLOBAL_STATE} || {};
     </script>
     <!-- EJS -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -160,6 +161,7 @@
       src="https://www.googletagmanager.com/gtag/js?id=UA-40932170-4"
     ></script>
     <script>
+    if (document.location.hostname.search("kuclap.com") !== -1) {
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -167,6 +169,7 @@
       gtag("js", new Date());
 
       gtag("config", "UA-40932170-4");
+    }
     </script>
   </body>
 </html>
