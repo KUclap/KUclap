@@ -11,9 +11,9 @@ import Provider from "./providers/AppProvider";
 
 import withClasses from "./HOC/withClasses";
 import ReviewPage from "./route/ReviewPage";
+import GlobalComponent from './components/utility/GlobalComponent'
 
 class App extends Component {
-  
   /** Gets fired when the route changes.
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
    *	@param {string} event.url	The newly routed URL
@@ -24,7 +24,8 @@ class App extends Component {
     let theme = "light";
     if (typeof localStorage === "object")
       if (Object.keys(themes).includes(localStorage.theme)) {
-        theme = localStorage.theme;
+        console.log(localStorage.theme, "theme")
+        theme = localStorage.getItem('theme');
       } else if (
         typeof window !== "undefined" &&
         window.matchMedia &&
@@ -33,8 +34,8 @@ class App extends Component {
         theme = "dark";
       }
     this.state = {
-      // global: typeof window !== "undefined" ? window.__GLOBAL_STATE__ : {},
       theme,
+      global: ( typeof window !== "undefined" && window?.__GLOBAL_STATE__ ) || null
     };
   }
 
@@ -54,11 +55,12 @@ class App extends Component {
   };
 
   render() {
-    const { classes/* , detailClass, detailReview */ } = this.props;
-    // console.log("server side !",this.props)
+    const { classes, currentClass, currentReview } = this.props;
+
     return (
       <div id="app">
         <Provider theme={themes[this.state.theme]} {...this.props}>
+        <GlobalComponent />
           <Router url={this.props.url} onChange={this.handleRoute}>
             <AsyncRoute
               path={`${baseroute}/`}
@@ -83,17 +85,17 @@ class App extends Component {
               toggleTheme={this.toggleTheme}
               component={ReviewPage}
               classes={classes}
-              // currentClass={detailReview}
-              // currentReview={detailClass}
+              currentReview={
+                currentReview ||
+                (typeof window !== "undefined" &&
+                  this.state.global?.currentReview)
+              }
+              currentClass={
+                currentClass ||
+                (typeof window !== "undefined" &&
+                  this.state.global?.currentClass)
+              }
             />
-            {/* <ReviewPage 
-              path={`/review/:reviewID`}
-              toggleTheme={this.toggleTheme}
-              // component={ReviewPage}
-              classes={classes}
-              currentClass={detailClass || this.state.global.detailClass}
-              currentReview={detailReview || this.state.global.Review}
-            /> */}
           </Router>
         </Provider>
       </div>

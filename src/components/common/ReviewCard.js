@@ -4,7 +4,16 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, RightArrow, Share, Facebook, Twitter, Line, CopyLink } from "../utility/Icons";
+import {
+  Clap,
+  Boo,
+  RightArrow,
+  Share,
+  Facebook,
+  Twitter,
+  Line,
+  CopyLink,
+} from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
@@ -125,7 +134,8 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: ${(props) => props.type === "ShareModal" ? '0 1.2rem 2.8rem' : '2.8rem 1.2rem'};
+  padding: ${(props) =>
+    props.type === "ShareModal" ? "0 1.2rem 2.8rem" : "2.8rem 1.2rem"};
   font-weight: 500;
   font-size: 2rem;
   line-height: 3.4rem;
@@ -135,23 +145,23 @@ const Modal = styled.div`
   max-width: 42rem;
   width: 84%;
 
-  ${(props) => props.type === "ShareModal" ? 
-    css`
-      padding: 0 1.2rem 2.8rem;
+  ${(props) => props.type === "ShareModal" && css`
+        & {
+            padding: 0 1.2rem 2.8rem;
 
-      ${media.lessThan("medium") `
-        top: auto;
-        bottom: 0;
-        transform: translate(-50%, 0);
-        width: 100%;
-        max-width: 100%;
-        border-radius: 22px 22px 0px 0px;
-        padding: 0;
-        height: fit-content;
-      `}
-    ` : null 
-    }
-  `
+            ${media.lessThan("medium")`
+                top: auto;
+                bottom: 0;
+                transform: translate(-50%, 0);
+                width: 100%;
+                max-width: 100%;
+                border-radius: 22px 22px 0px 0px;
+                padding: 0;
+                height: fit-content;
+            `}
+        }
+    `}
+`;
 
 const ModalHeader = styled.div`
   font-size: 2.4rem;
@@ -173,7 +183,7 @@ const ModalHeader = styled.div`
       stroke: ${(props) => props.theme.mainText};
     }
   }
-`
+`;
 
 const ModalActions = styled.div`
   align-self: center;
@@ -301,7 +311,8 @@ const Subject = styled.h1`
   overflow: hidden;
   max-width: 49%;
   white-space: nowrap;
-  filter: brightness(${(props) => props.theme.subjectBrightness}%);
+  /* filter: brightness(${(props) => props.theme.subjectBrightness}%); */
+  filter: ${(props) => `${props.theme.subjectBrightness}%`};
 
   span {
     font-weight: 400;
@@ -315,7 +326,7 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
-const ShareButton = styled.div `
+const ShareButton = styled.div`
   display: flex;
   align-items: center;
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
@@ -326,7 +337,7 @@ const ShareButton = styled.div `
 
   svg {
     margin-left: 0.3rem;
-    
+
     path {
       fill: ${(props) => props.theme.cardDetailsText};
     }
@@ -350,19 +361,21 @@ const ShareSelect = styled.div`
   border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
   cursor: pointer;
   user-select: none;
-  color: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
+  color: ${(props) =>
+    props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
 
   svg {
     margin-right: 2.6rem;
 
     path {
-      fill: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
+      fill: ${(props) =>
+        props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
     }
   }
 
   &:hover {
     background-color: ${(props) => props.theme.menuItem.hover};
-  } 
+  }
 
   &:active {
     background-color: ${(props) => props.theme.menuItem.active};
@@ -561,44 +574,44 @@ const ReviewCard = (props) => {
   };
 
   const shareReview = (type) => {
-    const href = `https://kuclap.com/review/${reviewId}`
+    const href = `https://kuclap.com/review/${reviewId}`;
     let url;
-    switch(type) {
-      case 'facebook':
-        {
-          const appId = '784451072347559';
-          url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
-          window.open(url)
-          break;
-        }
-      case 'twitter':
-        {
-          const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`
-          const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`
-          window.open(url)
-          break;
-        }
-      case 'line':
-        {
-          const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(href)}`
-          window.open(url)
-          break;
-        }
-      default:
-        {
-          const tmpTextArea = document.createElement('textarea');
-          tmpTextArea.value = href;
-          document.body.appendChild(tmpTextArea);
-          tmpTextArea.select()
-          document.execCommand("copy")
-          document.body.removeChild(tmpTextArea);
-          setIsCopied(true)
-          setTimeout(() => {
-            setIsCopied(false)
-          }, 2000);
-        }
+    switch (type) {
+      case "facebook": {
+        const appId = "784451072347559";
+        url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
+        window.open(url);
+        break;
+      }
+      case "twitter": {
+        const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`;
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          tweetText
+        )}`;
+        window.open(url);
+        break;
+      }
+      case "line": {
+        const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+          href
+        )}`;
+        window.open(url);
+        break;
+      }
+      default: {
+        const tmpTextArea = document.createElement("textarea");
+        tmpTextArea.value = href;
+        document.body.appendChild(tmpTextArea);
+        tmpTextArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tmpTextArea);
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 2000);
+      }
     }
-  }
+  };
 
   return (
     <Container>
@@ -650,12 +663,10 @@ const ReviewCard = (props) => {
           โดย {author}
           <SubDetail>
             เกรด {grade}
-            <span>{parseDate(createdAt)}</span>
+            <span>{createdAt && parseDate(createdAt)}</span>
           </SubDetail>
           <SubDetail>
-            <ShareButton
-              onClick={() => setShareModal(true)}
-            >
+            <ShareButton onClick={() => setShareModal(true)}>
               แชร์
               <Share />
             </ShareButton>
@@ -726,12 +737,12 @@ const ReviewCard = (props) => {
         </ModalActions>
       </Modal>
       <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
-      <Modal show={showShareModal} type='ShareModal'>
+      <Modal show={showShareModal} type="ShareModal">
         <ModalHeader>
-          แบ่งปันรีวิว 
+          แบ่งปันรีวิว
           <Share />
         </ModalHeader>
-        <ShareSelect onClick={() => shareReview("facebook")}  >
+        <ShareSelect onClick={() => shareReview("facebook")}>
           <Facebook />
           Facebook
         </ShareSelect>
@@ -745,7 +756,7 @@ const ReviewCard = (props) => {
         </ShareSelect>
         <ShareSelect isCopied={isCopied} onClick={shareReview}>
           <CopyLink />
-          {isCopied ? 'คัดลอกเรียบร้อย!' : 'คัดลอกลิงก์'}
+          {isCopied ? "คัดลอกเรียบร้อย!" : "คัดลอกลิงก์"}
         </ShareSelect>
       </Modal>
     </Container>
