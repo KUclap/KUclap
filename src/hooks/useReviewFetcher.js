@@ -134,6 +134,10 @@ const useReviewFetcherClass = ({ classID }) => {
         handleFetchingReviewsAndClass(classID);
         break;
       }
+      case "REVIEW": {
+        handleFetchingReviewsAndClass(classID);
+        break;
+      }
       default:
         break;
     }

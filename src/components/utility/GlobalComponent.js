@@ -1,55 +1,34 @@
 import { h } from "preact";
+import { useContext, useEffect, useState } from 'preact/hooks'
 import { createGlobalStyle, withTheme } from "styled-components";
-import media from "styled-media-query";
+import { ModalContext } from "../../context/ModalContext";
 
 const GlobalStyles = createGlobalStyle`
-html {
-  scroll-behavior: smooth;
-
-  font-size: 14px; /* 10px at html, body */
-
-  ${media.lessThan("medium")`
-      font-size: 12px; 
-  `}
-
-  ${media.lessThan("small")`
-      /* font-size: 48.5%;  */
-      font-size: 62.5%;
-  `}
-} 
 
 body {
   color: ${(props) => props.theme.bodyText || "#f5f5f5"};
   background: ${(props) => props.theme.body || "#191b1f"};
-  font-family: 'Kanit', arial, sans-serif;
-  font-weight: 400; 
-  height: auto;
-  width: 100%;
-  padding: 0;
-  margin: 0;
   overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")};
 } 
 
-button {
-  font-family: 'Kanit', arial, sans-serif;
-  font-size: inherit;
-}
-
-* {
-  box-sizing: border-box;
-  /* user-select: none;  */
-}
 `;
 
-const GlobalComponent = (props) => {
-  const { isOverflow } = props;
+const GlobalComponent = () => {
+  const [mounted, setMounted] = useState(false)
+  const { state: modal } = useContext(ModalContext);
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   return (
     <>
       <link
         href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap"
         rel="stylesheet"
       />
-      <GlobalStyles isOverflow={isOverflow} />
+      { mounted && <GlobalStyles isOverflow={modal.showModal} /> } 
+      {/* <GlobalStyles isOverflow={modal.showModal} />  */}
     </>
   );
 };

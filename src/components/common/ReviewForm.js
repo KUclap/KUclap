@@ -1,4 +1,5 @@
 import { h } from "preact";
+// import axios from 'axios'
 import { lazy, Suspense } from 'preact/compat'
 import  Checkbox  from "@material-ui/core/Checkbox";
 import { route } from "preact-router";
@@ -459,6 +460,27 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
+// const SemanticText = styled(DetailTitle)`
+//   span {
+//     color: #9ac1ee;
+//   }
+// `
+
+// function Debounce(func, wait, immediate){
+//   var timeout;
+//   return function() {
+//     var context = this, args = arguments;
+//     var later = function() {
+//       timeout = null;
+//       if (!immediate) func.apply(context, args);
+//     };
+//     var callNow = immediate && !timeout;
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, wait);
+//     if (callNow) func.apply(context, args);
+//   }
+// }
+
 const ReviewForm = (props) => {
   const { classID } = props;
 
@@ -502,6 +524,7 @@ const ReviewForm = (props) => {
   const [form, setForm] = useState(initialForm);
   const [checklist, setChecklist] = useState(initialChecklist);
   const [require, setRequire] = useState(initialRequire);
+  // const [semantic, setSemantic] = useState('')
   // modal(showReviewModal);
 
   const handleCloseAlert = () => {
@@ -592,12 +615,24 @@ const ReviewForm = (props) => {
     let review = form.text
     setForm({...form, text: `${review} ${word}`})
   }
+  // const postSetiment = async (value) => {
+  //   try {
+  //     const res = await axios.post("https://model-datamining.herokuapp.com/predict", {
+  //       text: value
+  //     })
+  //     console.log(res)
+  //     setSemantic(res.data.result.type)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const handleOnchange = (e, field) => {
     let value = e.target.value;
     if (/^\s/.test(value)) {
       value = "";
     }
+    // Debounce(postSetiment(value), 500, false)()
     setForm({ ...form, [field]: value });
   };
 
@@ -642,6 +677,7 @@ const ReviewForm = (props) => {
           })
         }
       </RecommendReviewContainer>
+     {/* <SemanticText>รีวิวนี้มีความหมายในเชิง : <span>{semantic.toUpperCase() || "กรุณาพิมพ์รีวิวก่อน..."}</span></SemanticText> */}
       <DetailTitle>
         ให้คะแนนความพอใจวิชา
         <RequiredDot />

@@ -10,11 +10,9 @@ import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
 import { GoToTop } from "../utility/Icons";
-import { ModalContext } from "../../context/ModalContext";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
-import GlobalComponent from "../utility/GlobalComponent";
 import Header from "./Header";
 
 const Container = styled.div`
@@ -79,6 +77,30 @@ const SelectCustom = styled(Select)`
   }
 `;
 
+const GoTopCustomStyle = styled.a`
+  position: fixed;
+  z-index: 0;
+  right: 2.5rem;
+  bottom: 2.5rem;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  ${(props) =>
+    props.isBottomViewport
+      ? css`
+        & {
+          bottom: 2.5rem;
+        }
+          
+        `
+      : css`
+        & {
+          bottom: -10rem;
+        }
+        `}
+`;
+
 const PageTemplate = ({
   classID,
   toggleTheme,
@@ -90,7 +112,6 @@ const PageTemplate = ({
   const { state: selected, dispatch: dispatchSelected } = useContext(
     SelectContext
   );
-  const { state: modal } = useContext(ModalContext);
 
   const newEle = useRef(null);
   const [isBottomViewport, setIsBottomViewport] = useState(false);
@@ -136,7 +157,6 @@ const PageTemplate = ({
 
   return (
     <Container name="top">
-      <GlobalComponent isOverflow={modal.showModal} />
       <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
@@ -162,21 +182,4 @@ const PageTemplate = ({
 
 export default withTheme(PageTemplate);
 
-const GoTopCustomStyle = styled.a`
-  position: fixed;
-  z-index: 0;
-  right: 2.5rem;
-  bottom: 2.5rem;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  -webkit-tap-highlight-color: transparent;
 
-  ${(props) =>
-    props.isBottomViewport
-      ? css`
-          bottom: 2.5rem;
-        `
-      : css`
-          bottom: -10rem;
-        `}
-`;

@@ -11,18 +11,21 @@ import Provider from "./providers/AppProvider";
 
 import withClasses from "./HOC/withClasses";
 import ReviewPage from "./route/ReviewPage";
+import GlobalComponent from './components/utility/GlobalComponent'
 
 class App extends Component {
   /** Gets fired when the route changes.
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
    *	@param {string} event.url	The newly routed URL
    */
+
   constructor(props) {
     super(props);
     let theme = "light";
     if (typeof localStorage === "object")
       if (Object.keys(themes).includes(localStorage.theme)) {
-        theme = localStorage.theme;
+        console.log(localStorage.theme, "theme")
+        theme = localStorage.getItem('theme');
       } else if (
         typeof window !== "undefined" &&
         window.matchMedia &&
@@ -32,6 +35,7 @@ class App extends Component {
       }
     this.state = {
       theme,
+      global: ( typeof window !== "undefined" && window?.__GLOBAL_STATE__ ) || null
     };
   }
 
@@ -51,11 +55,12 @@ class App extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, currentClass, currentReview } = this.props;
+
     return (
-      // <>
       <div id="app">
         <Provider theme={themes[this.state.theme]} {...this.props}>
+        <GlobalComponent />
           <Router url={this.props.url} onChange={this.handleRoute}>
             <AsyncRoute
               path={`${baseroute}/`}
@@ -80,11 +85,20 @@ class App extends Component {
               toggleTheme={this.toggleTheme}
               component={ReviewPage}
               classes={classes}
+              currentReview={
+                currentReview ||
+                (typeof window !== "undefined" &&
+                  this.state.global?.currentReview)
+              }
+              currentClass={
+                currentClass ||
+                (typeof window !== "undefined" &&
+                  this.state.global?.currentClass)
+              }
             />
           </Router>
         </Provider>
       </div>
-      // </>
     );
   }
 }

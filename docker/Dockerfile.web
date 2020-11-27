@@ -1,0 +1,19 @@
+# Building stage
+FROM node:14.2-slim as builder
+WORKDIR /usr/src/app
+
+COPY package.json ./
+COPY *.js ./
+COPY src src/
+COPY .babelrc ./
+COPY .env.production ./
+RUN npm install
+RUN npm run build:prod_prd
+
+# Starting stage
+FROM node:14.2-slim
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/ .
+RUN ls -al
+EXPOSE 8000 8000
+CMD [ "npm", "run", "start:prod"]
