@@ -49,7 +49,7 @@ const RateIcon = [Worst, Bad, So, Good, Excellent];
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 2rem 4rem;
+  margin: 0 3rem 4rem;
   min-width: 86%;
 `;
 
@@ -119,7 +119,7 @@ const ReviewField = styled.textarea`
   border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   height: 14rem;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: "Kanit", arial, sans-serif;
   resize: none;
   margin-top: 1.4rem;
@@ -204,12 +204,12 @@ const GradeBar = styled.div`
 const Input = styled.input`
   background-color: ${(props) => props.theme.body};
   border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 1rem;
+  border-radius: 0.6rem;
   height: 3.4rem;
   width: ${(props) => (props.small ? 9 : 20)}rem;
   align-self: ${(props) => (props.small ? "flex-start" : "center")};
   padding: 1.2rem 1.6rem;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: "Kanit", arial, sans-serif;
 
   color: ${(props) => props.theme.bodyText};
@@ -235,7 +235,7 @@ const RadioGroupCustom = styled(RadioGroup)`
 
     .MuiTypography-body1 {
       font-family: "Kanit";
-      font-size: 16px;
+      font-size: 1.6rem;
       color: ${(props) => props.theme.mainText};
       font-weight: 500;
     }
@@ -367,6 +367,8 @@ const RateContainer = styled.div`
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   svg {
+    width: 3rem;
+    height: 3rem;
     fill: transparent;
     #outer,
     #mouth {

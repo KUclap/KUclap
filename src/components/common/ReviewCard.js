@@ -714,11 +714,17 @@ const ReviewCard = (props) => {
             <Grade><span>{grade}</span><GradeCircle /></Grade>
           </SubDetail>
           <SubDetail>
-              <ButtonWithIcon
-            >
-              สรุป
-              <Recap />
-            </ButtonWithIcon>
+            {
+              recap &&
+              <ButtonWithIcon>
+                สรุป
+                <Recap />
+              </ButtonWithIcon>
+            }
+            <ButtonWithIcon>
+                สรุป
+                <Recap />
+              </ButtonWithIcon>
             <ButtonWithIcon
               onClick={() => setShareModal(true)}
             >

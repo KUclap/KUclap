@@ -40,9 +40,11 @@ import {
 const Button = styled.div`
   background-color: #2f80ed;
   color: #fff;
-  padding: 0.2rem 1.8rem;
-  border-radius: 0.6rem;
-  font-size: 2rem;
+  padding: 0.3rem 1.8rem;
+  border-radius: 0.4rem;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 
   &:active {
@@ -51,17 +53,6 @@ const Button = styled.div`
 
   &:hover {
     background-color: #9ac1ee;
-  }
-`;
-
-const ButtonLastReview = styled(Button)`
-  border: 0.2rem solid hsl(0, 0%, 46%);
-  background: ${(props) => props.theme.body};
-  color: hsl(0, 0%, 46%);;
-  font-size: 1.7rem;
-  margin-right: 1.5rem;
-  &:hover {
-    background: ${(props) => props.theme.lightColor2};
   }
 `;
 
@@ -74,7 +65,7 @@ const ReviewTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2.8rem;
+  margin-top: 2.2rem;
 `;
 
 const ClassPage = (props) => {
@@ -117,9 +108,6 @@ const ClassPage = (props) => {
         <ReviewTitle>
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
           <ContainerBtns>
-            <ButtonLastReview onClick={navigateToHome}>
-              หน้าแรก
-            </ButtonLastReview>
             <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
           </ContainerBtns>
         </ReviewTitle>

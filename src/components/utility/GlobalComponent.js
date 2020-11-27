@@ -6,10 +6,10 @@ const GlobalStyles = createGlobalStyle`
 html {
   scroll-behavior: smooth;
 
-  font-size: 76.5%; /* 10px at html, body */
+  font-size: 14px; /* 10px at html, body */
 
   ${media.lessThan("medium")`
-      font-size: 69.5%; 
+      font-size: 12px; 
   `}
 
   ${media.lessThan("small")`
@@ -32,6 +32,7 @@ body {
 
 button {
   font-family: 'Kanit', arial, sans-serif;
+  font-size: inherit;
 }
 
 * {
