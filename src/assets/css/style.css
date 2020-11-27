@@ -18,13 +18,13 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-    body {
+    html {
         font-size: 55.5%; 
     }
 }
 
 @media only screen and (max-width: 450px) {
-    body {
+    html {
         font-size: 48.5%; 
     }
 }

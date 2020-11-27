@@ -28,7 +28,7 @@ if (process.env.SSR) {
 
     return (props) => (
       <>
-        <StyleSheetManager sheet={sheet.instance} disableCSSOMInjections={true}>
+        <StyleSheetManager sheet={sheet.instance}>
           <App {...props} />
         </StyleSheetManager>
         <StyleTags />
