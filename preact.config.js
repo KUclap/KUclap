@@ -25,7 +25,7 @@ export default (config, env, helpers) => {
   DefinePlugin.plugin.definitions["process.env.SSR"] = String(env.ssr);
 
   // Change path to static files (default request route to root "/")
-  if(process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "production"){
+  if(process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "production" || process.env.NODE_ENV === "preproduction"){
     config.output.publicPath = '/static/';
   }
 };

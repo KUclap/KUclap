@@ -1,0 +1,42 @@
+name: Deploy-to-DO-pre-production
+
+on:
+  push:
+    branches:
+      - pre-prod-release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Web Preact - Publish to Github Packages Registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          GIT_ACCESS_TOKEN_CURL_CONFIG: ${{ secrets.GIT_ACCESS_TOKEN_CURL_CONFIG }}
+        with:
+          name: kuclap/kuclap/kuclap-pre-prod-web
+          registry: docker.pkg.github.com
+          username: ${{ secrets.GIT_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: ./docker/PreProd.Dockerfile
+          tags: "1.0.0, latest"
+          buildargs: GIT_ACCESS_TOKEN_CURL_CONFIG
+      - name: Deploy package to digitalocean
+        uses: appleboy/ssh-action@master
+        env:
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          host: ${{ secrets.DO_GANDALF_HOST }}
+          username: ${{ secrets.DO_GANDALF_USERNAME }}
+          password: ${{ secrets.DO_GANDALF_PASSWORD }}
+          port: ${{ secrets.DO_GANDALF_PORT }}
+          envs: GIT_USERNAME, GITHUB_TOKEN
+          script: |
+            docker stop kuclap-pre-prod-web
+            docker container prune -f 
+            docker image prune -f
+            docker login docker.pkg.github.com -u $GIT_USERNAME -p $GITHUB_TOKEN
+            docker pull docker.pkg.github.com/kuclap/kuclap/kuclap-pre-prod-web:latest
+            docker run --name kuclap-pre-prod-web --network=kuclap-pre-prod --restart=always  -dit -p 8088:8088 docker.pkg.github.com/kuclap/kuclap/kuclap-pre-prod-web:latest
