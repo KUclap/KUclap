@@ -10,6 +10,8 @@ COPY src src/
 COPY server server/
 COPY .babelrc ./
 
+RUN apt-get update; apt-get install curl
+
 # Curl config
 RUN curl -o .env.preproduction https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/KUclap/_ENV/main/env/kuclap-frontend/.env.preproduction
 
