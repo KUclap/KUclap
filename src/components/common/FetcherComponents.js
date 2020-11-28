@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const DetailTitle = styled.p`
-  font-size: 2rem;
-  margin: 2rem 0;
+const DetailTitle = styled.div`
+  font-size: 1.8rem;
   font-weight: 600;
   color: ${(props) =>
     props.desc ? props.theme.placeholderText : props.theme.mainText};
   padding: ${(props) => (props.desc ? "0 1rem" : 0)};
+  user-select: none;
 `;
 
 const AdaptorReviews = styled.div`
@@ -33,8 +33,8 @@ const NoMoreCustom = styled.div`
 `;
 
 const SubjectTitle = styled.h1`
-  font-size: 2.2rem;
-  margin: 3rem 6.4rem;
+  font-size: 1.8rem;
+  margin: 0 6.4rem 1.5rem;
   min-width: 86%;
   color: ${(props) => props.theme.mainText};
   font-weight: 600;
@@ -43,9 +43,10 @@ const SubjectTitle = styled.h1`
   span {
     background: ${(props) => props.color};
     color: white;
-    padding: 0.1rem 1.4rem;
+    padding: 0.1rem 0.8rem;
     border-radius: 0.6rem;
     margin-right: 1ch;
+    font-size: 1.6rem;
   }
 `;
 

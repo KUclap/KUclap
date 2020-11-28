@@ -29,11 +29,14 @@ const Container = styled.div`
 const SelectCustom = styled(Select)`
   width: 80%;
   max-width: 58rem;
-  font-size: 1.45rem;
+  font-size: 1.4rem;
+  user-select: none;
+  margin-bottom: 2.2rem;
 
   .Select-placeholder {
     color: #888;
-    height: 5.2rem;
+    align-items: center;
+    padding: 0 1.2rem;
   }
 
   &,
@@ -49,12 +52,17 @@ const SelectCustom = styled(Select)`
     margin: 0 auto;
     border: 0.2rem solid ${(props) => props.theme.lightColor};
     border-radius: 10px;
+
+    .Select-multi-value-wrapper {
+      height: 2.7rem;
+    }
   }
 
   .Select-input {
     width: 100%;
     font-size: 16px;
   }
+
   .Select-input > input {
     color: ${(props) => props.theme.bodyText};
   }
@@ -62,6 +70,10 @@ const SelectCustom = styled(Select)`
   .Select-menu-outer,
   .Select-option {
     background-color: ${(props) => props.theme.body};
+  }
+
+  .VirtualizedSelectOption {
+    line-height: 130%;
   }
 `;
 
@@ -161,6 +173,7 @@ const PageTemplate = ({
         ref={newEle}
         id="subject-input"
         aria-label="search"
+        optionHeight={50}
         />
       {children}
     </Container>

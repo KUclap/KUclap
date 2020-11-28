@@ -5,18 +5,23 @@ import ThemeToggleButton from "./ThemeToggleButton";
 import { navigateToHome } from "../utility/helper";
 
 const KUclapText = styled.p`
-  font-size: 6rem;
+  font-size: 4.6rem;
   font-weight: 300;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
   cursor: pointer;
   user-select: none;
+
+  > svg {
+    width: 6.4rem;
+    height: 6.4rem;
+  }
 `;
 
 const DetailKUclap = styled.span`
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   text-transform: uppercase;
   color: ${(props) => props.theme.mainText || "#4f4f4f"};
   text-align: center;

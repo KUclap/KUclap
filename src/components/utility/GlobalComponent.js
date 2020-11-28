@@ -10,6 +10,7 @@ body {
   background: ${(props) => props.theme.body || "#191b1f"};
   overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")};
 } 
+
 `;
 
 const GlobalComponent = () => {
