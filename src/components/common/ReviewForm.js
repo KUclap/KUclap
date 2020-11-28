@@ -491,7 +491,7 @@ const ReviewForm = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [recommendWord, setRecommendWord] = useState(false);
   const initialForm = {
-    classID,
+    classId: classID,
     text: "",
     author: "",
     grade: -1,
@@ -587,10 +587,16 @@ const ReviewForm = (props) => {
   const sendReview = () => {
     if (!isLoading) {
       setIsLoading(true);
-      APIs.createReview(form, () => {
+      console.log(form)
+      APIs.createReview({
+        ...form,
+        year: parseInt(form.year, 10),
+        sec: parseInt(form.sec, 10),
+        semester: parseInt(form.semester, 10)
+      }, () => {
         setIsLoading(false);
         setIsDone(true);
-        setForm({ ...initialForm, classID });
+        setForm({ ...initialForm, classId: classID });
         setChecklist({ ...initialChecklist });
         // back("details");
         // route(`${baseroute}/${classID}`, true);
@@ -603,6 +609,7 @@ const ReviewForm = (props) => {
     if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 4) {
       newForm.auth = e.target.value;
     }
+    
     setForm(newForm);
   };
 
@@ -632,7 +639,7 @@ const ReviewForm = (props) => {
     if (/^\s/.test(value)) {
       value = "";
     }
-    // Debounce(postSetiment(value), 500, false)()
+
     setForm({ ...form, [field]: value });
   };
 
