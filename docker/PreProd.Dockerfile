@@ -16,7 +16,6 @@ RUN curl -o .env.preproduction https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githu
 RUN npm ci
 RUN npm run build:preprod_prd
 RUN npm run build:server
-RUN ls -al 
 
 # Starting stage
 FROM node:14.2-slim
