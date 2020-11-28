@@ -2,12 +2,6 @@
 // const { parsed } = require("dotenv-safe").config();
 const path = require("path");
 export default (config, env, helpers) => {
-  
-  // Change path to static files (default request route to root "/")
-  if(process.env.NODE_ENV === "production" && !process.env.IS_DEV){
-    config.output.publicPath = '/static/';
-  }
-    
 
   const currentPath = path.join(__dirname);
   const DefinePlugin = helpers.getPluginsByName(config, "DefinePlugin")[0];
@@ -29,16 +23,9 @@ export default (config, env, helpers) => {
   );
   // Define a `process.env.SSR` boolean constant:
   DefinePlugin.plugin.definitions["process.env.SSR"] = String(env.ssr);
-  
-    
-  
-  // Base route - config
-  // const publicPath = process.env.BASE_ROUTE
-  //   ? `/${process.env.BASE_ROUTE}/`
-  //   : "/";
-  // const ghEnv =
-  //   process.env.BASE_ROUTE && JSON.stringify(`${process.env.BASE_ROUTE}`);
 
-  // config.output.publicPath = publicPath;
-  // Object.assign(plugin.definitions, { ["process.env.BASE_ROUTE"]: ghEnv });
+  // Change path to static files (default request route to root "/")
+  if(process.env.NODE_ENV === "staging" || process.env.NODE_ENV === "production"){
+    config.output.publicPath = '/static/';
+  }
 };
