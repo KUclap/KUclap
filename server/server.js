@@ -1,4 +1,4 @@
-require("module-alias/register") 
+// import "module-alias/register" 
 import { basename } from "path"
 import compression from "compression"
 import dotenv from "dotenv"
@@ -25,14 +25,14 @@ function setHeaders(res, file) {
     res.setHeader("Cache-Control", cache); // don't cache service worker file
 }
 
-function logging(req, res, next){
-  console.log("Request from client 🌟 : ", req.url)
-  next()
-}
+// function logging(req, res, next){
+//   console.log("Request from client 🌟 : ", req.url)
+//   next()
+// }
 
 polka()
     .use(compression())
-    .use(logging)
+    // .use(logging)
     .get("/sitemap", SitemapEndpoint)
 	.get(/(\/robots\.txt|favicon\.ico)/i, sirv("build", { setHeaders }))
 	.use("/static", sirv("build", { setHeaders }))
@@ -40,7 +40,7 @@ polka()
     .get("/:classID", ClassEndpoint)
     .get("/review/:reviewID", ReviewEndpoint)
     .get("/form/create/:classID", ClassEndpoint)  
-    .listen(PORT, (err) => {
+    .listen(process.env.PORT || PORT, (err) => {
       if (err) throw err;
       console.log(`> 🔧 Mode: ${ENV_KU_CLAP}`)
       console.log(`> 🚀 Running on localhost:${PORT}`);
