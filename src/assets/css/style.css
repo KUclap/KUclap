@@ -1,0 +1,35 @@
+html {
+    scroll-behavior: smooth;
+    font-size: 14px; /* 10px at html, body */
+} 
+  
+body {
+    font-family: 'Kanit', arial, sans-serif;
+    font-weight: 400; 
+    height: auto;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    transition: background 250ms linear;
+} 
+
+button {
+  font-family: 'Kanit', arial, sans-serif;
+  font-size: inherit;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: 12px; 
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    html {
+        font-size: 62.5%; 
+    }
+}

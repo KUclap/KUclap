@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, RightArrow, Share, Facebook, Twitter, Line, CopyLink } from "../utility/Icons";
+import { Clap, Boo, Share, Facebook, Twitter, Line, CopyLink, Recap, DownArrow, GradeCircle } from "../utility/Icons";
 import { getColorHash } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
@@ -28,42 +28,61 @@ const Container = styled.div`
 `;
 
 const Content = styled.p`
-  padding: 0 1rem;
-  font-size: 2rem;
+  padding: 0 0.4rem;
+  font-size: 1.8rem;
   color: ${(props) => props.theme.mainText};
   white-space: pre-line;
   overflow-wrap: break-word;
   margin: 0;
-  margin-top: ${(props) => (props.isBadge === true ? "1rem" : 0)};
+  margin-top: ${(props) => (props.isBadge === true ? "0.5rem" : 0)};
 `;
 
 const CardDetails = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 0.7rem;
+  margin-top: 0.5rem;
 `;
 
 const DetailContainer = styled.div`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   display: flex;
   color: ${(props) => props.theme.cardDetailsText};
   justify-content: space-between;
   flex-direction: column;
   align-self: flex-end;
   text-align: right;
+  margin-left: 0.3rem;
 `;
 
 const SubDetail = styled.div`
-  margin-left: 0.8rem;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.5rem;
   justify-content: flex-end;
 
-  span {
-    margin-left: 1ch;
+  button {
+    margin-left: 0.3rem;
   }
 `;
+
+const Grade = styled.div`
+  margin-left: 0.6rem;
+  position: relative;
+
+  span {
+    color: #2F80ED;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  svg {
+    display: flex;
+  }
+`
 
 const Button = styled.div`
   display: flex;
@@ -92,16 +111,16 @@ const ButtonContainer = styled.div`
 
   span {
     user-select: none;
-    margin-left: 0.6rem;
-    width: 3.8rem;
-    font-size: 2rem;
+    margin-left: 0.3rem;
+    width: 2.5rem;
+    font-size: 1.4rem;
   }
 `;
 
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 19rem;
+  width: 13.5rem;
 `;
 
 const ModalBackdrop = styled.div`
@@ -125,7 +144,8 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: ${(props) => props.type === "ShareModal" ? '0 1.2rem 2.8rem' : '2.8rem 1.2rem'};
+  padding: ${(props) =>
+    props.type === "ShareModal" ? "0 1.2rem 2.8rem" : "2.8rem 1.2rem"};
   font-weight: 500;
   font-size: 2rem;
   line-height: 3.4rem;
@@ -135,23 +155,23 @@ const Modal = styled.div`
   max-width: 42rem;
   width: 84%;
 
-  ${(props) => props.type === "ShareModal" ? 
-    css`
-      padding: 0 1.2rem 2.8rem;
+  ${(props) => props.type === "ShareModal" && css`
+        & {
+            padding: 0 1.2rem 2.8rem;
 
-      ${media.lessThan("medium") `
-        top: auto;
-        bottom: 0;
-        transform: translate(-50%, 0);
-        width: 100%;
-        max-width: 100%;
-        border-radius: 22px 22px 0px 0px;
-        padding: 0;
-        height: fit-content;
-      `}
-    ` : null 
-    }
-  `
+            ${media.lessThan("medium")`
+                top: auto;
+                bottom: 0;
+                transform: translate(-50%, 0);
+                width: 100%;
+                max-width: 100%;
+                border-radius: 22px 22px 0px 0px;
+                padding: 0;
+                height: fit-content;
+            `}
+        }
+    `}
+`;
 
 const ModalHeader = styled.div`
   font-size: 2.4rem;
@@ -173,7 +193,7 @@ const ModalHeader = styled.div`
       stroke: ${(props) => props.theme.mainText};
     }
   }
-`
+`;
 
 const ModalActions = styled.div`
   align-self: center;
@@ -213,17 +233,54 @@ const NumberAction = styled.span`
   white-space: nowrap;
 `;
 
+const MoreButton = styled.button`
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15rem;
+  border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+`
+
 const Menu = styled.div`
   display: ${(props) => (props.openMenu ? "flex" : "none")};
   background: ${(props) => props.theme.body};
   position: absolute;
   flex-direction: column;
   text-align: center;
-  border-radius: 8%;
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  right: 0rem;
-  transform: translate(-84%, 62%);
+  border-radius: 0.4rem;
+  border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+  transform: translate(-43%, 58%);
+  z-index: 1;
+  color: ${(props) => props.theme.cardDetailsText};
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
 `;
+
+const MenuContentContainer = styled.div`
+  width: 12.7rem;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  margin: 0 0.7rem;
+  padding: 1rem 0;
+  border-bottom: 0.1rem solid ${(props) => props.theme.placeholderText};
+` 
+
+const MenuContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 0.2rem;
+  }
+
+  span:last-child {
+    color: #2F80ED;
+  }
+`
 
 const MenuItem = styled.div`
   padding: 1rem;
@@ -286,22 +343,23 @@ const Warning = styled.div`
 `;
 
 const Subject = styled.h1`
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   padding: 0.2rem 1.6rem;
   margin: 0 0 0.8rem 0.8rem;
-  border-radius: 0.6rem;
+  border-radius: 0.5rem;
   text-align: center;
   background: ${(props) => props.color};
   color: white;
   position: absolute;
-  transform: translateY(-3.2rem);
+  transform: translateY(-2.9rem);
   cursor: pointer;
   font-weight: 500;
   text-overflow: ellipsis;
   overflow: hidden;
-  max-width: 49%;
+  max-width: 60%;
   white-space: nowrap;
-  filter: brightness(${(props) => props.theme.subjectBrightness}%);
+  /* filter: brightness(${(props) => props.theme.subjectBrightness}%); */
+  filter: ${(props) => `${props.theme.subjectBrightness}%`};
 
   span {
     font-weight: 400;
@@ -315,7 +373,7 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
-const ShareButton = styled.div `
+const ButtonWithIcon = styled.button`
   display: flex;
   align-items: center;
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
@@ -323,10 +381,12 @@ const ShareButton = styled.div `
   padding: 0 0.8rem;
   cursor: pointer;
   user-select: none;
+  background: none;
+  color: ${(props) => props.theme.cardDetailsText};
 
   svg {
     margin-left: 0.3rem;
-    
+
     path {
       fill: ${(props) => props.theme.cardDetailsText};
     }
@@ -350,19 +410,21 @@ const ShareSelect = styled.div`
   border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
   cursor: pointer;
   user-select: none;
-  color: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
+  color: ${(props) =>
+    props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
 
   svg {
     margin-right: 2.6rem;
 
     path {
-      fill: ${(props) => props.isCopied ? 'hsl(145, 63%, 42%)' : props.theme.mainText};
+      fill: ${(props) =>
+        props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
     }
   }
 
   &:hover {
     background-color: ${(props) => props.theme.menuItem.hover};
-  } 
+  }
 
   &:active {
     background-color: ${(props) => props.theme.menuItem.active};
@@ -393,6 +455,10 @@ const ReviewCard = (props) => {
     boo,
     grade,
     author,
+    sec,
+    semester,
+    year,
+    recap,
     createdAt,
     classId,
     classNameTH,
@@ -561,44 +627,44 @@ const ReviewCard = (props) => {
   };
 
   const shareReview = (type) => {
-    const href = `https://kuclap.com/review/${reviewId}`
+    const href = `https://kuclap.com/review/${reviewId}`;
     let url;
-    switch(type) {
-      case 'facebook':
-        {
-          const appId = '784451072347559';
-          url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
-          window.open(url)
-          break;
-        }
-      case 'twitter':
-        {
-          const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`
-          const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`
-          window.open(url)
-          break;
-        }
-      case 'line':
-        {
-          const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(href)}`
-          window.open(url)
-          break;
-        }
-      default:
-        {
-          const tmpTextArea = document.createElement('textarea');
-          tmpTextArea.value = href;
-          document.body.appendChild(tmpTextArea);
-          tmpTextArea.select()
-          document.execCommand("copy")
-          document.body.removeChild(tmpTextArea);
-          setIsCopied(true)
-          setTimeout(() => {
-            setIsCopied(false)
-          }, 2000);
-        }
+    switch (type) {
+      case "facebook": {
+        const appId = "784451072347559";
+        url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
+        window.open(url);
+        break;
+      }
+      case "twitter": {
+        const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`;
+        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          tweetText
+        )}`;
+        window.open(url);
+        break;
+      }
+      case "line": {
+        const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+          href
+        )}`;
+        window.open(url);
+        break;
+      }
+      default: {
+        const tmpTextArea = document.createElement("textarea");
+        tmpTextArea.value = href;
+        document.body.appendChild(tmpTextArea);
+        tmpTextArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tmpTextArea);
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 2000);
+      }
     }
-  }
+  };
 
   return (
     <Container>
@@ -647,31 +713,47 @@ const ReviewCard = (props) => {
           </ButtonContainer>
         </Actions>
         <DetailContainer>
-          โดย {author}
           <SubDetail>
-            เกรด {grade}
-            <span>{parseDate(createdAt)}</span>
+            โดย {author}
+            <Grade><span>{grade}</span><GradeCircle /></Grade>
           </SubDetail>
           <SubDetail>
-            <ShareButton
+            {
+              recap &&
+              <ButtonWithIcon>
+                สรุป
+                <Recap />
+              </ButtonWithIcon>
+            }
+            <ButtonWithIcon>
+                สรุป
+                <Recap />
+              </ButtonWithIcon>
+            <ButtonWithIcon
               onClick={() => setShareModal(true)}
             >
               แชร์
               <Share />
-            </ShareButton>
-            <ButtonIcon
+            </ButtonWithIcon>
+            <MoreButton
               type="report"
               tabIndex="0"
               onClick={() => setMenu(true)}
               onBlur={() => setMenu(false)}
             >
-              <span> เพิ่มเติม </span>
-              <RightArrow />
+              <DownArrow />
               <Menu openMenu={menu}>
+                <MenuContentContainer>
+                  {sec !== 0 && <MenuContent><span>หมู่เรียน (เซค)</span><span>{sec}</span></MenuContent>}
+                  {semester !== 0 && <MenuContent><span>ภาคเรียน</span><span>{semester}</span></MenuContent>}
+                  {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>63</span></MenuContent>}
+                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>100</span></MenuContent>}
+                  <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
+                </MenuContentContainer>
                 <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
                 <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
               </Menu>
-            </ButtonIcon>
+            </MoreButton>
           </SubDetail>
         </DetailContainer>
       </CardDetails>
@@ -726,12 +808,12 @@ const ReviewCard = (props) => {
         </ModalActions>
       </Modal>
       <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
-      <Modal show={showShareModal} type='ShareModal'>
+      <Modal show={showShareModal} type="ShareModal">
         <ModalHeader>
-          แบ่งปันรีวิว 
+          แบ่งปันรีวิว
           <Share />
         </ModalHeader>
-        <ShareSelect onClick={() => shareReview("facebook")}  >
+        <ShareSelect onClick={() => shareReview("facebook")}>
           <Facebook />
           Facebook
         </ShareSelect>
@@ -745,7 +827,7 @@ const ReviewCard = (props) => {
         </ShareSelect>
         <ShareSelect isCopied={isCopied} onClick={shareReview}>
           <CopyLink />
-          {isCopied ? 'คัดลอกเรียบร้อย!' : 'คัดลอกลิงก์'}
+          {isCopied ? "คัดลอกเรียบร้อย!" : "คัดลอกลิงก์"}
         </ShareSelect>
       </Modal>
     </Container>
@@ -758,8 +840,8 @@ const ButtonIcon = styled(Button)`
 
   &:before {
     content: "";
-    width: 5.2rem;
-    height: 5.2rem;
+    width: 3.8rem;
+    height: 3.8rem;
     border-radius: 50%;
     z-index: -1;
     display: inline-block;
@@ -778,8 +860,8 @@ const ButtonIcon = styled(Button)`
   }
 
   &:hover:before {
-    width: 5.2rem;
-    height: 5.2rem;
+    width: 3.8rem;
+    height: 3.8rem;
     transform: scale(1.1);
     background: ${(props) =>
       props.type === "clap"

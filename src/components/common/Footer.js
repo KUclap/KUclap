@@ -16,8 +16,8 @@ const Container = styled.footer`
 
 const MoreProductionText = styled.p`
   color: ${(props) => props.theme.mainText};
-  font-size: 2.6rem;
-  margin: 4rem 0 0 0;
+  font-size: 1.8rem;
+  margin: 2.8rem 0 0 0;
 `;
 
 const Button = styled.button`
@@ -25,17 +25,19 @@ const Button = styled.button`
   background: ${(props) => props.theme.body};
   color: #77b280;
   min-width: 27.6rem;
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-family: "Kanit";
-  padding: 1.2rem 1.6rem;
+  padding: 0.6rem 1.2rem;
   border: 0.35rem solid ${(props) => props.theme.lightColor};
   border-radius: 7px;
   transition: 0.25s all ease-in;
-  margin: 2rem auto;
+  margin: 1.4rem auto;
+
   span {
     color: ${(props) => props.theme.footerButtonText};
-    font-size: 1.6rem;
+    font-size: 1.2rem;
   }
+
   &:hover {
     border-color: #77b280;
   }

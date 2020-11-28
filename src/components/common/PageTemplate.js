@@ -10,11 +10,9 @@ import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
 import { GoToTop } from "../utility/Icons";
-import { ModalContext } from "../../context/ModalContext";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
-import GlobalComponent from "../utility/GlobalComponent";
 import Header from "./Header";
 
 const Container = styled.div`
@@ -31,11 +29,14 @@ const Container = styled.div`
 const SelectCustom = styled(Select)`
   width: 80%;
   max-width: 58rem;
-  font-size: 1.45rem;
+  font-size: 1.4rem;
+  user-select: none;
+  margin-bottom: 2.2rem;
 
   .Select-placeholder {
     color: #888;
-    height: 5.2rem;
+    align-items: center;
+    padding: 0 1.2rem;
   }
 
   &,
@@ -51,12 +52,17 @@ const SelectCustom = styled(Select)`
     margin: 0 auto;
     border: 0.2rem solid ${(props) => props.theme.lightColor};
     border-radius: 10px;
+
+    .Select-multi-value-wrapper {
+      height: 2.7rem;
+    }
   }
 
   .Select-input {
     width: 100%;
     font-size: 16px;
   }
+
   .Select-input > input {
     color: ${(props) => props.theme.bodyText};
   }
@@ -65,6 +71,34 @@ const SelectCustom = styled(Select)`
   .Select-option {
     background-color: ${(props) => props.theme.body};
   }
+
+  .VirtualizedSelectOption {
+    line-height: 130%;
+  }
+`;
+
+const GoTopCustomStyle = styled.a`
+  position: fixed;
+  z-index: 0;
+  right: 2.5rem;
+  bottom: 2.5rem;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  ${(props) =>
+    props.isBottomViewport
+      ? css`
+        & {
+          bottom: 2.5rem;
+        }
+          
+        `
+      : css`
+        & {
+          bottom: -10rem;
+        }
+        `}
 `;
 
 const PageTemplate = ({
@@ -78,7 +112,6 @@ const PageTemplate = ({
   const { state: selected, dispatch: dispatchSelected } = useContext(
     SelectContext
   );
-  const { state: modal } = useContext(ModalContext);
 
   const newEle = useRef(null);
   const [isBottomViewport, setIsBottomViewport] = useState(false);
@@ -124,7 +157,6 @@ const PageTemplate = ({
 
   return (
     <Container name="top">
-      <GlobalComponent isOverflow={modal.showModal} />
       <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
@@ -141,6 +173,7 @@ const PageTemplate = ({
         ref={newEle}
         id="subject-input"
         aria-label="search"
+        optionHeight={50}
         />
       {children}
     </Container>
@@ -149,21 +182,4 @@ const PageTemplate = ({
 
 export default withTheme(PageTemplate);
 
-const GoTopCustomStyle = styled.a`
-  position: fixed;
-  z-index: 0;
-  right: 2.5rem;
-  bottom: 2.5rem;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  -webkit-tap-highlight-color: transparent;
 
-  ${(props) =>
-    props.isBottomViewport
-      ? css`
-          bottom: 2.5rem;
-        `
-      : css`
-          bottom: -10rem;
-        `}
-`;
