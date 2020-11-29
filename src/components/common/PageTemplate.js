@@ -80,13 +80,14 @@ const SelectCustom = styled(Select)`
 
 const GoTopCustomStyle = styled.a`
   position: fixed;
-  z-index: 0;
+  z-index: 99;
   right: 2.5rem;
   bottom: 2.5rem;
   cursor: pointer;
   transition: all 0.5s ease;
-  -webkit-tap-highlight-color: transparent;
-
+  user-select: none;
+  /* -webkit-tap-highlight-color: transparent; */
+  
   ${(props) =>
     props.isBottomViewport
       ? css`
