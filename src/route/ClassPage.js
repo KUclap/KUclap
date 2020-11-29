@@ -3,6 +3,7 @@ import { route } from "preact-router";
 import { useContext } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
+import { getHelmet } from "../components/utility/helmet";
 import { NoMoreReview, NoReview } from "../components/utility/Icons";
 import baseroute from "../components/utility/baseroute";
 import Footer from "../components/common/Footer";
@@ -16,7 +17,7 @@ import {
 
 import Details from "../components/common/Detail";
 import {
-  navigateToHome,
+  // navigateToHome,
   getClassName,
   getColorHash,
   getDetailFromLabel,
@@ -88,13 +89,7 @@ const ClassPage = (props) => {
 
   return (
     <PageTemplate
-      content={{
-        title: `รีวิววิชา ${getDetailFromLabel(selected.label).nameTH} ${
-          getDetailFromLabel(selected.label).nameEN
-        } (${getDetailFromLabel(selected.label).classID}) มก. - KUclap`,
-        description: `รีวิววิชา ${selected.label} - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
-        image: "https://www.kuclap.com/assets/img/meta-og-image.png",
-      }}
+      content={getHelmet("CLASS", getDetailFromLabel(selected.label))}
       {...props}
     >
       <SubjectTitle color={getColorHash(classID)}>

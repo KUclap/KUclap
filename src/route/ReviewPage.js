@@ -80,10 +80,10 @@ const ReviewPage = (props) => {
 
 	return (
 		<PageTemplate
-			content={getHelmet(review, subject)}
+			content={getHelmet("REVIEW", subject, review)}
 			isFormPage={true}
 			classID={review?.classId}
-			{...props}
+			{...props} 
 		>
 			<SubjectTitle color={review ? getColorHash(review.classId) : "#9ac1ee"}>
 				<span>{review ? review.classId : "000000"}</span>
@@ -126,7 +126,6 @@ const Interface = (props) => {
 
 	useEffect(() => {
 		if (currentReview && currentClass) {
-			console.log("client side", currentReview, currentReview);
 			dispatchSelected({
 				type: "selected",
 				value: { label: currentClass.label, classID: currentClass.classId },
@@ -135,21 +134,20 @@ const Interface = (props) => {
 			// eslint-disable-next-line no-lonely-if
 			if(process.env.NODE_ENV === "development" && process.env.IS_DEV){
 				APIs.getReviewByReviewID( reviewID, (res) => {
-					  	APIs.getClassDetailByClassId(res.data.classId, (res) => {
-							dispatchSelected({
-						  		type: "selected",
-						  		value: { label: res.data.label, classID: res.data.classId },
-							});
-					  	});
-					  	setReview({
-							...res.data,
-							stats: {
-						  		homework: res.data.stats.homework,
-								how: res.data.stats.how,
-								interest: res.data.stats.interest,
-							},
-						  });
-						  console.log(...res.data)
+					APIs.getClassDetailByClassId(res.data.classId, (res) => {
+						dispatchSelected({
+							type: "selected",
+							value: { label: res.data.label, classID: res.data.classId },
+						});
+					});
+					setReview({
+						...res.data,
+						stats: {
+							homework: res.data.stats.homework,
+							how: res.data.stats.how,
+							interest: res.data.stats.interest,
+						},
+					});
 				});
 			}
 		}
