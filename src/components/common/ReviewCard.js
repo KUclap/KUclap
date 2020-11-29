@@ -1,16 +1,14 @@
 import { h } from "preact";
-import { route } from "preact-router";
 import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
 import { Clap, Boo, Share, Facebook, Twitter, Line, CopyLink, Recap, DownArrow, GradeCircle } from "../utility/Icons";
-import { getColorHash } from "../utility/helper";
+import { getColorHash, navigateToClassPage } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
-import baseroute from "../utility/baseroute";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
 
@@ -500,7 +498,6 @@ const ReviewCard = (props) => {
   const [showEditModal, setEditModal] = useState(false);
   const [showShareModal, setShareModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-
   const parseDate = (dateUTC) => {
     if(dateUTC){
       let date = dateUTC.split("-");
@@ -616,10 +613,6 @@ const ReviewCard = (props) => {
     setReportReason({ ...reportReason, reason: value });
   };
 
-  const RedirctToClassName = () => {
-    route(`${baseroute}/${classId}`);
-  };
-
   const numberFormat = (value) => {
     let newValue = value;
     if (value >= 1000) {
@@ -672,7 +665,7 @@ const ReviewCard = (props) => {
   return (
     <Container>
       {isBadge && (
-        <Subject color={getColorHash(classId)} onClick={RedirctToClassName}>
+        <Subject color={getColorHash(classId)} onClick={() => navigateToClassPage(classId)}>
           {classId}
           <span> | {classNameTH}</span>
         </Subject>

@@ -1,8 +1,6 @@
 import { h } from "preact";
-// import axios from 'axios'
 import { lazy, Suspense } from 'preact/compat'
 import  Checkbox  from "@material-ui/core/Checkbox";
-import { route } from "preact-router";
 import { useContext, useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
@@ -11,7 +9,7 @@ import { ModalContext } from "../../context/ModalContext";
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 
 import APIs from "../utility/apis";
-import baseroute from "../utility/baseroute";
+import { navigateToClassPage } from '../utility/helper'
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -530,8 +528,7 @@ const ReviewForm = (props) => {
   const handleCloseAlert = () => {
     if (isDone) {
       // back("details");
-
-      route(`${baseroute}/${classID}`);
+      navigateToClassPage(classID)
       setIsDone(false);
     }
     setReviewModal(false);
@@ -598,8 +595,6 @@ const ReviewForm = (props) => {
         setIsDone(true);
         setForm({ ...initialForm, classId: classID });
         setChecklist({ ...initialChecklist });
-        // back("details");
-        // route(`${baseroute}/${classID}`, true);
       });
     }
   };
@@ -658,9 +653,7 @@ const ReviewForm = (props) => {
         </DetailTitle>
         <Button
           onClick={() => {
-            if (typeof window !== "undefined") window.scrollTo(0, 0);
-            // back("details");
-            route(`${baseroute}/${classID}`);
+            navigateToClassPage(classID)
           }}
         >
           ย้อนกลับ

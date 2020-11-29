@@ -1,19 +1,18 @@
 import { h } from "preact";
-import { route } from "preact-router";
 import { useContext, useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
 import { NoMoreReview } from "../components/utility/Icons";
 import APIs from '../components/utility/apis'
-import baseroute from "../components/utility/baseroute";
 import Details from "../components/common/Detail";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
 
 import {
-	navigateToHome,
+	navigateToClassPage,
+	navigateToHomePage,
 	getClassName,
 	getColorHash,
 } from "../components/utility/helper";
@@ -74,10 +73,6 @@ const ReviewPage = (props) => {
 	const { review, currentClass: subject } = props;
 	const { state: selected } = useContext(SelectContext);
 
-	const routeToClassPage = () => {
-		route(`${baseroute}/${review.classId}`);
-	};
-
 	return (
 		<PageTemplate
 			content={getHelmet("REVIEW", subject, review)}
@@ -94,10 +89,10 @@ const ReviewPage = (props) => {
 				<ReviewTitle>
 					<DetailTitle>รีวิวโดย {review?.author}</DetailTitle>
 					<ContainerBtns>
-						<ButtonLastReview onClick={navigateToHome}>
+						<ButtonLastReview onClick={navigateToHomePage}>
 							หน้าแรก
 						</ButtonLastReview>
-						<Button onClick={routeToClassPage}>แสดงทุกรีวิว</Button>
+						<Button onClick={() => navigateToClassPage(review.classId)}>แสดงทุกรีวิว</Button>
 					</ContainerBtns>
 				</ReviewTitle>
 

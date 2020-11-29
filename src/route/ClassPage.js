@@ -1,11 +1,9 @@
 import { h } from "preact";
-import { route } from "preact-router";
 import { useContext } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
 import { NoMoreReview, NoReview } from "../components/utility/Icons";
-import baseroute from "../components/utility/baseroute";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
@@ -17,7 +15,7 @@ import {
 
 import Details from "../components/common/Detail";
 import {
-  // navigateToHome,
+  navigateToFormReviewPage,
   getClassName,
   getColorHash,
   getDetailFromLabel,
@@ -82,8 +80,7 @@ const ClassPage = (props) => {
   } = useContext(ReviewFetcherContext);
 
   const handleNewReview = () => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
-    route(`${baseroute}/form/create/${classID}`);
+    navigateToFormReviewPage(classID)
     setUnderFlow(false);
   };
 

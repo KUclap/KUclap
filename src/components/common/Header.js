@@ -2,7 +2,7 @@ import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import { KUClap } from "../utility/Icons";
 import ThemeToggleButton from "./ThemeToggleButton";
-import { navigateToHome } from "../utility/helper";
+import { navigateToHomePage } from "../utility/helper";
 
 const KUclapText = styled.p`
   font-size: 4.6rem;
@@ -32,7 +32,7 @@ const Header = ({ theme, toggleTheme }) => {
   return (
     <>
       <ThemeToggleButton onClick={toggleTheme} right />
-      <KUclapText onClick={navigateToHome}>
+      <KUclapText onClick={navigateToHomePage}>
         <KUClap bgColor={theme.body} textColor={theme.bodyText} />
         <span>
           <b>KU</b>CLAP
