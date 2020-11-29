@@ -18,25 +18,23 @@ const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
   border-radius: 1rem;
   margin: 3rem 0;
-  padding: 1.6rem;
-  min-width: 27.6rem;
-  overflow: hidden;
+  padding: 1rem 1.6rem 0.3rem;
   display: flex;
   flex-direction: column;
 `;
 
 const Content = styled.p`
-  padding: 0 0.4rem;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: ${(props) => props.theme.mainText};
   white-space: pre-line;
   overflow-wrap: break-word;
   margin: 0;
-  margin-top: ${(props) => (props.isBadge === true ? "0.5rem" : 0)};
+  margin-top: ${(props) => (props.isBadge === true ? "1.1rem" : 0)};
 `;
 
 const CardDetails = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 0.5rem;
@@ -47,10 +45,10 @@ const DetailContainer = styled.div`
   display: flex;
   color: ${(props) => props.theme.cardDetailsText};
   justify-content: space-between;
-  flex-direction: column;
   align-self: flex-end;
   text-align: right;
   margin-left: 0.3rem;
+  width: 100%;
 `;
 
 const SubDetail = styled.div`
@@ -59,6 +57,8 @@ const SubDetail = styled.div`
   align-items: center;
   margin-top: 0.5rem;
   justify-content: flex-end;
+  position: relative;
+  user-select: none;
 
   button {
     margin-left: 0.3rem;
@@ -66,7 +66,9 @@ const SubDetail = styled.div`
 `;
 
 const Grade = styled.div`
-  margin-left: 0.6rem;
+  margin-left: 0.3rem;
+  display: flex;
+  font-size: 1.2rem;
   position: relative;
 
   span {
@@ -117,8 +119,10 @@ const ButtonContainer = styled.div`
 
 const Actions = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
-  width: 13.5rem;
+  margin: 0.4rem 0;
+  align-items: center;
 `;
 
 const ModalBackdrop = styled.div`
@@ -145,7 +149,7 @@ const Modal = styled.div`
   padding: ${(props) =>
     props.type === "ShareModal" ? "0 1.2rem 2.8rem" : "2.8rem 1.2rem"};
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 3.4rem;
   text-align: center;
   display: ${(props) => (props.show === true ? "block" : "none")};
@@ -172,7 +176,7 @@ const Modal = styled.div`
 `;
 
 const ModalHeader = styled.div`
-  font-size: 2.4rem;
+  font-size: 1.8rem;
   font-weight: 500;
   align-items: center;
   justify-content: center;
@@ -182,8 +186,8 @@ const ModalHeader = styled.div`
   color: ${(props) => props.theme.mainText};
 
   svg {
-    width: 4.1rem;
-    height: 4.1rem;
+    width: 3rem;
+    height: 3rem;
     margin-left: 0.6rem;
 
     path {
@@ -195,7 +199,6 @@ const ModalHeader = styled.div`
 
 const ModalActions = styled.div`
   align-self: center;
-  padding: 1.4rem 0 0;
   display: flex;
   flex-direction: row;
   flex-flow: wrap;
@@ -208,22 +211,23 @@ const ConfirmButton = styled.div`
   color: #fff;
   height: 3.9rem;
   border-radius: 0.6rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
-  width: 12.2rem;
-  margin: 1rem;
+  padding: 0.3rem 1.6rem;
+  margin: 2rem 1.6rem 0;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const CancelButton = styled(ConfirmButton)`
-  padding: 0.4rem 1.2rem;
-  height: 3.9rem;
-  font-size: 2rem;
+  padding: 0.3rem 1.6rem;
+  font-size: 1.6rem;
   text-align: center;
-  background-color: ${(props) => props.theme.placeholderText};
+  color: ${(props) => props.theme.placeholderText};
+  border: 0.1rem solid ${(props) => props.theme.placeholderText};
+  background-color: transparent;
 `;
 
 const NumberAction = styled.span`
@@ -232,15 +236,14 @@ const NumberAction = styled.span`
 `;
 
 const MoreButton = styled.button`
-  height: 2rem;
-  width: 2rem;
-  padding: 0;
   background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 15rem;
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+  color: ${(props) => props.theme.cardDetailsText};
+  padding: ${(props) => props.fullButton ? "0 0.3rem 0 0.8rem" : 0};
 `
 
 const Menu = styled.div`
@@ -251,7 +254,9 @@ const Menu = styled.div`
   text-align: center;
   border-radius: 0.4rem;
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
-  transform: translate(-43%, 58%);
+  right: 0;
+  top: 0;
+  margin-top: 2.8rem;
   z-index: 1;
   color: ${(props) => props.theme.cardDetailsText};
   box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
@@ -270,6 +275,7 @@ const MenuContentContainer = styled.div`
 const MenuContent = styled.div`
   display: flex;
   justify-content: space-between;
+  user-select: none;
 
   &:not(:first-child) {
     margin-top: 0.2rem;
@@ -303,7 +309,8 @@ const ReportField = styled.textarea`
   border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   height: 12rem;
-  width: 30rem;
+  width: 100%;
+  max-width: 30rem;
   font-size: 16px;
   font-family: "Kanit", arial, sans-serif;
   resize: none;
@@ -343,13 +350,12 @@ const Warning = styled.div`
 const Subject = styled.h1`
   font-size: 1.4rem;
   padding: 0.2rem 1.6rem;
-  margin: 0 0 0.8rem 0.8rem;
   border-radius: 0.5rem;
   text-align: center;
   background: ${(props) => props.color};
   color: white;
   position: absolute;
-  transform: translateY(-2.9rem);
+  transform: translateY(-3.3rem);
   cursor: pointer;
   font-weight: 500;
   text-overflow: ellipsis;
@@ -390,6 +396,25 @@ const ButtonWithIcon = styled.button`
     }
   }
 
+  ${(props) => props.type === "share" && 
+    css`
+      border: 0.1rem solid ${(props) => props.theme.placeholderText};
+      color: ${(props) => props.theme.placeholderText};
+      height: fit-content;
+      padding: 0.1rem 0.8rem;
+
+      svg {
+        height: 1.6rem;
+        width: 1.6rem;
+
+        path {
+          fill: ${(props) => props.theme.placeholderText};
+          stroke: ${(props) => props.theme.placeholderText};
+        }
+      }
+    `
+  }
+
   &:hover {
     color: #9ac1ee;
     border: 0.1rem solid #9ac1ee;
@@ -401,10 +426,10 @@ const ButtonWithIcon = styled.button`
 `;
 
 const ShareSelect = styled.div`
-  font-size: 2.2rem;
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
-  padding: 1.5rem 3.2rem;
+  padding: 1rem 3rem;
   border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
   cursor: pointer;
   user-select: none;
@@ -412,7 +437,10 @@ const ShareSelect = styled.div`
     props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
 
   svg {
-    margin-right: 2.6rem;
+    margin-right: 1.6rem;
+    height: 2.4rem;
+    width: 2.4rem;
+
 
     path {
       fill: ${(props) =>
@@ -427,6 +455,13 @@ const ShareSelect = styled.div`
   &:active {
     background-color: ${(props) => props.theme.menuItem.active};
   }
+`
+
+const SectionLine = styled.div`
+  height: 0.1rem;
+  width: 100%;
+  background-color: ${(props) => props.theme.lightColor};
+  margin-top: 1rem;
 `
 
 const months = [
@@ -542,6 +577,20 @@ const ReviewCard = (props) => {
     // modal(showShareModal);
     dispatchShowModal({ type: "setter", value: showShareModal });
   }, [showShareModal]);
+
+  if (menu) {
+    useEffect(() => {
+      const moreButton = document.getElementById(`more-button-${reviewId}`);
+
+      document.addEventListener('click', function(event) {
+        var isClickInside = moreButton.contains(event.target);
+
+        if (!isClickInside) {
+          setMenu(false)
+        }
+      });
+    })
+  }
 
   const sendReport = () => {
     if (reportReason.reason.length < 10)
@@ -672,6 +721,45 @@ const ReviewCard = (props) => {
       )}
       <Content isBadge={isBadge}> {text} </Content>
       <CardDetails>
+        <DetailContainer>
+          <SubDetail>
+            โดย {author}
+            <Grade><span>{grade}</span><GradeCircle /></Grade>
+          </SubDetail>
+          <SubDetail>
+            {
+              recap &&
+              <ButtonWithIcon>
+                ชีทสรุป
+                <Recap />
+              </ButtonWithIcon>
+            }
+            <MoreButton
+              type="report"
+              tabIndex="0"
+              id={`more-button-${reviewId}`}
+              onClick={() => setMenu(true)}
+              fullButton={recap ? false : true}
+            >
+              {
+                !recap && "เพิ่มเติม"
+              }
+              <DownArrow />
+              <Menu openMenu={menu}>
+                <MenuContentContainer>
+                  {sec !== 0 && <MenuContent><span>หมู่เรียน (เซค)</span><span>{sec}</span></MenuContent>}
+                  {semester !== 0 && <MenuContent><span>ภาคเรียน</span><span>{semester}</span></MenuContent>}
+                  {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>63</span></MenuContent>}
+                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>100</span></MenuContent>}
+                  <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
+                </MenuContentContainer>
+                <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
+                <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
+              </Menu>
+            </MoreButton>
+          </SubDetail>
+        </DetailContainer>
+        <SectionLine />
         <Actions>
           <ButtonContainer>
             <ButtonIcon
@@ -707,51 +795,14 @@ const ReviewCard = (props) => {
               </NumberAction>
             )}
           </ButtonContainer>
-        </Actions>
-        <DetailContainer>
-          <SubDetail>
-            โดย {author}
-            <Grade><span>{grade}</span><GradeCircle /></Grade>
-          </SubDetail>
-          <SubDetail>
-            {
-              recap &&
-              <ButtonWithIcon>
-                สรุป
-                <Recap />
-              </ButtonWithIcon>
-            }
-            <ButtonWithIcon>
-                สรุป
-                <Recap />
-              </ButtonWithIcon>
-            <ButtonWithIcon
-              onClick={() => setShareModal(true)}
-            >
-              แชร์
-              <Share />
-            </ButtonWithIcon>
-            <MoreButton
-              type="report"
-              tabIndex="0"
-              onClick={() => setMenu(true)}
-              onBlur={() => setMenu(false)}
-            >
-              <DownArrow />
-              <Menu openMenu={menu}>
-                <MenuContentContainer>
-                  {sec !== 0 && <MenuContent><span>หมู่เรียน (เซค)</span><span>{sec}</span></MenuContent>}
-                  {semester !== 0 && <MenuContent><span>ภาคเรียน</span><span>{semester}</span></MenuContent>}
-                  {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>63</span></MenuContent>}
-                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>100</span></MenuContent>}
-                  <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
-                </MenuContentContainer>
-                <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
-                <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
-              </Menu>
-            </MoreButton>
-          </SubDetail>
-        </DetailContainer>
+          <ButtonWithIcon
+            onClick={() => setShareModal(true)}
+            type="share"
+          >
+            แชร์
+            <Share />
+          </ButtonWithIcon>
+        </Actions>     
       </CardDetails>
       <ModalBackdrop show={showReportModal} onClick={closeReportModal} />
       <Modal show={showReportModal}>
@@ -793,7 +844,7 @@ const ReviewCard = (props) => {
           maxLength={4}
         />
         <ModalActions>
-          <CancelButton onClick={closeEditModal}>ย้อนกลับ</CancelButton>
+          <CancelButton onClick={closeEditModal}>ยกเลิก</CancelButton>
           <ConfirmButton onClick={deleteReview}>
             {isLoadingDelete ? (
               <CircularProgressCustom size="3rem" />
@@ -836,8 +887,8 @@ const ButtonIcon = styled(Button)`
 
   &:before {
     content: "";
-    width: 3.8rem;
-    height: 3.8rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
     z-index: -1;
     display: inline-block;
@@ -856,8 +907,8 @@ const ButtonIcon = styled(Button)`
   }
 
   &:hover:before {
-    width: 3.8rem;
-    height: 3.8rem;
+    width: 3rem;
+    height: 3rem;
     transform: scale(1.1);
     background: ${(props) =>
       props.type === "clap"

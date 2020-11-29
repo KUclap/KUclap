@@ -1,6 +1,6 @@
 html {
     scroll-behavior: smooth;
-    font-size: 14px; /* 10px at html, body */
+    font-size: 12px; /* 10px at html, body */
 } 
   
 body {
@@ -24,7 +24,7 @@ button {
 
 @media only screen and (max-width: 768px) {
     html {
-        font-size: 12px; 
+        font-size: 10px; 
     }
 }
 

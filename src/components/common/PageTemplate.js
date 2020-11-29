@@ -22,7 +22,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  max-width: 86rem;
+  max-width: 72rem;
   margin: 0 auto;
   position: relative;
 `;
