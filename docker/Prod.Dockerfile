@@ -26,7 +26,7 @@ COPY --from=builder /usr/src/app/build build/
 COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/package.json .
 EXPOSE 8000 8000
-CMD [ "npm", "run", "start:server-prod-babel"]
+CMD [ "npm", "run", "start:server-prod"]
 
 # # Building stage
 # FROM node:14.2-slim as builder
