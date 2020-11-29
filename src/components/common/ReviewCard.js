@@ -500,13 +500,16 @@ const ReviewCard = (props) => {
   const [showEditModal, setEditModal] = useState(false);
   const [showShareModal, setShareModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
   const parseDate = (dateUTC) => {
-    let date = dateUTC.split("-");
-    let day = date[2].slice(0, 2);
-    let month = months[parseInt(date[1]) - 1];
-    let year = date[0];
-    if (day[0] === "0") day = day[1];
-    return `${day} ${month} ${year}`;
+    if(dateUTC){
+      let date = dateUTC.split("-");
+      let day = date[2].slice(0, 2);
+      let month = months[parseInt(date[1]) - 1];
+      let year = date[0];
+      if (day[0] === "0") day = day[1];
+      return `${day} ${month} ${year}`;
+    }
   };
 
   // useEffect(() => {
