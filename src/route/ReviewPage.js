@@ -4,6 +4,7 @@ import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
 import { NoMoreReview } from "../components/utility/Icons";
+import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
 import APIs from '../components/utility/apis'
 import Details from "../components/common/Detail";
 import Footer from "../components/common/Footer";
@@ -70,7 +71,13 @@ const ReviewTitle = styled.div`
 `;
 
 const ReviewPage = (props) => {
-	const { review, currentClass: subject } = props;
+	const { 
+		currentClass: subject,
+		review, 
+		loading, 
+		isAvailable 
+	} = props;
+
 	const { state: selected } = useContext(SelectContext);
 
 	return (
@@ -80,10 +87,18 @@ const ReviewPage = (props) => {
 			classID={review?.classId}
 			{...props} 
 		>
-			<SubjectTitle color={review ? getColorHash(review.classId) : "#9ac1ee"}>
-				<span>{review ? review.classId : "000000"}</span>
-				{review ? getClassName(selected.label) : "ไม่มีข้อมูลรีวิวในระบบ"}
+			
+			<SubjectTitle color={isAvailable ? getColorHash(review.classId) : "#9ac1ee"}>
+				<span>{isAvailable ? review.classId : "000000"}</span>
+				{
+					loading ? "กำลังโหลดข้อมูลวิชา..." 
+						: isAvailable ? 
+							getClassName(selected.label) 
+							: "ไม่มีข้อมูลรีวิวในระบบ"
+				}
+				{/* {review ? getClassName(selected.label) : "ไม่มีข้อมูลรีวิวในระบบ"} */}
 			</SubjectTitle>
+
 			<Details score={review?.stats} />
 			<LastReview>
 				<ReviewTitle>
@@ -97,7 +112,19 @@ const ReviewPage = (props) => {
 				</ReviewTitle>
 
 				<AdaptorReviews id="adaptor" />
-				{review ? (
+				{
+					loading ? ( <ReviewSkeletonA /> )
+					 : isAvailable ? 
+						  (<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />) 
+						  : (<>
+								<ContainerNoMore>
+									<NoMoreCustom>
+										<NoMoreReview />
+									</NoMoreCustom>
+								</ContainerNoMore>
+							</>)
+				}
+				{/* {review ? (
 					<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
 				) : (
 					<>
@@ -107,7 +134,7 @@ const ReviewPage = (props) => {
 							</NoMoreCustom>
 						</ContainerNoMore>
 					</>
-				)}
+				)} */}
 				<Footer />
 			</LastReview>
 		</PageTemplate>
@@ -118,39 +145,60 @@ const Interface = (props) => {
 	const { currentReview, currentClass, reviewID} = props;
 	const { dispatch: dispatchSelected } = useContext(SelectContext);
 	const [review, setReview] = useState([])
+	const [loading, setLoading] = useState(true);
+	const [isAvailable, setIsAvailable] = useState(false);
 
 	useEffect(() => {
 		if (currentReview && currentClass) {
+			setLoading(false)
+			setIsAvailable(true)
 			dispatchSelected({
 				type: "selected",
 				value: { label: currentClass.label, classID: currentClass.classId },
 			});
 		} else {
-			// eslint-disable-next-line no-lonely-if
-			if(process.env.NODE_ENV === "development" && process.env.IS_DEV){
-				APIs.getReviewByReviewID( reviewID, (res) => {
-					APIs.getClassDetailByClassId(res.data.classId, (res) => {
-						dispatchSelected({
-							type: "selected",
-							value: { label: res.data.label, classID: res.data.classId },
-						});
-					});
-					setReview({
-						...res.data,
-						stats: {
-							homework: res.data.stats.homework,
-							how: res.data.stats.how,
-							interest: res.data.stats.interest,
-						},
+			// // eslint-disable-next-line no-lonely-if
+			// if(process.env.NODE_ENV === "development" && process.env.IS_DEV){
+			// 	APIs.getReviewByReviewID( reviewID, (res) => {
+			// 		APIs.getClassDetailByClassId(res.data.classId, (res) => {
+			// 			dispatchSelected({
+			// 				type: "selected",
+			// 				value: { label: res.data.label, classID: res.data.classId },
+			// 			});
+			// 		});
+			//		setReview({ ...res.data });
+			// 	});
+			// }
+
+			setLoading(true);
+			APIs.getReviewByReviewID(reviewID, (res) => {
+				setLoading(false);
+				setIsAvailable(true);
+				
+				APIs.getClassDetailByClassId(res.data.classId, (res) => {
+					dispatchSelected({
+						type: "selected",
+						value: { label: res.data.label, classID: res.data.classId },
 					});
 				});
-			}
+
+				setReview({ ...res.data });
+			},
+				() => {
+					setLoading(false);
+					setIsAvailable(false);
+				}
+			);
 		}
 	}, []);
 
 	return (
-		<ReviewFetcherProvider classID={currentClass && currentClass.classId}>
-			<ReviewPage review={currentReview || review} {...props} />
+		<ReviewFetcherProvider classID={(currentClass && currentClass.classId) || review.classId}>
+			<ReviewPage 
+				review={currentReview || review} 
+				loading={loading}
+				isAvailable={isAvailable}
+				{...props} />
 		</ReviewFetcherProvider>
 	);
 };
