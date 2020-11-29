@@ -14,6 +14,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import Header from "./Header";
+import Helmet from './Helmet'
 
 const Container = styled.div`
   display: flex;
@@ -107,7 +108,7 @@ const PageTemplate = ({
   children,
   isFormPage,
   classes,
-  // content,
+  content,
 }) => {
   const { state: selected, dispatch: dispatchSelected } = useContext(
     SelectContext
@@ -157,6 +158,7 @@ const PageTemplate = ({
 
   return (
     <Container name="top">
+      <Helmet content={content} />
       <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
@@ -181,5 +183,3 @@ const PageTemplate = ({
 };
 
 export default withTheme(PageTemplate);
-
-
