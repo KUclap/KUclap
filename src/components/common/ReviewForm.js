@@ -49,7 +49,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 3rem 4rem;
-  min-width: 86%;
+  width: 86%;
 `;
 
 const DetailTitle = styled.label`
