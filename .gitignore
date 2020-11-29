@@ -9,3 +9,4 @@ TOKEN*.txt
 /ssl
 *.pem
 *.key
+.vscode
