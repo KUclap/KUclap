@@ -678,8 +678,8 @@ const ReviewForm = (props) => {
         placeholder="เขียนรีวิว..."
         value={form.text}
         onChange={(e) => handleOnchange(e, "text")}
-        onFocus={() => setRecommendWord(true)}
-        // onBlur={() => setRecommendWord(false)}
+        onFocus={() => {setRecommendWord(true)}}
+        tabindex={0}
         id="review-field"
       />
       <RecommendReviewContainer isShow={recommendWord}>

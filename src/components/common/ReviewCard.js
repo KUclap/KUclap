@@ -535,6 +535,7 @@ const ReviewCard = (props) => {
   const [showEditModal, setEditModal] = useState(false);
   const [showShareModal, setShareModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
   const parseDate = (dateUTC) => {
     if(dateUTC){
       let date = dateUTC.split("-");
@@ -661,7 +662,7 @@ const ReviewCard = (props) => {
     switch (type) {
       case "facebook": {
         const appId = "784451072347559";
-        url = `https://www.facebook.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
+        url = `https://fb.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
         window.open(url);
         break;
       }
@@ -693,7 +694,9 @@ const ReviewCard = (props) => {
         }, 2000);
       }
     }
-    setInterval(closeShareModal, 450)
+    
+    setTimeout(closeShareModal, 450)
+
   };
 
   const handleOpenRecapLink = () => {
