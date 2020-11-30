@@ -61,7 +61,13 @@ export const navigateToClassPage = (classId) => {
     route(`${baseroute}/${classId}`);
 };
 
+export const navigateToReviewPage = (reviewId) => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+  route(`${baseroute}/review/${reviewId}`);
+}
+
 export const navigateToFormReviewPage = (classId) => {
   if (typeof window !== "undefined") window.scrollTo(0, 0);
     route(`${baseroute}/form/create/${classId}`);
 }
+
