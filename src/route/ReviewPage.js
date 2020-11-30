@@ -82,7 +82,7 @@ const ReviewPage = (props) => {
 	} = props;
 
 	const { state: selected } = useContext(SelectContext);
-
+	console.log(review, "review page")
 	return (
 		<PageTemplate
 			content={getHelmet("REVIEW", subject, review)}
@@ -116,6 +116,8 @@ const ReviewPage = (props) => {
 
 				<AdaptorReviews id="adaptor" />
 				{
+					review ? 
+						<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} /> :
 					loading ? ( <ReviewSkeletonA /> )
 					 : isAvailable ? 
 						  (<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />) 
@@ -150,7 +152,7 @@ const Interface = (props) => {
 	const [review, setReview] = useState([])
 	const [loading, setLoading] = useState(true);
 	const [isAvailable, setIsAvailable] = useState(false);
-
+	console.log(review, "review interface")
 	useEffect(() => {
 		if (currentReview && currentClass) {
 			setLoading(false)
