@@ -740,9 +740,15 @@ const ReviewCard = (props) => {
               <Menu openMenu={menu}>
                 <MenuContentContainer>
                   {sec !== 0 && <MenuContent><span>หมู่เรียน (เซค)</span><span>{sec}</span></MenuContent>}
-                  {semester !== 0 && <MenuContent><span>ภาคเรียน</span><span>{semester}</span></MenuContent>}
-                  {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>63</span></MenuContent>}
-                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>100</span></MenuContent>}
+                  {semester !== 0 && <MenuContent><span>ภาคเรียน</span><span>{
+                  {
+                    1: "ต้น",
+                    2: "ปลาย",
+                    3: "ฤดูร้อน"
+                  }[semester]
+                  }</span></MenuContent>}
+                  {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>{year}</span></MenuContent>}
+                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>}
                   <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
                 </MenuContentContainer>
                 <MenuItem onClick={() => navigateToReviewPage(reviewId)}>ดูรีวิวนี้</MenuItem>

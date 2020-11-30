@@ -1,7 +1,7 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
-import img_marsdev from "../../assets/icons/marsdev31.png";
 import { Github } from "../utility/Icons";
+import SocialIcons from './SocialIcons'
 
 const Container = styled.footer`
   display: flex;
@@ -19,6 +19,11 @@ const MoreProductionText = styled.p`
   font-size: 1.8rem;
   margin: 2.8rem 0 0 0;
 `;
+
+const SocialText = styled(MoreProductionText)`
+  font-size: 1.4rem;
+  margin: 0.8rem 0 0 0;
+`
 
 const Button = styled.button`
   cursor: pointer;
@@ -44,9 +49,10 @@ const Button = styled.button`
 `;
 
 const ExternalLink = styled.a`
+  margin-top: 1.5rem;
   text-decoration: none;
   color: ${(props) => props.theme.mainText};
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   height: 3rem;
@@ -61,11 +67,13 @@ const ExternalLink = styled.a`
   }
 `;
 
-const MarsDev = styled.img`
-  width: 22px;
-  height: 22px;
-  margin: 0;
-`;
+const ContainerSocial = styled.div`
+  width: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.9rem;
+`
 
 const Footer = ({ theme }) => {
   return (
@@ -80,6 +88,11 @@ const Footer = ({ theme }) => {
           KUnit <span> | เว็บไซต์สำหรับคำนวณหน่วยกิตวิชาบูรฯ </span>
         </Button>
       </a>
+    
+      <SocialText>ติดตามข่าวสารจากพวกเราได้ที่</SocialText>
+      <ContainerSocial>
+        <SocialIcons />
+      </ContainerSocial>
       <ExternalLink
         href="https://github.com/marsDev31"
         target="_blank"
@@ -89,22 +102,6 @@ const Footer = ({ theme }) => {
         <span className="img">
           <Github fill={theme.bodyText} />
         </span>
-      </ExternalLink>
-      <ExternalLink
-        href="http://fb.com/marsDev31/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span className="highlight">Power&nbsp;</span> by marsdev31
-        <a
-          href="http://fb.com/marsDev31/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="img">
-            <MarsDev src={img_marsdev} />
-          </span>
-        </a>
       </ExternalLink>
     </Container>
   );

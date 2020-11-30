@@ -1,9 +1,11 @@
 import { h } from "preact";
-import styled, { withTheme } from "styled-components";
 import media from 'styled-media-query'
-import { KUClap, Facebook, Twitter } from "../utility/Icons";
-import ThemeToggleButton from "./ThemeToggleButton";
+import styled, { withTheme } from "styled-components";
+
+import { KUClap } from "../utility/Icons";
 import { navigateToHomePage } from "../utility/helper";
+import SocialIcons from './SocialIcons'
+import ThemeToggleButton from "./ThemeToggleButton";
 
 const KUclapText = styled.p`
   font-size: 4.6rem;
@@ -31,7 +33,6 @@ const DetailKUclap = styled.span`
 
 const UtilitysContainer = styled.div`
   width: 64px;
-  /* height: 2.9rem; */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,10 +47,7 @@ const UtilitysContainer = styled.div`
   `}
 `
 
-const SocialIcon = styled.a`
-  cursor: pointer;
-  height: 2.4rem;
-`
+
 
 const Header = ({ theme, toggleTheme }) => {
   return (
@@ -57,18 +55,7 @@ const Header = ({ theme, toggleTheme }) => {
 
       
       <UtilitysContainer>
-        <SocialIcon
-        href="https://fb.com/kuclap/"
-        target="_blank"
-        rel="noopener noreferrer">
-          <Facebook />
-        </SocialIcon>
-        <SocialIcon
-        href="https://twitter.com/KUclapOfficial"
-        target="_blank"
-        rel="noopener noreferrer">
-          <Twitter />
-        </SocialIcon>
+       <SocialIcons />
       </UtilitysContainer>
       <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={navigateToHomePage}>

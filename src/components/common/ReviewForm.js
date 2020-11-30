@@ -210,7 +210,7 @@ const Input = styled.input`
   padding: 1.2rem 1.6rem;
   font-size: 1.6rem;
   font-family: "Kanit", arial, sans-serif;
-
+  -webkit-appearance: none;
   color: ${(props) => props.theme.bodyText};
   &::placeholder {
     color: ${(props) => props.theme.placeholderText};
