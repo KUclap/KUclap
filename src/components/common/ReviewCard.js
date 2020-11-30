@@ -563,9 +563,6 @@ const ReviewCard = (props) => {
     if (typeof window !== "undefined"){
       const moreButton = document.getElementById(`more-button-${reviewId}`);
       document.addEventListener('click', (event) => handleOnBlurNoreBtn(moreButton, event));
-      return () => {
-        document.getElementById(`more-button-${reviewId}`).removeEventListener("click", (event) => handleOnBlurNoreBtn(moreButton, event))
-      }
     }
   })
 
