@@ -11,7 +11,7 @@ const Button = styled.div`
   align-items: center;
   box-shadow: ${(props) =>
     props.theme.name === "dark" ? 0 : `0 0 0 0.1rem ${props.theme.bodyText}`};
-
+  position: relative;
   ${(props) =>
     props.right &&
     `
