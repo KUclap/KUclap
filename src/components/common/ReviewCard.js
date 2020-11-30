@@ -93,6 +93,7 @@ const Button = styled.div`
   cursor: pointer;
   align-self: flex-end;
   outline: none;
+  user-select: none;
 
   span {
     margin-right: 1ch;
@@ -392,7 +393,6 @@ const ButtonWithIcon = styled.button`
 
   svg {
     margin-left: 0.3rem;
-
     path {
       fill: ${(props) => props.theme.cardDetailsText};
     }
@@ -748,7 +748,7 @@ const ReviewCard = (props) => {
                   }[semester]
                   }</span></MenuContent>}
                   {year !== 0 && <MenuContent><span>ปีการศึกษา</span><span>{year}</span></MenuContent>}
-                  {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>}
+                  {/* {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
                   <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
                 </MenuContentContainer>
                 <MenuItem onClick={() => navigateToReviewPage(reviewId)}>ดูรีวิวนี้</MenuItem>

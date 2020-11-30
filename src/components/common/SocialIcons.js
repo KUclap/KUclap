@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import styled from 'styled-components'
 import { Facebook, Twitter } from '../utility/Icons'
+// import { getMobileOS } from '../utility/helper'
 
 const SocialIcon = styled.a`
   cursor: pointer;
@@ -9,6 +10,14 @@ const SocialIcon = styled.a`
 `
 
 const SocialIcons = () => {
+    // const handleRedirect = () => {
+    //     console.log(getMobileOS())
+        
+    //     if(getMobileOS() === 'android'){
+    //         return `fb://profile/784451072347559`
+    //     } 
+    //     return `fb://page/784451072347559`
+    // }
     return (
         <>
             <SocialIcon

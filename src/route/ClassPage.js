@@ -3,7 +3,7 @@ import { useContext } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview, NoReview } from "../components/utility/Icons";
+import { NoMoreReview, NoReview, HomeIcon } from "../components/utility/Icons";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
@@ -56,15 +56,12 @@ const Button = styled.div`
   }
 `;
 
-const ButtonLastReview = styled(Button)`
-  border: 0.2rem solid hsl(0, 0%, 46%);
-  background: ${(props) => props.theme.body};
-  color: hsl(0, 0%, 46%);;
-  font-size: 1.6rem;
-  margin-right: 1.5rem;
-  &:hover {
-    background: ${(props) => props.theme.lightColor2};
-  }
+const ButtonLastReview = styled.div`
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	background: transparent;
+	margin-right: 1.5rem;
 `;
 
 const ContainerBtns = styled.div`
@@ -113,7 +110,7 @@ const ClassPage = (props) => {
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
           <ContainerBtns>
             <ButtonLastReview onClick={navigateToHomePage}>
-              หน้าแรก
+              <HomeIcon  />
             </ButtonLastReview>
             <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
           </ContainerBtns>
@@ -133,6 +130,7 @@ const ClassPage = (props) => {
                   )
               )
             : null}
+            <NoMoreReview />
         </AdaptorReviews>
         {(loading || loadMore) && !underflow ? (
           <>

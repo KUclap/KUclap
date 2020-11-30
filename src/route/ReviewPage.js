@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview } from "../components/utility/Icons";
+import { NoMoreReview, HomeIcon } from "../components/utility/Icons";
 import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
 import APIs from '../components/utility/apis'
 import Details from "../components/common/Detail";
@@ -37,6 +37,8 @@ const Button = styled.div`
 	border-radius: 0.6rem;
 	font-size: 1.6rem;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 
 	&:active {
 		background-color: hsl(145, 63%, 32%);
@@ -47,15 +49,12 @@ const Button = styled.div`
 	}
 `;
 
-const ButtonLastReview = styled(Button)`
-	border: 0.2rem solid #979797;
-	background: ${(props) => props.theme.body};
-	color: #979797;
-	font-size: 1.6rem;
+const ButtonLastReview = styled.div`
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	background: transparent;
 	margin-right: 1.5rem;
-	&:hover {
-		background: ${(props) => props.theme.lightColor2};
-	}
 `;
 
 const ContainerBtns = styled.div`
@@ -65,6 +64,7 @@ const ContainerBtns = styled.div`
 
 const ReviewTitle = styled.div`
 	display: flex;
+	/* justify-content: flex-end; */
 	justify-content: space-between;
 	align-items: center;
 	margin-top: 2.8rem;
@@ -104,8 +104,8 @@ const ReviewPage = (props) => {
 				<ReviewTitle>
 					<DetailTitle>รีวิวโดย {review?.author}</DetailTitle>
 					<ContainerBtns>
-						<ButtonLastReview onClick={navigateToHomePage}>
-							หน้าแรก
+						<ButtonLastReview onClick={navigateToHomePage} >
+							<HomeIcon  />
 						</ButtonLastReview>
 						<Button onClick={() => navigateToClassPage(review.classId)}>แสดงทุกรีวิว</Button>
 					</ContainerBtns>

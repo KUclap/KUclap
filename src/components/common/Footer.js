@@ -28,7 +28,7 @@ const SocialText = styled(MoreProductionText)`
 const Button = styled.button`
   cursor: pointer;
   background: ${(props) => props.theme.body};
-  color: #77b280;
+  color: #2f80ed;
   min-width: 27.6rem;
   font-size: 1.4rem;
   font-family: "Kanit";
@@ -36,15 +36,15 @@ const Button = styled.button`
   border: 0.35rem solid ${(props) => props.theme.lightColor};
   border-radius: 7px;
   transition: 0.25s all ease-in;
-  margin: 1.4rem auto;
+  margin: 0.8rem auto;
 
   span {
     color: ${(props) => props.theme.footerButtonText};
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   &:hover {
-    border-color: #77b280;
+    border-color: #2f80ed;
   }
 `;
 
@@ -78,7 +78,15 @@ const ContainerSocial = styled.div`
 const Footer = ({ theme }) => {
   return (
     <Container>
-      <MoreProductionText>ผลงานอื่นๆ ของพวกเรา</MoreProductionText>
+     
+    
+      <SocialText>ติดตามข่าวสารจากพวกเราได้ที่</SocialText>
+      <ContainerSocial>
+        <SocialIcons />
+      </ContainerSocial>
+     
+
+      <MoreProductionText>เว็บไซต์อื่น ๆ ที่อยากแนะนำ</MoreProductionText>
       <a
         href="https://marsdev31.github.io/KUnit/"
         target="_blank"
@@ -88,11 +96,16 @@ const Footer = ({ theme }) => {
           KUnit <span> | เว็บไซต์สำหรับคำนวณหน่วยกิตวิชาบูรฯ </span>
         </Button>
       </a>
-    
-      <SocialText>ติดตามข่าวสารจากพวกเราได้ที่</SocialText>
-      <ContainerSocial>
-        <SocialIcons />
-      </ContainerSocial>
+      <a
+        href="https://kufillinggood.web.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button>
+        KUFillingGood <span> | ระบบจัดวิชานอกภาคลงตารางเรียน </span>
+        </Button>
+      </a>
+
       <ExternalLink
         href="https://github.com/marsDev31"
         target="_blank"
@@ -103,6 +116,7 @@ const Footer = ({ theme }) => {
           <Github fill={theme.bodyText} />
         </span>
       </ExternalLink>
+
     </Container>
   );
 };
