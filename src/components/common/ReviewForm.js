@@ -585,7 +585,7 @@ const ReviewForm = (props) => {
   const sendReview = () => {
     if (!isLoading) {
       setIsLoading(true);
-      console.log(form)
+      // console.log(form)
       APIs.createReview({
         ...form,
         year: parseInt(form.year, 10),

@@ -4,7 +4,6 @@ import compression from "compression"
 import dotenv from "dotenv"
 import polka from "polka"
 import sirv from "sirv"
-
 import ClassEndpoint from  './src/controllers/class.contoller'
 import HomeEndpoint from './src/controllers/home.controller'
 import ReviewEndpoint from './src/controllers/review.controller'

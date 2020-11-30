@@ -82,7 +82,6 @@ const ReviewPage = (props) => {
 	} = props;
 
 	const { state: selected } = useContext(SelectContext);
-	console.log(review, "review page")
 	return (
 		<PageTemplate
 			content={getHelmet("REVIEW", subject, review)}
@@ -115,8 +114,15 @@ const ReviewPage = (props) => {
 				</ReviewTitle>
 
 				<AdaptorReviews id="adaptor" />
-				{
-					review ? 
+				{review.length <= 0  ? 
+						(<>
+							<ContainerNoMore>
+								<NoMoreCustom>
+									<NoMoreReview />
+								</NoMoreCustom>
+							</ContainerNoMore>
+						</>) :
+					review  ? 
 						<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} /> :
 					loading ? ( <ReviewSkeletonA /> )
 					 : isAvailable ? 
@@ -152,7 +158,7 @@ const Interface = (props) => {
 	const [review, setReview] = useState([])
 	const [loading, setLoading] = useState(true);
 	const [isAvailable, setIsAvailable] = useState(false);
-	console.log(review, "review interface")
+	
 	useEffect(() => {
 		if (currentReview && currentClass) {
 			setLoading(false)
@@ -176,11 +182,11 @@ const Interface = (props) => {
 			// }
 
 			setLoading(true);
-			APIs.getReviewByReviewID(reviewID, (res) => {
+			APIs.getReviewByReviewID(reviewID, async (res) => {
 				setLoading(false);
 				setIsAvailable(true);
 				
-				APIs.getClassDetailByClassId(res.data.classId, (res) => {
+				APIs.getClassDetailByClassId(res.data.classId, async (res) => {
 					dispatchSelected({
 						type: "selected",
 						value: { label: res.data.label, classID: res.data.classId },

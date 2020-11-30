@@ -6,7 +6,7 @@ import bundle from "../../../build/ssr-build/ssr-bundle"
 
 import { InjectTemplateFactory } from '../helpers/injection.helper'
 
-const App = bundle.default;
+const App = bundle;
 
 const handleReviewNotFound = async (req, res) => {
     const body = render(
@@ -16,7 +16,6 @@ const handleReviewNotFound = async (req, res) => {
             currentClass: null,
         })
     );
-
     const template = InjectTemplateFactory("REVIEW", body, null, null)
     res.setHeader("Content-Type", "text/html");
     res.end(template);
@@ -24,6 +23,7 @@ const handleReviewNotFound = async (req, res) => {
 
 const ReviewService = async (req, res) => {
     let { reviewID } = req.params;
+    
     if (reviewID) {
             APIs.getReviewByReviewID(reviewID, async (resReview) => {
                 if(resReview){
@@ -31,6 +31,7 @@ const ReviewService = async (req, res) => {
                         if(resClass){
                             const review = resReview.data;
                             const subject = resClass.data;
+
                             const body = render(
                                 h(App, {
                                     url: req.url,
