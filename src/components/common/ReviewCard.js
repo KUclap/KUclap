@@ -4,7 +4,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
 import { Clap, Boo, Share, Facebook, Twitter, Line, CopyLink, Recap, DownArrow, GradeCircle } from "../utility/Icons";
-import { getColorHash, navigateToClassPage } from "../utility/helper";
+import { getColorHash, navigateToClassPage, navigateToReviewPage } from "../utility/helper";
 import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
@@ -244,6 +244,7 @@ const MoreButton = styled.button`
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
   color: ${(props) => props.theme.cardDetailsText};
   padding: ${(props) => props.fullButton ? "0 0.3rem 0 0.8rem" : 0};
+  cursor: pointer;
 `
 
 const Menu = styled.div`
@@ -270,6 +271,7 @@ const MenuContentContainer = styled.div`
   margin: 0 0.7rem;
   padding: 1rem 0;
   border-bottom: 0.1rem solid ${(props) => props.theme.placeholderText};
+  cursor: default;
 ` 
 
 const MenuContent = styled.div`
@@ -544,53 +546,35 @@ const ReviewCard = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   window.fbAsyncInit = function() {
-  //     FB.init({
-  //       appId      : '784451072347559',
-  //       xfbml      : true,
-  //       version    : 'v8.0'
-  //     });
-  //     FB.AppEvents.logPageView();
-  //   };
-
-  //   (function(d, s, id){
-  //     let js, fjs = d.getElementsByTagName(s)[0];
-  //     if (d.getElementById(id)) {return;}
-  //     js = d.createElement(s); js.id = id;
-  //     js.src = "https://connect.facebook.net/en_US/sdk.js";
-  //     fjs.parentNode.insertBefore(js, fjs);
-  //   }(document, 'script', 'facebook-jssdk'));
-  // }, [])
-
   useEffect(() => {
-    // modal(showReportModal);
     dispatchShowModal({ type: "setter", value: showReportModal });
   }, [showReportModal]);
 
   useEffect(() => {
-    // modal(showEditModal);
     dispatchShowModal({ type: "setter", value: showEditModal });
   }, [showEditModal]);
 
   useEffect(() => {
-    // modal(showShareModal);
     dispatchShowModal({ type: "setter", value: showShareModal });
   }, [showShareModal]);
 
-  if (menu) {
-    useEffect(() => {
+  useEffect(() => {
+    if (typeof window !== "undefined"){
       const moreButton = document.getElementById(`more-button-${reviewId}`);
+      document.addEventListener('click', (event) => handleOnBlurNoreBtn(moreButton, event));
+      return () => {
+        document.getElementById(`more-button-${reviewId}`).removeEventListener("click", (event) => handleOnBlurNoreBtn(moreButton, event))
+      }
+    }
+  })
 
-      document.addEventListener('click', function(event) {
-        var isClickInside = moreButton.contains(event.target);
-
-        if (!isClickInside) {
-          setMenu(false)
-        }
-      });
-    })
+  const handleOnBlurNoreBtn = (btn, event) => {
+    let isClickInside = btn.contains(event.target);
+    if (!isClickInside) {
+      setMenu(false)
+    }
   }
+
 
   const sendReport = () => {
     if (reportReason.reason.length < 10)
@@ -709,7 +693,12 @@ const ReviewCard = (props) => {
         }, 2000);
       }
     }
+    setInterval(closeShareModal, 450)
   };
+
+  const handleOpenRecapLink = () => {
+    window.open(recap);
+  }
 
   return (
     <Container>
@@ -729,7 +718,7 @@ const ReviewCard = (props) => {
           <SubDetail>
             {
               recap &&
-              <ButtonWithIcon>
+              <ButtonWithIcon onClick={handleOpenRecapLink}>
                 ชีทสรุป
                 <Recap />
               </ButtonWithIcon>
@@ -739,7 +728,7 @@ const ReviewCard = (props) => {
               tabIndex="0"
               id={`more-button-${reviewId}`}
               onClick={() => setMenu(true)}
-              fullButton={recap ? false : true}
+              fullButton={!recap}
             >
               {
                 !recap && "เพิ่มเติม"
@@ -753,6 +742,7 @@ const ReviewCard = (props) => {
                   {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>100</span></MenuContent>}
                   <MenuContent><span>รีวิวเมื่อ</span><span>{parseDate(createdAt)}</span></MenuContent>
                 </MenuContentContainer>
+                <MenuItem onClick={() => navigateToReviewPage(reviewId)}>ดูรีวิวนี้</MenuItem>
                 <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
                 <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
               </Menu>
