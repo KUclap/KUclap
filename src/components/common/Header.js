@@ -1,6 +1,7 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
-import { KUClap } from "../utility/Icons";
+import media from 'styled-media-query'
+import { KUClap, Facebook, Twitter } from "../utility/Icons";
 import ThemeToggleButton from "./ThemeToggleButton";
 import { navigateToHomePage } from "../utility/helper";
 
@@ -28,9 +29,47 @@ const DetailKUclap = styled.span`
   font-weight: 400;
 `;
 
+const UtilitysContainer = styled.div`
+  width: 64px;
+  /* height: 2.9rem; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 1.6rem;
+  left: 3rem;
+
+  ${media.greaterThan('medium')`
+    top: 1.6rem;
+    right: 9rem;
+    left: auto;
+  `}
+`
+
+const SocialIcon = styled.a`
+  cursor: pointer;
+  height: 2.4rem;
+`
+
 const Header = ({ theme, toggleTheme }) => {
   return (
     <>
+
+      
+      <UtilitysContainer>
+        <SocialIcon
+        href="https://fb.com/kuclap/"
+        target="_blank"
+        rel="noopener noreferrer">
+          <Facebook />
+        </SocialIcon>
+        <SocialIcon
+        href="https://twitter.com/KUclapOfficial"
+        target="_blank"
+        rel="noopener noreferrer">
+          <Twitter />
+        </SocialIcon>
+      </UtilitysContainer>
       <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={navigateToHomePage}>
         <KUClap bgColor={theme.body} textColor={theme.bodyText} />
