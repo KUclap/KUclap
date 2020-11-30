@@ -5,10 +5,13 @@ let wrap = (App) => App;
 // For SSR only: wrap the app to collect and append styles
 if (process.env.SSR) {
   // We use require() here so that these large interfaces don't get bundled into the client:
-  const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
-
+  // const { ServerStyleSheet, StyleSheetManager } = require("styled-components");
+  const { ServerStyleSheet, StyleSheetManager } = require('styled-components')
+  // const StyleSheet = require('styled-components/lib/models/StyleSheet')
+  
+  const sheet = new ServerStyleSheet();
   wrap = (App) => {
-    const sheet = new ServerStyleSheet();
+    
 
     // **This wrapper component is required.**
     // It ensures getStyleElement() runs only after <App> has been rendered.

@@ -1,7 +1,7 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
-import img_marsdev from "../../assets/icons/marsdev31.png";
 import { Github } from "../utility/Icons";
+import SocialIcons from './SocialIcons'
 
 const Container = styled.footer`
   display: flex;
@@ -16,35 +16,43 @@ const Container = styled.footer`
 
 const MoreProductionText = styled.p`
   color: ${(props) => props.theme.mainText};
-  font-size: 2.6rem;
-  margin: 4rem 0 0 0;
+  font-size: 1.8rem;
+  margin: 2.8rem 0 0 0;
 `;
+
+const SocialText = styled(MoreProductionText)`
+  font-size: 1.4rem;
+  margin: 0.8rem 0 0 0;
+`
 
 const Button = styled.button`
   cursor: pointer;
   background: ${(props) => props.theme.body};
-  color: #77b280;
+  color: #2f80ed;
   min-width: 27.6rem;
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-family: "Kanit";
-  padding: 1.2rem 1.6rem;
+  padding: 0.6rem 1.2rem;
   border: 0.35rem solid ${(props) => props.theme.lightColor};
   border-radius: 7px;
   transition: 0.25s all ease-in;
-  margin: 2rem auto;
+  margin: 0.8rem auto;
+
   span {
     color: ${(props) => props.theme.footerButtonText};
-    font-size: 1.6rem;
+    font-size: 1.1rem;
   }
+
   &:hover {
-    border-color: #77b280;
+    border-color: #2f80ed;
   }
 `;
 
 const ExternalLink = styled.a`
+  margin-top: 1.5rem;
   text-decoration: none;
   color: ${(props) => props.theme.mainText};
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   height: 3rem;
@@ -59,16 +67,26 @@ const ExternalLink = styled.a`
   }
 `;
 
-const MarsDev = styled.img`
-  width: 22px;
-  height: 22px;
-  margin: 0;
-`;
+const ContainerSocial = styled.div`
+  width: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2.9rem;
+`
 
 const Footer = ({ theme }) => {
   return (
     <Container>
-      <MoreProductionText>ผลงานอื่นๆ ของพวกเรา</MoreProductionText>
+     
+    
+      <SocialText>ติดตามข่าวสารจากพวกเราได้ที่</SocialText>
+      <ContainerSocial>
+        <SocialIcons />
+      </ContainerSocial>
+     
+
+      <MoreProductionText>เว็บไซต์อื่น ๆ ที่อยากแนะนำ</MoreProductionText>
       <a
         href="https://marsdev31.github.io/KUnit/"
         target="_blank"
@@ -78,6 +96,16 @@ const Footer = ({ theme }) => {
           KUnit <span> | เว็บไซต์สำหรับคำนวณหน่วยกิตวิชาบูรฯ </span>
         </Button>
       </a>
+      <a
+        href="https://kufillinggood.web.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button>
+        KUFillingGood <span> | ระบบจัดวิชานอกภาคลงตารางเรียน </span>
+        </Button>
+      </a>
+
       <ExternalLink
         href="https://github.com/marsDev31"
         target="_blank"
@@ -88,22 +116,7 @@ const Footer = ({ theme }) => {
           <Github fill={theme.bodyText} />
         </span>
       </ExternalLink>
-      <ExternalLink
-        href="http://fb.com/marsDev31/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span className="highlight">Power&nbsp;</span> by marsdev31
-        <a
-          href="http://fb.com/marsDev31/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="img">
-            <MarsDev src={img_marsdev} />
-          </span>
-        </a>
-      </ExternalLink>
+
     </Container>
   );
 };

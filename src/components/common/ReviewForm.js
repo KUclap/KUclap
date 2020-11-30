@@ -1,7 +1,6 @@
 import { h } from "preact";
 import { lazy, Suspense } from 'preact/compat'
 import  Checkbox  from "@material-ui/core/Checkbox";
-import { route } from "preact-router";
 import { useContext, useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
@@ -10,12 +9,25 @@ import { ModalContext } from "../../context/ModalContext";
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 
 import APIs from "../utility/apis";
-import baseroute from "../utility/baseroute";
+import { navigateToClassPage } from '../utility/helper'
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from '@material-ui/core/Radio';
 
 const Alert = lazy(() => import("./Alert"))
 
+const RecommendWords = [ 
+  "ต้องแต่งตัวถูกระเบียบ",
+  "ไม่เคร่งเรื่องแต่งกาย",
+  "ไม่มีเช็คชื่อ",
+  "เช็คชื่อทุกคาบ",
+  "เหมาะเรียนเป็นกลุ่ม",
+  "เนื้อหาง่าย",       
+  "เนื้อหาต้องท่องจำ",
+  "ไม่มีสอบ"
+]
 const Grade = ["A", "B+", "B", "C+", "C", "D+", "D", "F"];
 const Rate = [
   {
@@ -36,21 +48,55 @@ const RateIcon = [Worst, Bad, So, Good, Excellent];
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 2rem 4rem;
-  min-width: 86%;
+  margin: 0 3rem 4rem;
+  width: 86%;
 `;
 
 const DetailTitle = styled.label`
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  margin: 1.2rem 2rem 1.2rem 0;
   color: ${(props) => props.theme.mainText};
+  display: ${(props) => props.description ? "grid" : "flex"};
 
   span {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: #bdbdbd;
+    font-weight: 500;
+  }
+
+  div {
+    display: flex;
   }
 `;
+
+const RequiredDot = styled.div`
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: 0.4rem;
+  background: #EEA99A;
+  border-radius: 100%;
+`
+
+const RecommendReviewContainer = styled.div`
+  display: ${props => props.isShow ? "inline-flex" : "none"};
+  flex-flow: wrap;
+  margin: -1rem 0 2.4rem -1rem;
+  transition: all 0.3s ease-in-out;
+
+  > * {
+    margin: 1rem 0 0 1rem;
+  }
+`
+
+const WordTag = styled.button`
+  font-size: 1.4rem;
+  color: #2F80ED;
+  padding: 0.1rem 0.8rem;
+  background: #F1F6FE;
+  border: 0.1rem solid #2F80ED;
+  border-radius: 0.4rem;
+  width: fit-content;
+`
 
 const Warning = styled(DetailTitle)`
   margin-left: 1.2rem;
@@ -64,7 +110,6 @@ const FormTitle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
 `;
 
 const ReviewField = styled.textarea`
@@ -73,10 +118,11 @@ const ReviewField = styled.textarea`
   border-radius: 1rem;
   padding: 1.2rem 1.6rem;
   height: 14rem;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: "Kanit", arial, sans-serif;
   resize: none;
-  margin-bottom: 2.8rem;
+  margin-top: 1.4rem;
+  margin-bottom: 2.4rem;
   white-space: pre-wrap;
   overflow-wrap: break-word;
 
@@ -87,8 +133,9 @@ const ReviewField = styled.textarea`
 `;
 
 const ScoreTitle = styled.p`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   margin-right: 1.2rem;
+  margin: 0;
   color: ${(props) => props.theme.mainText};
 `;
 
@@ -96,7 +143,16 @@ const ScoreBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 1.6rem;
+  }
 `;
+
+const ScoreContainer = styled.div`
+  margin-top: 1.4rem;
+  margin-bottom: 2.4rem;
+` 
 
 const GradeButton = styled.div`
   -webkit-tap-highlight-color: transparent;
@@ -147,15 +203,14 @@ const GradeBar = styled.div`
 const Input = styled.input`
   background-color: ${(props) => props.theme.body};
   border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 1rem;
+  border-radius: 0.6rem;
   height: 3.4rem;
-  width: ${(props) => (props.password ? 9 : 20)}rem;
-  margin-top: ${(props) => (props.password ? "1.2rem" : 0)};
-  align-self: ${(props) => (props.password ? "flex-start" : "center")};
+  width: ${(props) => (props.small ? 9 : 20)}rem;
+  align-self: ${(props) => (props.small ? "flex-start" : "center")};
   padding: 1.2rem 1.6rem;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: "Kanit", arial, sans-serif;
-
+  -webkit-appearance: none;
   color: ${(props) => props.theme.bodyText};
   &::placeholder {
     color: ${(props) => props.theme.placeholderText};
@@ -163,37 +218,88 @@ const Input = styled.input`
 `;
 
 const InputContainer = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-flow: wrap;
   align-items: center;
-  margin: 2rem 0;
+  margin: -1.2rem 0 3rem -1.9rem;
+
+  > * {
+    margin: 1.2rem 0 0 1.9rem;
+  }
 `;
 
+const RadioGroupCustom = styled(RadioGroup)`
+  &.MuiFormGroup-root {
+    flex-direction: row;
+
+    .MuiTypography-body1 {
+      font-family: "Kanit";
+      font-size: 1.6rem;
+      color: ${(props) => props.theme.mainText};
+      font-weight: 500;
+    }
+
+    .MuiSvgIcon-root {
+      height: 20px;
+      width: 20px;
+    }
+
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: #2f80ed;
+    }
+
+    .MuiRadio-root {
+        color: ${(props) => props.theme.placeholderText}
+    }
+  }
+`
+
 const Caution = styled.div`
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: ${(props) => props.theme.mainText};
   font-weight: 500;
   text-align: center;
   align-self: center;
 `;
 
+const CopyInputContainer = styled.div`
+  width: fit-content;
+
+  input {
+    border-radius: 0.6rem 0 0 0.6rem;
+    border-right: 0;
+  }
+`
+
+const PasteButton = styled.button`
+  background: #2F80ED;
+  border: 0.1rem solid #2F80ED;
+  padding: 0.4rem 1.6rem;
+  border-radius: 0 0.6rem 0.6rem 0;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+`
+
 const Button = styled.button`
   font-family: "Kanit", arial, sans-serif;
   ${(props) => props.theme.lightButton}
-  padding: 0.2rem 1.8rem;
+  background-color: transparent;
+  color: #2f80ed;
+  border: 1px solid #2f80ed;
+  padding: 0.2rem 1.4rem;
   border-radius: 0.6rem;
   font-size: 1.4rem;
   font-weight: 500;
-  border-width: 0;
   cursor: pointer;
+  align-self: flex-start;
 `;
 
 const ReviewButton = styled(Button)`
-  padding: 0.4rem 2.4rem;
-  width: 12.2rem;
+  padding: 0.3rem 1.6rem;
   color: white;
   background-color: #2f80ed;
-  font-size: 2rem;
+  font-size: 1.8rem;
   align-self: center;
   margin: 1rem 1rem;
   display: flex;
@@ -252,7 +358,7 @@ const ModalActions = styled.div`
 
 const Rating = styled.div`
   display: flex;
-  width: 24rem;
+  width: 18rem;
   justify-content: space-between;
 `;
 
@@ -261,6 +367,8 @@ const RateContainer = styled.div`
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   svg {
+    width: 3rem;
+    height: 3rem;
     fill: transparent;
     #outer,
     #mouth {
@@ -319,9 +427,8 @@ const RateContainer = styled.div`
 
 const CheckboxContainer = styled.div`
   display: flex;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   align-items: center;
-  margin: 1rem 0;
   text-align: left;
   color: ${(props) => (props.warning ? "#EB5757" : props.theme.mainText)};
   cursor: pointer;
@@ -352,6 +459,27 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
+// const SemanticText = styled(DetailTitle)`
+//   span {
+//     color: #9ac1ee;
+//   }
+// `
+
+// function Debounce(func, wait, immediate){
+//   var timeout;
+//   return function() {
+//     var context = this, args = arguments;
+//     var later = function() {
+//       timeout = null;
+//       if (!immediate) func.apply(context, args);
+//     };
+//     var callNow = immediate && !timeout;
+//     clearTimeout(timeout);
+//     timeout = setTimeout(later, wait);
+//     if (callNow) func.apply(context, args);
+//   }
+// }
+
 const ReviewForm = (props) => {
   const { classID } = props;
 
@@ -360,8 +488,9 @@ const ReviewForm = (props) => {
   const [isDone, setIsDone] = useState(false);
   const [showReviewModal, setReviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [recommendWord, setRecommendWord] = useState(false);
   const initialForm = {
-    classID,
+    classId: classID,
     text: "",
     author: "",
     grade: -1,
@@ -371,6 +500,10 @@ const ReviewForm = (props) => {
       homework: -1,
       interest: -1,
     },
+    year: "",
+    sec: "",
+    semester: "",
+    recap: "",
   };
   const initialChecklist = {
     rude: false,
@@ -390,13 +523,13 @@ const ReviewForm = (props) => {
   const [form, setForm] = useState(initialForm);
   const [checklist, setChecklist] = useState(initialChecklist);
   const [require, setRequire] = useState(initialRequire);
+  // const [semantic, setSemantic] = useState('')
   // modal(showReviewModal);
 
   const handleCloseAlert = () => {
     if (isDone) {
       // back("details");
-
-      route(`${baseroute}/${classID}`);
+      navigateToClassPage(classID)
       setIsDone(false);
     }
     setReviewModal(false);
@@ -452,13 +585,17 @@ const ReviewForm = (props) => {
   const sendReview = () => {
     if (!isLoading) {
       setIsLoading(true);
-      APIs.createReview(form, () => {
+      console.log(form)
+      APIs.createReview({
+        ...form,
+        year: parseInt(form.year, 10),
+        sec: parseInt(form.sec, 10),
+        semester: parseInt(form.semester, 10)
+      }, () => {
         setIsLoading(false);
         setIsDone(true);
-        setForm({ ...initialForm, classID });
+        setForm({ ...initialForm, classId: classID });
         setChecklist({ ...initialChecklist });
-        // back("details");
-        // route(`${baseroute}/${classID}`, true);
       });
     }
   };
@@ -468,12 +605,50 @@ const ReviewForm = (props) => {
     if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 4) {
       newForm.auth = e.target.value;
     }
+    
     setForm(newForm);
   };
 
+  // const pasteURL = () => {
+  //   const pasteTarget = document.getElementById("recap-field");
+  //   navigator.clipboard.readText().then(clipText => {
+  //     pasteTarget.value = clipText
+  //     setForm({...form, recap: clipText })
+  //   });
+  // } 
+
+  const addWordToReview = (word) => {
+    let review = form.text
+    if(review !== "")
+      setForm({...form, text: `${review} ${word}`})
+    else
+      setForm({...form, text: `${word}`})
+  }
+  // const postSetiment = async (value) => {
+  //   try {
+  //     const res = await axios.post("https://model-datamining.herokuapp.com/predict", {
+  //       text: value
+  //     })
+  //     console.log(res)
+  //     setSemantic(res.data.result.type)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  const handleOnChangeNumberField = (e, field) => {
+    let value = e.target.value;
+    if(/^[0-9]*$/.test(value)){
+      setForm({ ...form, [field]:  value});  
+    } else {
+      setForm({ ...form });
+    }
+    
+  }
+  
   const handleOnchange = (e, field) => {
     let value = e.target.value;
-    if (/^\s/.test(value)) {
+    if (/^\s/.test(value)){
       value = "";
     }
     setForm({ ...form, [field]: value });
@@ -489,13 +664,12 @@ const ReviewForm = (props) => {
       <FormTitle>
         <DetailTitle for="review-field">
           รีวิววิชานี้
+          <RequiredDot />
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
         </DetailTitle>
         <Button
           onClick={() => {
-            if (typeof window !== "undefined") window.scrollTo(0, 0);
-            // back("details");
-            route(`${baseroute}/${classID}`);
+            navigateToClassPage(classID)
           }}
         >
           ย้อนกลับ
@@ -506,34 +680,50 @@ const ReviewForm = (props) => {
         placeholder="เขียนรีวิว..."
         value={form.text}
         onChange={(e) => handleOnchange(e, "text")}
+        onFocus={() => {setRecommendWord(true)}}
+        tabindex={0}
         id="review-field"
       />
+      <RecommendReviewContainer isShow={recommendWord}>
+        {
+          RecommendWords.map((word, index) => {
+            return (
+              <WordTag onClick={() => addWordToReview(word)} key={index}>{word}</WordTag>
+            )
+          })
+        }
+      </RecommendReviewContainer>
+     {/* <SemanticText>รีวิวนี้มีความหมายในเชิง : <span>{semantic.toUpperCase() || "กรุณาพิมพ์รีวิวก่อน..."}</span></SemanticText> */}
       <DetailTitle>
         ให้คะแนนความพอใจวิชา
+        <RequiredDot />
         <Warning required={require.stats}>กรุณาเลือกทุกหัวข้อ</Warning>
       </DetailTitle>
-      {Rate.map((item, key) => (
-        <ScoreBar key={key}>
-          <ScoreTitle>{item.title}</ScoreTitle>
-          <Rating>
-            {RateIcon.map((Rate, key_rate) => (
-              <RateContainer
-                key={key_rate}
-                onClick={(e) => {
-                  e.preventDefault();
-                  rate(item, key_rate);
-                }}
-                selected={form.stats[item.id] - 1 === key_rate}
-              >
-                <Rate bgColor={props.theme.body} />
-              </RateContainer>
-            ))}
-          </Rating>
-        </ScoreBar>
-      ))}
+      <ScoreContainer>
+        {Rate.map((item, key) => (
+          <ScoreBar key={key}>
+            <ScoreTitle>{item.title}</ScoreTitle>
+            <Rating>
+              {RateIcon.map((Rate, key_rate) => (
+                <RateContainer
+                  key={key_rate}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    rate(item, key_rate);
+                  }}
+                  selected={form.stats[item.id] - 1 === key_rate}
+                >
+                  <Rate bgColor={props.theme.body} />
+                </RateContainer>
+              ))}
+            </Rating>
+          </ScoreBar>
+        ))}
+      </ScoreContainer>
       <InputContainer>
         <DetailTitle>
           เกรดที่ได้
+          <RequiredDot />
           <Warning required={require.grade}>กรุณาเลือกเกรด</Warning>
         </DetailTitle>
         <GradeBar>
@@ -554,6 +744,7 @@ const ReviewForm = (props) => {
       <InputContainer>
         <DetailTitle for="author-field">
           นามปากกา
+          <RequiredDot />
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
         </DetailTitle>
         <Input
@@ -565,13 +756,73 @@ const ReviewForm = (props) => {
         />
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="pin-field">
-          ตัวเลข 4 หลัก
-          <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning> <br />
+        <DetailTitle for="year-field">
+          ปีการศึกษาที่เรียน
+        </DetailTitle>
+        <Input
+          small
+          placeholder="เช่น 64"
+          value={form.year}
+          onChange={(e) => handleOnChangeNumberField(e, "year")}
+          maxLength={2}
+          id="year-field"
+        />
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="sec-field">
+          หมู่เรียน
+        </DetailTitle>
+        <Input
+          small
+          placeholder="ใส่เซค"
+          value={form.sec}
+          onChange={(e) => handleOnChangeNumberField(e, "sec")}
+          id="sec-field"
+        />
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="semester-field">
+          เทอม
+        </DetailTitle>
+        <RadioGroupCustom aria-label="semester" name="semester" value={form.semester} onChange={(e) => handleOnchange(e, "semester")}>
+          <FormControlLabel value="1" control={<Radio inputProps={{ 'aria-label': 'semester-1' }} />} label="ต้น" />
+          <FormControlLabel value="2" control={<Radio inputProps={{ 'aria-label': 'semester-2' }} />} label="ปลาย" />
+          <FormControlLabel value="3" control={<Radio inputProps={{ 'aria-label': 'semester-summer' }} />} label="ฤดูร้อน" />
+        </RadioGroupCustom>
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="recap-field" description>
+          ลิงก์สรุปวิชา
+          <span>ควรใส่ลายน้ำเพื่อป้องกันการคัดลอก</span>
+        </DetailTitle>
+        <Input
+          placeholder="วางลิงก์ที่นี่"
+          value={form.recap}
+          onChange={(e) => handleOnchange(e, "recap")}
+          id="recap-field"
+        />
+        {/* <CopyInputContainer>
+          <Input
+            type="text"
+            placeholder="วางลิงก์ที่นี่หรือกดปุ่มวาง"
+            value={form.recap}
+            onChange={(e) => handleOnchange(e, "recap")}
+            id="recap-field"
+          />
+          <PasteButton onClick={pasteURL}>วาง</PasteButton>
+        </CopyInputContainer> */}
+      </InputContainer>
+      <InputContainer>
+        <DetailTitle for="pin-field" description>
+          <div>
+            ตัวเลข 4 หลัก
+            <RequiredDot />
+          </div>
+          <Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning>
           <span>เพื่อใช้ลบรีวิวในภายหลัง</span>
         </DetailTitle>
         <Input
-          password
+          small
           type="text"
           placeholder="ใส่เลข"
           value={form.auth}

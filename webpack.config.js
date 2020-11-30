@@ -3,7 +3,7 @@ const path = require("path");
 
 module.exports = {
   mode: "development",
-  entry: { client: "./src/index.js", server: "./src/server.js" },
+  entry: { client: "./src/index.js" /*, server: "./src/server.js"*/ },
   output: {
     path: path.join(__dirname, "dist"),
     filename: "[name].js",
