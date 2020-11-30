@@ -278,6 +278,7 @@ const PasteButton = styled.button`
   border-radius: 0 0.6rem 0.6rem 0;
   color: white;
   font-size: 1.6rem;
+  cursor: pointer;
 `
 
 const Button = styled.button`
@@ -608,12 +609,13 @@ const ReviewForm = (props) => {
     setForm(newForm);
   };
 
-  const pasteURL = () => {
-    // const pasteTarget = document.getElementById("recap-field");
-    navigator.clipboard.readText().then(clipText => {
-      setForm({...form, recap: clipText })
-    });
-  } 
+  // const pasteURL = () => {
+  //   const pasteTarget = document.getElementById("recap-field");
+  //   navigator.clipboard.readText().then(clipText => {
+  //     pasteTarget.value = clipText
+  //     setForm({...form, recap: clipText })
+  //   });
+  // } 
 
   const addWordToReview = (word) => {
     let review = form.text
@@ -789,10 +791,17 @@ const ReviewForm = (props) => {
         </RadioGroupCustom>
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="recap-field">
+        <DetailTitle for="recap-field" description>
           ลิงก์สรุปวิชา
+          <span>ควรใส่ลายน้ำเพื่อป้องกันการคัดลอก</span>
         </DetailTitle>
-        <CopyInputContainer>
+        <Input
+          placeholder="วางลิงก์ที่นี่"
+          value={form.recap}
+          onChange={(e) => handleOnchange(e, "recap")}
+          id="recap-field"
+        />
+        {/* <CopyInputContainer>
           <Input
             type="text"
             placeholder="วางลิงก์ที่นี่หรือกดปุ่มวาง"
@@ -801,7 +810,7 @@ const ReviewForm = (props) => {
             id="recap-field"
           />
           <PasteButton onClick={pasteURL}>วาง</PasteButton>
-        </CopyInputContainer>
+        </CopyInputContainer> */}
       </InputContainer>
       <InputContainer>
         <DetailTitle for="pin-field" description>
