@@ -15,6 +15,7 @@ import {
 
 import Details from "../components/common/Detail";
 import {
+  navigateToHomePage,
   navigateToFormReviewPage,
   getClassName,
   getColorHash,
@@ -52,6 +53,17 @@ const Button = styled.div`
 
   &:hover {
     background-color: #9ac1ee;
+  }
+`;
+
+const ButtonLastReview = styled(Button)`
+  border: 0.2rem solid hsl(0, 0%, 46%);
+  background: ${(props) => props.theme.body};
+  color: hsl(0, 0%, 46%);;
+  font-size: 1.6rem;
+  margin-right: 1.5rem;
+  &:hover {
+    background: ${(props) => props.theme.lightColor2};
   }
 `;
 
@@ -100,6 +112,9 @@ const ClassPage = (props) => {
         <ReviewTitle>
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
           <ContainerBtns>
+            <ButtonLastReview onClick={navigateToHomePage}>
+              หน้าแรก
+            </ButtonLastReview>
             <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
           </ContainerBtns>
         </ReviewTitle>
