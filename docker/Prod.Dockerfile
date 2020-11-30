@@ -1,5 +1,5 @@
 # Building stage
-FROM node:14.2-slim as builder
+FROM node:14.2 as builder
 WORKDIR /usr/src/app
 
 ARG GIT_ACCESS_TOKEN_CURL_CONFIG
