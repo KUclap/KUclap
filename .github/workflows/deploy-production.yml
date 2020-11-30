@@ -13,17 +13,15 @@ jobs:
       - name: Web Preact - Publish to Github Packages Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
-          URL_API: ${{ secrets.ENV_URL_API }}
-          SERVER_PORT: ${{ secrets.ENV_SERVER_PORT }}
-          SSR: ${{ secrets.ENV_SSR }}
+          GIT_ACCESS_TOKEN_CURL_CONFIG: ${{ secrets.GIT_ACCESS_TOKEN_CURL_CONFIG }}
         with:
           name: kuclap/kuclap/kuclap-web
           registry: docker.pkg.github.com
           username: ${{ secrets.GIT_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: ./docker/Prod.Dockerfile
-          tags: "1.0.0, latest"
-          buildargs: URL_API,SERVER_PORT,SSR
+          tags: "1.1.0, latest"
+          buildargs: GIT_ACCESS_TOKEN_CURL_CONFIG
       - name: Deploy package to digitalocean
         uses: appleboy/ssh-action@master
         env:
