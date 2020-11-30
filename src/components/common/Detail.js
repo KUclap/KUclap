@@ -2,16 +2,15 @@ import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-const ScoreTitle = styled.p`
-  font-size: 1.7rem;
-  width: ${(props) => (props.score ? "0rem" : "36%")};
-  color: ${(props) =>
-    props.score ? props.theme.placeholderText : props.theme.mainText};
+const ScoreTitle = styled.div`
+  font-size: 1.4rem;
+  width: 40%;
+  color: ${(props) => props.theme.mainText};
 `;
 
 const LinearProgressCustom = styled(LinearProgress)`
   &.MuiLinearProgress-root {
-    height: 1.2rem;
+    height: 0.8rem;
     width: 72%;
     border-radius: 0.6rem;
     margin-left: 1rem;
@@ -31,14 +30,37 @@ const LinearProgressCustom = styled(LinearProgress)`
   }
 `;
 
+const Percent = styled.div`
+  font-size: 1rem;
+  width: 0;
+  color: ${(props) => props.theme.placeholderText};
+`
+
 const ScoreContainter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
+  &:not(:first-child) {
+    margin-top: 1.4rem;
+  }
+
   span {
     display: flex;
   }
+`;
+
+const Details = styled.div`
+  width: 86%;
+  margin: 0 2.4rem;
+`;
+
+const DetailTitle = styled.div`
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 600;
+  color: ${(props) =>
+    props.desc ? props.theme.placeholderText : props.theme.mainText};
 `;
 
 const ScoreBar = styled.div`
@@ -48,20 +70,10 @@ const ScoreBar = styled.div`
   padding-right: ${(props) => (props.title ? "9%" : 0)};
   justify-content: ${(props) =>
     props.title ? "space-between" : "space-evenly"};
-`;
 
-const Details = styled.div`
-  width: 86%;
-  margin: 0 2.4rem;
-`;
-
-const DetailTitle = styled.p`
-  font-size: 2rem;
-  margin: 1.2rem 0;
-  font-weight: 600;
-  color: ${(props) =>
-    props.desc ? props.theme.placeholderText : props.theme.mainText};
-  padding: ${(props) => (props.desc ? "0 1rem" : "0")};
+  ${DetailTitle} {
+    padding-left: 1rem;
+  }
 `;
 
 const Detail = ({ score }) => {
@@ -83,9 +95,9 @@ const Detail = ({ score }) => {
             colorRight="#F0C3F7"
             value={score ? score.homework : 0}
           />
-          <ScoreTitle score>
+          <Percent>
             {score ? Number(score.homework.toFixed(0)) : 0}%
-          </ScoreTitle>
+          </Percent>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
@@ -97,9 +109,9 @@ const Detail = ({ score }) => {
             colorRight="#B4D9F3"
             value={score ? score.interest : 0}
           />
-          <ScoreTitle score>
+          <Percent>
             {score ? Number(score.interest.toFixed(0)) : 0}%
-          </ScoreTitle>
+          </Percent>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>
@@ -111,9 +123,9 @@ const Detail = ({ score }) => {
             colorRight="#F6DEA2"
             value={score ? score.how : 0}
           />
-          <ScoreTitle score>
+          <Percent>
             {score ? Number(score.how.toFixed(0)) : 0}%
-          </ScoreTitle>
+          </Percent>
         </ScoreBar>
       </ScoreContainter>
     </Details>

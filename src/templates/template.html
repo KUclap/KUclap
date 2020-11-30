@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
   <head>
     <meta charset="utf-8" />
@@ -8,11 +9,11 @@
     <meta property="fb:app_id" content="784451072347559" />
     <% if (htmlWebpackPlugin.options.isClassPage) { %>
     <title>
-      รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap
+      รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก. - KUclap
     </title>
     <meta
       name="title"
-      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก. - KUclap"
     />
     <meta
       name="description"
@@ -26,7 +27,7 @@
     <meta property="og:url" content="{CLASS_URL}" />
     <meta
       property="og:title"
-      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก. - KUclap"
     />
     <meta
       property="og:description"
@@ -44,7 +45,7 @@
     <meta property="twitter:url" content="{CLASS_URL}" />
     <meta
       property="twitter:title"
-      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก."
+      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก."
     />
     <meta
       property="twitter:description"
@@ -57,11 +58,11 @@
     <% } else if (htmlWebpackPlugin.options.isReviewPage) { %>
     <title>
       {REVIEW_TEXT} โดย {REVIEW_AUTHOR} - รีวิววิชา {CLASS_NAME_TH}
-      {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap
+      {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก. - KUclap
     </title>
     <meta
       name="title"
-      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก. - KUclap"
     />
     <meta
       name="description"
@@ -75,7 +76,7 @@
     <meta property="og:url" content="{REVIEW_URL}" />
     <meta
       property="og:title"
-      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก. - KUclap"
+      content="รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก. - KUclap"
     />
     <meta
       property="og:description"
@@ -90,7 +91,7 @@
     <meta property="twitter:url" content="{REVIEW_URL}" />
     <meta
       property="twitter:title"
-      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} ({CLASS_ID}) มก."
+      content="KUclap - รีวิววิชา {CLASS_NAME_TH} {CLASS_NAME_EN} (รหัสวิชา {CLASS_ID}) มก."
     />
     <meta
       property="twitter:description"
@@ -145,16 +146,22 @@
     />
 
     <% } %> <% preact.headEnd %>
+    <!-- {CURRENT_CLASS} -->
     <!-- <script data-ad-client="ca-pub-7672740678800501" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
   </head>
   <body>
     <% preact.bodyEnd %>
+    <script>
+      window.__GLOBAL_STATE__ = {GLOBAL_STATE} || {};
+    </script>
+    <!-- EJS -->
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=UA-40932170-4"
     ></script>
     <script>
+    if (document.location.hostname.search("kuclap.com") !== -1) {
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -162,6 +169,28 @@
       gtag("js", new Date());
 
       gtag("config", "UA-40932170-4");
+    }
+    </script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '784451072347559',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v9.0'
+        });
+          
+        FB.AppEvents.logPageView();   
+          
+      };
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
     </script>
   </body>
 </html>

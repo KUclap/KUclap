@@ -3,9 +3,9 @@ node_modules
 /dist
 /*.log
 *.lock
-package-lock.json
 .env*
 TOKEN*.txt
 /ssl
 *.pem
 *.key
+.vscode
