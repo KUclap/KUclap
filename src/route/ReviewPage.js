@@ -54,7 +54,10 @@ const ButtonLastReview = styled.div`
 	display: flex;
 	align-items: center;
 	background: transparent;
-	margin-right: 1.5rem;
+	margin-right: 1rem;
+	border: 0.1rem solid #BDBDBD;
+  padding: 0.2rem 1rem;
+  border-radius: 0.4rem;
 `;
 
 const ContainerBtns = styled.div`
