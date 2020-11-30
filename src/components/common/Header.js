@@ -1,8 +1,11 @@
 import { h } from "preact";
+import media from 'styled-media-query'
 import styled, { withTheme } from "styled-components";
+
 import { KUClap } from "../utility/Icons";
+import { navigateToHomePage } from "../utility/helper";
+import SocialIcons from './SocialIcons'
 import ThemeToggleButton from "./ThemeToggleButton";
-import { navigateToHome } from "../utility/helper";
 
 const KUclapText = styled.p`
   font-size: 4.6rem;
@@ -28,11 +31,34 @@ const DetailKUclap = styled.span`
   font-weight: 400;
 `;
 
+const UtilitysContainer = styled.div`
+  width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 1.6rem;
+  left: 3rem;
+
+  ${media.greaterThan('medium')`
+    top: 1.6rem;
+    right: 9rem;
+    left: auto;
+  `}
+`
+
+
+
 const Header = ({ theme, toggleTheme }) => {
   return (
     <>
+
+      
+      <UtilitysContainer>
+       <SocialIcons />
+      </UtilitysContainer>
       <ThemeToggleButton onClick={toggleTheme} right />
-      <KUclapText onClick={navigateToHome}>
+      <KUclapText onClick={navigateToHomePage}>
         <KUClap bgColor={theme.body} textColor={theme.bodyText} />
         <span>
           <b>KU</b>CLAP

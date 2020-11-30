@@ -24,7 +24,6 @@ class App extends Component {
     let theme = "light";
     if (typeof localStorage === "object")
       if (Object.keys(themes).includes(localStorage.theme)) {
-        console.log(localStorage.theme, "theme")
         theme = localStorage.getItem('theme');
       } else if (
         typeof window !== "undefined" &&

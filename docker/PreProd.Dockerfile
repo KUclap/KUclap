@@ -27,4 +27,4 @@ COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/package.json .
 
 EXPOSE 8088 8088
-CMD [ "npm", "run", "start:server-preprod-babel"]
+CMD [ "npm", "run", "start:server-preprod"]

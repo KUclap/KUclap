@@ -1,10 +1,9 @@
 import { h } from "preact";
-import { route } from "preact-router";
 import { useContext } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
-import { NoMoreReview, NoReview } from "../components/utility/Icons";
-import baseroute from "../components/utility/baseroute";
+import { getHelmet } from "../components/utility/helmet";
+import { NoMoreReview, NoReview, HomeIcon } from "../components/utility/Icons";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
@@ -16,7 +15,8 @@ import {
 
 import Details from "../components/common/Detail";
 import {
-  navigateToHome,
+  navigateToHomePage,
+  navigateToFormReviewPage,
   getClassName,
   getColorHash,
   getDetailFromLabel,
@@ -56,6 +56,14 @@ const Button = styled.div`
   }
 `;
 
+const ButtonLastReview = styled.div`
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	background: transparent;
+	margin-right: 1.5rem;
+`;
+
 const ContainerBtns = styled.div`
   margin: 0;
   display: flex;
@@ -81,20 +89,13 @@ const ClassPage = (props) => {
   } = useContext(ReviewFetcherContext);
 
   const handleNewReview = () => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
-    route(`${baseroute}/form/create/${classID}`);
+    navigateToFormReviewPage(classID)
     setUnderFlow(false);
   };
 
   return (
     <PageTemplate
-      content={{
-        title: `รีวิววิชา ${getDetailFromLabel(selected.label).nameTH} ${
-          getDetailFromLabel(selected.label).nameEN
-        } (${getDetailFromLabel(selected.label).classID}) มก. - KUclap`,
-        description: `รีวิววิชา ${selected.label} - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
-        image: "https://www.kuclap.com/assets/img/meta-og-image.png",
-      }}
+      content={getHelmet("CLASS", getDetailFromLabel(selected.label))}
       {...props}
     >
       <SubjectTitle color={getColorHash(classID)}>
@@ -108,6 +109,9 @@ const ClassPage = (props) => {
         <ReviewTitle>
           <DetailTitle>รีวิวทั้งหมด</DetailTitle>
           <ContainerBtns>
+            <ButtonLastReview onClick={navigateToHomePage}>
+              <HomeIcon  />
+            </ButtonLastReview>
             <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
           </ContainerBtns>
         </ReviewTitle>

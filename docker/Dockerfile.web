@@ -21,4 +21,4 @@ COPY --from=builder /usr/src/app/build build/
 COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/package.json .
 EXPOSE 8000 8000
-CMD [ "npm", "run", "start:server-stag-babel"]
+CMD [ "npm", "run", "start:server-stag"]

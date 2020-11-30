@@ -1,7 +1,7 @@
 import { route } from "preact-router";
 import baseroute from "./baseroute";
 
-const getDetailFromLabel = (label) => {
+export const getDetailFromLabel = (label) => {
   const list = label.split(" ");
   const detailClass = list.slice(0, 2).concat(list.slice(2).join(" "));
   return {
@@ -13,7 +13,7 @@ const getDetailFromLabel = (label) => {
   };
 };
 
-const getClassName = (label) => {
+export const getClassName = (label) => {
   const labelSplit = label.split(" ");
   let labelName = label;
   if (labelSplit.length > 1) labelSplit.shift();
@@ -21,7 +21,7 @@ const getClassName = (label) => {
   return labelName;
 };
 
-const getColorHash = (inputString) => {
+export const getColorHash = (inputString) => {
   let sum = 0;
   for (let i in inputString) {
     sum += inputString.charCodeAt(i);
@@ -51,8 +51,43 @@ const getColorHash = (inputString) => {
   return hex;
 };
 
-const navigateToHome = () => {
-  route(`${baseroute}/`);
+export const navigateToHomePage = () => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+    route(`${baseroute}/`);
 };
 
-export { getClassName, getColorHash, navigateToHome, getDetailFromLabel };
+export const navigateToClassPage = (classId) => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+    route(`${baseroute}/${classId}`);
+};
+
+export const navigateToReviewPage = (reviewId) => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+  route(`${baseroute}/review/${reviewId}`);
+}
+
+export const navigateToFormReviewPage = (classId) => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+    route(`${baseroute}/form/create/${classId}`);
+}
+
+export const getMobileOS = () => {
+  if(typeof window !== undefined){
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      // Windows Phone must come first because its UA also contains "Android"
+    if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+    }
+
+    if (/android/i.test(userAgent)) {
+        return "android";
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "ios";
+    }
+  }
+  return "unknown";
+}

@@ -14,6 +14,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import Header from "./Header";
+import Helmet from './Helmet'
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  max-width: 86rem;
+  max-width: 72rem;
   margin: 0 auto;
   position: relative;
 `;
@@ -79,13 +80,14 @@ const SelectCustom = styled(Select)`
 
 const GoTopCustomStyle = styled.a`
   position: fixed;
-  z-index: 0;
+  z-index: 99;
   right: 2.5rem;
   bottom: 2.5rem;
   cursor: pointer;
   transition: all 0.5s ease;
-  -webkit-tap-highlight-color: transparent;
-
+  user-select: none;
+  /* -webkit-tap-highlight-color: transparent; */
+  
   ${(props) =>
     props.isBottomViewport
       ? css`
@@ -107,7 +109,7 @@ const PageTemplate = ({
   children,
   isFormPage,
   classes,
-  // content,
+  content,
 }) => {
   const { state: selected, dispatch: dispatchSelected } = useContext(
     SelectContext
@@ -157,6 +159,7 @@ const PageTemplate = ({
 
   return (
     <Container name="top">
+      <Helmet content={content} />
       <GoTopCustomStyle aria-label="go-to-top" isBottomViewport={isBottomViewport} href="#top">
         <GoToTop />
       </GoTopCustomStyle>
@@ -181,5 +184,3 @@ const PageTemplate = ({
 };
 
 export default withTheme(PageTemplate);
-
-

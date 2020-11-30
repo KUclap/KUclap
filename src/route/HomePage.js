@@ -2,6 +2,7 @@ import { h } from "preact";
 import { useContext } from "preact/hooks";
 import { withTheme } from "styled-components";
 
+import { getHelmet } from "../components/utility/helmet";
 import { NoMoreReview, NoReview } from "../components/utility/Icons";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
@@ -32,11 +33,7 @@ const HomePage = (props) => {
 
   return (
     <PageTemplate
-      content={{
-        title: `KUclap : เว็บไซต์ค้นหาและแบ่งปันรีวิววิชาบูรณาการ มก.`,
-        description: `kuclap.com - แหล่งรวม ค้นหารีวิว เขียนรีวิว คำแนะนำ วิชาบูรณาการ วิชาบูร วิชาบูรฯ วิชาเสรี วิชาเลือก วิชาศึกษาทั่วไป รีวิว หน่วยกิต ชั่วโมงเรียน อาจารย์ การบ้าน ม.เกษตร มหาวิทยาลัยเกษตรศาสตร์ มก. KU - KUclap`,
-        image: "https://www.kuclap.com/assets/img/meta-og-image.png",
-      }}
+      content={getHelmet("HOME")}
       {...props}
     >
       <LastReview>
