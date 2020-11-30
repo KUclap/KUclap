@@ -35,7 +35,7 @@ const Button = styled.div`
 	color: #fff;
 	padding: 0.2rem 1.8rem;
 	border-radius: 0.6rem;
-	font-size: 2rem;
+	font-size: 1.6rem;
 	cursor: pointer;
 
 	&:active {
@@ -51,7 +51,7 @@ const ButtonLastReview = styled(Button)`
 	border: 0.2rem solid #979797;
 	background: ${(props) => props.theme.body};
 	color: #979797;
-	font-size: 1.7rem;
+	font-size: 1.6rem;
 	margin-right: 1.5rem;
 	&:hover {
 		background: ${(props) => props.theme.lightColor2};
