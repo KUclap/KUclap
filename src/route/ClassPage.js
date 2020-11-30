@@ -130,7 +130,6 @@ const ClassPage = (props) => {
                   )
               )
             : null}
-            <NoMoreReview />
         </AdaptorReviews>
         {(loading || loadMore) && !underflow ? (
           <>

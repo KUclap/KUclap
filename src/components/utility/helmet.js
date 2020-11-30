@@ -62,7 +62,7 @@ export const getTitle = (page, subject, review) => {
 			if(review && subject){ 
 				return `${review.text} โดย ${review.author} - รีวิววิชา ${subject.nameTH} ${subject.nameEN} (รหัสวิชา ${subject.classID}) มก. - KUclap`
 			} else if (review) {
-				return `${review.text} โดย ${review.author} - รีวิววิชา ${review.classId} มก. - KUclap`
+				return `${review?.text || `กำลังโหลดข้อมูล`} โดย ${review?.author || `กำลังโหลดข้อมูล`} - รีวิววิชา ${review.classId} มก. - KUclap`
 			} else if (subject) {
 				return `ไม่มีข้อมูลรีวิวในระบบ - รีวิววิชา ${subject.nameTH} ${subject.nameEN} (รหัสวิชา ${subject.classID}) มก. - KUclap`
 			} 
