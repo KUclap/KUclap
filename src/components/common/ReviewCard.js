@@ -459,6 +459,13 @@ const ShareSelect = styled.div`
   }
 `
 
+const SectionLine = styled.div`
+  height: 0.1rem;
+  width: 100%;
+  background-color: ${(props) => props.theme.lightColor};
+  margin-top: 1rem;
+`
+
 const ReviewCard = (props) => {
   const {
     currentRoute,
