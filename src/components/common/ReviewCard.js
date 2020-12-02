@@ -9,9 +9,9 @@ import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
+import parseDate from "../utility/parseDate";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
-
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
 const Container = styled.div`
@@ -459,28 +459,6 @@ const ShareSelect = styled.div`
   }
 `
 
-const SectionLine = styled.div`
-  height: 0.1rem;
-  width: 100%;
-  background-color: ${(props) => props.theme.lightColor};
-  margin-top: 1rem;
-`
-
-const months = [
-  "ม.ค.",
-  "ก.พ.",
-  "มี.ค.",
-  "เม.ย.",
-  "พ.ค.",
-  "มิ.ย.",
-  "ก.ค.",
-  "ส.ค.",
-  "ก.ย.",
-  "ต.ค.",
-  "พ.ย.",
-  "ธ.ค.",
-];
-
 const ReviewCard = (props) => {
   const {
     currentRoute,
@@ -536,16 +514,6 @@ const ReviewCard = (props) => {
   const [showShareModal, setShareModal] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const parseDate = (dateUTC) => {
-    if(dateUTC){
-      let date = dateUTC.split("-");
-      let day = date[2].slice(0, 2);
-      let month = months[parseInt(date[1]) - 1];
-      let year = date[0];
-      if (day[0] === "0") day = day[1];
-      return `${day} ${month} ${year}`;
-    }
-  };
 
   useEffect(() => {
     dispatchShowModal({ type: "setter", value: showReportModal });
