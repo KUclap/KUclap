@@ -15,6 +15,7 @@ import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
+import { PrimaryButton, SecondaryButton } from "./DesignSystemStyles";
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -281,37 +282,18 @@ const PasteButton = styled.button`
   cursor: pointer;
 `
 
-const Button = styled.button`
-  font-family: "Kanit", arial, sans-serif;
-  ${(props) => props.theme.lightButton}
-  background-color: transparent;
-  color: #2f80ed;
-  border: 1px solid #2f80ed;
+const Button = styled(SecondaryButton)`
   padding: 0.2rem 1.4rem;
-  border-radius: 0.6rem;
   font-size: 1.4rem;
-  font-weight: 500;
-  cursor: pointer;
-  align-self: flex-start;
 `;
 
-const ReviewButton = styled(Button)`
-  padding: 0.3rem 1.6rem;
-  color: white;
-  background-color: #2f80ed;
-  font-size: 1.8rem;
-  align-self: center;
-  margin: 1rem 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline: none;
-`;
-
-const CancelButton = styled(Button)`
-  padding: 0.4rem 1.2rem;
+const ReviewButton = styled(PrimaryButton)`
   font-size: 2rem;
-  text-align: center;
+  margin: 1rem 1rem;
+`;
+
+const CancelButton = styled(SecondaryButton)`
+  font-size: 2rem;
   margin: 1rem 1rem;
 `;
 

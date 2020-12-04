@@ -11,6 +11,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
+import { PrimaryButton, SecondaryButton } from "./DesignSystemStyles"
 
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
@@ -206,29 +207,15 @@ const ModalActions = styled.div`
   justify-content: center;
 `;
 
-const ConfirmButton = styled.div`
+const ConfirmButton = styled(PrimaryButton)`
   background-color: #eb5757;
-  align-self: center;
-  color: #fff;
-  height: 3.9rem;
-  border-radius: 0.6rem;
-  font-size: 1.6rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0.3rem 1.6rem;
   margin: 2rem 1.6rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
-const CancelButton = styled(ConfirmButton)`
-  padding: 0.3rem 1.6rem;
-  font-size: 1.6rem;
-  text-align: center;
+const CancelButton = styled(SecondaryButton)`
+  margin: 2rem 1.6rem 0;
   color: ${(props) => props.theme.placeholderText};
-  border: 0.1rem solid ${(props) => props.theme.placeholderText};
-  background-color: transparent;
+  box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.placeholderText};
 `;
 
 const NumberAction = styled.span`
@@ -236,16 +223,14 @@ const NumberAction = styled.span`
   white-space: nowrap;
 `;
 
-const MoreButton = styled.button`
-  background: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const MoreButton = styled(SecondaryButton)`
   border-radius: 15rem;
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+  box-shadow: none;
   color: ${(props) => props.theme.cardDetailsText};
   padding: ${(props) => props.fullButton ? "0 0.3rem 0 0.8rem" : 0};
-  cursor: pointer;
+  font-weight: normal;
+  font-size: inherit;
 `
 
 const Menu = styled.div`
@@ -380,19 +365,18 @@ const CircularProgressCustom = styled(CircularProgress)`
   }
 `;
 
-const ButtonWithIcon = styled.button`
-  display: flex;
-  align-items: center;
+const ButtonWithIcon = styled(SecondaryButton)`
   border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+  box-shadow: none;
   border-radius: 1.5rem;
   padding: 0 0.8rem;
-  cursor: pointer;
-  user-select: none;
-  background: none;
   color: ${(props) => props.theme.cardDetailsText};
+  font-weight: normal;
+  font-size: inherit;
 
   svg {
     margin-left: 0.3rem;
+
     path {
       fill: ${(props) => props.theme.cardDetailsText};
     }

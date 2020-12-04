@@ -36,35 +36,19 @@ import {
   NoMoreCustom,
   SubjectTitle,
 } from "../components/common/FetcherComponents";
+import { PrimaryButton, SecondaryButton } from "../components/common/DesignSystemStyles";
 
-const Button = styled.div`
-  background-color: #2f80ed;
-  color: #fff;
-  padding: 0.3rem 1.8rem;
-  border-radius: 0.4rem;
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  &:active {
-    background-color: #2f80ed;
-  }
-
-  &:hover {
-    background-color: #9ac1ee;
-  }
-`;
-
-const ButtonLastReview = styled.div`
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	background: transparent;
+const ButtonLastReview = styled(SecondaryButton)`
 	margin-right: 1rem;
-  border: 0.1rem solid #BDBDBD;
+  box-shadow: inset 0 0 0 0.1rem ${props => props.theme.placeholderText};
   padding: 0.2rem 1rem;
-  border-radius: 0.4rem;
+  align-self: unset;
+
+  svg {
+    path {
+      stroke: ${props => props.theme.placeholderText}
+    }
+  }
 `;
 
 const ContainerBtns = styled.div`
@@ -115,7 +99,7 @@ const ClassPage = (props) => {
             <ButtonLastReview onClick={navigateToHomePage}>
               <HomeIcon  />
             </ButtonLastReview>
-            <Button onClick={handleNewReview}>รีวิววิชานี้</Button>
+            <PrimaryButton onClick={handleNewReview}>รีวิววิชานี้</PrimaryButton>
           </ContainerBtns>
         </ReviewTitle>
 
@@ -148,7 +132,7 @@ const ClassPage = (props) => {
                 <NoMoreCustom>
                   {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
                 </NoMoreCustom>
-                <Button onClick={handleNewReview}>เพิ่มรีวิว</Button>
+                <PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
               </ContainerNoMore>
               <Footer />
             </>

@@ -16,6 +16,8 @@ body {
 button {
   font-family: 'Kanit', arial, sans-serif;
   font-size: inherit;
+  border: 0;
+  user-select: none;
 }
 
 * {
