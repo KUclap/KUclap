@@ -11,9 +11,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
-import { PrimaryButton, SecondaryButton } from "./DesignSystemStyles"
-
-import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal } from "./DesignSystemStyles"
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -22,6 +20,29 @@ const Container = styled.div`
   padding: 1rem 1.6rem 0.3rem;
   display: flex;
   flex-direction: column;
+
+  ${Modal} {
+    padding: ${(props) =>
+      props.type === "ShareModal" ? "0 1.2rem 2.8rem" : "2.8rem 1.2rem"};
+    font-size: 1.8rem;
+
+    ${(props) => props.type === "ShareModal" && css`
+      & {
+        padding: 0 1.2rem 2.8rem;
+
+        ${media.lessThan("medium")`
+          top: auto;
+          bottom: 0;
+          transform: translate(-50%, 0);
+          width: 100%;
+          max-width: 100%;
+          border-radius: 22px 22px 0px 0px;
+          padding: 0;
+          height: fit-content;
+      `}
+      }
+    `}
+  }
 `;
 
 const Content = styled.p`
@@ -127,56 +148,6 @@ const Actions = styled.div`
   align-items: center;
 `;
 
-const ModalBackdrop = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background-color: hsla(10, 10%, 10%, 50%);
-  display: ${(props) => (props.show === true ? "block" : "none")};
-  z-index: 1;
-  cursor: url(${ic_cancel_white}) 205 205, auto;
-`;
-
-const Modal = styled.div`
-  border: ${(props) =>
-    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.body};
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: ${(props) =>
-    props.type === "ShareModal" ? "0 1.2rem 2.8rem" : "2.8rem 1.2rem"};
-  font-weight: 500;
-  font-size: 1.8rem;
-  line-height: 3.4rem;
-  text-align: center;
-  display: ${(props) => (props.show === true ? "block" : "none")};
-  z-index: 1;
-  max-width: 42rem;
-  width: 84%;
-
-  ${(props) => props.type === "ShareModal" && css`
-        & {
-            padding: 0 1.2rem 2.8rem;
-
-            ${media.lessThan("medium")`
-                top: auto;
-                bottom: 0;
-                transform: translate(-50%, 0);
-                width: 100%;
-                max-width: 100%;
-                border-radius: 22px 22px 0px 0px;
-                padding: 0;
-                height: fit-content;
-            `}
-        }
-    `}
-`;
-
 const ModalHeader = styled.div`
   font-size: 1.8rem;
   font-weight: 500;
@@ -197,14 +168,6 @@ const ModalHeader = styled.div`
       stroke: ${(props) => props.theme.mainText};
     }
   }
-`;
-
-const ModalActions = styled.div`
-  align-self: center;
-  display: flex;
-  flex-direction: row;
-  flex-flow: wrap;
-  justify-content: center;
 `;
 
 const ConfirmButton = styled(PrimaryButton)`

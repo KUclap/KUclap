@@ -11,11 +11,10 @@ import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 import APIs from "../utility/apis";
 import { navigateToClassPage } from '../utility/helper'
 
-import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
-import { PrimaryButton, SecondaryButton } from "./DesignSystemStyles";
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal } from "./DesignSystemStyles";
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -51,6 +50,12 @@ const Container = styled.div`
   flex-direction: column;
   margin: 0 3rem 4rem;
   width: 86%;
+
+  ${Modal} {
+    ${ModalActions} {
+      padding: 1.4rem 0 0;
+    }
+  }
 `;
 
 const DetailTitle = styled.label`
@@ -295,47 +300,6 @@ const ReviewButton = styled(PrimaryButton)`
 const CancelButton = styled(SecondaryButton)`
   font-size: 2rem;
   margin: 1rem 1rem;
-`;
-
-const ModalBackdrop = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background-color: hsla(10, 10%, 10%, 50%);
-  display: ${(props) => (props.show === true ? "block" : "none")};
-  z-index: 1;
-  cursor: url(${ic_cancel_white}) 205 205, auto;
-`;
-
-const Modal = styled.div`
-  border: ${(props) =>
-    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.body};
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 2.8rem 1.2rem;
-  font-weight: 500;
-  font-size: 2rem;
-  line-height: 3.4rem;
-  text-align: center;
-  display: ${(props) => (props.show === true ? "block" : "none")};
-  z-index: 1;
-  max-width: 42rem;
-  width: 84%;
-`;
-
-const ModalActions = styled.div`
-  align-self: center;
-  padding: 1.4rem 0 0;
-  display: flex;
-  flex-direction: row;
-  flex-flow: wrap;
-  justify-content: center;
 `;
 
 const Rating = styled.div`
