@@ -116,18 +116,6 @@ const TextArea = styled.textarea`
   }
 `
 
-const ModalBackdrop = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background-color: hsla(10, 10%, 10%, 50%);
-  display: ${(props) => (props.show === true ? "block" : "none")};
-  z-index: 1;
-  cursor: url(${ic_cancel_white}) 205 205, auto;
-`
-
 const ModalActions = styled.div`
   align-self: center;
   display: flex;
@@ -140,38 +128,21 @@ const ModalActions = styled.div`
   }
 `
 
-const Modal = styled.div`
-  border: ${(props) =>
-    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.body};
+const Backdrop = styled.div`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 2.8rem 1.2rem;
-  font-weight: 500;
-  font-size: 2rem;
-  line-height: 3.4rem;
-  text-align: center;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: hsla(10, 10%, 10%, 50%);
   display: ${(props) => (props.show === true ? "block" : "none")};
   z-index: 1;
-  max-width: 42rem;
-  width: 84%;
-
-  ${Input} {
-    width: 18rem;
-    margin-top: 1.2rem;
-    align-self: flex-start;
-  }
+  cursor: url(${ic_cancel_white}) 205 205, auto;
 `
 
 export {
 	PrimaryButton,
   SecondaryButton,
-  ModalBackdrop,
-  ModalActions,
-  Modal,
   Heading1,
   Heading2,
   Input,
@@ -179,4 +150,6 @@ export {
   BodySmall,
   BodyTiny,
   TextArea,
+  ModalActions,
+  Backdrop
 }

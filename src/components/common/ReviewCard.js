@@ -5,13 +5,12 @@ import styled, { css, withTheme } from "styled-components";
 
 import { Clap, Boo, Share, Facebook, Twitter, Line, CopyLink, Recap, DownArrow, GradeCircle } from "../utility/Icons";
 import { getColorHash, navigateToClassPage, navigateToReviewPage } from "../utility/helper";
-import { ModalContext } from "../../context/ModalContext";
 import { pulse } from "../utility/keyframs";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
-import media from "styled-media-query";
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Input, BodyMedium, BodyTiny, TextArea, BodySmall } from "./DesignSystemStyles"
+import { PrimaryButton, SecondaryButton, ModalActions, Input, BodyMedium, BodyTiny, TextArea, BodySmall } from "./DesignSystemStyles"
+import Modal from './Modal'
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -20,29 +19,6 @@ const Container = styled.div`
   padding: 1rem 1.6rem 0.3rem;
   display: flex;
   flex-direction: column;
-
-  ${Modal} {
-    padding: ${(props) =>
-      props.type === "ShareModal" ? "0 1.2rem 2.8rem" : "2.8rem 1.2rem"};
-    font-size: 1.8rem;
-
-    ${(props) => props.type === "ShareModal" && css`
-      & {
-        padding: 0 1.2rem 2.8rem;
-
-        ${media.lessThan("medium")`
-          top: auto;
-          bottom: 0;
-          transform: translate(-50%, 0);
-          width: 100%;
-          max-width: 100%;
-          border-radius: 22px 22px 0px 0px;
-          padding: 0;
-          height: fit-content;
-      `}
-      }
-    `}
-  }
 `;
 
 const Content = styled(BodyMedium)`
@@ -403,7 +379,6 @@ const ReviewCard = (props) => {
     theme,
   } = props;
 
-  const { dispatch: dispatchShowModal } = useContext(ModalContext);
   const { handleCardDeleted } = useContext(ReviewFetcherContext);
   const {
     counter: clapCounter,
@@ -448,18 +423,6 @@ const ReviewCard = (props) => {
       return `${day} ${month} ${year}`;
     }
   };
-
-  useEffect(() => {
-    dispatchShowModal({ type: "setter", value: showReportModal });
-  }, [showReportModal]);
-
-  useEffect(() => {
-    dispatchShowModal({ type: "setter", value: showEditModal });
-  }, [showEditModal]);
-
-  useEffect(() => {
-    dispatchShowModal({ type: "setter", value: showShareModal });
-  }, [showShareModal]);
 
   useEffect(() => {
     if (typeof window !== "undefined"){
@@ -707,8 +670,10 @@ const ReviewCard = (props) => {
           </ButtonWithIcon>
         </Actions>     
       </CardDetails>
-      <ModalBackdrop show={showReportModal} onClick={closeReportModal} />
-      <Modal show={showReportModal}>
+      <Modal
+        showModal={showReportModal}
+        closeModal={closeReportModal}
+      >
         เหตุผลในการแจ้งลบ
         <Warning>
           {reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}
@@ -729,8 +694,10 @@ const ReviewCard = (props) => {
           </ConfirmButton>
         </ModalActions>
       </Modal>
-      <ModalBackdrop show={showEditModal} onClick={closeEditModal} />
-      <Modal show={showEditModal}>
+      <Modal
+        showModal={showEditModal}
+        closeModal={closeEditModal}
+      >
         กรอกตัวเลข 4 หลักของคุณเพื่อลบรีวิว
         <Warning>
           {!auth.isMatch
@@ -757,8 +724,11 @@ const ReviewCard = (props) => {
           </ConfirmButton>
         </ModalActions>
       </Modal>
-      <ModalBackdrop show={showShareModal} onClick={closeShareModal} />
-      <Modal show={showShareModal} type="ShareModal">
+      <Modal
+        showModal={showShareModal}
+        closeModal={closeShareModal}
+        type="ShareModal"
+      >
         <ModalHeader>
           แบ่งปันรีวิว
           <Share />

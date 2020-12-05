@@ -2,6 +2,7 @@ import { h } from "preact";
 import { useState, useEffect, useRef } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 import { DoneGreen } from "../utility/Icons";
+import { Backdrop } from "./DesignSystemStyles"
 import "animate.css";
 
 const Card = styled.div`
@@ -70,15 +71,19 @@ const AlertComponent = (props) => {
     const timing = setInterval(tick, 1000);
     return () => clearInterval(timing);
   }, []);
+  
   return (
-    <Card onClick={handleClose}>
-      <span className="bounceIn">
-        <DoneGreen />
-      </span>
-      <Thankyou>ขอบคุณสำหรับข้อมูลเพิ่มเติมครับ/ค่ะ</Thankyou>
-      <TextCount>จะปิดหน้านี้ในอีก {count} วินาที</TextCount>
-      <Text>( จิ้มเบาๆ หนึ่งครั้งเพื่อปิด )</Text>
-    </Card>
+    <>
+      <Backdrop show={true} onClick={handleClose} />
+      <Card onClick={handleClose}>
+        <span className="bounceIn">
+          <DoneGreen />
+        </span>
+        <Thankyou>ขอบคุณสำหรับข้อมูลเพิ่มเติมครับ/ค่ะ</Thankyou>
+        <TextCount>จะปิดหน้านี้ในอีก {count} วินาที</TextCount>
+        <Text>( จิ้มเบาๆ หนึ่งครั้งเพื่อปิด )</Text>
+      </Card>
+    </>
   );
 };
 

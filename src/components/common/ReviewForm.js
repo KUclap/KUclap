@@ -5,7 +5,6 @@ import { useContext, useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
 
-import { ModalContext } from "../../context/ModalContext";
 import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
 
 import APIs from "../utility/apis";
@@ -14,7 +13,8 @@ import { navigateToClassPage } from '../utility/helper'
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Heading1, Input, TextArea } from "./DesignSystemStyles";
+import { PrimaryButton, SecondaryButton, ModalActions, Heading1, Input, TextArea } from "./DesignSystemStyles";
+import Modal from './Modal'
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -50,12 +50,6 @@ const Container = styled.div`
   flex-direction: column;
   margin: 0 3rem 4rem;
   width: 86%;
-
-  ${Modal} {
-    ${ModalActions} {
-      padding: 1.4rem 0 0;
-    }
-  }
 
   ${Input} {
     width: ${(props) => (props.small ? 9 : 20)}rem;
@@ -391,8 +385,6 @@ const CircularProgressCustom = styled(CircularProgress)`
 const ReviewForm = (props) => {
   const { classID } = props;
 
-  const { dispatch: dispatchShowModal } = useContext(ModalContext);
-
   const [isDone, setIsDone] = useState(false);
   const [showReviewModal, setReviewModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -441,7 +433,6 @@ const ReviewForm = (props) => {
       setIsDone(false);
     }
     setReviewModal(false);
-    dispatchShowModal({ type: "close" });
   };
 
   const rate = (item, key) => {
@@ -474,7 +465,6 @@ const ReviewForm = (props) => {
     if (AreAllInputsValid) {
       setRequire(initialRequire);
       setReviewModal(true);
-      dispatchShowModal({ type: "open" });
     } else {
       req.text = isReviewEmpty;
       req.stats = isAllStatsNotSelected;
@@ -511,7 +501,6 @@ const ReviewForm = (props) => {
     if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 4) {
       newForm.auth = e.target.value;
     }
-    
     setForm(newForm);
   };
 
@@ -759,29 +748,24 @@ const ReviewForm = (props) => {
         กรุณากรอกข้อมูลให้ครบถ้วน
       </Warning>
       <PrimaryButton onClick={required}>รีวิวเลย !</PrimaryButton>
-      <ModalBackdrop show={showReviewModal} onClick={handleCloseAlert} />
       {isDone ? (
         <Suspense>
           <Alert Close={handleCloseAlert} />
         </Suspense>
       ) : (
-          <Modal show={showReviewModal}>
+      <Modal showModal={showReviewModal} closeModal={handleCloseAlert}>
           เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
           <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
           <ModalActions>
             <SecondaryButton
               onClick={() => {
                 setReviewModal(false);
-                // modal(false);
-                dispatchShowModal({ type: "close" });
               }}
             >
               กลับไปแก้ไข
             </SecondaryButton>
             <PrimaryButton
-              onClick={() => {
-                sendReview();
-              }}
+              onClick={sendReview}
             >
               {isLoading ? (
                 <CircularProgressCustom size="3rem" />
