@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, Share, Facebook, Twitter, Line, CopyLink, Recap, DownArrow, GradeCircle } from "../utility/Icons";
+import { Clap, Boo, Share, Recap, DownArrow, GradeCircle } from "../utility/Icons";
 import { getColorHash, navigateToClassPage, navigateToReviewPage } from "../utility/helper";
 import { pulse } from "../utility/keyframs";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
@@ -11,6 +11,7 @@ import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
 import { PrimaryButton, SecondaryButton, ModalActions, Input, BodyMedium, BodyTiny, TextArea, BodySmall } from "./DesignSystemStyles"
 import Modal from './Modal'
+import ShareModal from "./ShareModal";
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -116,28 +117,6 @@ const Actions = styled.div`
   justify-content: space-between;
   margin: 0.4rem 0;
   align-items: center;
-`;
-
-const ModalHeader = styled.div`
-  font-size: 1.8rem;
-  font-weight: 500;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  padding: 1.4rem 0;
-  border-bottom: 0.3rem solid ${(props) => props.theme.lightColor};
-  color: ${(props) => props.theme.mainText};
-
-  svg {
-    width: 3rem;
-    height: 3rem;
-    margin-left: 0.6rem;
-
-    path {
-      fill: ${(props) => props.theme.mainText};
-      stroke: ${(props) => props.theme.mainText};
-    }
-  }
 `;
 
 const ConfirmButton = styled(PrimaryButton)`
@@ -305,38 +284,6 @@ const ButtonWithIcon = styled(SecondaryButton)`
   }
 `;
 
-const ShareSelect = styled.div`
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  padding: 1rem 3rem;
-  border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
-  cursor: pointer;
-  user-select: none;
-  color: ${(props) =>
-    props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
-
-  svg {
-    margin-right: 1.6rem;
-    height: 2.4rem;
-    width: 2.4rem;
-
-
-    path {
-      fill: ${(props) =>
-        props.isCopied ? "hsl(145, 63%, 42%)" : props.theme.mainText};
-    }
-  }
-
-  &:hover {
-    background-color: ${(props) => props.theme.menuItem.hover};
-  }
-
-  &:active {
-    background-color: ${(props) => props.theme.menuItem.active};
-  }
-`
-
 const SectionLine = styled.div`
   height: 0.1rem;
   width: 100%;
@@ -411,7 +358,6 @@ const ReviewCard = (props) => {
   const [showReportModal, setReportModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
   const [showShareModal, setShareModal] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
 
   const parseDate = (dateUTC) => {
     if(dateUTC){
@@ -515,49 +461,6 @@ const ReviewCard = (props) => {
       newValue = `${value.toFixed(1)}k`;
     }
     return newValue;
-  };
-
-  const shareReview = (type) => {
-    const href = `https://kuclap.com/review/${reviewId}`;
-    let url;
-    switch (type) {
-      case "facebook": {
-        const appId = "784451072347559";
-        url = `https://fb.com/dialog/share?app_id=${appId}&href=${href}&display=page`;
-        window.open(url);
-        break;
-      }
-      case "twitter": {
-        const tweetText = `รีวิววิชา ${classNameTH} (${classId}) #KUclap ${href}`;
-        const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          tweetText
-        )}`;
-        window.open(url);
-        break;
-      }
-      case "line": {
-        const url = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-          href
-        )}`;
-        window.open(url);
-        break;
-      }
-      default: {
-        const tmpTextArea = document.createElement("textarea");
-        tmpTextArea.value = href;
-        document.body.appendChild(tmpTextArea);
-        tmpTextArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(tmpTextArea);
-        setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 2000);
-      }
-    }
-    
-    setTimeout(closeShareModal, 450)
-
   };
 
   const handleOpenRecapLink = () => {
@@ -724,32 +627,10 @@ const ReviewCard = (props) => {
           </ConfirmButton>
         </ModalActions>
       </Modal>
-      <Modal
-        showModal={showShareModal}
-        closeModal={closeShareModal}
-        type="ShareModal"
-      >
-        <ModalHeader>
-          แบ่งปันรีวิว
-          <Share />
-        </ModalHeader>
-        <ShareSelect onClick={() => shareReview("facebook")}>
-          <Facebook />
-          Facebook
-        </ShareSelect>
-        <ShareSelect onClick={() => shareReview("twitter")}>
-          <Twitter />
-          Twitter
-        </ShareSelect>
-        <ShareSelect onClick={() => shareReview("line")}>
-          <Line />
-          LINE
-        </ShareSelect>
-        <ShareSelect isCopied={isCopied} onClick={shareReview}>
-          <CopyLink />
-          {isCopied ? "คัดลอกเรียบร้อย!" : "คัดลอกลิงก์"}
-        </ShareSelect>
-      </Modal>
+      <ShareModal 
+        showShareModal={showShareModal}
+        closeShareModal={closeShareModal}
+      />
     </Container>
   );
 };

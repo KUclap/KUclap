@@ -128,6 +128,28 @@ const ModalActions = styled.div`
   }
 `
 
+const ModalHeader = styled.div`
+  font-size: 1.8rem;
+  font-weight: 500;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 1.4rem 0;
+  border-bottom: 0.3rem solid ${(props) => props.theme.lightColor};
+  color: ${(props) => props.theme.mainText};
+
+  svg {
+    width: 3rem;
+    height: 3rem;
+    margin-left: 0.6rem;
+
+    path {
+      fill: ${(props) => props.theme.mainText};
+      stroke: ${(props) => props.theme.mainText};
+    }
+  }
+`;
+
 const Backdrop = styled.div`
   position: fixed;
   height: 100%;
@@ -151,5 +173,6 @@ export {
   BodyTiny,
   TextArea,
   ModalActions,
-  Backdrop
+  Backdrop,
+  ModalHeader
 }

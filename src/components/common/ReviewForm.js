@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { lazy, Suspense } from 'preact/compat'
 import  Checkbox  from "@material-ui/core/Checkbox";
-import { useContext, useState, useEffect } from "preact/hooks";
+import { useState, useEffect } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { withTheme } from "styled-components";
 
@@ -13,7 +13,7 @@ import { navigateToClassPage } from '../utility/helper'
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
-import { PrimaryButton, SecondaryButton, ModalActions, Heading1, Input, TextArea } from "./DesignSystemStyles";
+import { PrimaryButton, SecondaryButton, ModalActions, Heading1, Input, TextArea, BodySmall } from "./DesignSystemStyles";
 import Modal from './Modal'
 
 const Alert = lazy(() => import("./Alert"))
@@ -120,11 +120,8 @@ const ReviewField = styled(TextArea)`
   margin-bottom: 2.4rem;
 `;
 
-const ScoreTitle = styled.p`
-  font-size: 1.4rem;
+const ScoreTitle = styled(BodySmall)`
   margin-right: 1.2rem;
-  margin: 0;
-  color: ${(props) => props.theme.mainText};
 `;
 
 const ScoreBar = styled.div`
@@ -519,6 +516,7 @@ const ReviewForm = (props) => {
     else
       setForm({...form, text: `${word}`})
   }
+  
   // const postSetiment = async (value) => {
   //   try {
   //     const res = await axios.post("https://model-datamining.herokuapp.com/predict", {
