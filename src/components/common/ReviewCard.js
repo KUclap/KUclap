@@ -11,7 +11,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Input, BodyMedium, BodySmall } from "./DesignSystemStyles"
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Input, BodyMedium, BodySmall, TextArea } from "./DesignSystemStyles"
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -249,25 +249,11 @@ const MenuItem = styled.div`
   }
 `;
 
-const ReportField = styled.textarea`
-  background-color: ${(props) => props.theme.body};
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 1rem;
-  padding: 1.2rem 1.6rem;
+const ReportField = styled(TextArea)`
   height: 12rem;
   width: 100%;
   max-width: 30rem;
-  font-size: 16px;
-  font-family: "Kanit", arial, sans-serif;
-  resize: none;
   margin-top: 1.6rem;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-
-  color: ${(props) => props.theme.bodyText};
-  &::placeholder {
-    color: ${(props) => props.theme.placeholder};
-  }
 `;
 
 const Warning = styled.div`

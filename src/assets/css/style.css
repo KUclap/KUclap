@@ -20,7 +20,7 @@ button {
   user-select: none;
 }
 
-input {
+input, textarea {
   font-family: "Kanit", arial, sans-serif;
   -webkit-appearance: none;
 }

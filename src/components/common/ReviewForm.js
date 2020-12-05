@@ -14,7 +14,7 @@ import { navigateToClassPage } from '../utility/helper'
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Heading1, Input } from "./DesignSystemStyles";
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Heading1, Input, TextArea } from "./DesignSystemStyles";
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -120,24 +120,10 @@ const FormTitle = styled.div`
   align-items: center;
 `;
 
-const ReviewField = styled.textarea`
-  background-color: ${(props) => props.theme.body};
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 1rem;
-  padding: 1.2rem 1.6rem;
+const ReviewField = styled(TextArea)`
   height: 14rem;
-  font-size: 1.6rem;
-  font-family: "Kanit", arial, sans-serif;
-  resize: none;
   margin-top: 1.4rem;
   margin-bottom: 2.4rem;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-
-  color: ${(props) => props.theme.bodyText};
-  &::placeholder {
-    color: ${(props) => props.theme.placeholderText};
-  }
 `;
 
 const ScoreTitle = styled.p`
@@ -277,16 +263,6 @@ const Button = styled(SecondaryButton)`
   font-size: 1.4rem;
 `;
 
-const ReviewButton = styled(PrimaryButton)`
-  font-size: 2rem;
-  margin: 1rem 1rem;
-`;
-
-const CancelButton = styled(SecondaryButton)`
-  font-size: 2rem;
-  margin: 1rem 1rem;
-`;
-
 const Rating = styled.div`
   display: flex;
   width: 18rem;
@@ -297,6 +273,7 @@ const RateContainer = styled.div`
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+
   svg {
     width: 3rem;
     height: 3rem;
@@ -464,7 +441,6 @@ const ReviewForm = (props) => {
       setIsDone(false);
     }
     setReviewModal(false);
-    // modal(false);
     dispatchShowModal({ type: "close" });
   };
 
@@ -474,7 +450,7 @@ const ReviewForm = (props) => {
 
   const required = () => {
     let req = { ...require };
-    if (
+    const AreAllInputsValid = (
       form.text !== "" &&
       form.author !== "" &&
       form.auth.length == 4 &&
@@ -485,27 +461,26 @@ const ReviewForm = (props) => {
       form.stats.interest !== -1 &&
       checklist.rude &&
       checklist.other
-    ) {
+    )
+    const isReviewEmpty = (form.text === "")
+    const isAllStatsNotSelected = (
+      form.stats.homework === -1 ||
+      form.stats.how === -1 ||
+      form.stats.interest === -1
+    )
+    const isGradeNotSelected = (form.grade === -1)
+    const isAuthorEmpty = (form.author === "")
+    const isAuthTooShort = (form.auth.length < 4)
+    if (AreAllInputsValid) {
       setRequire(initialRequire);
       setReviewModal(true);
-      // modal(true);
       dispatchShowModal({ type: "open" });
     } else {
-      if (form.text === "") req.text = true;
-      else req.text = false;
-      if (
-        form.stats.homework === -1 ||
-        form.stats.how === -1 ||
-        form.stats.interest === -1
-      )
-        req.stats = true;
-      else req.stats = false;
-      if (form.grade === -1) req.grade = true;
-      else req.grade = false;
-      if (form.author === "") req.author = true;
-      else req.author = false;
-      if (form.auth.length < 4) req.auth = true;
-      else req.auth = false;
+      req.text = isReviewEmpty;
+      req.stats = isAllStatsNotSelected;
+      req.grade = isGradeNotSelected;
+      req.author = isAuthorEmpty;
+      req.auth = isAuthTooShort;
       req.rude = !checklist.rude;
       req.other = !checklist.other;
       req.enableReview = true;
@@ -783,7 +758,7 @@ const ReviewForm = (props) => {
       <Warning required={require.enableReview}>
         กรุณากรอกข้อมูลให้ครบถ้วน
       </Warning>
-      <ReviewButton onClick={required}>รีวิวเลย !</ReviewButton>
+      <PrimaryButton onClick={required}>รีวิวเลย !</PrimaryButton>
       <ModalBackdrop show={showReviewModal} onClick={handleCloseAlert} />
       {isDone ? (
         <Suspense>
@@ -794,7 +769,7 @@ const ReviewForm = (props) => {
           เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
           <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
           <ModalActions>
-            <CancelButton
+            <SecondaryButton
               onClick={() => {
                 setReviewModal(false);
                 // modal(false);
@@ -802,8 +777,8 @@ const ReviewForm = (props) => {
               }}
             >
               กลับไปแก้ไข
-            </CancelButton>
-            <ReviewButton
+            </SecondaryButton>
+            <PrimaryButton
               onClick={() => {
                 sendReview();
               }}
@@ -813,7 +788,7 @@ const ReviewForm = (props) => {
               ) : (
                 "รีวิวเลย !"
               )}
-            </ReviewButton>
+            </PrimaryButton>
           </ModalActions>
         </Modal>
       )}

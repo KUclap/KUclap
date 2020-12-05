@@ -7,6 +7,14 @@ const blue_95 = "hsl(214, 84%, 95%)"
 
 const grey = "hsl(0, 0%, 31%)"
 
+const inputStyles = {
+  backgroundColor: "transparent",
+  border: `0.2rem solid`,
+  borderRadius: "0.6rem",
+  padding: "1.2rem 1.6rem",
+  fontSize: "1.6rem",
+}
+
 const buttonStyles = {
   padding: "0.3rem 1.8rem",
   borderRadius: "0.4rem",
@@ -71,14 +79,32 @@ const BodySmall = styled.p`
 `
 
 const Input = styled.input`
-  background-color: ${(props) => props.theme.body};
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 0.6rem;
+  background-color: ${inputStyles.backgroundColor};
+  border: ${inputStyles.border};
+  border-color: ${(props) => props.theme.lightColor};
+  border-radius: ${inputStyles.borderRadius};
   color: ${(props) => props.theme.bodyText};
-  font-size: 1.6rem;
-  padding: 1.2rem 1.6rem;
+  font-size: ${inputStyles.fontSize};
+  padding: ${inputStyles.padding};
   height: 3.4rem;
 
+  &::placeholder {
+    color: ${(props) => props.theme.placeholderText};
+  }
+`
+
+const TextArea = styled.textarea`
+  background-color: ${inputStyles.backgroundColor};
+  border: ${inputStyles.border};
+  border-color: ${(props) => props.theme.lightColor};
+  border-radius: ${inputStyles.borderRadius};
+  font-size: ${inputStyles.fontSize};
+  padding: ${inputStyles.padding};
+  resize: none;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  color: ${(props) => props.theme.bodyText};
+  
   &::placeholder {
     color: ${(props) => props.theme.placeholderText};
   }
@@ -102,6 +128,10 @@ const ModalActions = styled.div`
   flex-direction: row;
   flex-flow: wrap;
   justify-content: center;
+
+  button {
+    margin: 1.6rem 1.6rem 0;
+  }
 `
 
 const Modal = styled.div`
@@ -140,5 +170,6 @@ export {
   Heading2,
   Input,
   BodyMedium,
-  BodySmall
+  BodySmall,
+  TextArea
 }
