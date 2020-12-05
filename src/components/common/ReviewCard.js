@@ -3,15 +3,13 @@ import { useState, useEffect, useContext } from "preact/hooks";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled, { css, withTheme } from "styled-components";
 
-import { Clap, Boo, Share, Recap, DownArrow, GradeCircle } from "../utility/Icons";
+import { Recap, DownArrow, GradeCircle } from "../utility/Icons";
 import { getColorHash, navigateToClassPage, navigateToReviewPage } from "../utility/helper";
-import { pulse } from "../utility/keyframs";
 import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
-import useEngage from "../../hooks/useEngage";
 import { PrimaryButton, SecondaryButton, ModalActions, Input, BodyMedium, BodyTiny, TextArea, BodySmall } from "./DesignSystemStyles"
 import Modal from './Modal'
-import ShareModal from "./ShareModal";
+import CardActions from "./CardActions";
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -78,47 +76,6 @@ const Grade = styled.div`
   }
 `
 
-const Button = styled.div`
-  display: flex;
-  text-align: right;
-  align-items: center;
-  justify-content: space-between;
-  user-select: none;
-  cursor: pointer;
-  align-self: flex-end;
-  outline: none;
-
-  span {
-    margin-right: 1ch;
-  }
-
-  &:hover {
-    color: #9ac1ee;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #bdbdbd;
-
-  span {
-    user-select: none;
-    margin-left: 0.3rem;
-    width: 2.5rem;
-    font-size: 1.4rem;
-  }
-`;
-
-const Actions = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin: 0.4rem 0;
-  align-items: center;
-`;
-
 const ConfirmButton = styled(PrimaryButton)`
   background-color: #eb5757;
   margin: 2rem 1.6rem 0;
@@ -128,11 +85,6 @@ const CancelButton = styled(SecondaryButton)`
   margin: 2rem 1.6rem 0;
   color: ${(props) => props.theme.placeholderText};
   box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.placeholderText};
-`;
-
-const NumberAction = styled.span`
-  color: ${(props) => props.color || "black"};
-  white-space: nowrap;
 `;
 
 const MoreButton = styled(SecondaryButton)`
@@ -255,25 +207,6 @@ const ButtonWithIcon = styled(SecondaryButton)`
     }
   }
 
-  ${(props) => props.type === "share" && 
-    css`
-      border: 0.1rem solid ${(props) => props.theme.placeholderText};
-      color: ${(props) => props.theme.placeholderText};
-      height: fit-content;
-      padding: 0.1rem 0.8rem;
-
-      svg {
-        height: 1.6rem;
-        width: 1.6rem;
-
-        path {
-          fill: ${(props) => props.theme.placeholderText};
-          stroke: ${(props) => props.theme.placeholderText};
-        }
-      }
-    `
-  }
-
   &:hover {
     color: #9ac1ee;
     border: 0.1rem solid #9ac1ee;
@@ -327,19 +260,6 @@ const ReviewCard = (props) => {
   } = props;
 
   const { handleCardDeleted } = useContext(ReviewFetcherContext);
-  const {
-    counter: clapCounter,
-    prevCounter: prevClapCounter,
-    animation: clapAnimation,
-    handleActionClick: handleClapActionClick,
-  } = useEngage(reviewId);
-
-  const {
-    counter: booCounter,
-    prevCounter: prevBooCounter,
-    animation: booAnimation,
-    handleActionClick: handleBooActionClick,
-  } = useEngage(reviewId, APIs.putBooReviewByReviewId);
 
   const [menu, setMenu] = useState(false);
   const defaultAuth = {
@@ -357,7 +277,6 @@ const ReviewCard = (props) => {
   const [isLoadingReport, setIsLoadingReport] = useState(false);
   const [showReportModal, setReportModal] = useState(false);
   const [showEditModal, setEditModal] = useState(false);
-  const [showShareModal, setShareModal] = useState(false);
 
   const parseDate = (dateUTC) => {
     if(dateUTC){
@@ -373,11 +292,11 @@ const ReviewCard = (props) => {
   useEffect(() => {
     if (typeof window !== "undefined"){
       const moreButton = document.getElementById(`more-button-${reviewId}`);
-      document.addEventListener('click', (event) => handleOnBlurNoreBtn(moreButton, event));
+      document.addEventListener('click', (event) => handleOnBlurMoreBtn(moreButton, event));
     }
   })
 
-  const handleOnBlurNoreBtn = (btn, event) => {
+  const handleOnBlurMoreBtn = (btn, event) => {
     let isClickInside = btn.contains(event.target);
     if (!isClickInside) {
       setMenu(false)
@@ -409,10 +328,6 @@ const ReviewCard = (props) => {
   const closeEditModal = () => {
     setEditModal(false);
     setAuth(defaultAuth);
-  };
-
-  const closeShareModal = () => {
-    setShareModal(false);
   };
 
   const deleteReview = () => {
@@ -452,15 +367,6 @@ const ReviewCard = (props) => {
       value = "";
     }
     setReportReason({ ...reportReason, reason: value });
-  };
-
-  const numberFormat = (value) => {
-    let newValue = value;
-    if (value >= 1000) {
-      value /= 1000;
-      newValue = `${value.toFixed(1)}k`;
-    }
-    return newValue;
   };
 
   const handleOpenRecapLink = () => {
@@ -527,51 +433,14 @@ const ReviewCard = (props) => {
           </SubDetail>
         </DetailContainer>
         <SectionLine />
-        <Actions>
-          <ButtonContainer>
-            <ButtonIcon
-              type="clap"
-              onClick={() => handleClapActionClick()}
-              valueAction={clapCounter === prevClapCounter}
-              clapAnimation={clapAnimation}
-            >
-              <Clap bgColor={theme.body} />
-            </ButtonIcon>
-            {clapCounter === prevClapCounter ? (
-              <span>{numberFormat(clapCounter + clap)}</span>
-            ) : (
-              <NumberAction color="#2f80ed">
-                {`+${clapCounter - prevClapCounter}`}
-              </NumberAction>
-            )}
-          </ButtonContainer>
-          <ButtonContainer>
-            <ButtonIcon
-              type="boo"
-              onClick={() => handleBooActionClick("boo")}
-              valueAction={booCounter === prevBooCounter}
-              booAnimation={booAnimation}
-            >
-              <Boo bgColor={theme.body} />
-            </ButtonIcon>
-            {booCounter === prevBooCounter ? (
-              <span>{numberFormat(booCounter + boo)}</span>
-            ) : (
-              <NumberAction color="#eb5757">
-                {`+${booCounter - prevBooCounter}`}
-              </NumberAction>
-            )}
-          </ButtonContainer>
-          <ButtonWithIcon
-            onClick={() => setShareModal(true)}
-            type="share"
-          >
-            <BodyTiny>
-              แชร์
-            </BodyTiny>
-            <Share />
-          </ButtonWithIcon>
-        </Actions>     
+        <CardActions 
+          clap={clap} 
+          boo={boo} 
+          classNameTH={classNameTH} 
+          classId={classId} 
+          reviewId={reviewId} 
+          updateBoo={APIs.putBooReviewByReviewId} 
+          theme={theme} />
       </CardDetails>
       <Modal
         showModal={showReportModal}
@@ -627,96 +496,7 @@ const ReviewCard = (props) => {
           </ConfirmButton>
         </ModalActions>
       </Modal>
-      <ShareModal 
-        showShareModal={showShareModal}
-        closeShareModal={closeShareModal}
-      />
     </Container>
   );
 };
 export default withTheme(ReviewCard);
-
-const ButtonIcon = styled(Button)`
-  -webkit-tap-highlight-color: transparent;
-
-  &:before {
-    content: "";
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    z-index: -1;
-    display: inline-block;
-    transition: 0.25s ease-in;
-    position: absolute;
-    ${(props) =>
-      props.clapAnimation === true
-        ? css`
-            animation: ${pulse("rgba(36, 87, 156, 25%)")} 0.5s ease;
-          `
-        : props.booAnimation === true
-        ? css`
-            animation: ${pulse("rgba(173, 66, 16, 25%)")} 0.5s ease;
-          `
-        : null}
-  }
-
-  &:hover:before {
-    width: 3rem;
-    height: 3rem;
-    transform: scale(1.1);
-    background: ${(props) =>
-      props.type === "clap"
-        ? "rgba(47, 128, 237, 9%)"
-        : props.type === "boo"
-        ? "rgba(241, 191, 157, 9%)"
-        : props.theme.solid};
-  }
-
-  svg {
-    #bg {
-      /* fill: ${(props) =>
-        props.valueAction === false
-          ? props.type === "clap"
-            ? "#9ec7ff"
-            : props.type === "boo"
-            ? "rgba(191, 82, 31, 50%)"
-            : "white"
-          : "white"}; */
-      transition: all 0.2s ease-in-out;
-    }
-    #clap {
-      fill: ${(props) => (props.valueAction === false ? "#2f80ed" : null)};
-    }
-    #boo {
-      fill: ${(props) => (props.valueAction === false ? "#eb5757" : null)};
-    }
-  }
-
-  &:hover {
-    svg {
-      #clap {
-        fill: ${(props) =>
-          props.valueAction === false ? "#2f80ed" : "#9ac1ee"};
-      }
-      #boo {
-        fill: ${(props) =>
-          props.valueAction === false ? "#eb5757" : "#eea99a"};
-      }
-      #arrow {
-        fill: #9ac1ee;
-        stroke: #9ac1ee;
-      }
-    }
-  }
-
-  &:active {
-    svg {
-      #clap {
-        fill: #2f80ed;
-      }
-      #boo {
-        fill: #eb5757;
-      }
-    }
-  }
-`;

@@ -40,6 +40,9 @@ const ShareModal = (props) => {
 	const {
 		showShareModal,
 		closeShareModal,
+    reviewId,
+    classId,
+    classNameTH
 	} = props
   const [isCopied, setIsCopied] = useState(false);
 
