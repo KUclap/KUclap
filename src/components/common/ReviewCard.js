@@ -11,7 +11,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Input, BodyMedium, BodySmall, TextArea } from "./DesignSystemStyles"
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Input, BodyMedium, BodyTiny, TextArea, BodySmall } from "./DesignSystemStyles"
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -257,30 +257,23 @@ const ReportField = styled(TextArea)`
 `;
 
 const Warning = styled.div`
-  color: #eb5757;
+  color: #EB5757;
 `;
 
-const Subject = styled.h1`
+const Subject = styled(PrimaryButton)`
   font-size: 1.4rem;
-  padding: 0.2rem 1.6rem;
-  border-radius: 0.5rem;
-  text-align: center;
   background: ${(props) => props.color};
-  color: white;
   position: absolute;
-  transform: translateY(-3.3rem);
-  cursor: pointer;
-  font-weight: 500;
+  transform: translateY(-2.4rem);
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 60%;
   white-space: nowrap;
-  /* filter: brightness(${(props) => props.theme.subjectBrightness}%); */
   filter: ${(props) => `${props.theme.subjectBrightness}%`};
+  align-self: flex-start;
 
-  span {
-    font-weight: 400;
-    margin-left: 0.2rem;
+  ${BodySmall} {
+    margin-left: 0.4ch;
   }
 `;
 
@@ -482,7 +475,6 @@ const ReviewCard = (props) => {
     }
   }
 
-
   const sendReport = () => {
     if (reportReason.reason.length < 10)
       setReportReason({ ...reportReason, require: true });
@@ -614,25 +606,25 @@ const ReviewCard = (props) => {
       {isBadge && (
         <Subject color={getColorHash(classId)} onClick={() => navigateToClassPage(classId)}>
           {classId}
-          <span> | {classNameTH}</span>
+          <BodySmall> | {classNameTH}</BodySmall>
         </Subject>
       )}
       <Content isBadge={isBadge}> {text} </Content>
       <CardDetails>
         <DetailContainer>
           <SubDetail>
-            <BodySmall>
+            <BodyTiny>
               โดย {author}
-            </BodySmall>
+            </BodyTiny>
             <Grade><span>{grade}</span><GradeCircle /></Grade>
           </SubDetail>
           <SubDetail>
             {
               recap &&
               <ButtonWithIcon onClick={handleOpenRecapLink}>
-                <BodySmall>
+                <BodyTiny>
                   ชีทสรุป
-                </BodySmall>
+                </BodyTiny>
                 <Recap />
               </ButtonWithIcon>
             }
@@ -644,7 +636,7 @@ const ReviewCard = (props) => {
               fullButton={!recap}
             >
               {
-                !recap && <BodySmall>เพิ่มเติม</BodySmall>
+                !recap && <BodyTiny>เพิ่มเติม</BodyTiny>
               }
               <DownArrow />
               <Menu openMenu={menu}>
@@ -708,9 +700,9 @@ const ReviewCard = (props) => {
             onClick={() => setShareModal(true)}
             type="share"
           >
-            <BodySmall>
+            <BodyTiny>
               แชร์
-            </BodySmall>
+            </BodyTiny>
             <Share />
           </ButtonWithIcon>
         </Actions>     

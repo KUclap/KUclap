@@ -16,7 +16,7 @@ const inputStyles = {
 }
 
 const buttonStyles = {
-  padding: "0.3rem 1.8rem",
+  padding: "0.2rem 1.6rem",
   borderRadius: "0.4rem",
   fontSize: "1.6rem"
 }
@@ -74,6 +74,12 @@ const BodyMedium = styled.p`
 `
 
 const BodySmall = styled.p`
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: inherit;
+`
+
+const BodyTiny = styled.p`
   font-size: 1.2rem;
   color: inherit;
 `
@@ -171,5 +177,6 @@ export {
   Input,
   BodyMedium,
   BodySmall,
-  TextArea
+  BodyTiny,
+  TextArea,
 }
