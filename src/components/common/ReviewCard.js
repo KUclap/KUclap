@@ -11,7 +11,7 @@ import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import APIs from "../utility/apis";
 import useEngage from "../../hooks/useEngage";
 import media from "styled-media-query";
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal } from "./DesignSystemStyles"
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Input, BodyMedium, BodySmall } from "./DesignSystemStyles"
 
 const Container = styled.div`
   border: 0.2rem solid ${(props) => props.theme.lightColor};
@@ -45,12 +45,9 @@ const Container = styled.div`
   }
 `;
 
-const Content = styled.p`
-  font-size: 1.6rem;
-  color: ${(props) => props.theme.mainText};
+const Content = styled(BodyMedium)`
   white-space: pre-line;
   overflow-wrap: break-word;
-  margin: 0;
   margin-top: ${(props) => (props.isBadge === true ? "1.1rem" : 0)};
 `;
 
@@ -63,9 +60,7 @@ const CardDetails = styled.div`
 `;
 
 const DetailContainer = styled.div`
-  font-size: 1.2rem;
   display: flex;
-  color: ${(props) => props.theme.cardDetailsText};
   justify-content: space-between;
   align-self: flex-end;
   text-align: right;
@@ -115,7 +110,6 @@ const Button = styled.div`
   cursor: pointer;
   align-self: flex-end;
   outline: none;
-  user-select: none;
 
   span {
     margin-right: 1ch;
@@ -239,6 +233,7 @@ const MenuContent = styled.div`
 
 const MenuItem = styled.div`
   padding: 1rem;
+  font-size: 1.2rem;
   user-select: none;
   cursor: pointer;
   color: ${(props) => props.theme.mainText};
@@ -268,25 +263,6 @@ const ReportField = styled.textarea`
   margin-top: 1.6rem;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-
-  color: ${(props) => props.theme.bodyText};
-  &::placeholder {
-    color: ${(props) => props.theme.placeholder};
-  }
-`;
-
-const Input = styled.input`
-  background-color: ${(props) => props.theme.body};
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 1rem;
-  height: 3.4rem;
-  width: 18rem;
-  height: 4rem;
-  margin-top: 1.2rem;
-  align-self: flex-start;
-  padding: 1.2rem 1.6rem;
-  font-size: 16px;
-  font-family: "Kanit", arial, sans-serif;
 
   color: ${(props) => props.theme.bodyText};
   &::placeholder {
@@ -659,14 +635,18 @@ const ReviewCard = (props) => {
       <CardDetails>
         <DetailContainer>
           <SubDetail>
-            โดย {author}
+            <BodySmall>
+              โดย {author}
+            </BodySmall>
             <Grade><span>{grade}</span><GradeCircle /></Grade>
           </SubDetail>
           <SubDetail>
             {
               recap &&
               <ButtonWithIcon onClick={handleOpenRecapLink}>
-                ชีทสรุป
+                <BodySmall>
+                  ชีทสรุป
+                </BodySmall>
                 <Recap />
               </ButtonWithIcon>
             }
@@ -678,7 +658,7 @@ const ReviewCard = (props) => {
               fullButton={!recap}
             >
               {
-                !recap && "เพิ่มเติม"
+                !recap && <BodySmall>เพิ่มเติม</BodySmall>
               }
               <DownArrow />
               <Menu openMenu={menu}>
@@ -742,7 +722,9 @@ const ReviewCard = (props) => {
             onClick={() => setShareModal(true)}
             type="share"
           >
-            แชร์
+            <BodySmall>
+              แชร์
+            </BodySmall>
             <Share />
           </ButtonWithIcon>
         </Actions>     

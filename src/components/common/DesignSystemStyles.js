@@ -5,6 +5,8 @@ const blue = "hsl(214, 84%, 56%)"
 const blue_75 = "hsl(214, 84%, 75%)"
 const blue_95 = "hsl(214, 84%, 95%)"
 
+const grey = "hsl(0, 0%, 31%)"
+
 const buttonStyles = {
   padding: "0.3rem 1.8rem",
   borderRadius: "0.4rem",
@@ -40,6 +42,45 @@ const SecondaryButton = styled(PrimaryButton)`
 
   &:hover {
     background-color: ${blue_95};
+  }
+`
+
+const Heading = styled.p`
+  font-weight: 600;
+  color: ${(props) =>
+    props.desc ? props.theme.placeholderText : props.theme.mainText};
+`
+
+const Heading1 = styled(Heading)`
+  font-size: 1.8rem;
+`
+
+const Heading2 = styled(Heading)`
+  font-size: 1.6rem;
+`
+
+const BodyMedium = styled.p`
+  font-weight: 400;
+  font-size: 1.6rem;
+  color: ${(props) => props.theme.mainText};
+`
+
+const BodySmall = styled.p`
+  font-size: 1.2rem;
+  color: inherit;
+`
+
+const Input = styled.input`
+  background-color: ${(props) => props.theme.body};
+  border: 0.2rem solid ${(props) => props.theme.lightColor};
+  border-radius: 0.6rem;
+  color: ${(props) => props.theme.bodyText};
+  font-size: 1.6rem;
+  padding: 1.2rem 1.6rem;
+  height: 3.4rem;
+
+  &::placeholder {
+    color: ${(props) => props.theme.placeholderText};
   }
 `
 
@@ -81,6 +122,12 @@ const Modal = styled.div`
   z-index: 1;
   max-width: 42rem;
   width: 84%;
+
+  ${Input} {
+    width: 18rem;
+    margin-top: 1.2rem;
+    align-self: flex-start;
+  }
 `
 
 export {
@@ -88,5 +135,10 @@ export {
   SecondaryButton,
   ModalBackdrop,
   ModalActions,
-  Modal
+  Modal,
+  Heading1,
+  Heading2,
+  Input,
+  BodyMedium,
+  BodySmall
 }

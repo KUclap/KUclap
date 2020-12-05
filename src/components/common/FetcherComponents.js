@@ -1,10 +1,7 @@
 import styled from "styled-components";
+import { Heading1 } from "./DesignSystemStyles"
 
-const DetailTitle = styled.div`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: ${(props) =>
-    props.desc ? props.theme.placeholderText : props.theme.mainText};
+const DetailTitle = styled(Heading1)`
   padding: ${(props) => (props.desc ? "0 1rem" : 0)};
   user-select: none;
 `;
@@ -32,12 +29,10 @@ const NoMoreCustom = styled.div`
   margin: 2.9rem auto;
 `;
 
-const SubjectTitle = styled.h1`
-  font-size: 1.8rem;
+const SubjectTitle = styled(Heading1)`
   margin: 0 6.4rem 1.5rem;
   min-width: 86%;
   color: ${(props) => props.theme.mainText};
-  font-weight: 600;
   line-height: 180%;
 
   span {

@@ -1,6 +1,7 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { Heading2 } from "./DesignSystemStyles";
 
 const ScoreTitle = styled.div`
   font-size: 1.4rem;
@@ -55,14 +56,6 @@ const Details = styled.div`
   margin: 0 2.4rem;
 `;
 
-const DetailTitle = styled.div`
-  font-size: 1.6rem;
-  margin: 0;
-  font-weight: 600;
-  color: ${(props) =>
-    props.desc ? props.theme.placeholderText : props.theme.mainText};
-`;
-
 const ScoreBar = styled.div`
   display: flex;
   align-items: center;
@@ -71,7 +64,7 @@ const ScoreBar = styled.div`
   justify-content: ${(props) =>
     props.title ? "space-between" : "space-evenly"};
 
-  ${DetailTitle} {
+  ${Heading2} {
     padding-left: 1rem;
   }
 `;
@@ -80,10 +73,10 @@ const Detail = ({ score }) => {
   return (
     <Details>
       <ScoreContainter>
-        <DetailTitle>คะแนนภาพรวม</DetailTitle>
+        <Heading2>คะแนนภาพรวม</Heading2>
         <ScoreBar title>
-          <DetailTitle desc>ไม่พอใจ</DetailTitle>
-          <DetailTitle desc>พอใจ</DetailTitle>
+          <Heading2 desc>ไม่พอใจ</Heading2>
+          <Heading2 desc>พอใจ</Heading2>
         </ScoreBar>
       </ScoreContainter>
       <ScoreContainter>

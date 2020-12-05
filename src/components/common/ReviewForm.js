@@ -14,7 +14,7 @@ import { navigateToClassPage } from '../utility/helper'
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
-import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal } from "./DesignSystemStyles";
+import { PrimaryButton, SecondaryButton, ModalBackdrop, ModalActions, Modal, Heading1, Input } from "./DesignSystemStyles";
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -56,12 +56,14 @@ const Container = styled.div`
       padding: 1.4rem 0 0;
     }
   }
+
+  ${Input} {
+    width: ${(props) => (props.small ? 9 : 20)}rem;
+    align-self: ${(props) => (props.small ? "flex-start" : "center")};
+  }
 `;
 
-const DetailTitle = styled.label`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: ${(props) => props.theme.mainText};
+const DetailTitle = styled(Heading1)`
   display: ${(props) => props.description ? "grid" : "flex"};
 
   span {
@@ -204,23 +206,6 @@ const GradeBar = styled.div`
   width: 100%;
   max-width: 46rem;
   justify-content: space-between;
-`;
-
-const Input = styled.input`
-  background-color: ${(props) => props.theme.body};
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
-  border-radius: 0.6rem;
-  height: 3.4rem;
-  width: ${(props) => (props.small ? 9 : 20)}rem;
-  align-self: ${(props) => (props.small ? "flex-start" : "center")};
-  padding: 1.2rem 1.6rem;
-  font-size: 1.6rem;
-  font-family: "Kanit", arial, sans-serif;
-  -webkit-appearance: none;
-  color: ${(props) => props.theme.bodyText};
-  &::placeholder {
-    color: ${(props) => props.theme.placeholderText};
-  }
 `;
 
 const InputContainer = styled.div`
@@ -608,7 +593,7 @@ const ReviewForm = (props) => {
   return (
     <Container>
       <FormTitle>
-        <DetailTitle for="review-field">
+        <DetailTitle id="review-field">
           รีวิววิชานี้
           <RequiredDot />
           <Warning required={require.text}>กรุณากรอกรีวิว</Warning>
@@ -628,7 +613,7 @@ const ReviewForm = (props) => {
         onChange={(e) => handleOnchange(e, "text")}
         onFocus={() => {setRecommendWord(true)}}
         tabindex={0}
-        id="review-field"
+        aria-labelledby="review-field"
       />
       <RecommendReviewContainer isShow={recommendWord}>
         {
@@ -688,7 +673,7 @@ const ReviewForm = (props) => {
         </GradeBar>
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="author-field">
+        <DetailTitle id="author-field">
           นามปากกา
           <RequiredDot />
           <Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
@@ -698,11 +683,11 @@ const ReviewForm = (props) => {
           value={form.author}
           onChange={(e) => handleOnchange(e, "author")}
           maxLength={16}
-          id="author-field"
+          aria-labelledby="author-field"
         />
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="year-field">
+        <DetailTitle id="year-field">
           ปีการศึกษาที่เรียน
         </DetailTitle>
         <Input
@@ -711,11 +696,11 @@ const ReviewForm = (props) => {
           value={form.year}
           onChange={(e) => handleOnChangeNumberField(e, "year")}
           maxLength={2}
-          id="year-field"
+          aria-labelledby="year-field"
         />
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="sec-field">
+        <DetailTitle id="sec-field">
           หมู่เรียน
         </DetailTitle>
         <Input
@@ -723,11 +708,11 @@ const ReviewForm = (props) => {
           placeholder="ใส่เซค"
           value={form.sec}
           onChange={(e) => handleOnChangeNumberField(e, "sec")}
-          id="sec-field"
+          aria-labelledby="sec-field"
         />
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="semester-field">
+        <DetailTitle id="semester-field">
           เทอม
         </DetailTitle>
         <RadioGroupCustom aria-label="semester" name="semester" value={form.semester} onChange={(e) => handleOnchange(e, "semester")}>
@@ -737,7 +722,7 @@ const ReviewForm = (props) => {
         </RadioGroupCustom>
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="recap-field" description>
+        <DetailTitle id="recap-field" description>
           ลิงก์สรุปวิชา
           <span>ควรใส่ลายน้ำเพื่อป้องกันการคัดลอก</span>
         </DetailTitle>
@@ -745,7 +730,7 @@ const ReviewForm = (props) => {
           placeholder="วางลิงก์ที่นี่"
           value={form.recap}
           onChange={(e) => handleOnchange(e, "recap")}
-          id="recap-field"
+          aria-labelledby="recap-field"
         />
         {/* <CopyInputContainer>
           <Input
@@ -759,7 +744,7 @@ const ReviewForm = (props) => {
         </CopyInputContainer> */}
       </InputContainer>
       <InputContainer>
-        <DetailTitle for="pin-field" description>
+        <DetailTitle id="pin-field" description>
           <div>
             ตัวเลข 4 หลัก
             <RequiredDot />
@@ -773,7 +758,7 @@ const ReviewForm = (props) => {
           placeholder="ใส่เลข"
           value={form.auth}
           onChange={handleOnChangePassword}
-          id="pin-field"
+          aria-labelledby="pin-field"
         />
       </InputContainer>
       <Caution>

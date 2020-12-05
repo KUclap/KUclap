@@ -20,6 +20,15 @@ button {
   user-select: none;
 }
 
+input {
+  font-family: "Kanit", arial, sans-serif;
+  -webkit-appearance: none;
+}
+
+p {
+    margin: 0;
+}
+
 * {
     box-sizing: border-box;
 }
