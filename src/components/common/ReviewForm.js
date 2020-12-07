@@ -15,6 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from '@material-ui/core/Radio';
 import { PrimaryButton, SecondaryButton, ModalActions, Heading1, Input, TextArea, BodySmall } from "./DesignSystemStyles";
 import Modal from './Modal'
+import { blue, blue_75, blue_97, grey_75, red, sea_pink } from "./Colors";
 
 const Alert = lazy(() => import("./Alert"))
 
@@ -62,7 +63,7 @@ const DetailTitle = styled(Heading1)`
 
   span {
     font-size: 1.2rem;
-    color: #bdbdbd;
+    color: ${grey_75};
     font-weight: 500;
   }
 
@@ -75,7 +76,7 @@ const RequiredDot = styled.div`
   width: 0.6rem;
   height: 0.6rem;
   margin-left: 0.4rem;
-  background: #EEA99A;
+  background: ${sea_pink};
   border-radius: 100%;
 `
 
@@ -92,10 +93,10 @@ const RecommendReviewContainer = styled.div`
 
 const WordTag = styled.button`
   font-size: 1.4rem;
-  color: #2F80ED;
+  color: ${blue};
   padding: 0.1rem 0.8rem;
-  background: #F1F6FE;
-  border: 0.1rem solid #2F80ED;
+  background: ${blue_97};
+  border: 0.1rem solid ${blue};
   border-radius: 0.4rem;
   width: fit-content;
 `
@@ -103,7 +104,7 @@ const WordTag = styled.button`
 const Warning = styled(DetailTitle)`
   margin-left: 1.2rem;
   font-size: 1.6rem;
-  color: #eb5757;
+  color: ${red};
   display: ${(props) => (props.required ? "inline" : "none")};
   text-align: center;
 `;
@@ -142,11 +143,11 @@ const ScoreContainer = styled.div`
 const GradeButton = styled.div`
   -webkit-tap-highlight-color: transparent;
   color: ${(props) =>
-    props.selected === true ? "#2F80ED" : props.theme.placeholderText};
+    props.selected === true ? blue : props.theme.subText};
   font-size: 1.6rem;
   border: 0.2rem solid
     ${(props) =>
-      props.selected === true ? "#2F80ED" : props.theme.placeholderText};
+      props.selected === true ? blue : props.theme.subText};
   height: 3rem;
   width: 3rem;
   display: flex;
@@ -156,19 +157,19 @@ const GradeButton = styled.div`
   cursor: pointer;
 
   &:active {
-    color: #2f80ed;
-    border: 0.2rem solid #2f80ed;
+    color: ${blue};
+    border: 0.2rem solid ${blue};
   }
 
   &:hover {
-    color: #9ac1ee;
-    border: 0.2rem solid #9ac1ee;
+    color: ${blue_75};
+    border: 0.2rem solid ${blue_75};
   }
 
   @media (hover: none) {
     &:hover {
-      color: #2f80ed;
-      border: 0.2rem solid #2f80ed;
+      color:  ${blue};
+      border: 0.2rem solid  ${blue};
     }
   }
 
@@ -213,11 +214,11 @@ const RadioGroupCustom = styled(RadioGroup)`
     }
 
     .MuiRadio-colorSecondary.Mui-checked {
-      color: #2f80ed;
+      color:  ${blue};
     }
 
     .MuiRadio-root {
-        color: ${(props) => props.theme.placeholderText}
+      color: ${(props) => props.theme.subText}
     }
   }
 `
@@ -230,28 +231,32 @@ const Caution = styled.div`
   align-self: center;
 `;
 
-const CopyInputContainer = styled.div`
-  width: fit-content;
+// const CopyInputContainer = styled.div`
+//   width: fit-content;
 
-  input {
-    border-radius: 0.6rem 0 0 0.6rem;
-    border-right: 0;
-  }
-`
+//   input {
+//     border-radius: 0.6rem 0 0 0.6rem;
+//     border-right: 0;
+//   }
+// `
 
-const PasteButton = styled.button`
-  background: #2F80ED;
-  border: 0.1rem solid #2F80ED;
-  padding: 0.4rem 1.6rem;
-  border-radius: 0 0.6rem 0.6rem 0;
-  color: white;
-  font-size: 1.6rem;
-  cursor: pointer;
-`
+// const PasteButton = styled.button`
+//   background:  ${blue};
+//   border: 0.1rem solid  ${blue};
+//   padding: 0.4rem 1.6rem;
+//   border-radius: 0 0.6rem 0.6rem 0;
+//   color: white;
+//   font-size: 1.6rem;
+//   cursor: pointer;
+// `
 
 const Button = styled(SecondaryButton)`
   padding: 0.2rem 1.4rem;
   font-size: 1.4rem;
+
+  &:hover {
+    background: ${blue_97};
+  }
 `;
 
 const Rating = styled.div`
@@ -272,12 +277,12 @@ const RateContainer = styled.div`
     #outer,
     #mouth {
       stroke: ${(props) =>
-        props.selected === true ? "#2F80ED" : props.theme.placeholderText};
+        props.selected === true ?  blue : props.theme.subText};
     }
 
     #eye {
       fill: ${(props) =>
-        props.selected === true ? "#2F80ED" : props.theme.placeholderText};
+        props.selected === true ? blue : props.theme.subText};
     }
   }
 
@@ -285,11 +290,11 @@ const RateContainer = styled.div`
     svg {
       #outer,
       #mouth {
-        stroke: #9ac1ee;
+        stroke:  ${blue_75};
       }
 
       #eye {
-        fill: #9ac1ee;
+        fill: ${blue_75};
       }
     }
   }
@@ -299,11 +304,11 @@ const RateContainer = styled.div`
     svg {
       #outer,
       #mouth {
-        stroke: #2f80ed;
+        stroke: ${blue};
       }
 
       #eye {
-        fill: #2f80ed;
+        fill: ${blue};
       }
     }
   }
@@ -313,11 +318,11 @@ const RateContainer = styled.div`
       svg {
         #outer,
         #mouth {
-          stroke: #2f80ed;
+          stroke: ${blue};
         }
 
         #eye {
-          fill: #2f80ed;
+          fill: ${blue};
         }
       }
     }
@@ -329,7 +334,7 @@ const CheckboxContainer = styled.div`
   font-size: 1.6rem;
   align-items: center;
   text-align: left;
-  color: ${(props) => (props.warning ? "#EB5757" : props.theme.mainText)};
+  color: ${(props) => (props.warning ? red : props.theme.mainText)};
   cursor: pointer;
 
   .MuiSvgIcon-root {
@@ -337,17 +342,17 @@ const CheckboxContainer = styled.div`
     height: 1.8em;
   }
   .MuiCheckbox-colorPrimary {
-    color: ${(props) => props.theme.bodyText};
+    color: ${(props) => props.theme.mainText};
   }
   .MuiCheckbox-colorSecondary.Mui-checked {
-    color: #2f80ed;
+    color: ${blue};
   }
 `;
 
 const CheckboxCustom = styled(Checkbox)`
   && {
     &.Mui-checked {
-      color: #2f80ed;
+      color: ${blue};
     }
   }
 `;
@@ -360,7 +365,7 @@ const CircularProgressCustom = styled(CircularProgress)`
 
 // const SemanticText = styled(DetailTitle)`
 //   span {
-//     color: #9ac1ee;
+//     color: ${blue_75};
 //   }
 // `
 

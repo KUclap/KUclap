@@ -40,14 +40,18 @@ import { PrimaryButton, SecondaryButton } from "../components/common/DesignSyste
 
 const ButtonLastReview = styled(SecondaryButton)`
 	margin-right: 1rem;
-  box-shadow: inset 0 0 0 0.1rem ${props => props.theme.placeholderText};
+  box-shadow: inset 0 0 0 0.1rem ${props => props.theme.subText};
   padding: 0.2rem 1rem;
   align-self: unset;
 
   svg {
     path {
-      stroke: ${props => props.theme.placeholderText}
+      stroke: ${props => props.theme.subText}
     }
+  }
+
+  &:hover {
+    background: ${(props) => props.theme.lightBackground};
   }
 `;
 

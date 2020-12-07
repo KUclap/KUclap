@@ -9,6 +9,7 @@ import { BodyTiny, Input, ModalActions, PrimaryButton, SecondaryButton, TextArea
 import Modal from './Modal'
 import useReportReview from '../../hooks/useReportReview'
 import useDeleteReview from '../../hooks/useDeleteReview'
+import { blue, red } from './Colors'
 
 const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
 
@@ -42,7 +43,7 @@ const Grade = styled.div`
     position: relative;
 
     span {
-        color: #2f80ed;
+        color: ${blue};
         position: absolute;
         top: 50%;
         left: 50%;
@@ -56,12 +57,16 @@ const Grade = styled.div`
 
 const MoreButton = styled(SecondaryButton)`
     border-radius: 15rem;
-    border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+    border: 0.1rem solid ${(props) => props.theme.mainText};
     box-shadow: none;
-    color: ${(props) => props.theme.cardDetailsText};
+    color: ${(props) => props.theme.mainText};
     padding: ${(props) => (props.fullButton ? '0 0.3rem 0 0.8rem' : 0)};
     font-weight: normal;
     font-size: inherit;
+
+    &:hover {
+        background: ${(props) => props.theme.lightBackground};
+    }
 `
 
 const Menu = styled.div`
@@ -71,12 +76,12 @@ const Menu = styled.div`
     flex-direction: column;
     text-align: center;
     border-radius: 0.4rem;
-    border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+    border: 0.1rem solid ${(props) => props.theme.mainText};
     right: 0;
     top: 0;
     margin-top: 2.8rem;
     z-index: 1;
-    color: ${(props) => props.theme.cardDetailsText};
+    color: ${(props) => props.theme.mainText};
     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
 `
 
@@ -87,7 +92,7 @@ const MenuContentContainer = styled.div`
     font-size: 1.2rem;
     margin: 0 0.7rem;
     padding: 1rem 0;
-    border-bottom: 0.1rem solid ${(props) => props.theme.placeholderText};
+    border-bottom: 0.1rem solid ${(props) => props.theme.subText};
     cursor: default;
 `
 
@@ -101,7 +106,7 @@ const MenuContent = styled.div`
     }
 
     span:last-child {
-        color: #2f80ed;
+        color: ${blue};
     }
 `
 
@@ -124,11 +129,11 @@ const MenuItem = styled.div`
 `
 
 const ButtonWithIcon = styled(SecondaryButton)`
-    border: 0.1rem solid ${(props) => props.theme.cardDetailsText};
+    border: 0.1rem solid ${(props) => props.theme.mainText};
     box-shadow: none;
     border-radius: 1.5rem;
     padding: 0 0.8rem;
-    color: ${(props) => props.theme.cardDetailsText};
+    color: ${(props) => props.theme.mainText};
     font-weight: normal;
     font-size: inherit;
 
@@ -136,29 +141,24 @@ const ButtonWithIcon = styled(SecondaryButton)`
         margin-left: 0.3rem;
 
         path {
-            fill: ${(props) => props.theme.cardDetailsText};
+            fill: ${(props) => props.theme.mainText};
         }
     }
 
     &:hover {
-        color: #9ac1ee;
-        border: 0.1rem solid #9ac1ee;
-
-        svg > path {
-            fill: #9ac1ee;
-        }
+        background: ${(props) => props.theme.lightBackground};
     }
 `
 
 const ConfirmButton = styled(PrimaryButton)`
-    background-color: #eb5757;
+    background-color: ${red};
     margin: 2rem 1.6rem 0;
 `
 
 const CancelButton = styled(SecondaryButton)`
     margin: 2rem 1.6rem 0;
-    color: ${(props) => props.theme.placeholderText};
-    box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.placeholderText};
+    color: ${(props) => props.theme.subText};
+    box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
 `
 
 const ReportField = styled(TextArea)`
@@ -169,7 +169,7 @@ const ReportField = styled(TextArea)`
 `
 
 const Warning = styled.div`
-    color: #eb5757;
+    color: ${red};
 `
 
 const CircularProgressCustom = styled(CircularProgress)`

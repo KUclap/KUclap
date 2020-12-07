@@ -7,7 +7,7 @@ import CardActions from "./CardActions";
 import CardDetails from './CardDetails'
 
 const Container = styled.div`
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
+  border: 0.2rem solid ${(props) => props.theme.borderColor};
   border-radius: 1rem;
   margin: 3rem 0;
   padding: 1rem 1.6rem 0.3rem;
@@ -44,12 +44,17 @@ const Subject = styled(PrimaryButton)`
   ${BodySmall} {
     margin-left: 0.4ch;
   }
+
+  &:hover {
+    filter: brightness(110%);;
+    background: ${(props) => props.color};
+  }
 `;
 
 const SectionLine = styled.div`
   height: 0.1rem;
   width: 100%;
-  background-color: ${(props) => props.theme.lightColor};
+  background-color: ${(props) => props.theme.borderColor};
   margin-top: 1rem;
 `
 

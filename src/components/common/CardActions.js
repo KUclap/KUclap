@@ -1,11 +1,12 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import { Clap, Boo, Share } from "../utility/Icons";
-import styled, { css, withTheme } from "styled-components";
+import styled, { css } from "styled-components";
 import { pulse } from "../utility/keyframs";
 import useEngage from "../../hooks/useEngage";
 import ShareModal from "./ShareModal";
 import { BodyTiny, SecondaryButton } from "./DesignSystemStyles"
+import { blue, grey_75, light_blue, red, sea_pink } from "./Colors";
 
 const Actions = styled.div`
   display: flex;
@@ -24,7 +25,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #bdbdbd;
+  color: ${grey_75};
 
   span {
     user-select: none;
@@ -35,10 +36,10 @@ const ButtonContainer = styled.div`
 `;
 
 const ButtonWithIcon = styled(SecondaryButton)`
-	border: 0.1rem solid ${(props) => props.theme.placeholderText};
+	border: 0.1rem solid ${(props) => props.theme.subText};
 	box-shadow: none;
 	border-radius: 1.5rem;
-	color: ${(props) => props.theme.placeholderText};
+	color: ${(props) => props.theme.subText};
 	height: fit-content;
 	padding: 0rem 0.8rem;
 	font-weight: normal;
@@ -49,10 +50,14 @@ const ButtonWithIcon = styled(SecondaryButton)`
 		width: 1.6rem;
 
 		path {
-			fill: ${(props) => props.theme.placeholderText};
-			stroke: ${(props) => props.theme.placeholderText};
+			fill: ${(props) => props.theme.subText};
+			stroke: ${(props) => props.theme.subText};
 		}
 	}
+
+  &:hover {
+    background: ${(props) => props.theme.lightBackground};
+  }
 `
 
 const ButtonIcon = styled.button`
@@ -113,10 +118,10 @@ const ButtonIcon = styled.button`
       transition: all 0.2s ease-in-out;
     }
     #clap {
-      fill: ${(props) => (props.valueAction === false ? "#2f80ed" : null)};
+      fill: ${(props) => (props.valueAction === false ? blue : null)};
     }
     #boo {
-      fill: ${(props) => (props.valueAction === false ? "#eb5757" : null)};
+      fill: ${(props) => (props.valueAction === false ? red : null)};
     }
   }
 
@@ -124,15 +129,15 @@ const ButtonIcon = styled.button`
     svg {
       #clap {
         fill: ${(props) =>
-          props.valueAction === false ? "#2f80ed" : "#9ac1ee"};
+          props.valueAction === false ? blue : light_blue};
       }
       #boo {
         fill: ${(props) =>
-          props.valueAction === false ? "#eb5757" : "#eea99a"};
+          props.valueAction === false ? red : sea_pink};
       }
       #arrow {
-        fill: #9ac1ee;
-        stroke: #9ac1ee;
+        fill: ${light_blue};
+        stroke: ${light_blue};
       }
     }
   }
@@ -140,10 +145,10 @@ const ButtonIcon = styled.button`
   &:active {
     svg {
       #clap {
-        fill: #2f80ed;
+        fill: ${blue};
       }
       #boo {
-        fill: #eb5757;
+        fill: ${red};
       }
     }
   }
@@ -194,7 +199,7 @@ const CardActions = (props) => {
 				{clapCounter === prevClapCounter ? (
 					<span>{numberFormat(clapCounter + clap)}</span>
 				) : (
-					<NumberAction color="#2f80ed">
+					<NumberAction color={blue}>
 						{`+${clapCounter - prevClapCounter}`}
 					</NumberAction>
 				)}
@@ -211,7 +216,7 @@ const CardActions = (props) => {
 				{booCounter === prevBooCounter ? (
 					<span>{numberFormat(booCounter + boo)}</span>
 				) : (
-					<NumberAction color="#eb5757">
+					<NumberAction color={red}>
 						{`+${booCounter - prevBooCounter}`}
 					</NumberAction>
 				)}

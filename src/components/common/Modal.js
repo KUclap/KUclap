@@ -7,7 +7,7 @@ import { ModalContext } from "../../context/ModalContext";
 
 const ModalContent = styled.div`
   border: ${(props) =>
-    props.theme.name === "dark" ? `0.3rem solid ${props.theme.lightColor}` : 0};
+    props.theme.name === "dark" ? `0.3rem solid ${props.theme.borderColor}` : 0};
   border-radius: 10px;
   background-color: ${(props) => (!props.show ? "transparent" :  props.theme.body)};
   position: fixed;

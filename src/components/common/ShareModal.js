@@ -10,7 +10,7 @@ const ShareSelect = styled.div`
   display: flex;
   align-items: center;
   padding: 1rem 3rem;
-  border-bottom: 0.1rem solid ${(props) => props.theme.lightColor};
+  border-bottom: 0.1rem solid ${(props) => props.theme.borderColor};
   cursor: pointer;
   user-select: none;
   color: ${(props) =>

@@ -1,6 +1,7 @@
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import { Github } from "../utility/Icons";
+import { blue } from "./Colors";
 import SocialIcons from './SocialIcons'
 
 const Container = styled.footer`
@@ -11,7 +12,7 @@ const Container = styled.footer`
   align-items: center;
   margin-top: 7.5rem;
   margin-bottom: 4rem;
-  border-top: 0.475rem dashed ${(props) => props.theme.lightColor};
+  border-top: 0.475rem dashed ${(props) => props.theme.borderColor};
 `;
 
 const MoreProductionText = styled.p`
@@ -28,12 +29,12 @@ const SocialText = styled(MoreProductionText)`
 const Button = styled.button`
   cursor: pointer;
   background: ${(props) => props.theme.body};
-  color: #2f80ed;
+  color: ${blue};
   min-width: 27.6rem;
   font-size: 1.4rem;
   font-family: "Kanit";
   padding: 0.6rem 1.2rem;
-  border: 0.35rem solid ${(props) => props.theme.lightColor};
+  border: 0.35rem solid ${(props) => props.theme.borderColor};
   border-radius: 7px;
   transition: 0.25s all ease-in;
   margin: 0.8rem auto;
@@ -44,7 +45,7 @@ const Button = styled.button`
   }
 
   &:hover {
-    border-color: #2f80ed;
+    border-color: ${blue};
   }
 `;
 
@@ -63,7 +64,7 @@ const ExternalLink = styled.a`
   }
 
   &:hover span.highlight {
-    color: #2f80ed;
+    color: ${blue};
   }
 `;
 
@@ -113,7 +114,7 @@ const Footer = ({ theme }) => {
       >
         <span className="highlight">PRs Welcome&nbsp;</span> at{" "}
         <span className="img">
-          <Github fill={theme.bodyText} />
+          <Github fill={theme.mainText} />
         </span>
       </ExternalLink>
 

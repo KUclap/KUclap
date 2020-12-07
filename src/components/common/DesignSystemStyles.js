@@ -1,11 +1,8 @@
 import styled, { css } from "styled-components";
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
-
-const blue = "hsl(214, 84%, 56%)"
-const blue_75 = "hsl(214, 84%, 75%)"
-const blue_95 = "hsl(214, 84%, 95%)"
-
-const grey = "hsl(0, 0%, 31%)"
+import { 	blue,
+	blue_75,
+	blue_95 } from "./Colors"
  
 const inpStyles = css`
   background-color: transparent;
@@ -64,7 +61,7 @@ const SecondaryButton = styled(PrimaryButton)`
 const Heading = styled.p`
   font-weight: 600;
   color: ${(props) =>
-    props.desc ? props.theme.placeholderText : props.theme.mainText};
+    props.desc ? props.theme.subText : props.theme.mainText};
 `
 
 const Heading1 = styled(Heading)`
@@ -95,29 +92,29 @@ const BodyTiny = styled.p`
 const Input = styled.input`
   ${inpStyles};
   
-  border-color: ${(props) => props.theme.lightColor};
-  color: ${(props) => props.theme.bodyText};
+  border-color: ${(props) => props.theme.borderColor};
+  color: ${(props) => props.theme.mainText};
   height: 3.4rem;
 
   &::placeholder {
-    color: ${(props) => props.theme.placeholderText};
+    color: ${(props) => props.theme.subText};
   }
 `
 
 const TextArea = styled.textarea`
   background-color: ${inputStyles.backgroundColor};
   border: ${inputStyles.border};
-  border-color: ${(props) => props.theme.lightColor};
+  border-color: ${(props) => props.theme.borderColor};
   border-radius: ${inputStyles.borderRadius};
   font-size: ${inputStyles.fontSize};
   padding: ${inputStyles.padding};
   resize: none;
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  color: ${(props) => props.theme.bodyText};
+  color: ${(props) => props.theme.mainText};
   
   &::placeholder {
-    color: ${(props) => props.theme.placeholderText};
+    color: ${(props) => props.theme.subText};
   }
 `
 
@@ -140,7 +137,7 @@ const ModalHeader = styled.div`
   justify-content: center;
   display: flex;
   padding: 1.4rem 0;
-  border-bottom: 0.3rem solid ${(props) => props.theme.lightColor};
+  border-bottom: 0.3rem solid ${(props) => props.theme.borderColor};
   color: ${(props) => props.theme.mainText};
 
   svg {

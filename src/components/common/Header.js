@@ -6,6 +6,7 @@ import { KUClap } from "../utility/Icons";
 import { navigateToHomePage } from "../utility/helper";
 import SocialIcons from './SocialIcons'
 import ThemeToggleButton from "./ThemeToggleButton";
+import { grey } from "./Colors";
 
 const KUclapText = styled.p`
   font-size: 4.6rem;
@@ -26,7 +27,7 @@ const KUclapText = styled.p`
 const DetailKUclap = styled.span`
   font-size: 1.8rem;
   text-transform: uppercase;
-  color: ${(props) => props.theme.mainText || "#4f4f4f"};
+  color: ${(props) => props.theme.mainText || grey};
   text-align: center;
   font-weight: 400;
 `;
@@ -59,7 +60,7 @@ const Header = ({ theme, toggleTheme }) => {
       </UtilitysContainer>
       <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={navigateToHomePage}>
-        <KUClap bgColor={theme.body} textColor={theme.bodyText} />
+        <KUClap bgColor={theme.body} textColor={theme.mainText} />
         <span>
           <b>KU</b>CLAP
         </span>

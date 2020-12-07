@@ -21,13 +21,13 @@ const Card = styled.div`
 `;
 
 const Thankyou = styled.p`
-  color: #77b28f;
+  color: hsl(144, 28%, 58%);
   font-size: 2.6rem;
   font-weight: 600;
   white-space: nowrap;
   text-align: center;
   margin-bottom: 0.3rem;
-  color: #a3e0b5;
+  color: hsl(138, 50%, 76%);
 `;
 
 const TextCount = styled.p`

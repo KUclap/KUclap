@@ -29,6 +29,7 @@ import {
 	NoMoreCustom,
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
+import { blue_75, grey_75 } from "../components/common/Colors";
 
 const Button = styled.div`
 	background-color: hsl(145, 63%, 42%);
@@ -55,7 +56,7 @@ const ButtonLastReview = styled.div`
 	align-items: center;
 	background: transparent;
 	margin-right: 1rem;
-	border: 0.1rem solid #BDBDBD;
+	border: 0.1rem solid ${grey_75};
   padding: 0.2rem 1rem;
   border-radius: 0.4rem;
 `;
@@ -90,7 +91,7 @@ const ReviewPage = (props) => {
 			{...props} 
 		>
 			
-			<SubjectTitle color={isAvailable ? getColorHash(review.classId) : "#9ac1ee"}>
+			<SubjectTitle color={isAvailable ? getColorHash(review.classId) : blue_75}>
 				<span>{isAvailable ? review.classId : "000000"}</span>
 				{
 					loading ? "กำลังโหลดข้อมูลวิชา..." 

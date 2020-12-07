@@ -10,7 +10,7 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   box-shadow: ${(props) =>
-    props.theme.name === "dark" ? 0 : `0 0 0 0.1rem ${props.theme.bodyText}`};
+    props.theme.name === "dark" ? 0 : `0 0 0 0.1rem ${props.theme.mainText}`};
   position: relative;
   ${(props) =>
     props.right &&

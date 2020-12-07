@@ -2,7 +2,7 @@ import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 
 const Container = styled.div`
-  border: 0.2rem solid ${(props) => props.theme.lightColor};
+  border: 0.2rem solid ${(props) => props.theme.borderColor};
   border-radius: 1rem;
   margin: 2rem 0;
   padding: 1.2rem 1.6rem;

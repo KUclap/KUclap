@@ -6,7 +6,7 @@ import { ModalContext } from "../../context/ModalContext";
 const GlobalStyles = createGlobalStyle`
 
 body {
-  color: ${(props) => props.theme.bodyText || "#f5f5f5"};
+  color: ${(props) => props.theme.mainText || "#f5f5f5"};
   background: ${(props) => props.theme.body || "#191b1f"};
   overflow: ${(props) => (props.isOverflow === true ? "hidden" : "auto")};
 } 

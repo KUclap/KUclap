@@ -51,7 +51,7 @@ const SelectCustom = styled(Select)`
   .Select-control {
     width: 100%;
     margin: 0 auto;
-    border: 0.2rem solid ${(props) => props.theme.lightColor};
+    border: 0.2rem solid ${(props) => props.theme.borderColor};
     border-radius: 10px;
 
     .Select-multi-value-wrapper {
@@ -65,7 +65,7 @@ const SelectCustom = styled(Select)`
   }
 
   .Select-input > input {
-    color: ${(props) => props.theme.bodyText};
+    color: ${(props) => props.theme.mainText};
   }
 
   .Select-menu-outer,

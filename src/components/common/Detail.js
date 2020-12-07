@@ -2,6 +2,7 @@ import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { Heading2 } from "./DesignSystemStyles";
+import { baby_blue, columbia_blue, cosmos_pink, sea_pink, turquoise_green, yellow } from "./Colors";
 
 const ScoreTitle = styled.div`
   font-size: 1.4rem;
@@ -18,7 +19,7 @@ const LinearProgressCustom = styled(LinearProgress)`
   }
 
   &.MuiLinearProgress-colorPrimary {
-    background-color: ${(props) => props.theme.lightColor2};
+    background-color: ${(props) => props.theme.lightBackground};
   }
 
   & .MuiLinearProgress-barColorPrimary {
@@ -34,7 +35,7 @@ const LinearProgressCustom = styled(LinearProgress)`
 const Percent = styled.div`
   font-size: 1rem;
   width: 0;
-  color: ${(props) => props.theme.placeholderText};
+  color: ${(props) => props.theme.subText};
 `
 
 const ScoreContainter = styled.div`
@@ -84,8 +85,8 @@ const Detail = ({ score }) => {
         <ScoreBar>
           <LinearProgressCustom
             variant="determinate"
-            colorLeft="#9BC1EE"
-            colorRight="#F0C3F7"
+            colorLeft={baby_blue}
+            colorRight={cosmos_pink}
             value={score ? score.homework : 0}
           />
           <Percent>
@@ -98,8 +99,8 @@ const Detail = ({ score }) => {
         <ScoreBar>
           <LinearProgressCustom
             variant="determinate"
-            colorLeft="#A3E0B5"
-            colorRight="#B4D9F3"
+            colorLeft={turquoise_green}
+            colorRight={columbia_blue}
             value={score ? score.interest : 0}
           />
           <Percent>
@@ -112,8 +113,8 @@ const Detail = ({ score }) => {
         <ScoreBar>
           <LinearProgressCustom
             variant="determinate"
-            colorLeft="#EEA99A"
-            colorRight="#F6DEA2"
+            colorLeft={sea_pink}
+            colorRight={yellow}
             value={score ? score.how : 0}
           />
           <Percent>
