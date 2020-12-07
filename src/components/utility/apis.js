@@ -73,6 +73,17 @@ const apis = {
       console.log(err);
     }
   },
+
+  // PUT report status by reviewid
+  putReportByReviewId: async (reviewId, next) => {
+    try {
+      await api.put(`/review/report/${reviewId}`);
+      next();
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   // PUT clap review by reviewid
   putClapReviewByReviewId: async (reviewid, clap, next) => {
     try {

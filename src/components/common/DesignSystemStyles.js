@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 
 const blue = "hsl(214, 84%, 56%)"
@@ -6,6 +6,14 @@ const blue_75 = "hsl(214, 84%, 75%)"
 const blue_95 = "hsl(214, 84%, 95%)"
 
 const grey = "hsl(0, 0%, 31%)"
+ 
+const inpStyles = css`
+  background-color: transparent;
+  border: 0.2rem solid;
+  border-radius: 0.6rem;
+  padding: 1.2rem 1.6rem;
+  font-size: 1.6rem;
+` 
 
 const inputStyles = {
   backgroundColor: "transparent",
@@ -85,13 +93,10 @@ const BodyTiny = styled.p`
 `
 
 const Input = styled.input`
-  background-color: ${inputStyles.backgroundColor};
-  border: ${inputStyles.border};
+  ${inpStyles};
+  
   border-color: ${(props) => props.theme.lightColor};
-  border-radius: ${inputStyles.borderRadius};
   color: ${(props) => props.theme.bodyText};
-  font-size: ${inputStyles.fontSize};
-  padding: ${inputStyles.padding};
   height: 3.4rem;
 
   &::placeholder {

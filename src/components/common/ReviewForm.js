@@ -751,7 +751,7 @@ const ReviewForm = (props) => {
           <Alert Close={handleCloseAlert} />
         </Suspense>
       ) : (
-      <Modal showModal={showReviewModal} closeModal={handleCloseAlert}>
+        <Modal showModal={showReviewModal} closeModal={handleCloseAlert}>
           เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
           <div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
           <ModalActions>
