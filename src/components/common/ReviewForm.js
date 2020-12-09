@@ -101,16 +101,16 @@ const RecommendReviewContainer = styled.div`
 
 const WordTag = styled.button`
     font-size: 1.4rem;
-    color: ${blue};
+    color: ${(props) => props.theme.tag.fontColor};
     padding: 0.1rem 0.8rem;
-    background: ${blue_97};
-    border: 0.1rem solid ${blue};
+    background: ${(props) => props.theme.tag.background};
+    border: 0.1rem solid ${(props) => props.theme.tag.border};
     border-radius: 0.4rem;
     width: fit-content;
     cursor: pointer;
 
     &:hover {
-        background: white;
+        background: ${(props) => props.theme.tag.hover};
     }
 `
 

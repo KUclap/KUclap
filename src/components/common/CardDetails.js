@@ -18,9 +18,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Modal from './Modal'
 import useReportReview from '../../hooks/useReportReview'
 import useDeleteReview from '../../hooks/useDeleteReview'
+import parseDate from "../utility/parseDate";
 import { blue, red, sea_pink } from './Colors'
-
-const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
 
 const DetailsContainer = styled.div`
     display: flex;
@@ -84,25 +83,10 @@ const MoreButton = styled(SecondaryButton)`
     }
 `
 
-// const Menu = styled.div`
-//     display: ${(props) => (props.openMenu ? 'flex' : 'none')};
-//     background: ${(props) => props.theme.body};
-//     position: absolute;
-//     flex-direction: column;
-//     text-align: center;
-//     border-radius: 0.4rem;
-//     border: 0.1rem solid ${(props) => props.theme.mainText};
-//     right: 0;
-//     top: 0;
-//     margin-top: 2.8rem;
-//     z-index: 1;
-//     color: ${(props) => props.theme.mainText};
-//     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
-// `
-
 const MenuCustom = styled(Menu)`
     .MuiPaper-elevation0 {
         border: 0.1rem solid ${(props) => props.theme.mainText};
+        background: ${(props) => props.theme.body};
         margin-top: 0.4rem;
         color: ${(props) => props.theme.mainText};
         box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
@@ -231,17 +215,6 @@ const CardDetails = (props) => {
         currentRoute,
         classId,
     )
-
-    const parseDate = (dateUTC) => {
-        if (dateUTC) {
-            let date = dateUTC.split('-')
-            let day = date[2].slice(0, 2)
-            let month = months[parseInt(date[1]) - 1]
-            let year = date[0]
-            if (day[0] === '0') day = day[1]
-            return `${day} ${month} ${year}`
-        }
-    }
 
     const handleReport = () => {
         if (reportReason.reason.length < 10) setReportReason({ ...reportReason, require: true })

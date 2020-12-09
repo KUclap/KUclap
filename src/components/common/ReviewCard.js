@@ -78,7 +78,6 @@ const ReviewCard = (props) => {
     theme,
   } = props;
 
-
   return (
     <Container>
       {isBadge && (

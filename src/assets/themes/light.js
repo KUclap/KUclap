@@ -1,4 +1,4 @@
-import { blue_90, grey, grey_75, grey_88, grey_95 } from "../../components/common/Colors";
+import { blue, blue_90, blue_97, grey, grey_75, grey_88, grey_95 } from "../../components/common/Colors";
 
 export default {
   name: "light",
@@ -9,6 +9,12 @@ export default {
   subText: grey_75,
   borderColor: grey_88,
   lightBackground: grey_95,
+  tag: {
+    fontColor: blue,
+    background: blue_97,
+    border: blue,
+    hover: "white"
+  },
   skeleton: ["#f3f3f3", "#ecebeb"],
   menuItem: {
     hover: "hsl(212, 71%, 95%)",

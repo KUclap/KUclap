@@ -7,6 +7,12 @@ export default {
   subText: "#6d6d6d",
   borderColor: "#494949",
   lightBackground: "#313438",
+  tag: {
+    fontColor: "#f5f5f5",
+    background: "transparent",
+    border: "#f5f5f5",
+    hover: "#6d6d6d"
+  },
   skeleton: ["#797979", "#aaaaaa"],
   menuItem: {
     hover: "hsl(212, 34%, 41%)",
