@@ -1,8 +1,10 @@
 import styled, { css } from "styled-components";
+import CircularProgress from '@material-ui/core/CircularProgress'
 import ic_cancel_white from "../../assets/icons/ic_cancel_white.svg";
 import { 	blue,
 	blue_75,
-	blue_95 } from "./Colors"
+	blue_95, 
+  blue_97} from "./Colors"
  
 const inpStyles = css`
   background-color: transparent;
@@ -53,8 +55,12 @@ const SecondaryButton = styled(PrimaryButton)`
   color: ${blue};
   box-shadow: inset 0 0 0 0.1rem ${blue};
 
-  &:hover {
+  &:active {
     background-color: ${blue_95};
+  }
+
+  &:hover {
+    background-color: ${blue_97};
   }
 `
 
@@ -127,6 +133,8 @@ const ModalActions = styled.div`
 
   button {
     margin: 1.6rem 1.6rem 0;
+    height: 2.8rem;
+    min-width: 6.5rem;
   }
 `
 
@@ -164,6 +172,12 @@ const Backdrop = styled.div`
   cursor: url(${ic_cancel_white}) 205 205, auto;
 `
 
+const WhiteCircularProgress = styled(CircularProgress)`
+    && {
+        color: white;
+    }
+`
+
 export {
 	PrimaryButton,
   SecondaryButton,
@@ -176,5 +190,6 @@ export {
   TextArea,
   ModalActions,
   Backdrop,
-  ModalHeader
+  ModalHeader,
+  WhiteCircularProgress
 }

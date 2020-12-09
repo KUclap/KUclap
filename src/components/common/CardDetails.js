@@ -1,15 +1,24 @@
 import { h } from 'preact'
 import { useState, useEffect, useContext } from 'preact/hooks'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import { navigateToReviewPage } from '../utility/helper'
 import { Recap, DownArrow, GradeCircle } from '../utility/Icons'
 import styled from 'styled-components'
 import { ReviewFetcherContext } from '../../context/ReviewFetcherContext'
-import { BodyTiny, Input, ModalActions, PrimaryButton, SecondaryButton, TextArea } from './DesignSystemStyles'
+import {
+    BodyTiny,
+    Input,
+    ModalActions,
+    PrimaryButton,
+    SecondaryButton,
+    TextArea,
+    WhiteCircularProgress,
+} from './DesignSystemStyles'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import Modal from './Modal'
 import useReportReview from '../../hooks/useReportReview'
 import useDeleteReview from '../../hooks/useDeleteReview'
-import { blue, red } from './Colors'
+import { blue, red, sea_pink } from './Colors'
 
 const months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
 
@@ -64,25 +73,44 @@ const MoreButton = styled(SecondaryButton)`
     font-weight: normal;
     font-size: inherit;
 
+    svg {
+        path {
+            fill: ${(props) => props.theme.mainText};
+        }
+    }
+
     &:hover {
         background: ${(props) => props.theme.lightBackground};
     }
 `
 
-const Menu = styled.div`
-    display: ${(props) => (props.openMenu ? 'flex' : 'none')};
-    background: ${(props) => props.theme.body};
-    position: absolute;
-    flex-direction: column;
-    text-align: center;
-    border-radius: 0.4rem;
-    border: 0.1rem solid ${(props) => props.theme.mainText};
-    right: 0;
-    top: 0;
-    margin-top: 2.8rem;
-    z-index: 1;
-    color: ${(props) => props.theme.mainText};
-    box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+// const Menu = styled.div`
+//     display: ${(props) => (props.openMenu ? 'flex' : 'none')};
+//     background: ${(props) => props.theme.body};
+//     position: absolute;
+//     flex-direction: column;
+//     text-align: center;
+//     border-radius: 0.4rem;
+//     border: 0.1rem solid ${(props) => props.theme.mainText};
+//     right: 0;
+//     top: 0;
+//     margin-top: 2.8rem;
+//     z-index: 1;
+//     color: ${(props) => props.theme.mainText};
+//     box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+// `
+
+const MenuCustom = styled(Menu)`
+    .MuiPaper-elevation0 {
+        border: 0.1rem solid ${(props) => props.theme.mainText};
+        margin-top: 0.4rem;
+        color: ${(props) => props.theme.mainText};
+        box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+    }
+
+    .MuiList-padding {
+        padding: 0;
+    }
 `
 
 const MenuContentContainer = styled.div`
@@ -110,55 +138,58 @@ const MenuContent = styled.div`
     }
 `
 
-const MenuItem = styled.div`
-    padding: 1rem;
-    font-size: 1.2rem;
-    user-select: none;
-    cursor: pointer;
-    color: ${(props) => props.theme.mainText};
-
-    &:hover {
-        background: ${(props) => props.theme.menuItem.hover};
+const MenuItemCustom = styled(MenuItem)`
+    &.MuiMenuItem-root {
+        font-family: 'Kanit', arial, sans-serif;
+        padding: 1rem;
+        font-size: 1.2rem;
+        justify-content: center;
         color: ${(props) => props.theme.mainText};
-    }
 
-    &:active {
-        background: ${(props) => props.theme.menuItem.active};
-        color: ${(props) => props.theme.mainText};
+        &:hover {
+            background: ${(props) => props.theme.menuItem.hover};
+            color: ${(props) => props.theme.mainText};
+        }
+
+        &:active {
+            background: ${(props) => props.theme.menuItem.active};
+            color: ${(props) => props.theme.mainText};
+        }
     }
 `
 
-const ButtonWithIcon = styled(SecondaryButton)`
-    border: 0.1rem solid ${(props) => props.theme.mainText};
-    box-shadow: none;
+const ButtonWithIcon = styled(PrimaryButton)`
     border-radius: 1.5rem;
     padding: 0 0.8rem;
-    color: ${(props) => props.theme.mainText};
-    font-weight: normal;
+    font-weight: 300;
     font-size: inherit;
 
     svg {
         margin-left: 0.3rem;
 
         path {
-            fill: ${(props) => props.theme.mainText};
+            fill: white;
         }
-    }
-
-    &:hover {
-        background: ${(props) => props.theme.lightBackground};
     }
 `
 
 const ConfirmButton = styled(PrimaryButton)`
     background-color: ${red};
     margin: 2rem 1.6rem 0;
+
+    &:hover {
+        background: ${sea_pink};
+    }
 `
 
 const CancelButton = styled(SecondaryButton)`
     margin: 2rem 1.6rem 0;
     color: ${(props) => props.theme.subText};
     box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
+
+    &:hover {
+        background: ${(props) => props.theme.lightBackground};
+    }
 `
 
 const ReportField = styled(TextArea)`
@@ -172,12 +203,6 @@ const Warning = styled.div`
     color: ${red};
 `
 
-const CircularProgressCustom = styled(CircularProgress)`
-    && {
-        color: white;
-    }
-`
-
 const CardDetails = (props) => {
     const { reviewId, classId, currentRoute, recap, author, grade, semester, year, createdAt, sec } = props
 
@@ -185,7 +210,7 @@ const CardDetails = (props) => {
     const [showReportModal, setReportModal] = useState(false)
     const { handleCardDeleted } = useContext(ReviewFetcherContext)
 
-    const [menu, setMenu] = useState(false)
+    const [menu, setMenu] = useState(null)
     const defaultAuth = {
         value: '',
         isMatch: true,
@@ -197,17 +222,15 @@ const CardDetails = (props) => {
     }
     const [auth, setAuth] = useState(defaultAuth)
     const [reportReason, setReportReason] = useState(defaultReportReason)
-    
-    const {
-        isLoading: isLoadingReport,
-        sendReport,
-    } = useReportReview(reviewId, classId, reportReason.reason)
 
-    const {
-        isLoading: isLoadingDelete,
-        deleteReview,
-        isAuthMatch
-    } = useDeleteReview(reviewId, auth, currentRoute, classId)
+    const { isLoading: isLoadingReport, sendReport } = useReportReview(reviewId, classId, reportReason.reason)
+
+    const { isLoading: isLoadingDelete, deleteReview, isAuthMatch } = useDeleteReview(
+        reviewId,
+        auth,
+        currentRoute,
+        classId,
+    )
 
     const parseDate = (dateUTC) => {
         if (dateUTC) {
@@ -217,20 +240,6 @@ const CardDetails = (props) => {
             let year = date[0]
             if (day[0] === '0') day = day[1]
             return `${day} ${month} ${year}`
-        }
-    }
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const moreButton = document.getElementById(`more-button-${reviewId}`)
-            document.addEventListener('click', (event) => handleOnBlurMoreBtn(moreButton, event))
-        }
-    })
-
-    const handleOnBlurMoreBtn = (btn, event) => {
-        let isClickInside = btn.contains(event.target)
-        if (!isClickInside) {
-            setMenu(false)
         }
     }
 
@@ -245,7 +254,7 @@ const CardDetails = (props) => {
     }
 
     useEffect(() => {
-        setAuth({...auth, isMatch: isAuthMatch})
+        setAuth({ ...auth, isMatch: isAuthMatch })
     }, [isAuthMatch])
 
     const closeReportModal = () => {
@@ -296,51 +305,85 @@ const CardDetails = (props) => {
                 )}
                 <MoreButton
                     type="report"
-                    tabIndex="0"
-                    id={`more-button-${reviewId}`}
-                    onClick={() => setMenu(true)}
+                    aria-controls="more-menu"
+                    aria-haspopup="true"
+                    onClick={(event) => setMenu(event.currentTarget)}
                     fullButton={!recap}>
                     {!recap && <BodyTiny>เพิ่มเติม</BodyTiny>}
                     <DownArrow />
-                    <Menu openMenu={menu}>
-                        <MenuContentContainer>
-                            {sec !== 0 && (
-                                <MenuContent>
-                                    <span>หมู่เรียน (เซค)</span>
-                                    <span>{sec}</span>
-                                </MenuContent>
-                            )}
-                            {semester !== 0 && (
-                                <MenuContent>
-                                    <span>ภาคเรียน</span>
-                                    <span>
-                                        {
-                                            {
-                                                1: 'ต้น',
-                                                2: 'ปลาย',
-                                                3: 'ฤดูร้อน',
-                                            }[semester]
-                                        }
-                                    </span>
-                                </MenuContent>
-                            )}
-                            {year !== 0 && (
-                                <MenuContent>
-                                    <span>ปีการศึกษา</span>
-                                    <span>{year}</span>
-                                </MenuContent>
-                            )}
-                            {/* {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
-                            <MenuContent>
-                                <span>รีวิวเมื่อ</span>
-                                <span>{parseDate(createdAt)}</span>
-                            </MenuContent>
-                        </MenuContentContainer>
-                        <MenuItem onClick={() => navigateToReviewPage(reviewId)}>ดูรีวิวนี้</MenuItem>
-                        <MenuItem onClick={() => setReportModal(true)}>แจ้งลบ</MenuItem>
-                        <MenuItem onClick={() => setEditModal(true)}>ลบรีวิว</MenuItem>
-                    </Menu>
                 </MoreButton>
+                <MenuCustom
+                    elevation={0}
+                    getContentAnchorEl={null}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    openMenu={menu}
+                    id="more-menu"
+                    anchorEl={menu}
+                    keepMounted
+                    open={Boolean(menu)}
+                    onClose={() => setMenu(null)}>
+                    <MenuContentContainer>
+                        {sec !== 0 && (
+                            <MenuContent>
+                                <span>หมู่เรียน (เซค)</span>
+                                <span>{sec}</span>
+                            </MenuContent>
+                        )}
+                        {semester !== 0 && (
+                            <MenuContent>
+                                <span>ภาคเรียน</span>
+                                <span>
+                                    {
+                                        {
+                                            1: 'ต้น',
+                                            2: 'ปลาย',
+                                            3: 'ฤดูร้อน',
+                                        }[semester]
+                                    }
+                                </span>
+                            </MenuContent>
+                        )}
+                        {year !== 0 && (
+                            <MenuContent>
+                                <span>ปีการศึกษา</span>
+                                <span>{year}</span>
+                            </MenuContent>
+                        )}
+                        {/* {recap && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
+                        <MenuContent>
+                            <span>รีวิวเมื่อ</span>
+                            <span>{parseDate(createdAt)}</span>
+                        </MenuContent>
+                    </MenuContentContainer>
+                    <MenuItemCustom
+                        onClick={() => {
+                            setMenu(null)
+                            navigateToReviewPage(reviewId)
+                        }}>
+                        ดูรีวิวนี้
+                    </MenuItemCustom>
+                    <MenuItemCustom
+                        onClick={() => {
+                            setMenu(null)
+                            setReportModal(true)
+                        }}>
+                        แจ้งลบ
+                    </MenuItemCustom>
+                    <MenuItemCustom
+                        onClick={() => {
+                            setMenu(null)
+                            setEditModal(true)
+                        }}>
+                        ลบรีวิว
+                    </MenuItemCustom>
+                </MenuCustom>
             </SubDetail>
             <Modal showModal={showReportModal} closeModal={closeReportModal}>
                 เหตุผลในการแจ้งลบ
@@ -353,7 +396,7 @@ const CardDetails = (props) => {
                 <ModalActions>
                     <CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
                     <ConfirmButton onClick={handleReport}>
-                        {isLoadingReport ? <CircularProgressCustom size="3rem" /> : 'แจ้งลบ'}
+                        {isLoadingReport ? <WhiteCircularProgress size="2rem" /> : 'แจ้งลบ'}
                     </ConfirmButton>
                 </ModalActions>
             </Modal>
@@ -370,7 +413,7 @@ const CardDetails = (props) => {
                 <ModalActions>
                     <CancelButton onClick={closeEditModal}>ยกเลิก</CancelButton>
                     <ConfirmButton onClick={handleDelete}>
-                        {isLoadingDelete ? <CircularProgressCustom size="3rem" /> : 'ลบรีวิว'}
+                        {isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : 'ลบรีวิว'}
                     </ConfirmButton>
                 </ModalActions>
             </Modal>

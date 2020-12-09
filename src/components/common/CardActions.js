@@ -36,10 +36,10 @@ const ButtonContainer = styled.div`
 `;
 
 const ButtonWithIcon = styled(SecondaryButton)`
-	border: 0.1rem solid ${(props) => props.theme.subText};
+	border: 0.1rem solid ${grey_75};
 	box-shadow: none;
 	border-radius: 1.5rem;
-	color: ${(props) => props.theme.subText};
+	color: ${grey_75};
 	height: fit-content;
 	padding: 0rem 0.8rem;
 	font-weight: normal;
@@ -50,8 +50,8 @@ const ButtonWithIcon = styled(SecondaryButton)`
 		width: 1.6rem;
 
 		path {
-			fill: ${(props) => props.theme.subText};
-			stroke: ${(props) => props.theme.subText};
+			fill: ${grey_75};
+			stroke: ${grey_75};
 		}
 	}
 

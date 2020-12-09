@@ -14,7 +14,7 @@ const KUclapText = styled.p`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2.5rem 0;
+  margin: 4rem 0 2.5rem 0;
   cursor: pointer;
   user-select: none;
 
