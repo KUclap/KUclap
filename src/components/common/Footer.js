@@ -108,7 +108,7 @@ const Footer = ({ theme }) => {
       </a>
 
       <ExternalLink
-        href="https://github.com/marsDev31"
+        href="https://github.com/KUclap"
         target="_blank"
         rel="noopener noreferrer"
       >
