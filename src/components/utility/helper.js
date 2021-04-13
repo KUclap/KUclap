@@ -61,6 +61,11 @@ export const navigateToClassPage = (classId) => {
     route(`${baseroute}/${classId}`);
 };
 
+export const navigateToClassPageQuestion = (classId) => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+    route(`${baseroute}/${classId}?display=question`);
+}
+
 export const navigateToReviewPage = (reviewId) => {
   if (typeof window !== "undefined") window.scrollTo(0, 0);
   route(`${baseroute}/review/${reviewId}`);

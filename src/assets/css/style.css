@@ -18,6 +18,8 @@ button {
   font-size: inherit;
   border: 0;
   user-select: none;
+  background: none;
+  outline: 0;
 }
 
 input, textarea {
