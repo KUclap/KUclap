@@ -2,18 +2,13 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import APIs from "../components/utility/apis";
 import { SelectContext } from "../context/SelectContext";
 
-const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) => {
+const useQuestionFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) => {
 	// ### Define states for review fetching
-	const isMatchFetchTarget = (fetchTarget === "review")
+	const isMatchFetchTarget = (fetchTarget === "question")
 	const { dispatch: dispatchSelected } = useContext(SelectContext);
-	const [reviews, setReviews] = useState([]);
+	const [questions, setQuestions] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [underflow, setUnderFlow] = useState(false);
-	const [score, setScore] = useState({
-		homework: 0,
-		interest: 0,
-		how: 0,
-	});
 	const [paging, setPaging] = useState({
 		page: 0,
 		offset: 5,
@@ -29,15 +24,9 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 						type: "selected",
 						value: { label: res.data.label, classID: res.data.classId },
 					});
-	
-					setScore({
-						homework: res.data.stats.homework,
-						interest: res.data.stats.interest,
-						how: res.data.stats.how,
-					});
 				});
 	
-			const adaptor = document.getElementById("adaptor");
+			const adaptor = document.getElementById("adaptor-question");
 			if (adaptor && typeof window !== "undefined") {
 				window.addEventListener("scroll", () => {
 					if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
@@ -50,73 +39,51 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 		}
 	}, []);
 
-	// Fetch reviews when loadMore change.
+	// Fetch questions when loadMore change.
 	useEffect(() => {
 		if (isMatchFetchTarget) {
 			if (!underflow && !loading && loadMore) {
 				setLoading(true);
-				if (!classID) {
-					// fetch reviews by last review : home page
-					APIs.getLastReviews(paging.page, paging.offset, (res) => {
-						const { data } = res;
-						if (!data) {
-							setUnderFlow(true);
-						} else {
-							setPaging({ ...paging, page: paging.page + 1 });
-							setReviews([...reviews, ...data]);
-						}
-						setLoading(false);
-					});
-				} else {
-					// fetch reviews by class id : class Page
-					APIs.getReviewsByClassId(classID, paging.page, paging.offset, (res) => {
-						const { data } = res;
-						if (!data) {
-							setUnderFlow(true);
-						} else {
-							setPaging({ ...paging, page: paging.page + 1 });
-							setReviews([...reviews, ...data]);
-						}
-						setLoading(false);
-					});
-				}
+				// fetch questions by class id : class Page
+				APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
+					const { data } = res;
+					if (!data) {
+						setUnderFlow(true);
+					} else {
+						setPaging({ ...paging, page: paging.page + 1 });
+						setQuestions([...questions, ...data]);
+					}
+					setLoading(false);
+				});
 			}
 			setLoadMore(false);
 		}
-	}, [loadMore, isMatchFetchTarget]);
+	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		const adaptor = document.getElementById("adaptor");
+		const adaptor = document.getElementById("adaptor-question");
 		if (adaptor && typeof window !== "undefined")
-			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+			if (adaptor?.clientHeight <= window.innerHeight) {
 				setLoadMore(true);
 			}
-	}, [reviews]);
+	}, [questions]);
 
 	// #### Helper function for manage on context.
 
-	const handleFetchingReviewsAndClass = (classID) => {
+	const handleFetchingQuestionsAndClass = (classID) => {
 		setPaging({ ...paging, page: 1 });
-		setReviews([]);
+		setQuestions([]);
 		setLoading(true);
 		setUnderFlow(false);
-		APIs.getReviewsByClassId(classID, 0, paging.offset, (res) => {
+		APIs.getQuestionsByClassId(classID, 0, paging.offset, (res) => {
 			if (res.data === null) {
 				setUnderFlow(true);
 			} else {
-				setReviews(res.data);
+				setQuestions(res.data);
 				setUnderFlow(false);
 			}
 			setLoading(false);
-		});
-
-		APIs.getClassDetailByClassId(classID, (res) => {
-			setScore({
-				homework: res.data.stats.homework,
-				interest: res.data.stats.interest,
-				how: res.data.stats.how,
-			});
 		});
 	};
 
@@ -125,22 +92,22 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 		// currentRoute's prop use for tracking ReviewCard's component mountinhg what route.
 		switch (currentRoute) {
 			case "HOME": {
-				// Q: Why didn't use handleFetchingReviewsAndClass function
-				// A: handleFetchingReviewsAndClass use for fetching review when you need review and detail from some class.
+				// Q: Why didn't use handleFetchingQuestionsAndClass function
+				// A: handleFetchingQuestionsAndClass use for fetching review when you need review and detail from some class.
 				//    On Home page,you just make some interupt on loadMore state that loadMore state will fetching review on current page.
 				//    This statement use for reset state and interupt on loadMore.
 				setPaging({ ...paging, page: 0 });
-				setReviews([]);
+				setQuestions([]);
 				setUnderFlow(false);
 				setLoadMore(true);
 				break;
 			}
 			case "CLASS": {
-				handleFetchingReviewsAndClass(classID);
+				handleFetchingQuestionsAndClass(classID);
 				break;
 			}
 			case "REVIEW": {
-				handleFetchingReviewsAndClass(classID);
+				handleFetchingQuestionsAndClass(classID);
 				break;
 			}
 			default:
@@ -149,19 +116,17 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 	};
 
 	return {
-		reviews,
-		setReviews,
+		questions,
+		setQuestions,
 		loading,
 		setLoading,
 		underflow,
 		setUnderFlow,
 		paging,
 		setPaging,
-		score,
-		setScore,
-		handleFetchingReviewsAndClass,
+		handleFetchingQuestionsAndClass,
 		handleCardDeleted,
 	};
 };
 
-export default useReviewFetcherClass;
+export default useQuestionFetcherClass;

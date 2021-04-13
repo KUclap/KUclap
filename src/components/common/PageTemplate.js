@@ -10,11 +10,11 @@ import "react-virtualized-select/styles.css";
 import "react-virtualized/styles.css";
 
 import { GoToTop } from "../utility/Icons";
-import { ReviewFetcherContext } from "../../context/ReviewFetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import Header from "./Header";
 import Helmet from './Helmet'
+import { FetcherContext } from "../../context/FetcherContext";
 
 const Container = styled.div`
   display: flex;
@@ -117,7 +117,7 @@ const PageTemplate = ({
 
   const newEle = useRef(null);
   const [isBottomViewport, setIsBottomViewport] = useState(false);
-  const { handleFetchingReviewsAndClass } = useContext(ReviewFetcherContext);
+  const { handleFetchingReviewsAndClass } = useContext(FetcherContext);
 
   const handleSelected = (e) => {
     if (!isFormPage) {
