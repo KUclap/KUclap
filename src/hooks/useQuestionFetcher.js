@@ -1,72 +1,83 @@
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import APIs from "../components/utility/apis";
-import { SelectContext } from "../context/SelectContext";
 
-const useQuestionFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) => {
+const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 	// ### Define states for review fetching
 	const isMatchFetchTarget = (fetchTarget === "question")
-	const { dispatch: dispatchSelected } = useContext(SelectContext);
+	console.log("tab question: ", isMatchFetchTarget)
 	const [questions, setQuestions] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false)
+	const [loadMore, setLoadMore] = useState(true);
 	const [underflow, setUnderFlow] = useState(false);
 	const [paging, setPaging] = useState({
 		page: 0,
 		offset: 5,
 	});
 
+	console.log(!underflow , !loading , loadMore)
 	// ### Lifecycle for handle fetching
 	useEffect(() => {
+		console.log("mounted", isMatchFetchTarget)
+
 		// Fetching detail of class that class selected.
-		if (isMatchFetchTarget) {
-			if (classID)
-				APIs.getClassDetailByClassId(classID, (res) => {
-					dispatchSelected({
-						type: "selected",
-						value: { label: res.data.label, classID: res.data.classId },
-					});
-				});
-	
 			const adaptor = document.getElementById("adaptor-question");
 			if (adaptor && typeof window !== "undefined") {
+				console.log("adapter detail: ", adaptor.getBoundingClientRect().bottom, window.innerHeight)
 				window.addEventListener("scroll", () => {
-					if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
-						if (!loading) {
-							setLoadMore(true);
+					console.log("Question / did mount listener: ", isMatchFetchTarget)
+					if(isMatchFetchTarget)
+						if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+							if (!loading) {
+								setLoadMore(true);
+							}
 						}
-					}
 				});
 			}
-		}
-	}, []);
+
+	}, [isMatchFetchTarget]);
+
+	// useEffect(() => {
+	// 	if(isMatchFetchTarget)
+	// 		setLoadMore(true);
+	// }, [isMatchFetchTarget])
 
 	// Fetch questions when loadMore change.
 	useEffect(() => {
-		if (isMatchFetchTarget) {
+		console.log("loadmore active", loadMore, isMatchFetchTarget,"state: " ,!underflow , !loading , loadMore)
+		// if (isMatchFetchTarget) {
 			if (!underflow && !loading && loadMore) {
 				setLoading(true);
+				console.log("fetching..")
+
 				// fetch questions by class id : class Page
-				APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
-					const { data } = res;
-					if (!data) {
-						setUnderFlow(true);
-					} else {
-						setPaging({ ...paging, page: paging.page + 1 });
-						setQuestions([...questions, ...data]);
-					}
-					setLoading(false);
-				});
-			}
+				
+					APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
+						const { data } = res;
+						console.log(data)
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setQuestions([...questions, ...data]);
+						}
+						setLoading(false);
+					});
+				
+			} 
 			setLoadMore(false);
-		}
+		// }
 	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		const adaptor = document.getElementById("adaptor-question");
-		if (adaptor && typeof window !== "undefined")
-			if (adaptor?.clientHeight <= window.innerHeight) {
-				setLoadMore(true);
+		// if (isMatchFetchTarget) {
+			const adaptor = document.getElementById("adaptor-question");
+			if (adaptor && typeof window !== "undefined") {
+				if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+					setLoadMore(true);
+				}
 			}
+		// }
 	}, [questions]);
 
 	// #### Helper function for manage on context.
@@ -119,7 +130,7 @@ const useQuestionFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }
 		questions,
 		setQuestions,
 		loading,
-		setLoading,
+		loadMore, 
 		underflow,
 		setUnderFlow,
 		paging,

@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import APIs from "../components/utility/apis";
-import { SelectContext } from "../context/SelectContext";
 
-const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) => {
+const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 	// ### Define states for review fetching
 	const isMatchFetchTarget = (fetchTarget === "review")
-	const { dispatch: dispatchSelected } = useContext(SelectContext);
 	const [reviews, setReviews] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false)
+	const [loadMore, setLoadMore] = useState(true);
 	const [underflow, setUnderFlow] = useState(false);
 	const [score, setScore] = useState({
 		homework: 0,
@@ -22,24 +21,11 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 	// ### Lifecycle for handle fetching
 	useEffect(() => {
 		// Fetching detail of class that class selected.
-		if (isMatchFetchTarget) {
-			if (classID)
-				APIs.getClassDetailByClassId(classID, (res) => {
-					dispatchSelected({
-						type: "selected",
-						value: { label: res.data.label, classID: res.data.classId },
-					});
-	
-					setScore({
-						homework: res.data.stats.homework,
-						interest: res.data.stats.interest,
-						how: res.data.stats.how,
-					});
-				});
-	
+		// if (isMatchFetchTarget) {
 			const adaptor = document.getElementById("adaptor");
 			if (adaptor && typeof window !== "undefined") {
 				window.addEventListener("scroll", () => {
+					if (isMatchFetchTarget)
 					if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
 						if (!loading) {
 							setLoadMore(true);
@@ -47,12 +33,17 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 					}
 				});
 			}
-		}
-	}, []);
+		// }
+	}, [isMatchFetchTarget]);
+
+	// useEffect(() => {
+	// 	if(isMatchFetchTarget)
+	// 		setLoadMore(true);
+	// }, [isMatchFetchTarget])
 
 	// Fetch reviews when loadMore change.
 	useEffect(() => {
-		if (isMatchFetchTarget) {
+		// if (isMatchFetchTarget) {
 			if (!underflow && !loading && loadMore) {
 				setLoading(true);
 				if (!classID) {
@@ -82,16 +73,19 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 				}
 			}
 			setLoadMore(false);
-		}
-	}, [loadMore, isMatchFetchTarget]);
+		// }
+	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		const adaptor = document.getElementById("adaptor");
-		if (adaptor && typeof window !== "undefined")
-			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
-				setLoadMore(true);
+		// if (isMatchFetchTarget) {
+			const adaptor = document.getElementById("adaptor");
+			if (adaptor && typeof window !== "undefined") {
+				if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+					setLoadMore(true);
+				}
 			}
+		// }
 	}, [reviews]);
 
 	// #### Helper function for manage on context.
@@ -152,7 +146,7 @@ const useReviewFetcherClass = ({ loadMore, setLoadMore, classID, fetchTarget }) 
 		reviews,
 		setReviews,
 		loading,
-		setLoading,
+		loadMore, 
 		underflow,
 		setUnderFlow,
 		paging,

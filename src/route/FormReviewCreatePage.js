@@ -3,12 +3,12 @@ import { useContext, useEffect } from "preact/hooks";
 import { withTheme } from "styled-components";
 
 import { getClassName, getColorHash } from "../components/utility/helper";
-import { ReviewFetcherProvider } from "../context/ReviewFetcherContext";
 import { SelectContext } from "../context/SelectContext";
 import { SubjectTitle } from "../components/common/FetcherComponents";
 import APIs from "../components/utility/apis";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewForm from "../components/common/ReviewForm";
+import { FetcherProvider } from "../context/FetcherContext";
 
 const FormReviewCreate = (props) => {
   const { classID } = props;
@@ -27,7 +27,7 @@ const FormReviewCreate = (props) => {
   }, []);
 
   return (
-    <ReviewFetcherProvider>
+    <FetcherProvider>
       <PageTemplate
         content={{
           title: `เขียนรีวิววิชา : ${selected.label}`,
@@ -43,7 +43,7 @@ const FormReviewCreate = (props) => {
         </SubjectTitle>
         <ReviewForm classID={selected.classID || classID} />
       </PageTemplate>
-    </ReviewFetcherProvider>
+    </FetcherProvider>
   );
 };
 

@@ -3,7 +3,7 @@ import { useContext, useState } from "preact/hooks";
 import styled, { css, withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview, NoReview, HomeIcon } from "../components/utility/Icons";
+import { NoMoreReview, NoReview, HomeIcon, NoMoreQuestion, NoQuestion } from "../components/utility/Icons";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
@@ -122,6 +122,9 @@ const ClassPage = (props) => {
   } = useContext(FetcherContext)
   const [showQuestionModal, setQuestionModal] = useState(false)
 
+  console.log({loading, loadMore, underflow, questions})
+
+
   const handleNewReview = () => {
     navigateToFormReviewPage(classID)
     setUnderFlow(false);
@@ -230,9 +233,9 @@ const ClassPage = (props) => {
 			<>
 				<ContainerNoMore>
 				<NoMoreCustom>
-					{questions.length > 0 ? <NoMoreReview /> : <NoReview />}
+					{questions.length > 0 ? <NoMoreQuestion /> : <NoQuestion />}
 				</NoMoreCustom>
-				<PrimaryButton onClick={handleNewReview}>ถามคำถาม</PrimaryButton>
+				<PrimaryButton onClick={() => setQuestionModal(true)}>ถามคำถาม</PrimaryButton>
 				</ContainerNoMore>
 				<Footer />
 			</>
