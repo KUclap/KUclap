@@ -1,83 +1,84 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
+
 import APIs from "../components/utility/apis";
 
 const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 	// ### Define states for review fetching
-	const isMatchFetchTarget = (fetchTarget === "question")
-	console.log("tab question: ", isMatchFetchTarget)
+	const isMatchFetchTarget = fetchTarget === "question";
+	const [isMounted, setIsMounted] = useState(false);
 	const [questions, setQuestions] = useState([]);
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 	const [loadMore, setLoadMore] = useState(true);
 	const [underflow, setUnderFlow] = useState(false);
+	const refIsMatchFetchTarget = useRef(isMatchFetchTarget);
 	const [paging, setPaging] = useState({
 		page: 0,
 		offset: 5,
 	});
 
-	console.log(!underflow , !loading , loadMore)
-	// ### Lifecycle for handle fetching
 	useEffect(() => {
-		console.log("mounted", isMatchFetchTarget)
-
-		// Fetching detail of class that class selected.
-			const adaptor = document.getElementById("adaptor-question");
-			if (adaptor && typeof window !== "undefined") {
-				console.log("adapter detail: ", adaptor.getBoundingClientRect().bottom, window.innerHeight)
-				window.addEventListener("scroll", () => {
-					console.log("Question / did mount listener: ", isMatchFetchTarget)
-					if(isMatchFetchTarget)
-						if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
-							if (!loading) {
-								setLoadMore(true);
-							}
-						}
-				});
-			}
-
+		// reference on the props
+		// We have to use ref instead state because eventlistener initial with context then the prop will not mutate when current state change
+		// this useEffect use for pass value to the refernce then ref's value will change on the eventlistener
+		refIsMatchFetchTarget.current = isMatchFetchTarget;
 	}, [isMatchFetchTarget]);
 
-	// useEffect(() => {
-	// 	if(isMatchFetchTarget)
-	// 		setLoadMore(true);
-	// }, [isMatchFetchTarget])
+	const scrollingListener = () => {
+		const adaptor = document.getElementById("adaptor-question");
+		if (adaptor && refIsMatchFetchTarget.current) {
+			if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+				if (!loading) {
+					setLoadMore(true);
+				}
+			}
+		}
+	};
+
+	// ### Lifecycle for handle fetching
+	useEffect(() => {
+		// Fetching detail of class that class selected.
+		// isMounted is state for checking that eventlistener called then use interupt state for fetching.
+		if (!isMounted) {
+			if (typeof window !== "undefined") {
+				if (!isMounted) setIsMounted(true); // call one time.
+				window.addEventListener("scroll", scrollingListener, { passive: true });
+			}
+		} else {
+			if (isMatchFetchTarget) {
+				setLoadMore(true);
+			}
+		}
+	}, [isMatchFetchTarget]);
 
 	// Fetch questions when loadMore change.
 	useEffect(() => {
-		console.log("loadmore active", loadMore, isMatchFetchTarget,"state: " ,!underflow , !loading , loadMore)
-		// if (isMatchFetchTarget) {
-			if (!underflow && !loading && loadMore) {
+		if (!underflow && !loading && loadMore) {
+			if (isMatchFetchTarget) {
 				setLoading(true);
-				console.log("fetching..")
-
 				// fetch questions by class id : class Page
-				
-					APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
-						const { data } = res;
-						console.log(data)
-						if (!data) {
-							setUnderFlow(true);
-						} else {
-							setPaging({ ...paging, page: paging.page + 1 });
-							setQuestions([...questions, ...data]);
-						}
-						setLoading(false);
-					});
-				
-			} 
-			setLoadMore(false);
-		// }
+				APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
+					const { data } = res;
+					if (!data) {
+						setUnderFlow(true);
+					} else {
+						setPaging({ ...paging, page: paging.page + 1 });
+						setQuestions([...questions, ...data]);
+					}
+					setLoading(false);
+				});
+			}
+		}
+		setLoadMore(false);
 	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		// if (isMatchFetchTarget) {
-			const adaptor = document.getElementById("adaptor-question");
-			if (adaptor && typeof window !== "undefined") {
-				if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
-					setLoadMore(true);
-				}
+		const adaptor = document.getElementById("adaptor-question");
+		if (adaptor && typeof window !== "undefined") {
+			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+				setLoadMore(true);
 			}
-		// }
+		}
 	}, [questions]);
 
 	// #### Helper function for manage on context.
@@ -130,7 +131,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 		questions,
 		setQuestions,
 		loading,
-		loadMore, 
+		loadMore,
 		underflow,
 		setUnderFlow,
 		paging,

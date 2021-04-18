@@ -1,13 +1,16 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
+
 import APIs from "../components/utility/apis";
 
 const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 	// ### Define states for review fetching
-	const isMatchFetchTarget = (fetchTarget === "review")
+	const isMatchFetchTarget = fetchTarget === "review";
+	const [isMounted, setIsMounted] = useState(false);
 	const [reviews, setReviews] = useState([]);
-	const [loading, setLoading] = useState(false)
+	const [loading, setLoading] = useState(false);
 	const [loadMore, setLoadMore] = useState(true);
 	const [underflow, setUnderFlow] = useState(false);
+	const refIsMatchFetchTarget = useRef(isMatchFetchTarget);
 	const [score, setScore] = useState({
 		homework: 0,
 		interest: 0,
@@ -18,33 +21,43 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 		offset: 5,
 	});
 
+	useEffect(() => {
+		// reference on the props
+		// We have to use ref instead state because eventlistener initial with context then the prop will not mutate when current state change
+		// this useEffect use for pass value to the refernce then ref's value will change on the eventlistener
+		refIsMatchFetchTarget.current = isMatchFetchTarget;
+	}, [isMatchFetchTarget]);
+
+	const scrollingListener = () => {
+		const adaptor = document.getElementById("adaptor");
+		if (adaptor && refIsMatchFetchTarget.current) {
+			if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
+				if (!loading) {
+					setLoadMore(true);
+				}
+			}
+		}
+	};
 	// ### Lifecycle for handle fetching
 	useEffect(() => {
 		// Fetching detail of class that class selected.
-		// if (isMatchFetchTarget) {
-			const adaptor = document.getElementById("adaptor");
-			if (adaptor && typeof window !== "undefined") {
-				window.addEventListener("scroll", () => {
-					if (isMatchFetchTarget)
-					if (adaptor.getBoundingClientRect().bottom <= window.innerHeight) {
-						if (!loading) {
-							setLoadMore(true);
-						}
-					}
-				});
+		// isMounted is state for checking that eventlistener called then use interupt state for fetching.
+		if (!isMounted) {
+			if (typeof window !== "undefined") {
+				if (!isMounted) setIsMounted(true); // call one time.
+				window.addEventListener("scroll", scrollingListener, { passive: true });
 			}
-		// }
+		} else {
+			if (isMatchFetchTarget) {
+				setLoadMore(true);
+			}
+		}
 	}, [isMatchFetchTarget]);
-
-	// useEffect(() => {
-	// 	if(isMatchFetchTarget)
-	// 		setLoadMore(true);
-	// }, [isMatchFetchTarget])
 
 	// Fetch reviews when loadMore change.
 	useEffect(() => {
-		// if (isMatchFetchTarget) {
-			if (!underflow && !loading && loadMore) {
+		if (!underflow && !loading && loadMore) {
+			if (isMatchFetchTarget) {
 				setLoading(true);
 				if (!classID) {
 					// fetch reviews by last review : home page
@@ -72,20 +85,18 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 					});
 				}
 			}
-			setLoadMore(false);
-		// }
+		}
+		setLoadMore(false);
 	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		// if (isMatchFetchTarget) {
-			const adaptor = document.getElementById("adaptor");
-			if (adaptor && typeof window !== "undefined") {
-				if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
-					setLoadMore(true);
-				}
+		const adaptor = document.getElementById("adaptor");
+		if (adaptor && typeof window !== "undefined") {
+			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+				setLoadMore(true);
 			}
-		// }
+		}
 	}, [reviews]);
 
 	// #### Helper function for manage on context.
@@ -146,7 +157,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 		reviews,
 		setReviews,
 		loading,
-		loadMore, 
+		loadMore,
 		underflow,
 		setUnderFlow,
 		paging,
