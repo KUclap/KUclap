@@ -181,6 +181,15 @@ const apis = {
 			next(err.response.data);
 		}
 	},
+
+	postAnswerReport: async (reportPayload, next) => {
+		try {
+			await api.post(`/answer/report`, reportPayload);
+			next();
+		} catch (err) {
+			console.log(err);
+		}
+	},
 };
 
 export default apis;
