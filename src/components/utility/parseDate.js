@@ -14,12 +14,15 @@ const MONTHS = [
 ]
 
 
-export default function parseDate(dateUTC){
-  let date = new Date(dateUTC)
+export default function parseDate(date){
+  const createdAt = new Date(date)
+  const hourShift = -7 
+  const timestamp = createdAt.getTime()
+  const dateTimezone = new Date(timestamp + (hourShift * 60 * 60 * 1000))
 
-  let day = date.getDate()
-  let month = MONTHS[date.getMonth()]
-  let year = date.getFullYear() + 543
+  let day = dateTimezone.getDate()
+  let month = MONTHS[dateTimezone.getMonth()]
+  let year = dateTimezone.getFullYear() + 543
 
   return `${day} ${month} ${year}`;
 } 

@@ -1,8 +1,14 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
-
+import APIs from "../utility/apis"
+ 
 import { DownArrow, RightArrow, ThreeDots } from "../utility/Icons";
+import parseDate from "../utility/parseDate";
+import AnswerList from "./AnswerList";
+import { red, blue_75 } from "./Colors";
+import { WhiteCircularProgress } from "./DesignSystemStyles";
+
 
 const Container = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
@@ -54,7 +60,7 @@ const Line = styled.div`
 
 const AnswerHeader = styled.div`
 	font-size: 1.2rem;
-	margin-top: 1.2rem;
+	margin: 1.2rem 0;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -67,16 +73,13 @@ const AnswerHeader = styled.div`
 	}
 `;
 
-const NoOfAnswerContainer = styled.div`
+const ReadAnswerButton = styled.button`
 	display: flex;
 	position: absolute;
 	right: 0;
-	background-color: white;
+	background-color: ${(props) => props.theme.body};
+	color: ${(props) => props.theme.mainText};
 	padding-left: 1.2rem;
-
-	> div {
-		margin: 0 0.4rem;
-	}
 `;
 
 const NoOfAnswer = styled.div`
@@ -89,7 +92,12 @@ const NoOfAnswer = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 0 0.4rem;
 `;
+
+const InputContainer = styled.div`
+	margin-top: 1.2rem;
+`
 
 const InputField = styled.input`
 	font-size: 1.6rem;
@@ -97,12 +105,24 @@ const InputField = styled.input`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
 	border-radius: 0.6rem;
 	padding: 0.3rem 1.2rem;
-	margin-top: 1.2rem;
+	width: 100%;
+	color: ${(props) => props.theme.mainText};
+	outline: ${blue_75};
 
 	&::placeholder {
 		color: #888;
 	}
 `;
+
+const AnswerField = styled(InputField)`
+	height: 3.4rem;
+	resize: vertical;
+	overflow: auto;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`
 
 const AnswerFooter = styled.div`
 	font-size: 1.8rem;
@@ -111,7 +131,6 @@ const AnswerFooter = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 1.2rem;
 
 	${InputField} {
 		margin: 0 1.3rem 0 1rem;
@@ -120,7 +139,7 @@ const AnswerFooter = styled.div`
 	}
 `;
 
-const Button = styled.div`
+const Button = styled.button`
 	background-color: hsl(214, 84%, 56%);
 	color: #fff;
 	padding: 0.3rem 0.7rem;
@@ -129,7 +148,10 @@ const Button = styled.div`
 	font-weight: 500;
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	cursor: pointer;
+	height: 3rem;
+	min-width: 5rem;
 
 	> svg {
 		path {
@@ -142,41 +164,132 @@ const Button = styled.div`
 	}
 `;
 
+const Warning = styled.div`
+    color: ${red};
+	margin-bottom: 0.5rem;
+`
+
 const QuestionCard = (props) => {
 	const { questionInfo } = props;
+	
+	const defaultAnswer = {
+		answer: "",
+		author: ""
+	}
+	const defaultRequire = {
+		answer: false,
+		author: false
+	}
 
+	const [numberAnswer, setNumberAnswer] = useState(questionInfo.numberAnswer)
 	const [isAnswering, setIsAnswering] = useState(false);
+	const [answerInfo, setAnswerInfo] = useState(defaultAnswer)
+	const [isLoading, setLoading] = useState(false)
+	const [required, setRequired] = useState(defaultRequire)
+	const [showAnswers, setShowAnswers] = useState(false)
+	const [newAnswer, setNewAnswer] = useState()
+
+	const handleOnChange = (e, field) => {
+		let value = e.target.value
+		if (field === "author" && e.key === "Enter") {
+			console.log("sending")
+			sendAnswer()
+		}
+        if (/^\s/.test(value)) {
+            value = ''
+        }
+        setAnswerInfo({ ...answerInfo, [field]: value })
+    }
+
+	const sendAnswer = () => {
+		const isAnswerTooShort = (answerInfo.answer.length < 3)
+		const isAuthorIsEmpty = (answerInfo.author === "")
+		const areAllInputsValid = (!isAnswerTooShort && !isAuthorIsEmpty)
+		if (areAllInputsValid) {
+			setLoading(true)
+			setRequired(defaultRequire)
+			const answerPayload = {
+				questionId: questionInfo.questionId,
+				...answerInfo
+			}
+			APIs.answerQuestion(answerPayload, () => {
+				if (showAnswers) {
+					setNewAnswer({
+						...answerPayload,
+						createdAt: new Date()
+					})
+				}
+				setShowAnswers(true)
+				setNumberAnswer(numberAnswer + 1)
+				setAnswerInfo(defaultAnswer)
+				setLoading(false)
+			})
+		} else {
+			setRequired({
+				answer: isAnswerTooShort,
+				author: isAuthorIsEmpty
+			})
+		}
+	}
 
 	return (
 		<Container>
 			<QuestionHeader>
 				<div>
-					<QuestionAuthor>คำถามจาก {questionInfo.authorQuestion}</QuestionAuthor>
-					<CreatedAt>{questionInfo.createdAt}</CreatedAt>
+					<QuestionAuthor>คำถามจาก {questionInfo.author}</QuestionAuthor>
+					<CreatedAt>{parseDate(questionInfo.createdAt)}</CreatedAt>
 				</div>
-				<ThreeDots />
+				<button>
+					<ThreeDots />
+				</button>
 			</QuestionHeader>
 			<Question>{questionInfo.question}</Question>
-			{questionInfo.answer.length > 0 && (
+			{numberAnswer > 0 && (<>
 				<AnswerHeader>
 					<Line />
-					<NoOfAnswerContainer>
+					<ReadAnswerButton onClick={() => setShowAnswers(!showAnswers)}>
 						คำตอบทั้งหมด
-						<NoOfAnswer>{questionInfo.answer.length}</NoOfAnswer>
+						<NoOfAnswer>{numberAnswer}</NoOfAnswer>
 						<DownArrow />
-					</NoOfAnswerContainer>
+					</ReadAnswerButton>
 				</AnswerHeader>
-			)}
-			<InputField placeholder="ตอบคำถามนี้" onFocus={() => setIsAnswering(true)} />
-			{isAnswering && (
+				{ showAnswers && 
+					<AnswerList 
+						questionId={questionInfo.questionId} 
+						newAnswer={newAnswer}
+					/>
+				}
+			</>)}
+			<InputContainer>
+				{
+					required.answer &&
+					<Warning>คำตอบต้องยาวไม่ต่ำกว่า 3 ตัวอักษร</Warning>
+				}
+				<AnswerField 
+					as="textarea"
+					placeholder="ตอบคำถามนี้" 
+					onFocus={() => setIsAnswering(true)} 
+					onChange={(e) => handleOnChange(e, "answer")}
+					value={answerInfo.answer}
+				/>
+			</InputContainer>
+			{isAnswering && (<InputContainer>
+				{
+					required.author &&
+					<Warning>กรุณากรอกนามปากกาผู้ตอบ</Warning>
+				}
 				<AnswerFooter>
 					โดย
-					<InputField placeholder="นามปากกาผู้ตอบ" />
-					<Button>
-						ส่ง <RightArrow />
+					<InputField 
+						onKeyUp={(e) => handleOnChange(e, "author")}
+						value={answerInfo.author}
+						placeholder="นามปากกาผู้ตอบ" 
+					/>
+					<Button onClick={sendAnswer}>
+						{isLoading ? <WhiteCircularProgress size="2rem" /> : <>ส่ง <RightArrow /></>}
 					</Button>
 				</AnswerFooter>
-			)}
+			</InputContainer>)}
 		</Container>
 	);
 };

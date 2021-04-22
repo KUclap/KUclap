@@ -7,6 +7,7 @@ const blue_97 = "hsl(214, 84%, 97%)" // Light Blue background
 const light_blue = "hsl(212, 71%, 77%)" // Clap Hover
 const sea_pink = "hsl(11, 71%, 77%)" // Boo Hover
 
+const grey_20 = "hsl(0, 0%, 20%)"
 const grey = "hsl(0, 0%, 31%)" // Header / Body (Main text)
 const grey_75 = "hsl(0, 0%, 75%)"  // Body (Sub text)
 const grey_88 = "hsl(0, 0%, 88%)" // Border / Line
@@ -40,5 +41,6 @@ export {
 	cosmos_pink,
 	turquoise_green,
 	columbia_blue,
-	yellow
+	yellow,
+	grey_20
 }

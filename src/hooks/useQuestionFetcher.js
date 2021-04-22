@@ -43,10 +43,8 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 				if (!isMounted) setIsMounted(true); // call one time.
 				window.addEventListener("scroll", scrollingListener, { passive: true });
 			}
-		} else {
-			if (isMatchFetchTarget) {
-				setLoadMore(true);
-			}
+		} else if (isMatchFetchTarget) {
+			setLoadMore(true);
 		}
 	}, [isMatchFetchTarget]);
 

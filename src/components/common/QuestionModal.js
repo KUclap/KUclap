@@ -62,7 +62,7 @@ const QuestionModal = (props) => {
     const defaultQuestionInfo = {
         classId: classID,
         question: "",
-        authorQuestion: ""
+        author: ""
     }
     const defaultRequire = {
         question: false,

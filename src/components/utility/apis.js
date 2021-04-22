@@ -146,5 +146,27 @@ const apis = {
 			console.log(err);
 		}
 	},
+
+	// POST answer to question
+	answerQuestion: async (payloadAnswer, next) => {
+		try {
+			console.log(payloadAnswer)
+			await api.post(`/answer`, payloadAnswer);
+			next();
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	getAnswersByQuestionId: async (questionID, next) => {
+		try {
+			const res = await api.get(
+				`/answers/${questionID}`
+			);
+			next(res);
+		} catch (err) {
+			console.log(err);
+		}
+	},
 };
 export default apis;
