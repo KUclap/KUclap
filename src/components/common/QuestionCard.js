@@ -3,11 +3,11 @@ import { useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 import APIs from "../utility/apis"
  
-import { DownArrow, RightArrow, ThreeDots } from "../utility/Icons";
-import parseDate from "../utility/parseDate";
+import { DownArrow, RightArrow } from "../utility/Icons";
 import AnswerList from "./AnswerList";
 import { red, blue_75 } from "./Colors";
 import { WhiteCircularProgress } from "./DesignSystemStyles";
+import QuestionHeader from "./QuestionHeader";
 
 
 const Container = styled.div`
@@ -21,34 +21,11 @@ const Container = styled.div`
 	flex-direction: column;
 `;
 
-const QuestionAuthor = styled.div`
-	font-size: 1.2rem;
-	font-weight: 500;
-	color: ${(props) => props.theme.mainText};
-`;
-
-const CreatedAt = styled.div`
-	font-size: 1rem;
-	font-weight: 300;
-	color: hsl(0, 0%, 51%);
-`;
-
 const Question = styled.div`
 	font-size: 1.8rem;
 	font-weight: 400;
 	margin-top: 1.2rem;
 	color: ${(props) => props.theme.mainText};
-`;
-
-const QuestionHeader = styled.div`
-	display: flex;
-	width: 100%;
-	justify-content: space-between;
-
-	> svg {
-		height: 1.8rem;
-		width: 1.8rem;
-	}
 `;
 
 const Line = styled.div`
@@ -181,13 +158,13 @@ const QuestionCard = (props) => {
 		author: false
 	}
 
+	const [answers, setAnswers] = useState()
 	const [numberAnswer, setNumberAnswer] = useState(questionInfo.numberAnswer)
 	const [isAnswering, setIsAnswering] = useState(false);
 	const [answerInfo, setAnswerInfo] = useState(defaultAnswer)
 	const [isLoading, setLoading] = useState(false)
 	const [required, setRequired] = useState(defaultRequire)
 	const [showAnswers, setShowAnswers] = useState(false)
-	const [newAnswer, setNewAnswer] = useState()
 
 	const handleOnChange = (e, field) => {
 		let value = e.target.value
@@ -214,10 +191,10 @@ const QuestionCard = (props) => {
 			}
 			APIs.answerQuestion(answerPayload, () => {
 				if (showAnswers) {
-					setNewAnswer({
+					setAnswers([...answers, {
 						...answerPayload,
 						createdAt: new Date()
-					})
+					}])
 				}
 				setShowAnswers(true)
 				setNumberAnswer(numberAnswer + 1)
@@ -234,15 +211,7 @@ const QuestionCard = (props) => {
 
 	return (
 		<Container>
-			<QuestionHeader>
-				<div>
-					<QuestionAuthor>คำถามจาก {questionInfo.author}</QuestionAuthor>
-					<CreatedAt>{parseDate(questionInfo.createdAt)}</CreatedAt>
-				</div>
-				<button>
-					<ThreeDots />
-				</button>
-			</QuestionHeader>
+			<QuestionHeader {...props} />
 			<Question>{questionInfo.question}</Question>
 			{numberAnswer > 0 && (<>
 				<AnswerHeader>
@@ -255,8 +224,10 @@ const QuestionCard = (props) => {
 				</AnswerHeader>
 				{ showAnswers && 
 					<AnswerList 
+						answers={answers}
+						setAnswers={setAnswers}
+						showAnswers={showAnswers}
 						questionId={questionInfo.questionId} 
-						newAnswer={newAnswer}
 					/>
 				}
 			</>)}

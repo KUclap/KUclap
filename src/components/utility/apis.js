@@ -73,17 +73,7 @@ const apis = {
 	// POST report review by reviewid
 	createReportReview: async (payloadReport, next) => {
 		try {
-			await api.post(`/report`, payloadReport);
-			next();
-		} catch (err) {
-			console.log(err);
-		}
-	},
-
-	// PUT report status by reviewid
-	putReportByReviewId: async (reviewId, next) => {
-		try {
-			await api.put(`/review/report/${reviewId}`);
+			await api.post(`/review/report`, payloadReport);
 			next();
 		} catch (err) {
 			console.log(err);
@@ -158,15 +148,39 @@ const apis = {
 		}
 	},
 
-	getAnswersByQuestionId: async (questionID, next) => {
+	getAnswersByQuestionId: async (questionId, next) => {
 		try {
 			const res = await api.get(
-				`/answers/${questionID}`
+				`/answers/${questionId}`
 			);
 			next(res);
 		} catch (err) {
 			console.log(err);
 		}
 	},
+
+	postQuestionReport: async (reportPayload, next) => {
+		try {
+			await api.post(`/question/report`, reportPayload);
+			next();
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	deleteQuestionByQuestionId: async (config, next) => {
+		try {
+			const res = await api.delete(`/question/${config.questionId}`, {
+				headers: {
+					Authorization: `Bearer ${config.auth}`,
+				},
+			});
+			next(res);
+		} catch (err) {
+			console.log(err.response.data);
+			next(err.response.data);
+		}
+	},
 };
+
 export default apis;

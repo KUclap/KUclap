@@ -44,6 +44,7 @@ const Button = styled.div`
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	white-space: nowrap;
 `;
 
 const ButtonLastReview = styled(SecondaryButton)`
@@ -182,7 +183,7 @@ const ClassPage = (props) => {
 				) : (
 					<AdaptorReviews id="adaptor-question">
 						{questions?.map(
-							(question, index) => question && <QuestionCard key={index} questionInfo={question} />
+							(question, index) => question && <QuestionCard key={index} questionInfo={question} currentRoute="CLASS" />
 						)}
 					</AdaptorReviews>
 				)}

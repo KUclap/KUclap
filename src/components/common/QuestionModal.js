@@ -2,14 +2,14 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import styled from "styled-components";
 import APIs from "../utility/apis";
-import { grey, red } from "./Colors";
+import { grey, grey_75, red } from "./Colors";
 import { Input, ModalActions, PrimaryButton, SecondaryButton, TextArea, WhiteCircularProgress } from "./DesignSystemStyles";
 import Modal from "./Modal";
 
 const QuestionField = styled(TextArea)`
     height: 12rem;
     width: 100%;
-    margin: 1.6rem 0;
+    margin-bottom: 1.2rem;
 `
 
 const ConfirmButton = styled(PrimaryButton)`
@@ -31,6 +31,7 @@ const CreateQuestionContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	padding: 0 1rem;
+    line-height: normal;
 
 	> span {
 		font-size: 1.4rem;
@@ -40,21 +41,44 @@ const CreateQuestionContainer = styled.div`
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow: hidden;
+        margin-bottom: 1.6rem;
 	}
 `
 
-const AuthorFieldContainer = styled.div`
+const InputFieldContainer = styled.div`
 	display: flex;
 	align-items: center;
 	align-self: flex-start;
+    margin-bottom: 1.6rem;
 
-	${Input} {
-		margin: 0 1rem;
-	}
+    > div {
+        display:flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        > span:last-child {
+            font-size: 1.2rem;
+            color: ${grey_75};
+        }
+    }
+
+    span {
+        font-size: 1.8rem;
+        white-space: nowrap;
+    }
+
+    ${Input} {
+        width: ${props => props.small ? "9rem" : "100%"};
+        margin: 0 1rem;
+    }
 `
 
 const Warning = styled.div`
     color: ${red};
+    font-size: 1.4rem;
+    line-height: normal;
+    align-self: flex-start;
+    margin-bottom: 0.6rem;
 `
 
 const QuestionModal = (props) => {
@@ -62,11 +86,13 @@ const QuestionModal = (props) => {
     const defaultQuestionInfo = {
         classId: classID,
         question: "",
-        author: ""
+        author: "",
+        auth: ""
     }
     const defaultRequire = {
         question: false,
-        author: false
+        author: false,
+        auth: false
     }
 
     const [questionInfo, setQuestionInfo] = useState(defaultQuestionInfo)
@@ -81,19 +107,21 @@ const QuestionModal = (props) => {
         if (!isLoading) {
             const isQuestionTooShort = (questionInfo.question.length < 10)
             const isAuthorEmpty = (questionInfo.author === "")
-            const areAllInputsValid = (!isQuestionTooShort && !isAuthorEmpty)
+            const isAuthNotValid = (questionInfo.auth.length < 4)
+            const areAllInputsValid = (!isQuestionTooShort && !isAuthorEmpty && !isAuthNotValid)
             if (areAllInputsValid) {
+                setQuestionRequied(defaultRequire)
                 setIsLoading(true)
                 APIs.createQuestion(questionInfo, () => {
                     setQuestionInfo(defaultQuestionInfo)
-                    setQuestionRequied(defaultRequire)
                     setIsLoading(false)
                     location.reload()
                 })
             } else {
                 setQuestionRequied({
                     question: isQuestionTooShort,
-                    author: isAuthorEmpty
+                    author: isAuthorEmpty,
+                    auth: isAuthNotValid
                 })
             }
         }
@@ -107,6 +135,15 @@ const QuestionModal = (props) => {
         setQuestionInfo({ ...questionInfo, [field]: value })
     }
 
+    const handleOnChangePassword = (e) => {
+        let value = e.target.value 
+        let newValue = questionInfo.auth
+        if (/^[0-9]*$/.test(value) && value.length <= 4) {
+            newValue = value
+        }
+        setQuestionInfo({ ...questionInfo, auth: newValue })
+    }
+
     return (
         <Modal
 			showModal={showQuestionModal}
@@ -115,24 +152,42 @@ const QuestionModal = (props) => {
 			<CreateQuestionContainer>
 				สร้างคำถาม
 				<span>วิชา {className}</span>
-				<Warning>{questionRequired.question ? 
-                    "กรุณากรอกคำถามอย่างน้อย 10 ตัวอักษร" : 
-                        questionRequired.author ? "กรุณากรอกนามปากกาผู้ถาม" : ""}
-                </Warning>
+                { questionRequired.question &&
+                    <Warning>กรุณากรอกคำถามอย่างน้อย 10 ตัวอักษร</Warning>
+                }
 				<QuestionField 
 					placeholder="เขียนคำถาม..."
                     value={questionInfo.question}
                     onChange={(e) => handleOnChange(e, "question")}
 				/>
-				<AuthorFieldContainer>
+                { questionRequired.author &&
+                    <Warning>กรุณากรอกนามปากกาผู้ถาม</Warning>
+                }
+				<InputFieldContainer>
 					<span>โดย</span>
 					<Input
 						type="text"
 						placeholder="นามปากกาผู้ถาม"
-						value={questionInfo.authorQuestion}
-						onChange={(e) => handleOnChange(e, "authorQuestion")}
+						value={questionInfo.author}
+						onChange={(e) => handleOnChange(e, "author")}
 					/>
-				</AuthorFieldContainer>
+				</InputFieldContainer>
+                { questionRequired.auth &&
+                    <Warning>กรุณากรอกเลข 4 หลัก</Warning>
+                }
+                <InputFieldContainer small>
+                    <div id="pin-field">
+                        <span>ตัวเลข 4 หลัก</span>
+                        <span>เพื่อใช้ลบคำถามในภายหลัง</span>
+                    </div>
+					<Input
+                        aria-labelledby="pin-field"
+						type="text"
+						placeholder="ใส่เลข"
+						value={questionInfo.auth}
+						onChange={handleOnChangePassword}
+					/>
+				</InputFieldContainer>
 				<ModalActions>
 					<CancelButton onClick={closeQuestionModal}>ยกเลิก</CancelButton>
 					<ConfirmButton onClick={handleNewQuestion}>

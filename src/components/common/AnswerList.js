@@ -32,27 +32,19 @@ const AnswerDetailsContainer = styled.div`
 `
 
 const AnswerList = (props) => {
-    const { questionId, newAnswer } = props
-    const [isLoading, setIsLoading] = useState(true)
-    const [answers, setAnswers] = useState()
-
-    console.log(answers)
+    const { questionId, showAnswers, answers, setAnswers } = props
+    const [isLoading, setIsLoading] = useState(!answers)
 
     useEffect(() => {
-        console.log("???")
-        setAnswers([
-            ...answers,
-            newAnswer
-        ])
-    }, [newAnswer])
-
-    useEffect(() => {
-        APIs.getAnswersByQuestionId(questionId, (res) => {
-            const answers = res.data
-            setAnswers(answers)
-            setIsLoading(false)
-        })
-    }, [])
+        if (showAnswers && !answers) {
+            console.log("loading")
+            APIs.getAnswersByQuestionId(questionId, (res) => {
+                const questionAnswers = res.data
+                setAnswers(questionAnswers)
+                setIsLoading(false)
+            })
+        }
+    }, [showAnswers])
 
     return (
         <AnswerListContainer>

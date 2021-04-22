@@ -21,9 +21,10 @@ import {
     TextArea,
     BodySmall,
     WhiteCircularProgress,
+    RequiredDot,
 } from './DesignSystemStyles'
 import Modal from './Modal'
-import { blue, blue_75, blue_97, grey_75, red, sea_pink } from './Colors'
+import { blue, blue_75, blue_97, grey_75, red } from './Colors'
 
 const Alert = lazy(() => import('./Alert'))
 
@@ -78,14 +79,6 @@ const DetailTitle = styled(Heading1)`
     div {
         display: flex;
     }
-`
-
-const RequiredDot = styled.div`
-    width: 0.6rem;
-    height: 0.6rem;
-    margin-left: 0.4rem;
-    background: ${sea_pink};
-    border-radius: 100%;
 `
 
 const RecommendReviewContainer = styled.div`
