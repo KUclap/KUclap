@@ -198,7 +198,7 @@ const QuestionCard = (props) => {
 				if (showAnswers) {
 					setAnswers([...answers, {
 						...answerPayload,
-						createdAt: new Date()
+						createdAt: new Date().toLocaleString('en-US', { timeZone: 'Etc/GMT-14' })
 					}])
 				}
 				setShowAnswers(true)

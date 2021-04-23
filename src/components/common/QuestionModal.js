@@ -2,7 +2,7 @@ import { h } from "preact";
 import { useState } from "preact/hooks";
 import styled from "styled-components";
 import APIs from "../utility/apis";
-import { grey, grey_75, red } from "./Colors";
+import { grey_75, red } from "./Colors";
 import { Input, ModalActions, PrimaryButton, SecondaryButton, TextArea, WhiteCircularProgress } from "./DesignSystemStyles";
 import Modal from "./Modal";
 
@@ -36,7 +36,7 @@ const CreateQuestionContainer = styled.div`
 	> span {
 		font-size: 1.4rem;
 		font-weight: 500;
-		color: ${grey};
+		color: ${props => props.theme.mainText};
 		max-width: 90%;
 		white-space: nowrap;
 		text-overflow: ellipsis;

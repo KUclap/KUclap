@@ -139,7 +139,7 @@ const MONTHS = [
   "ธ.ค.",
 ]
 
-export default function parseDate(date){
+export function parseDate(date){
   const createdAt = new Date(date)
   const hourShift = -7 
   const timestamp = createdAt.getTime()
