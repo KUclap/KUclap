@@ -57,6 +57,11 @@ const ReadAnswerButton = styled.button`
 	background-color: ${(props) => props.theme.body};
 	color: ${(props) => props.theme.mainText};
 	padding-left: 1.2rem;
+	
+	svg {
+		transform: rotate(${props => props.showAnswers ? 0 : "-180deg"}); 
+		transition: all 0.3s ease-in-out;
+	}
 `;
 
 const NoOfAnswer = styled.div`
@@ -216,7 +221,7 @@ const QuestionCard = (props) => {
 			{numberAnswer > 0 && (<>
 				<AnswerHeader>
 					<Line />
-					<ReadAnswerButton onClick={() => setShowAnswers(!showAnswers)}>
+					<ReadAnswerButton showAnswers={showAnswers} onClick={() => setShowAnswers(!showAnswers)}>
 						คำตอบทั้งหมด
 						<NoOfAnswer>{numberAnswer}</NoOfAnswer>
 						<DownArrow />
@@ -228,6 +233,7 @@ const QuestionCard = (props) => {
 						setAnswers={setAnswers}
 						showAnswers={showAnswers}
 						questionId={questionInfo.questionId} 
+						classId={questionInfo.classId}
 					/>
 				}
 			</>)}

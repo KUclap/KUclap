@@ -3,21 +3,21 @@ import styled from "styled-components";
 import { FetcherContext } from "../../context/FetcherContext";
 import useDeleteQuestion from "../../hooks/useDeleteQuestion";
 import useReportQuestion from "../../hooks/useReportQuestion";
+import { timeDifference } from "../utility/helper";
 import { ThreeDots } from "../utility/Icons"
-import parseDate from "../utility/parseDate";
 import { red, sea_pink } from "./Colors";
 import { Input, MenuItemCustom, ModalActions, PrimaryButton, SecondaryButton, TextArea, WhiteCircularProgress } from "./DesignSystemStyles";
 import MenuPopup from "./MenuPopup";
 import Modal from "./Modal";
 
 const QuestionAuthor = styled.div`
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	font-weight: 500;
 	color: ${(props) => props.theme.mainText};
 `;
 
 const CreatedAt = styled.div`
-	font-size: 1rem;
+	font-size: 1.2rem;
 	font-weight: 300;
 	color: hsl(0, 0%, 51%);
 `;
@@ -151,7 +151,7 @@ const QuestionHeader = (props) => {
             <QuestionHeaderContainer>
                 <div>
                     <QuestionAuthor>คำถามจาก {questionInfo.author}</QuestionAuthor>
-                    <CreatedAt>{parseDate(questionInfo.createdAt)}</CreatedAt>
+                    <CreatedAt>{timeDifference(questionInfo.createdAt)}</CreatedAt>
                 </div>
                 <span>
                     <button 

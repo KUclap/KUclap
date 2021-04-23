@@ -1,6 +1,6 @@
 import { h } from 'preact'
 import { useState, useEffect, useContext } from 'preact/hooks'
-import { navigateToReviewPage } from '../utility/helper'
+import { parseDate, navigateToReviewPage } from '../utility/helper'
 import { Recap, DownArrow, GradeCircle } from '../utility/Icons'
 import styled from 'styled-components'
 import {
@@ -16,7 +16,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Modal from './Modal'
 import useReportReview from '../../hooks/useReportReview'
 import useDeleteReview from '../../hooks/useDeleteReview'
-import parseDate from "../utility/parseDate";
 import { blue, red, sea_pink } from './Colors'
 import { FetcherContext } from '../../context/FetcherContext'
 import MenuPopup from './MenuPopup'

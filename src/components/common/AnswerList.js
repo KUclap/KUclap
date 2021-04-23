@@ -3,7 +3,7 @@ import { useEffect, useState } from 'preact/hooks'
 import styled from 'styled-components'
 import APIs from "../utility/apis"
 import { AnswerSkeletonA, AnswerSkeletonB } from './QuestionSkeleton'
-import parseDate from "../utility/parseDate";
+import AnswerCard from "./AnswerCard";
 
 const AnswerListContainer = styled.div`
     display: grid;
@@ -11,28 +11,8 @@ const AnswerListContainer = styled.div`
     margin-top: 1.2rem;
 `
 
-const AnswerContainer = styled.div`
-	background: ${props => props.theme.lightBlueBackground};
-	font-size: 1.6rem;
-    border-radius: 8px;
-    padding: 0.6rem 1.1rem;
-    display: flex;
-    flex-direction: column;
-`
-
-const AnswerDetailsContainer = styled.div`
-	font-size: 1.2rem;
-    margin-top: 0.4rem;
-    align-self: flex-end;
-    color: ${props => props.theme.subText};
-
-	span {
-		font-size: 1rem;
-	}
-`
-
 const AnswerList = (props) => {
-    const { questionId, showAnswers, answers, setAnswers } = props
+    const { questionId, showAnswers, answers, setAnswers, classId } = props
     const [isLoading, setIsLoading] = useState(!answers)
 
     useEffect(() => {
@@ -54,12 +34,10 @@ const AnswerList = (props) => {
                     <AnswerSkeletonB />
                 </> :
                 answers?.map((answerInfo) => 
-                    <AnswerContainer>
-                        {answerInfo.answer}
-                        <AnswerDetailsContainer>
-                            คำตอบของ {answerInfo.author} <span>{parseDate(answerInfo.createdAt)}</span>
-                        </AnswerDetailsContainer>
-                    </AnswerContainer>
+                    <AnswerCard 
+                        answerInfo={answerInfo} 
+                        classId={classId}
+                    />
                 )
             }
         </AnswerListContainer>

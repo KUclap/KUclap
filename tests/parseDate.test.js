@@ -1,4 +1,4 @@
-import parseDate from "../src/components/utility/parseDate"
+import parseDate from "../src/components/utility/helper"
 
 describe('parseDate', () => {
   it('should return date correctly', () => {
