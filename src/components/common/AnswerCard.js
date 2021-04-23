@@ -14,6 +14,8 @@ const AnswerCardContainer = styled.div`
     padding: 0.6rem 1.1rem;
     display: flex;
     flex-direction: column;
+    white-space: pre-line;
+	overflow-wrap: break-word;
 `
 
 const AnswerDetailsContainer = styled.div`
@@ -75,7 +77,7 @@ const AnswerCard = (props) => {
     const handleOnChange = (e) => {
 		let value = e.target.value
         if (/^\s/.test(value)) {
-            value = ''
+            value = reportReason.value
         }
         setReportReason({ ...reportReason, reason: value })
     }

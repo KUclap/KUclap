@@ -260,6 +260,24 @@ const apis = {
 			console.log(err);
 		}
 	},
+
+	getLastQuestions: async (page, offset, next) => {
+		try {
+			const res = await api.get(`/questions/last?page=${page}&offset=${offset}`);
+			next(res);
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	getLastRecaps: async (page, offset, next) => {
+		try {
+			const res = await api.get(`/recaps/last?page=${page}&offset=${offset}`);
+			next(res);
+		} catch (err) {
+			console.log(err);
+		}
+	},
 };
 
 export default apis;

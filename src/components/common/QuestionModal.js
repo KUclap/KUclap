@@ -130,7 +130,7 @@ const QuestionModal = (props) => {
     const handleOnChange = (e, field) => {
         let value = e.target.value
         if (/^\s/.test(value)) {
-            value = ''
+            value = questionInfo[field]
         }
         setQuestionInfo({ ...questionInfo, [field]: value })
     }

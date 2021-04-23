@@ -53,17 +53,31 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 		if (!underflow && !loading && loadMore) {
 			if (isMatchFetchTarget) {
 				setLoading(true);
-				// fetch questions by class id : class Page
-				APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
-					const { data } = res;
-					if (!data) {
-						setUnderFlow(true);
-					} else {
-						setPaging({ ...paging, page: paging.page + 1 });
-						setQuestions([...questions, ...data]);
-					}
-					setLoading(false);
-				});
+				if (!classID) {
+					// fetch questions by last review : home page
+					APIs.getLastQuestions(paging.page, paging.offset, (res) => {
+						const { data } = res;
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setQuestions([...questions, ...data]);
+						}
+						setLoading(false);
+					});
+				} else {
+					// fetch questions by class id : class Page
+					APIs.getQuestionsByClassId(classID, paging.page, paging.offset, (res) => {
+						const { data } = res;
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setQuestions([...questions, ...data]);
+						}
+						setLoading(false);
+					});
+				}
 			}
 		}
 		setLoadMore(false);

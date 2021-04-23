@@ -5,7 +5,7 @@ import APIs from "../utility/apis";
 import { getColorHash, navigateToClassPage } from "../utility/helper";
 import CardActions from "./CardActions";
 import CardDetails from "./CardDetails";
-import { BodyMedium, BodySmall, PrimaryButton } from "./DesignSystemStyles";
+import { BodyMedium, BodySmall, Subject } from "./DesignSystemStyles";
 
 const Container = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
@@ -28,29 +28,6 @@ const CardDetailsContainer = styled.div`
 	justify-content: space-between;
 	align-items: flex-end;
 	margin-top: 0.5rem;
-`;
-
-const Subject = styled(PrimaryButton)`
-	display: block;
-	font-size: 1.4rem;
-	background: ${(props) => props.color};
-	position: absolute;
-	transform: translateY(-2.4rem);
-	text-overflow: ellipsis;
-	overflow: hidden;
-	max-width: 60%;
-	white-space: nowrap;
-	align-self: flex-start;
-	filter: ${(props) => `brightness(${props.theme.subjectBrightness}%)`};
-
-	${BodySmall} {
-		margin-left: 0.4ch;
-	}
-
-	&:hover {
-		filter: brightness(110%);
-		background: ${(props) => props.color};
-	}
 `;
 
 const SectionLine = styled.div`

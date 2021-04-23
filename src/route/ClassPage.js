@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useContext, useState } from "preact/hooks";
-import styled, { css, withTheme } from "styled-components";
+import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
 import { NoMoreCard, NoCard } from "../components/utility/Icons";
@@ -23,7 +23,6 @@ import {
 import { SelectContext } from "../context/SelectContext";
 
 import {
-	DetailTitle,
 	AdaptorReviews,
 	LastReview,
 	ContainerNoMore,
@@ -37,6 +36,7 @@ import { route } from "preact-router";
 import RecapCard from "../components/common/RecapCard";
 import NavigationBar from "../components/common/NavigationBar";
 import media from "styled-media-query";
+import MenuUnderline from "../components/common/MenuUnderline";
 
 const Button = styled.div`
 	background-color: #2f80ed;
@@ -83,43 +83,6 @@ const ReviewTitle = styled.div`
 	margin-top: 2.2rem;
 `;
 
-const TabTitle = styled(DetailTitle)`
-	padding: 0 1rem;
-	cursor: pointer;
-	color: ${(props) => (props.isActive ? props.theme.mainText : "#BFBFBF")};
-`;
-
-const SectionTabButton = styled.div`
-	position: relative;
-`;
-
-const TabLine = styled.div`
-	width: 100%;
-	height: 3px;
-	border-radius: 50px;
-	background-color: ${(props) => props.theme.borderColor};
-	position: absolute;
-
-	&:last-child {
-		background-color: #2f80ed;
-		transition: all 0.3s ease-in-out;
-		${(props) =>
-			props.underlineAt === "review"
-				? css`
-					width: 10.4rem;
-					left: 0;
-				  `
-				: props.underlineAt === "question" ? css`
-					width: 12.3rem;
-					left: 4.8rem;
-				  ` : css`
-					width: 10.8rem;
-					left: 11.7rem;
-				  	`
-		}
-	}
-`;
-
 const ClassPage = (props) => {
 	const { classID, fetchTarget, setFetchTarget } = props;
 	const { state: selected } = useContext(SelectContext);
@@ -151,31 +114,7 @@ const ClassPage = (props) => {
 			<Details score={score} />
 			<LastReview>
 				<ReviewTitle>
-					<SectionTabButton>
-						<TabTitle 
-							as="button" 
-							isActive={fetchTarget === "review"} 
-							onClick={() => changeTab("review")}
-						>
-							{fetchTarget === "review" ? "รีวิวทั้งหมด" : "รีวิว"}
-						</TabTitle>
-						<TabTitle
-							as="button"
-							isActive={fetchTarget === "question"}
-							onClick={() => changeTab("question")}
-						>
-							{fetchTarget === "question" ? "คำถามทั้งหมด" : "คำถาม"}
-						</TabTitle>
-						<TabTitle
-							as="button"
-							isActive={fetchTarget === "recap"}
-							onClick={() => changeTab("recap")}
-						>
-							{fetchTarget === "recap" ? "สรุปทั้งหมด" : "สรุป"}
-						</TabTitle>
-						<TabLine />
-						<TabLine underlineAt={fetchTarget} />
-					</SectionTabButton>
+					<MenuUnderline fetchTarget={fetchTarget} changeTab={changeTab} />
 					<ContainerBtns>
 						{/* <ButtonLastReview onClick={navigateToHomePage}>
 							<HomeIcon />

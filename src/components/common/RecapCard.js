@@ -3,10 +3,11 @@ import styled from "styled-components"
 import { FetcherContext } from "../../context/FetcherContext"
 import useDeleteRecap from "../../hooks/useDeleteRecap"
 import useReportRecap from "../../hooks/useReportRecap"
-import { navigateToClassPage, parseDate } from "../utility/helper"
+import APIs from "../utility/apis"
+import { getColorHash, navigateToClassPage, parseDate } from "../utility/helper"
 import { Download, ThreeDots } from "../utility/Icons"
 import { blue, grey_50 } from "./Colors"
-import { Input, ModalActions, SecondaryButton, Warning, WhiteCircularProgress } from "./DesignSystemStyles"
+import { BodySmall, Input, ModalActions, SecondaryButton, Subject, Warning, WhiteCircularProgress } from "./DesignSystemStyles"
 import MenuPopup, { MenuItemCustom } from "./MenuPopup"
 import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal"
 
@@ -58,13 +59,15 @@ const CardActions = styled.div`
 `
 
 const CardDetails = styled.div`
+    margin-top: ${(props) => (props.isBadge === true ? "0.8rem" : 0)};
+
     > div:not(:last-child) {
         margin-bottom: 0.4rem;
     }
 `
 
 const RecapCard = (props) => {
-    const { recapInfo, currentRoute } = props
+    const { recapInfo, currentRoute, isBadge } = props
 
     const [menu, setMenu] = useState(null)
     const [showReportModal, setReportModal] = useState(false)
@@ -89,7 +92,7 @@ const RecapCard = (props) => {
 		reportReason.reason
 	)
 
-	const { isLoading: isLoadingDelete, deleteQuestion, isAuthMatch } = useDeleteRecap(
+	const { isLoading: isLoadingDelete, deleteRecap, isAuthMatch } = useDeleteRecap(
 		recapInfo.recapId,
         auth,
         currentRoute,
@@ -104,7 +107,7 @@ const RecapCard = (props) => {
     const handleDelete = () => {
 		const authIsEmpty = (auth.value === "")
         if (!authIsEmpty) {
-			deleteQuestion(closeDeleteModal, handleCardDeleted)
+			deleteRecap(closeDeleteModal, handleCardDeleted)
 		} else {
 			setAuth({ ...auth, require: authIsEmpty })
 		}
@@ -131,10 +134,14 @@ const RecapCard = (props) => {
     const handleOnChange = (e) => {
 		let value = e.target.value
         if (/^\s/.test(value)) {
-            value = ''
+            value = reportReason.value
         }
         setReportReason({ ...reportReason, reason: value })
     }
+
+    const handleOpenRecapLink = () => {
+		APIs.getPresignDownloadRecapByRecapID(recapInfo.recapId);
+	};
 
     useEffect(() => {
         setAuth({ ...auth, isMatch: isAuthMatch })
@@ -143,7 +150,13 @@ const RecapCard = (props) => {
     return (
         <>
             <RecapCardContainer>
-                <CardDetails>
+                {isBadge && (
+                    <Subject color={getColorHash(recapInfo.classId)} onClick={() => navigateToClassPage(recapInfo.classId)}>
+                        {recapInfo.classId}
+                        <BodySmall as="span"> | {recapInfo.classNameTH}</BodySmall>
+                    </Subject>
+                )}
+                <CardDetails isBadge={isBadge}>
                     <CardHeader>
                         สรุปของ {recapInfo.author}
                     </CardHeader>
@@ -181,7 +194,7 @@ const RecapCard = (props) => {
                             ลบสรุป
                         </MenuItemCustom>
                     </MenuPopup>
-                    <SecondaryButton>ดาวน์โหลด <Download /></SecondaryButton>
+                    <SecondaryButton onClick={handleOpenRecapLink}>ดาวน์โหลด <Download /></SecondaryButton>
                 </CardActions>
             </RecapCardContainer>
             <Modal showModal={showReportModal} closeModal={closeReportModal}>

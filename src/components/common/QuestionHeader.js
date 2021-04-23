@@ -26,6 +26,7 @@ const QuestionHeaderContainer = styled.div`
 	width: 100%;
 	justify-content: space-between;
 	position: relative;
+    margin-top: ${(props) => (props.isBadge === true ? "0.8rem" : 0)};
 
 	span {
 		height: fit-content;
@@ -42,7 +43,7 @@ const WarningCustom = styled(Warning)`
 `
 
 const QuestionHeader = (props) => {
-    const { questionInfo, currentRoute } = props
+    const { questionInfo, currentRoute, isBadge } = props
 
 	const [menu, setMenu] = useState(null)
     const [showReportModal, setReportModal] = useState(false)
@@ -109,7 +110,7 @@ const QuestionHeader = (props) => {
     const handleOnChange = (e) => {
 		let value = e.target.value
         if (/^\s/.test(value)) {
-            value = ''
+            value = reportReason.value
         }
         setReportReason({ ...reportReason, reason: value })
     }
@@ -120,7 +121,7 @@ const QuestionHeader = (props) => {
 
     return (
         <>
-            <QuestionHeaderContainer>
+            <QuestionHeaderContainer isBadge={isBadge}>
                 <div>
                     <QuestionAuthor>คำถามจาก {questionInfo.author}</QuestionAuthor>
                     <CreatedAt>{timeDifference(questionInfo.createdAt)}</CreatedAt>

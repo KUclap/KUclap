@@ -53,17 +53,31 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 		if (!underflow && !loading && loadMore) {
 			if (isMatchFetchTarget) {
 				setLoading(true);
-				// fetch recaps by class id : class Page
-				APIs.getRecapsByClassId(classID, paging.page, paging.offset, (res) => {
-					const { data } = res;
-					if (!data) {
-						setUnderFlow(true);
-					} else {
-						setPaging({ ...paging, page: paging.page + 1 });
-						setRecaps([...recaps, ...data]);
-					}
-					setLoading(false);
-				});
+				if (!classID) {
+					// fetch reviews by last review : home page
+					APIs.getLastRecaps(paging.page, paging.offset, (res) => {
+						const { data } = res;
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setRecaps([...recaps, ...data]);
+						}
+						setLoading(false);
+					});
+				} else {
+					// fetch recaps by class id : class Page
+					APIs.getRecapsByClassId(classID, paging.page, paging.offset, (res) => {
+						const { data } = res;
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setRecaps([...recaps, ...data]);
+						}
+						setLoading(false);
+					});
+				}
 			}
 		}
 		setLoadMore(false);
@@ -81,7 +95,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 
 	// #### Helper function for manage on context.
 
-	const handleFetchingrecapsAndClass = (classID) => {
+	const handleFetchingRecapsAndClass = (classID) => {
 		setPaging({ ...paging, page: 1 });
 		setRecaps([]);
 		setLoading(true);
@@ -113,11 +127,11 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 				break;
 			}
 			case "CLASS": {
-				handleFetchingrecapsAndClass(classID);
+				handleFetchingRecapsAndClass(classID);
 				break;
 			}
 			case "REVIEW": {
-				handleFetchingrecapsAndClass(classID);
+				handleFetchingRecapsAndClass(classID);
 				break;
 			}
 			default:
@@ -134,7 +148,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 		setUnderFlow,
 		paging,
 		setPaging,
-		handleFetchingrecapsAndClass,
+		handleFetchingRecapsAndClass,
 		handleCardDeleted,
 	};
 };

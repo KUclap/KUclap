@@ -3,10 +3,11 @@ import { useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import APIs from "../utility/apis";
+import { getColorHash, navigateToClassPage } from "../utility/helper";
 import { DownArrow, RightArrow } from "../utility/Icons";
 import AnswerList from "./AnswerList";
 import { blue_75, red } from "./Colors";
-import { WhiteCircularProgress } from "./DesignSystemStyles";
+import { BodySmall, Subject, WhiteCircularProgress } from "./DesignSystemStyles";
 import QuestionHeader from "./QuestionHeader";
 
 const Container = styled.div`
@@ -18,6 +19,10 @@ const Container = styled.div`
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
+
+	${Subject} {
+		transform: translateY(-2.9rem);
+	}
 `;
 
 const Question = styled.div`
@@ -25,6 +30,8 @@ const Question = styled.div`
 	font-weight: 400;
 	margin-top: 1.2rem;
 	color: ${(props) => props.theme.mainText};
+	white-space: pre-line;
+	overflow-wrap: break-word;
 `;
 
 const Line = styled.div`
@@ -96,7 +103,7 @@ const InputField = styled.input`
 `;
 
 const AnswerField = styled(InputField)`
-	height: 3.4rem;
+	height: ${props => props.isAnswering ? "auto" : "3.4rem"};
 	resize: vertical;
 	overflow: auto;
 
@@ -151,7 +158,7 @@ const Warning = styled.div`
 `;
 
 const QuestionCard = (props) => {
-	const { questionInfo } = props;
+	const { questionInfo, isBadge } = props;
 
 	const defaultAnswer = {
 		answer: "",
@@ -177,7 +184,7 @@ const QuestionCard = (props) => {
 			sendAnswer();
 		}
 		if (/^\s/.test(value)) {
-			value = "";
+			value = answerInfo.answer
 		}
 		setAnswerInfo({ ...answerInfo, [field]: value });
 	};
@@ -218,7 +225,13 @@ const QuestionCard = (props) => {
 
 	return (
 		<Container>
-			<QuestionHeader {...props} />
+			{isBadge && (
+				<Subject color={getColorHash(questionInfo.classId)} onClick={() => navigateToClassPage(questionInfo.classId)}>
+					{questionInfo.classId}
+					<BodySmall as="span"> | {questionInfo.classNameTH}</BodySmall>
+				</Subject>
+			)}
+			<QuestionHeader isBadge={isBadge} {...props} />
 			<Question>{questionInfo.question}</Question>
 			{numberAnswer > 0 && (
 				<>
@@ -249,6 +262,7 @@ const QuestionCard = (props) => {
 					onFocus={() => setIsAnswering(true)}
 					onChange={(e) => handleOnChange(e, "answer")}
 					value={answerInfo.answer}
+					isAnswering={isAnswering}
 				/>
 			</InputContainer>
 			{isAnswering && (
