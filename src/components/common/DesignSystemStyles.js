@@ -192,6 +192,29 @@ const Warning = styled.div`
     font-size: 1.4rem;
 `
 
+const Subject = styled(PrimaryButton)`
+	display: block;
+	font-size: 1.4rem;
+	background: ${(props) => props.color};
+	position: absolute;
+	transform: translateY(-2.4rem);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 60%;
+	white-space: nowrap;
+	align-self: flex-start;
+	filter: ${(props) => `brightness(${props.theme.subjectBrightness}%)`};
+
+	${BodySmall} {
+		margin-left: 0.4ch;
+	}
+
+	&:hover {
+		filter: brightness(110%);
+		background: ${(props) => props.color};
+	}
+`;
+
 export {
 	PrimaryButton,
   SecondaryButton,
@@ -207,5 +230,6 @@ export {
   ModalHeader,
   WhiteCircularProgress,
   RequiredDot,
-  Warning
+  Warning,
+  Subject
 }

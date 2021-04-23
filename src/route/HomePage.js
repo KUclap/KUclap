@@ -71,13 +71,28 @@ const HomePage = (props) => {
 				) : fetchTarget === "question" ? (
 					<AdaptorReviews id="adaptor-question">
 						{questions?.map(
-							(question, index) => question && <QuestionCard key={index} questionInfo={question} currentRoute="HOME" />
+							(question, index) => 
+								question && (
+									<QuestionCard 
+										isBadge={true} 
+										key={index} 
+										questionInfo={question} 
+										currentRoute="HOME" 
+									/>
+								)
 						)}
 					</AdaptorReviews>
 				) : (
 					<AdaptorReviews id="adaptor-recap">
 						{recaps?.map(
-							(recap, index) => recap && <RecapCard key={index} recapInfo={recap} currentRoute="HOME" />
+							(recap, index) => recap && (
+								<RecapCard 
+									isBadge={true} 
+									key={index} 
+									recapInfo={recap}
+									currentRoute="HOME" 
+								/>
+							)
 						)}
 					</AdaptorReviews>
 				)}

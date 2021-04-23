@@ -3,10 +3,10 @@ import styled from "styled-components"
 import { FetcherContext } from "../../context/FetcherContext"
 import useDeleteRecap from "../../hooks/useDeleteRecap"
 import useReportRecap from "../../hooks/useReportRecap"
-import { navigateToClassPage, parseDate } from "../utility/helper"
+import { getColorHash, navigateToClassPage, parseDate } from "../utility/helper"
 import { Download, ThreeDots } from "../utility/Icons"
 import { blue, grey_50 } from "./Colors"
-import { Input, ModalActions, SecondaryButton, Warning, WhiteCircularProgress } from "./DesignSystemStyles"
+import { BodySmall, Input, ModalActions, SecondaryButton, Subject, Warning, WhiteCircularProgress } from "./DesignSystemStyles"
 import MenuPopup, { MenuItemCustom } from "./MenuPopup"
 import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal"
 
@@ -58,13 +58,15 @@ const CardActions = styled.div`
 `
 
 const CardDetails = styled.div`
+    margin-top: ${(props) => (props.isBadge === true ? "0.8rem" : 0)};
+
     > div:not(:last-child) {
         margin-bottom: 0.4rem;
     }
 `
 
 const RecapCard = (props) => {
-    const { recapInfo, currentRoute } = props
+    const { recapInfo, currentRoute, isBadge } = props
 
     const [menu, setMenu] = useState(null)
     const [showReportModal, setReportModal] = useState(false)
@@ -143,7 +145,13 @@ const RecapCard = (props) => {
     return (
         <>
             <RecapCardContainer>
-                <CardDetails>
+                {isBadge && (
+                    <Subject color={getColorHash(recapInfo.classId)} onClick={() => navigateToClassPage(recapInfo.classId)}>
+                        {recapInfo.classId}
+                        <BodySmall as="span"> | {recapInfo.classNameTH}</BodySmall>
+                    </Subject>
+                )}
+                <CardDetails isBadge={isBadge}>
                     <CardHeader>
                         สรุปของ {recapInfo.author}
                     </CardHeader>

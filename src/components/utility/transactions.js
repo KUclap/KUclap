@@ -21,11 +21,11 @@ export const createReview = (classID, reviewInfo, file, setIsUpLoading, done) =>
 							recapId,
 						},
 						({ data }) => {
-							const { reviewId } = data;
+							const { reviewId, classNameTH, classNameEN } = data;
 							// (4) create recap
-							APIs.createRecap({ ...recapInfo, reviewId, auth }, () => {
+							APIs.createRecap({ ...recapInfo, reviewId, auth, classNameTH, classNameEN }, () => {
 								done();
-							});
+							})
 						}
 					);
 				});
