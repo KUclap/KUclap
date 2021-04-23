@@ -1,11 +1,11 @@
 import { h } from "preact";
 import { useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
-import APIs from "../utility/apis"
- 
+
+import APIs from "../utility/apis";
 import { DownArrow, RightArrow } from "../utility/Icons";
 import AnswerList from "./AnswerList";
-import { red, blue_75 } from "./Colors";
+import { blue_75, red } from "./Colors";
 import { WhiteCircularProgress } from "./DesignSystemStyles";
 import QuestionHeader from "./QuestionHeader";
 
@@ -56,9 +56,9 @@ const ReadAnswerButton = styled.button`
 	background-color: ${(props) => props.theme.body};
 	color: ${(props) => props.theme.mainText};
 	padding-left: 1.2rem;
-	
+
 	svg {
-		transform: rotate(${props => props.showAnswers ? 0 : "-180deg"}); 
+		transform: rotate(${(props) => (props.showAnswers ? 0 : "-180deg")});
 		transition: all 0.3s ease-in-out;
 	}
 `;
@@ -78,7 +78,7 @@ const NoOfAnswer = styled.div`
 
 const InputContainer = styled.div`
 	margin-top: 1.2rem;
-`
+`;
 
 const InputField = styled.input`
 	font-size: 1.6rem;
@@ -103,7 +103,7 @@ const AnswerField = styled(InputField)`
 	&::-webkit-scrollbar {
 		display: none;
 	}
-`
+`;
 
 const AnswerFooter = styled.div`
 	font-size: 1.8rem;
@@ -146,126 +146,133 @@ const Button = styled.button`
 `;
 
 const Warning = styled.div`
-    color: ${red};
+	color: ${red};
 	margin-bottom: 0.5rem;
-`
+`;
 
 const QuestionCard = (props) => {
 	const { questionInfo } = props;
-	
+
 	const defaultAnswer = {
 		answer: "",
-		author: ""
-	}
+		author: "",
+	};
 	const defaultRequire = {
 		answer: false,
-		author: false
-	}
+		author: false,
+	};
 
-	const [answers, setAnswers] = useState()
-	const [numberAnswer, setNumberAnswer] = useState(questionInfo.numberAnswer)
+	const [answers, setAnswers] = useState();
+	const [numberAnswer, setNumberAnswer] = useState(questionInfo.numberAnswer);
 	const [isAnswering, setIsAnswering] = useState(false);
-	const [answerInfo, setAnswerInfo] = useState(defaultAnswer)
-	const [isLoading, setLoading] = useState(false)
-	const [required, setRequired] = useState(defaultRequire)
-	const [showAnswers, setShowAnswers] = useState(false)
+	const [answerInfo, setAnswerInfo] = useState(defaultAnswer);
+	const [isLoading, setLoading] = useState(false);
+	const [required, setRequired] = useState(defaultRequire);
+	const [showAnswers, setShowAnswers] = useState(false);
 
 	const handleOnChange = (e, field) => {
-		let value = e.target.value
+		let value = e.target.value;
 		if (field === "author" && e.key === "Enter") {
-			console.log("sending")
-			sendAnswer()
+			console.log("sending");
+			sendAnswer();
 		}
-        if (/^\s/.test(value)) {
-            value = ''
-        }
-        setAnswerInfo({ ...answerInfo, [field]: value })
-    }
+		if (/^\s/.test(value)) {
+			value = "";
+		}
+		setAnswerInfo({ ...answerInfo, [field]: value });
+	};
 
 	const sendAnswer = () => {
-		const isAnswerTooShort = (answerInfo.answer.length < 3)
-		const isAuthorIsEmpty = (answerInfo.author === "")
-		const areAllInputsValid = (!isAnswerTooShort && !isAuthorIsEmpty)
+		const isAnswerTooShort = answerInfo.answer.length < 3;
+		const isAuthorIsEmpty = answerInfo.author === "";
+		const areAllInputsValid = !isAnswerTooShort && !isAuthorIsEmpty;
 		if (areAllInputsValid) {
-			setLoading(true)
-			setRequired(defaultRequire)
+			setLoading(true);
+			setRequired(defaultRequire);
 			const answerPayload = {
 				questionId: questionInfo.questionId,
-				...answerInfo
-			}
+				...answerInfo,
+			};
 			APIs.answerQuestion(answerPayload, () => {
 				if (showAnswers) {
-					setAnswers([...answers, {
-						...answerPayload,
-						createdAt: new Date().toLocaleString('en-US', { timeZone: 'Etc/GMT-14' })
-					}])
+					setAnswers([
+						...answers,
+						{
+							...answerPayload,
+							createdAt: new Date().toLocaleString("en-US", { timeZone: "Etc/GMT-14" }),
+						},
+					]);
 				}
-				setShowAnswers(true)
-				setNumberAnswer(numberAnswer + 1)
-				setAnswerInfo(defaultAnswer)
-				setLoading(false)
-			})
+				setShowAnswers(true);
+				setNumberAnswer(numberAnswer + 1);
+				setAnswerInfo(defaultAnswer);
+				setLoading(false);
+			});
 		} else {
 			setRequired({
 				answer: isAnswerTooShort,
-				author: isAuthorIsEmpty
-			})
+				author: isAuthorIsEmpty,
+			});
 		}
-	}
+	};
 
 	return (
 		<Container>
 			<QuestionHeader {...props} />
 			<Question>{questionInfo.question}</Question>
-			{numberAnswer > 0 && (<>
-				<AnswerHeader>
-					<Line />
-					<ReadAnswerButton showAnswers={showAnswers} onClick={() => setShowAnswers(!showAnswers)}>
-						คำตอบทั้งหมด
-						<NoOfAnswer>{numberAnswer}</NoOfAnswer>
-						<DownArrow />
-					</ReadAnswerButton>
-				</AnswerHeader>
-				{ showAnswers && 
-					<AnswerList 
-						answers={answers}
-						setAnswers={setAnswers}
-						showAnswers={showAnswers}
-						questionId={questionInfo.questionId} 
-						classId={questionInfo.classId}
-					/>
-				}
-			</>)}
+			{numberAnswer > 0 && (
+				<>
+					<AnswerHeader>
+						<Line />
+						<ReadAnswerButton showAnswers={showAnswers} onClick={() => setShowAnswers(!showAnswers)}>
+							คำตอบทั้งหมด
+							<NoOfAnswer>{numberAnswer}</NoOfAnswer>
+							<DownArrow />
+						</ReadAnswerButton>
+					</AnswerHeader>
+					{showAnswers && (
+						<AnswerList
+							answers={answers}
+							setAnswers={setAnswers}
+							showAnswers={showAnswers}
+							questionId={questionInfo.questionId}
+							classId={questionInfo.classId}
+						/>
+					)}
+				</>
+			)}
 			<InputContainer>
-				{
-					required.answer &&
-					<Warning>คำตอบต้องยาวไม่ต่ำกว่า 3 ตัวอักษร</Warning>
-				}
-				<AnswerField 
+				{required.answer && <Warning>คำตอบต้องยาวไม่ต่ำกว่า 3 ตัวอักษร</Warning>}
+				<AnswerField
 					as="textarea"
-					placeholder="ตอบคำถามนี้" 
-					onFocus={() => setIsAnswering(true)} 
+					placeholder="ตอบคำถามนี้"
+					onFocus={() => setIsAnswering(true)}
 					onChange={(e) => handleOnChange(e, "answer")}
 					value={answerInfo.answer}
 				/>
 			</InputContainer>
-			{isAnswering && (<InputContainer>
-				{
-					required.author &&
-					<Warning>กรุณากรอกนามปากกาผู้ตอบ</Warning>
-				}
-				<AnswerFooter>
-					โดย
-					<InputField 
-						onKeyUp={(e) => handleOnChange(e, "author")}
-						value={answerInfo.author}
-						placeholder="นามปากกาผู้ตอบ" 
-					/>
-					<Button onClick={sendAnswer}>
-						{isLoading ? <WhiteCircularProgress size="2rem" /> : <>ส่ง <RightArrow /></>}
-					</Button>
-				</AnswerFooter>
-			</InputContainer>)}
+			{isAnswering && (
+				<InputContainer>
+					{required.author && <Warning>กรุณากรอกนามปากกาผู้ตอบ</Warning>}
+					<AnswerFooter>
+						โดย
+						<InputField
+							onKeyUp={(e) => handleOnChange(e, "author")}
+							value={answerInfo.author}
+							placeholder="นามปากกาผู้ตอบ"
+						/>
+						<Button onClick={sendAnswer}>
+							{isLoading ? (
+								<WhiteCircularProgress size="2rem" />
+							) : (
+								<>
+									ส่ง <RightArrow />
+								</>
+							)}
+						</Button>
+					</AnswerFooter>
+				</InputContainer>
+			)}
 		</Container>
 	);
 };
