@@ -40,8 +40,8 @@ const apis = {
 	// POST & PUT create review then update stats class
 	createReview: async (payloadReview, next) => {
 		try {
-			await api.post(`/review`, payloadReview);
-			next();
+			const res = await api.post(`/review`, payloadReview);
+			next(res);
 		} catch (err) {
 			console.log(err);
 		}
@@ -50,9 +50,7 @@ const apis = {
 	// GET reviews by classid when class selected
 	getReviewsByClassId: async (classid, page, offset, next) => {
 		try {
-			const res = await api.get(
-				`/reviews/${classid}?page=${page}&offset=${offset}`
-			);
+			const res = await api.get(`/reviews/${classid}?page=${page}&offset=${offset}`);
 			next(res);
 		} catch (err) {
 			console.log(err);
@@ -138,10 +136,51 @@ const apis = {
 	// GET question by classID
 	getQuestionsByClassId: async (classID, page, offset, next) => {
 		try {
-			const res = await api.get(
-				`/questions/${classID}?page=${page}&offset=${offset}`
-			);
+			const res = await api.get(`/questions/${classID}?page=${page}&offset=${offset}`);
 			next(res);
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	// GET presigned url for download recap
+	getPresignDownloadRecapByRecapID: async (recapID /* , next */) => {
+		if (typeof window !== "undefined") {
+			window.open(`${URL_API}/recap/presigned/download/${recapID}`, "_blank").focus();
+		}
+	},
+
+	// GET presigned url for upload recap
+	getPresignUploadRecapByRecapID: async (classID, author, next) => {
+		try {
+			const res = await api.get(`/recap/presigned/upload/${classID}?author=${author}`);
+			next(res);
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	// PUT upload recap file to S3
+	uploadRecapToS3Storage: async (presignedURL, tag, file, next) => {
+		try {
+			await api.put(presignedURL, file, {
+				headers: {
+					"Content-Type": file.type,
+					"x-amz-tagging": tag,
+				},
+			});
+
+			next();
+		} catch (error) {
+			console.log(error);
+		}
+	},
+
+	// POST create recap
+	createRecap: async (payloadRecap, next) => {
+		try {
+			await api.post(`/recap/upload`, payloadRecap);
+			next();
 		} catch (err) {
 			console.log(err);
 		}

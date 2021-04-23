@@ -1,29 +1,28 @@
-import { h } from "preact";
-import { lazy, Suspense } from "preact/compat";
 import Checkbox from "@material-ui/core/Checkbox";
-import { useState, useEffect } from "preact/hooks";
-import styled, { withTheme } from "styled-components";
-
-import { Worst, Bad, So, Good, Excellent } from "../utility/Icons";
-
-import APIs from "../utility/apis";
-import { navigateToClassPage } from "../utility/helper";
-
-import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import { h } from "preact";
+import { lazy, Suspense } from "preact/compat";
+import { useEffect, useState } from "preact/hooks";
+import styled, { withTheme } from "styled-components";
+
+import { navigateToClassPage } from "../utility/helper";
+import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
+import * as TRANSACTIONs from "../utility/transactions";
+import BrowseButton from "./BrowseButton";
+import { blue, blue_75, blue_97, grey_75, red, sea_pink } from "./Colors";
 import {
-	PrimaryButton,
-	SecondaryButton,
-	ModalActions,
+	BodySmall,
 	Heading1,
 	Input,
+	ModalActions,
+	PrimaryButton,
+	SecondaryButton,
 	TextArea,
-	BodySmall,
 	WhiteCircularProgress,
 } from "./DesignSystemStyles";
 import Modal from "./Modal";
-import { blue, blue_75, blue_97, grey_75, red, sea_pink } from "./Colors";
 
 const Alert = lazy(() => import("./Alert"));
 
@@ -399,7 +398,9 @@ const ReviewForm = (props) => {
 	const [isDone, setIsDone] = useState(false);
 	const [showReviewModal, setReviewModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isUpLoading, setIsUpLoading] = useState(false);
 	const [recommendWord, setRecommendWord] = useState(false);
+	const [file, setFile] = useState(null);
 	const initialForm = {
 		classId: classID,
 		text: "",
@@ -487,21 +488,14 @@ const ReviewForm = (props) => {
 	const sendReview = () => {
 		if (!isLoading) {
 			setIsLoading(true);
-			// console.log(form)
-			APIs.createReview(
-				{
-					...form,
-					year: parseInt(form.year, 10),
-					sec: parseInt(form.sec, 10),
-					semester: parseInt(form.semester, 10),
-				},
-				() => {
-					setIsLoading(false);
-					setIsDone(true);
-					setForm({ ...initialForm, classId: classID });
-					setChecklist({ ...initialChecklist });
-				}
-			);
+			setIsUpLoading(true);
+
+			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, () => {
+				setIsLoading(false);
+				setIsDone(true);
+				setForm({ ...initialForm, classId: classID });
+				setChecklist({ ...initialChecklist });
+			});
 		}
 	};
 
@@ -710,12 +704,20 @@ const ReviewForm = (props) => {
 					ลิงก์สรุปวิชา
 					<span>ควรใส่ลายน้ำเพื่อป้องกันการคัดลอก</span>
 				</DetailTitle>
-				<Input
+				<BrowseButton file={file} setFile={setFile} />
+				{/* <Button
+					onClick={() => {
+						navigateToClassPage(classID);
+					}}
+				>
+					เลือกไฟล์
+				</Button> */}
+				{/* <Input
 					placeholder="วางลิงก์ที่นี่"
 					value={form.recap}
 					onChange={(e) => handleOnchange(e, "recap")}
 					aria-labelledby="recap-field"
-				/>
+				/> */}
 				{/* <CopyInputContainer>
           <Input
             type="text"
@@ -780,6 +782,7 @@ const ReviewForm = (props) => {
 				<Modal showModal={showReviewModal} closeModal={handleCloseAlert}>
 					เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
 					<div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
+					{isUpLoading ?? <div>รอสักครู่ กำลังทำการอัพโหลดไฟล์สรุป...</div>}
 					<ModalActions>
 						<SecondaryButton
 							onClick={() => {

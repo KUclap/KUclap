@@ -157,7 +157,7 @@ const QuestionCard = (props) => {
 				<ThreeDots />
 			</QuestionHeader>
 			<Question>{questionInfo.question}</Question>
-			{questionInfo.answer.length > 0 && (
+			{questionInfo.answer?.length > 0 && (
 				<AnswerHeader>
 					<Line />
 					<NoOfAnswerContainer>
