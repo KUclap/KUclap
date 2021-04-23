@@ -95,7 +95,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 
 	// #### Helper function for manage on context.
 
-	const handleFetchingrecapsAndClass = (classID) => {
+	const handleFetchingRecapsAndClass = (classID) => {
 		setPaging({ ...paging, page: 1 });
 		setRecaps([]);
 		setLoading(true);
@@ -127,11 +127,11 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 				break;
 			}
 			case "CLASS": {
-				handleFetchingrecapsAndClass(classID);
+				handleFetchingRecapsAndClass(classID);
 				break;
 			}
 			case "REVIEW": {
-				handleFetchingrecapsAndClass(classID);
+				handleFetchingRecapsAndClass(classID);
 				break;
 			}
 			default:
@@ -148,7 +148,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 		setUnderFlow,
 		paging,
 		setPaging,
-		handleFetchingrecapsAndClass,
+		handleFetchingRecapsAndClass,
 		handleCardDeleted,
 	};
 };

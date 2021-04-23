@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { FetcherContext } from "../../context/FetcherContext"
 import useDeleteRecap from "../../hooks/useDeleteRecap"
 import useReportRecap from "../../hooks/useReportRecap"
+import APIs from "../utility/apis"
 import { getColorHash, navigateToClassPage, parseDate } from "../utility/helper"
 import { Download, ThreeDots } from "../utility/Icons"
 import { blue, grey_50 } from "./Colors"
@@ -91,7 +92,7 @@ const RecapCard = (props) => {
 		reportReason.reason
 	)
 
-	const { isLoading: isLoadingDelete, deleteQuestion, isAuthMatch } = useDeleteRecap(
+	const { isLoading: isLoadingDelete, deleteRecap, isAuthMatch } = useDeleteRecap(
 		recapInfo.recapId,
         auth,
         currentRoute,
@@ -106,7 +107,7 @@ const RecapCard = (props) => {
     const handleDelete = () => {
 		const authIsEmpty = (auth.value === "")
         if (!authIsEmpty) {
-			deleteQuestion(closeDeleteModal, handleCardDeleted)
+			deleteRecap(closeDeleteModal, handleCardDeleted)
 		} else {
 			setAuth({ ...auth, require: authIsEmpty })
 		}
@@ -137,6 +138,10 @@ const RecapCard = (props) => {
         }
         setReportReason({ ...reportReason, reason: value })
     }
+
+    const handleOpenRecapLink = () => {
+		APIs.getPresignDownloadRecapByRecapID(recapInfo.recapId);
+	};
 
     useEffect(() => {
         setAuth({ ...auth, isMatch: isAuthMatch })
@@ -189,7 +194,7 @@ const RecapCard = (props) => {
                             ลบสรุป
                         </MenuItemCustom>
                     </MenuPopup>
-                    <SecondaryButton>ดาวน์โหลด <Download /></SecondaryButton>
+                    <SecondaryButton onClick={handleOpenRecapLink}>ดาวน์โหลด <Download /></SecondaryButton>
                 </CardActions>
             </RecapCardContainer>
             <Modal showModal={showReportModal} closeModal={closeReportModal}>

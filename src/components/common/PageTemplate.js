@@ -101,23 +101,33 @@ const GoTopCustomStyle = styled.a`
 			  `}
 `;
 
-const PageTemplate = ({ classID, toggleTheme, children, isFormPage, classes, content }) => {
+const PageTemplate = ({ classID, toggleTheme, children, isFormPage, classes, content, fetchTarget }) => {
 	const { state: selected, dispatch: dispatchSelected } = useContext(SelectContext);
 
 	const newEle = useRef(null);
 	const [isBottomViewport, setIsBottomViewport] = useState(false);
-	const { handleFetchingReviewsAndClass } = useContext(FetcherContext);
+	const { handleFetchingReviewsAndClass, handleFetchingQuestionsAndClass, handleFetchingRecapsAndClass } = useContext(FetcherContext);
 
 	const handleSelected = (e) => {
 		if (!isFormPage) {
-			handleFetchingReviewsAndClass(e.classId);
+			if (fetchTarget === "review") {
+				handleFetchingReviewsAndClass(e.classId);
+			} else if (fetchTarget === "question") {
+				handleFetchingQuestionsAndClass(e.classId)
+			} else {
+				handleFetchingRecapsAndClass(e.classId)
+			}
 			dispatchSelected({
 				type: "selected",
 				value: { label: e.label, classID: e.classId },
 			});
 		}
 
-		route(`${baseroute}/${e.classId}`);
+		if (fetchTarget !== "review") {
+			route(`${baseroute}/${e.classId}?display=${fetchTarget}`);
+		} else {
+			route(`${baseroute}/${e.classId}`);
+		}
 	};
 
 	useEffect(() => {
