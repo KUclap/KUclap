@@ -541,7 +541,7 @@ const ReviewForm = (props) => {
 	const handleOnchange = (e, field) => {
 		let value = e.target.value;
 		if (/^\s/.test(value)) {
-			value = "";
+			value = form[field];
 		}
 		setForm({ ...form, [field]: value });
 	};

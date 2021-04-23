@@ -131,7 +131,7 @@ const RecapCard = (props) => {
     const handleOnChange = (e) => {
 		let value = e.target.value
         if (/^\s/.test(value)) {
-            value = ''
+            value = reportReason.value
         }
         setReportReason({ ...reportReason, reason: value })
     }

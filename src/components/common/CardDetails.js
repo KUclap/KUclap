@@ -162,7 +162,7 @@ const CardDetails = (props) => {
 	const handleOnchange = (e) => {
 		let value = e.target.value;
 		if (/^\s/.test(value)) {
-			value = "";
+			value = reportReason.value
 		}
 		setReportReason({ ...reportReason, reason: value });
 	};
