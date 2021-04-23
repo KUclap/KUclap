@@ -14,21 +14,17 @@ import {
 } from "../components/common/ReviewSkeleton";
 
 import {
-  ReviewFetcherContext,
-  ReviewFetcherProvider,
-} from "../context/ReviewFetcherContext";
-
-import {
   DetailTitle,
   AdaptorReviews,
   LastReview,
   ContainerNoMore,
   NoMoreCustom,
 } from "../components/common/FetcherComponents";
+import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
 
 const HomePage = (props) => {
   const { reviews, loading, underflow, loadMore } = useContext(
-    ReviewFetcherContext
+    FetcherContext
   );
 
   return (
@@ -80,9 +76,9 @@ const HomePage = (props) => {
 const Interface = (props) => {
   const { classID } = props;
   return (
-    <ReviewFetcherProvider classID={classID}>
+    <FetcherProvider classID={classID} fetchTarget="review">
       <HomePage {...props} />
-    </ReviewFetcherProvider>
+    </FetcherProvider>
   );
 };
 

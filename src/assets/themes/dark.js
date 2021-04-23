@@ -1,3 +1,5 @@
+import { grey_20 } from "../../components/common/Colors";
+
 export default {
   name: "dark",
 
@@ -7,6 +9,7 @@ export default {
   subText: "#6d6d6d",
   borderColor: "#494949",
   lightBackground: "#313438",
+  lightBlueBackground: grey_20,
   tag: {
     fontColor: "#f5f5f5",
     background: "transparent",

@@ -1,17 +1,17 @@
 import { useState } from 'preact/hooks'
 import APIs from '../components/utility/apis'
 
-const useReportReview = (reviewId, classId, reason) => {
+const useReportQuestion = (questionId, classId, reason) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const sendReport = (reportSuccess) => {
         const report = {
-            reviewId,
+            questionId,
             classId,
             text: reason,
         }
         setIsLoading(true)
-        APIs.createReportReview(report, () => {
+        APIs.postQuestionReport(report, () => {
             setIsLoading(false)
             reportSuccess()
         })
@@ -20,4 +20,4 @@ const useReportReview = (reviewId, classId, reason) => {
     return { isLoading, sendReport }
 }
 
-export default useReportReview;
+export default useReportQuestion;

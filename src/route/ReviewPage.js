@@ -19,7 +19,6 @@ import {
 } from "../components/utility/helper";
 
 import { SelectContext } from "../context/SelectContext";
-import { ReviewFetcherProvider } from "../context/ReviewFetcherContext";
 
 import {
 	DetailTitle,
@@ -30,6 +29,7 @@ import {
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
 import { blue_75, grey_75 } from "../components/common/Colors";
+import { FetcherProvider } from "../context/FetcherContext";
 
 const Button = styled.div`
 	background-color: hsl(145, 63%, 42%);
@@ -205,13 +205,13 @@ const Interface = (props) => {
 	}, []);
 
 	return (
-		<ReviewFetcherProvider classID={(currentClass && currentClass.classId) || review.classId}>
+		<FetcherProvider classID={(currentClass && currentClass.classId) || review.classId}>
 			<ReviewPage 
 				review={currentReview || review} 
 				loading={loading}
 				isAvailable={isAvailable}
 				{...props} />
-		</ReviewFetcherProvider>
+		</FetcherProvider>
 	);
 };
 

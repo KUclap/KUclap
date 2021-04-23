@@ -9,6 +9,7 @@ export default {
   subText: grey_75,
   borderColor: grey_88,
   lightBackground: grey_95,
+  lightBlueBackground: blue_97,
   tag: {
     fontColor: blue,
     background: blue_97,

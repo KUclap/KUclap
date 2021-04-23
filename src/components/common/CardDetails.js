@@ -1,9 +1,8 @@
 import { h } from 'preact'
 import { useState, useEffect, useContext } from 'preact/hooks'
-import { navigateToReviewPage } from '../utility/helper'
+import { parseDate, navigateToReviewPage } from '../utility/helper'
 import { Recap, DownArrow, GradeCircle } from '../utility/Icons'
 import styled from 'styled-components'
-import { ReviewFetcherContext } from '../../context/ReviewFetcherContext'
 import {
     BodyTiny,
     Input,
@@ -13,13 +12,13 @@ import {
     TextArea,
     WhiteCircularProgress,
 } from './DesignSystemStyles'
-import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Modal from './Modal'
 import useReportReview from '../../hooks/useReportReview'
 import useDeleteReview from '../../hooks/useDeleteReview'
-import parseDate from "../utility/parseDate";
 import { blue, red, sea_pink } from './Colors'
+import { FetcherContext } from '../../context/FetcherContext'
+import MenuPopup from './MenuPopup'
 
 const DetailsContainer = styled.div`
     display: flex;
@@ -80,20 +79,6 @@ const MoreButton = styled(SecondaryButton)`
 
     &:hover {
         background: ${(props) => props.theme.lightBackground};
-    }
-`
-
-const MenuCustom = styled(Menu)`
-    .MuiPaper-elevation0 {
-        border: 0.1rem solid ${(props) => props.theme.mainText};
-        background: ${(props) => props.theme.body};
-        margin-top: 0.4rem;
-        color: ${(props) => props.theme.mainText};
-        box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
-    }
-
-    .MuiList-padding {
-        padding: 0;
     }
 `
 
@@ -192,7 +177,7 @@ const CardDetails = (props) => {
 
     const [showEditModal, setEditModal] = useState(false)
     const [showReportModal, setReportModal] = useState(false)
-    const { handleCardDeleted } = useContext(ReviewFetcherContext)
+    const { handleCardDeleted } = useContext(FetcherContext)
 
     const [menu, setMenu] = useState(null)
     const defaultAuth = {
@@ -280,28 +265,13 @@ const CardDetails = (props) => {
                     type="report"
                     aria-controls="more-menu"
                     aria-haspopup="true"
-                    onClick={(event) => setMenu(event.currentTarget)}
-                    fullButton={!recap}>
+                    onClick={(e) => setMenu(e.currentTarget)}
+                    fullButton={!recap} 
+                >
                     {!recap && <BodyTiny>เพิ่มเติม</BodyTiny>}
                     <DownArrow />
                 </MoreButton>
-                <MenuCustom
-                    elevation={0}
-                    getContentAnchorEl={null}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                    }}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    openMenu={menu}
-                    id="more-menu"
-                    anchorEl={menu}
-                    keepMounted
-                    open={Boolean(menu)}
-                    onClose={() => setMenu(null)}>
+                <MenuPopup menu={menu} setMenu={setMenu}>
                     <MenuContentContainer>
                         {sec !== 0 && (
                             <MenuContent>
@@ -356,7 +326,7 @@ const CardDetails = (props) => {
                         }}>
                         ลบรีวิว
                     </MenuItemCustom>
-                </MenuCustom>
+                </MenuPopup>
             </SubDetail>
             <Modal showModal={showReportModal} closeModal={closeReportModal}>
                 เหตุผลในการแจ้งลบ

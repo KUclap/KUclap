@@ -61,6 +61,11 @@ export const navigateToClassPage = (classId) => {
     route(`${baseroute}/${classId}`);
 };
 
+export const navigateToClassPageQuestion = (classId) => {
+  if (typeof window !== "undefined") window.scrollTo(0, 0);
+    route(`${baseroute}/${classId}?display=question`);
+}
+
 export const navigateToReviewPage = (reviewId) => {
   if (typeof window !== "undefined") window.scrollTo(0, 0);
   route(`${baseroute}/review/${reviewId}`);
@@ -91,3 +96,58 @@ export const getMobileOS = () => {
   }
   return "unknown";
 }
+
+export const timeDifference = (date) => {
+  const msPerMinute = 60 * 1000;
+  const msPerHour = msPerMinute * 60;
+  const msPerDay = msPerHour * 24;
+  const msPerMonth = msPerDay * 30;
+  const msPerYear = msPerDay * 365;
+
+  const hourShift = -7 
+  const timestamp = new Date(date).getTime()
+  const timeStampDate = new Date(timestamp + (hourShift * 60 * 60 * 1000))
+
+  const elapsed = new Date() - timeStampDate;
+
+  if (elapsed < msPerMinute) {
+    return `${Math.round(elapsed/1000)} วินาทีที่ผ่านมา`
+  } else if (elapsed < msPerHour) {
+    return `${Math.round(elapsed/msPerMinute)} นาทีที่ผ่านมา`   
+  } else if (elapsed < msPerDay ) {
+    return `${Math.round(elapsed/msPerHour)} ชั่วโมงที่ผ่านมา`;   
+  } else if (elapsed < msPerMonth) {
+    return `${Math.round(elapsed/msPerDay)} วันที่ผ่านมา`
+  } else if (elapsed < msPerYear) {
+    return `${Math.round(elapsed/msPerMonth)} เดือนที่ผ่านมา`;   
+  } 
+  return `${Math.round(elapsed/msPerYear )} ปีที่ผ่านมา`
+}
+
+const MONTHS = [
+  "ม.ค.",
+  "ก.พ.",
+  "มี.ค.",
+  "เม.ย.",
+  "พ.ค.",
+  "มิ.ย.",
+  "ก.ค.",
+  "ส.ค.",
+  "ก.ย.",
+  "ต.ค.",
+  "พ.ย.",
+  "ธ.ค.",
+]
+
+export function parseDate(date){
+  const createdAt = new Date(date)
+  const hourShift = -7 
+  const timestamp = createdAt.getTime()
+  const dateTimezone = new Date(timestamp + (hourShift * 60 * 60 * 1000))
+
+  let day = dateTimezone.getDate()
+  let month = MONTHS[dateTimezone.getMonth()]
+  let year = dateTimezone.getFullYear() + 543
+
+  return `${day} ${month} ${year}`;
+} 
