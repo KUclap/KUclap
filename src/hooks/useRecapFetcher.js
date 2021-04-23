@@ -53,17 +53,31 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 		if (!underflow && !loading && loadMore) {
 			if (isMatchFetchTarget) {
 				setLoading(true);
-				// fetch recaps by class id : class Page
-				APIs.getRecapsByClassId(classID, paging.page, paging.offset, (res) => {
-					const { data } = res;
-					if (!data) {
-						setUnderFlow(true);
-					} else {
-						setPaging({ ...paging, page: paging.page + 1 });
-						setRecaps([...recaps, ...data]);
-					}
-					setLoading(false);
-				});
+				if (!classID) {
+					// fetch reviews by last review : home page
+					APIs.getLastRecaps(paging.page, paging.offset, (res) => {
+						const { data } = res;
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setRecaps([...recaps, ...data]);
+						}
+						setLoading(false);
+					});
+				} else {
+					// fetch recaps by class id : class Page
+					APIs.getRecapsByClassId(classID, paging.page, paging.offset, (res) => {
+						const { data } = res;
+						if (!data) {
+							setUnderFlow(true);
+						} else {
+							setPaging({ ...paging, page: paging.page + 1 });
+							setRecaps([...recaps, ...data]);
+						}
+						setLoading(false);
+					});
+				}
 			}
 		}
 		setLoadMore(false);
