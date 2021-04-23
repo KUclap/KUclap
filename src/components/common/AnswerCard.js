@@ -3,10 +3,9 @@ import styled from "styled-components"
 import useReportAnswer from "../../hooks/useReportAnswer"
 import { timeDifference } from "../utility/helper"
 import { ThreeDots } from "../utility/Icons"
-import { red, sea_pink } from "./Colors"
-import { MenuItemCustom, ModalActions, PrimaryButton, SecondaryButton, TextArea, WhiteCircularProgress } from "./DesignSystemStyles"
-import MenuPopup from "./MenuPopup"
-import Modal from "./Modal"
+import { ModalActions, Warning, WhiteCircularProgress } from "./DesignSystemStyles"
+import MenuPopup, { MenuItemCustom } from "./MenuPopup"
+import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal"
 
 const AnswerCardContainer = styled.div`
 	background: ${props => props.theme.lightBlueBackground};
@@ -43,47 +42,12 @@ const OptionsButton = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /* svg {
-        height: 2rem;
-        width: 3rem;
-    } */
 `
 
 const OuterContainer = styled.div`
-    /* display: flex; */
-    /* position: relative; */
-`
-
-const ReportField = styled(TextArea)`
-    height: 12rem;
-    width: 100%;
-    max-width: 30rem;
-    margin-top: 1.6rem;
-`
-
-const ConfirmButton = styled(PrimaryButton)`
-    background-color: ${red};
-    margin: 2rem 1.6rem 0;
-
-    &:hover {
-        background: ${sea_pink};
+    ${Warning} {
+        margin-bottom: 0.5rem;
     }
-`
-
-const CancelButton = styled(SecondaryButton)`
-    margin: 2rem 1.6rem 0;
-    color: ${(props) => props.theme.subText};
-    box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
-
-    &:hover {
-        background: ${(props) => props.theme.lightBackground};
-    }
-`
-
-const Warning = styled.div`
-    color: ${red};
-	margin-bottom: 0.5rem;
 `
 
 const AnswerCard = (props) => {

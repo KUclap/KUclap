@@ -9,6 +9,7 @@ const sea_pink = "hsl(11, 71%, 77%)" // Boo Hover
 
 const grey_20 = "hsl(0, 0%, 20%)"
 const grey = "hsl(0, 0%, 31%)" // Header / Body (Main text)
+const grey_50 = "hsl(0, 0%, 50%)"
 const grey_75 = "hsl(0, 0%, 75%)"  // Body (Sub text)
 const grey_88 = "hsl(0, 0%, 88%)" // Border / Line
 const grey_95 = "hsl(0, 0%, 95%)" // Light grey background 
@@ -42,5 +43,6 @@ export {
 	turquoise_green,
 	columbia_blue,
 	yellow,
-	grey_20
+	grey_20,
+	grey_50
 }

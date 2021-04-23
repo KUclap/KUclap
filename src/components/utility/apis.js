@@ -190,6 +190,40 @@ const apis = {
 			console.log(err);
 		}
 	},
+
+	getRecapsByClassId: async (classID, page, offset, next) => {
+		try {
+			const res = await api.get(
+				`/recaps/${classID}?page=${page}&offset=${offset}`
+			);
+			next(res);
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	postRecapReport: async (reportPayload, next) => {
+		try {
+			await api.post(`/recap/report`, reportPayload);
+			next();
+		} catch (err) {
+			console.log(err);
+		}
+	},
+
+	deleteRecapByRecapId: async (config, next) => {
+		try {
+			const res = await api.delete(`/recap/${config.recapId}`, {
+				headers: {
+					Authorization: `Bearer ${config.auth}`,
+				},
+			});
+			next(res);
+		} catch (err) {
+			console.log(err.response.data);
+			next(err.response.data);
+		}
+	},
 };
 
 export default apis;

@@ -9,7 +9,6 @@ import { red, blue_75 } from "./Colors";
 import { WhiteCircularProgress } from "./DesignSystemStyles";
 import QuestionHeader from "./QuestionHeader";
 
-
 const Container = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
 	border-radius: 1rem;

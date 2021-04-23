@@ -53,8 +53,6 @@ const UtilitysContainer = styled.div`
 const Header = ({ theme, toggleTheme }) => {
   return (
     <>
-
-      
       <UtilitysContainer>
        <SocialIcons />
       </UtilitysContainer>

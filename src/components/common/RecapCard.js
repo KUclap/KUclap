@@ -1,50 +1,72 @@
-import { useContext, useEffect, useState } from "preact/hooks";
-import styled from "styled-components";
-import { FetcherContext } from "../../context/FetcherContext";
-import useDeleteQuestion from "../../hooks/useDeleteQuestion";
-import useReportQuestion from "../../hooks/useReportQuestion";
-import { timeDifference } from "../utility/helper";
-import { ThreeDots } from "../utility/Icons"
-import { Input, ModalActions, Warning, WhiteCircularProgress } from "./DesignSystemStyles";
-import MenuPopup, { MenuItemCustom } from "./MenuPopup";
-import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal";
+import { useContext, useEffect, useState } from "preact/hooks"
+import styled from "styled-components"
+import { FetcherContext } from "../../context/FetcherContext"
+import useDeleteRecap from "../../hooks/useDeleteRecap"
+import useReportRecap from "../../hooks/useReportRecap"
+import { navigateToClassPage, parseDate } from "../utility/helper"
+import { Download, ThreeDots } from "../utility/Icons"
+import { blue, grey_50 } from "./Colors"
+import { Input, ModalActions, SecondaryButton, Warning, WhiteCircularProgress } from "./DesignSystemStyles"
+import MenuPopup, { MenuItemCustom } from "./MenuPopup"
+import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal"
 
-const QuestionAuthor = styled.div`
-	font-size: 1.3rem;
-	font-weight: 500;
-	color: ${(props) => props.theme.mainText};
-`;
-
-const CreatedAt = styled.div`
-	font-size: 1.2rem;
-	font-weight: 300;
-	color: hsl(0, 0%, 51%);
-`;
-
-const QuestionHeaderContainer = styled.div`
+const RecapCardContainer = styled.div`
+    border: 0.2rem solid ${(props) => props.theme.borderColor};
+	border-radius: 1rem;
+	margin: 3rem 0;
+	padding: 1rem 1.2rem;
+	min-width: 27.6rem;
+	overflow: hidden;
 	display: flex;
-	width: 100%;
-	justify-content: space-between;
-	position: relative;
+    justify-content: space-between;
 
-	span {
-		height: fit-content;
-	}
+    > div {
+        font-size: 1.2rem;
+        color: ${grey_50};
 
-	svg {
-		height: 1.8rem;
-		width: 1.8rem;
-	}
-`;
+        span {
+            color: ${blue};
+        }
+    }
 
-const WarningCustom = styled(Warning)`
-	margin-bottom: 0.5rem;
+    ${SecondaryButton} {
+        padding: 0.2rem 0.9rem;
+
+        svg {
+            margin-left: 0.6rem;
+        }
+    }
 `
 
-const QuestionHeader = (props) => {
-    const { questionInfo, currentRoute } = props
+const CardHeader = styled.div`
+    font-size: 1.8rem;
+    color: ${props => props.theme.mainText};
+    display: flex;
+    justify-content: space-between;
 
-	const [menu, setMenu] = useState(null)
+    > button {
+        display: flex;
+        align-items: center;
+    }
+`
+
+const CardActions = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+`
+
+const CardDetails = styled.div`
+    > div:not(:last-child) {
+        margin-bottom: 0.4rem;
+    }
+`
+
+const RecapCard = (props) => {
+    const { recapInfo, currentRoute } = props
+
+    const [menu, setMenu] = useState(null)
     const [showReportModal, setReportModal] = useState(false)
 	const [showDeleteModal, setDeleteModal] = useState(false)
 
@@ -59,19 +81,19 @@ const QuestionHeader = (props) => {
     }
     const [auth, setAuth] = useState(defaultAuth)
     const [reportReason, setReportReason] = useState(defaultReportReason)
-	const { handleCardDeleted } = useContext(FetcherContext)
+    const { handleCardDeleted } = useContext(FetcherContext)
 
-    const { isLoading: isLoadingReport, sendReport } = useReportQuestion(
-		questionInfo.questionId, 
-		questionInfo.classId, 
+    const { isLoading: isLoadingReport, sendReport } = useReportRecap(
+		recapInfo.recapId, 
+		recapInfo.classId, 
 		reportReason.reason
 	)
 
-	const { isLoading: isLoadingDelete, deleteQuestion, isAuthMatch } = useDeleteQuestion(
-		questionInfo.questionId, 
+	const { isLoading: isLoadingDelete, deleteQuestion, isAuthMatch } = useDeleteRecap(
+		recapInfo.recapId,
         auth,
         currentRoute,
-		questionInfo.classId, 
+		recapInfo.classId, 
     )
 
     const handleReport = () => {
@@ -120,13 +142,16 @@ const QuestionHeader = (props) => {
 
     return (
         <>
-            <QuestionHeaderContainer>
-                <div>
-                    <QuestionAuthor>คำถามจาก {questionInfo.author}</QuestionAuthor>
-                    <CreatedAt>{timeDifference(questionInfo.createdAt)}</CreatedAt>
-                </div>
-                <span>
-                    <button 
+            <RecapCardContainer>
+                <CardDetails>
+                    <CardHeader>
+                        สรุปของ {recapInfo.author}
+                    </CardHeader>
+                    <div>จำนวนการดาวน์โหลด <span>{recapInfo.downloaded}</span> ครั้ง</div>
+                    <div>อัปโหลดเมื่อ {parseDate(recapInfo.createdAt)}</div>
+                </CardDetails>
+                <CardActions>
+                    <button
                         onClick={(e) => setMenu(e.currentTarget)}
                         aria-controls="more-menu"
                         aria-haspopup="true"
@@ -134,6 +159,13 @@ const QuestionHeader = (props) => {
                         <ThreeDots />
                     </button>
                     <MenuPopup menu={menu} setMenu={setMenu}>
+                        <MenuItemCustom
+                            onClick={() => {
+                                setMenu(null)
+                                navigateToClassPage(recapInfo.classId)
+                            }}>
+                            ดูรีวิวนี้
+                        </MenuItemCustom>
                         <MenuItemCustom
                             onClick={() => {
                                 setMenu(null)
@@ -146,14 +178,15 @@ const QuestionHeader = (props) => {
                                 setMenu(null)
                                 setDeleteModal(true)
                             }}>
-                            ลบคำถาม
+                            ลบสรุป
                         </MenuItemCustom>
                     </MenuPopup>
-                </span>
-            </QuestionHeaderContainer>
+                    <SecondaryButton>ดาวน์โหลด <Download /></SecondaryButton>
+                </CardActions>
+            </RecapCardContainer>
             <Modal showModal={showReportModal} closeModal={closeReportModal}>
                 เหตุผลในการแจ้งลบ
-                <WarningCustom>{reportReason.require ? 'กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร' : ''}</WarningCustom>
+                <Warning>{reportReason.require ? 'กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร' : ''}</Warning>
                 <ReportField
                     placeholder="อย่างน้อย 10 ตัวอักษร"
                     value={reportReason.reason}
@@ -167,7 +200,8 @@ const QuestionHeader = (props) => {
                 </ModalActions>
             </Modal>
             <Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
-                กรอกตัวเลข 4 หลักของคุณเพื่อลบคำถาม
+                กรอกตัวเลข 4 หลักของคุณเพื่อลบสรุป
+                <Warning>เมื่อลบสรุป รีวิวจะถูกลบด้วย</Warning>
                 <Warning>{!auth.isMatch ? 'ตัวเลขไม่ถูกต้อง' : '' || auth.require ? 'กรุณากรอกตัวเลข' : ''}</Warning>
                 <Input
                     type="text"
@@ -179,7 +213,7 @@ const QuestionHeader = (props) => {
                 <ModalActions>
                     <CancelButton onClick={closeDeleteModal}>ยกเลิก</CancelButton>
                     <ConfirmButton onClick={handleDelete}>
-                        {isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : 'ลบคำถาม'}
+                        {isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : 'ลบสรุป'}
                     </ConfirmButton>
                 </ModalActions>
             </Modal>
@@ -187,4 +221,4 @@ const QuestionHeader = (props) => {
     )
 }
 
-export default QuestionHeader
+export default RecapCard

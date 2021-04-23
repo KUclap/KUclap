@@ -125,6 +125,7 @@ const ReviewField = styled(TextArea)`
     height: 14rem;
     margin-top: 1.4rem;
     margin-bottom: 2.4rem;
+    resize: vertical;
 `
 
 const ScoreTitle = styled(BodySmall)`

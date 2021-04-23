@@ -5,8 +5,8 @@ import { 	blue,
 	blue_75,
 	blue_95, 
   blue_97,
+  red,
   sea_pink} from "./Colors"
-import MenuItem from '@material-ui/core/MenuItem'
  
 const inpStyles = css`
   background-color: transparent;
@@ -41,7 +41,6 @@ const PrimaryButton = styled.button`
   align-items: center;
   align-self: center;
   justify-content: center;
-  cursor: pointer;
 
   &:active {
     background-color: ${blue};
@@ -180,57 +179,17 @@ const WhiteCircularProgress = styled(CircularProgress)`
     }
 `
 
-const MenuContentContainer = styled.div`
-    width: 12.7rem;
-    display: flex;
-    flex-direction: column;
-    font-size: 1.2rem;
-    margin: 0 0.7rem;
-    padding: 1rem 0;
-    border-bottom: 0.1rem solid ${(props) => props.theme.subText};
-    cursor: default;
-`
-
-const MenuContent = styled.div`
-    display: flex;
-    justify-content: space-between;
-    user-select: none;
-
-    &:not(:first-child) {
-        margin-top: 0.2rem;
-    }
-
-    span:last-child {
-        color: ${blue};
-    }
-`
-
-const MenuItemCustom = styled(MenuItem)`
-    &.MuiMenuItem-root {
-        font-family: 'Kanit', arial, sans-serif;
-        padding: 1rem;
-        font-size: 1.2rem;
-        justify-content: center;
-        color: ${(props) => props.theme.mainText};
-
-        &:hover {
-            background: ${(props) => props.theme.menuItem.hover};
-            color: ${(props) => props.theme.mainText};
-        }
-
-        &:active {
-            background: ${(props) => props.theme.menuItem.active};
-            color: ${(props) => props.theme.mainText};
-        }
-    }
-`
-
 const RequiredDot = styled.div`
     width: 0.6rem;
     height: 0.6rem;
     margin-left: 0.4rem;
     background: ${sea_pink};
     border-radius: 100%;
+`
+
+const Warning = styled.div`
+    color: ${red};
+    font-size: 1.4rem;
 `
 
 export {
@@ -247,8 +206,6 @@ export {
   Backdrop,
   ModalHeader,
   WhiteCircularProgress,
-  MenuContentContainer,
-  MenuContent,
-  MenuItemCustom,
-  RequiredDot
+  RequiredDot,
+  Warning
 }

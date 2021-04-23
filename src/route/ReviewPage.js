@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview, HomeIcon } from "../components/utility/Icons";
+import { NoMoreCard, HomeIcon } from "../components/utility/Icons";
 import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
 import APIs from '../components/utility/apis'
 import Details from "../components/common/Detail";
@@ -119,7 +119,8 @@ const ReviewPage = (props) => {
 						(<>
 							<ContainerNoMore>
 								<NoMoreCustom>
-									<NoMoreReview />
+									<span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
+									<NoMoreCard />
 								</NoMoreCustom>
 							</ContainerNoMore>
 						</>) :
@@ -131,7 +132,8 @@ const ReviewPage = (props) => {
 						  : (<>
 								<ContainerNoMore>
 									<NoMoreCustom>
-										<NoMoreReview />
+										<span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
+										<NoMoreCard />
 									</NoMoreCustom>
 								</ContainerNoMore>
 							</>)
@@ -142,7 +144,7 @@ const ReviewPage = (props) => {
 					<>
 						<ContainerNoMore>
 							<NoMoreCustom>
-								<NoMoreReview />
+								<NoMoreCard />
 							</NoMoreCustom>
 						</ContainerNoMore>
 					</>

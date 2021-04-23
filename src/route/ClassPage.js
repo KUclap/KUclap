@@ -3,7 +3,7 @@ import { useContext, useState } from "preact/hooks";
 import styled, { css, withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview, NoReview, HomeIcon, NoMoreQuestion, NoQuestion } from "../components/utility/Icons";
+import { NoMoreCard, NoCard } from "../components/utility/Icons";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
@@ -13,7 +13,7 @@ import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSke
 
 import Details from "../components/common/Detail";
 import {
-	navigateToHomePage,
+	// navigateToHomePage,
 	navigateToFormReviewPage,
 	getClassName,
 	getColorHash,
@@ -30,10 +30,13 @@ import {
 	NoMoreCustom,
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
-import { PrimaryButton, SecondaryButton } from "../components/common/DesignSystemStyles";
+import { PrimaryButton } from "../components/common/DesignSystemStyles";
 import QuestionModal from "../components/common/QuestionModal";
 import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
 import { route } from "preact-router";
+import RecapCard from "../components/common/RecapCard";
+import NavigationBar from "../components/common/NavigationBar";
+import media from "styled-media-query";
 
 const Button = styled.div`
 	background-color: #2f80ed;
@@ -47,26 +50,30 @@ const Button = styled.div`
 	white-space: nowrap;
 `;
 
-const ButtonLastReview = styled(SecondaryButton)`
-	margin-right: 1rem;
-	box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
-	padding: 0.2rem 1rem;
-	align-self: unset;
+// const ButtonLastReview = styled(SecondaryButton)`
+// 	margin-right: 1rem;
+// 	box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
+// 	padding: 0.2rem 1rem;
+// 	align-self: unset;
 
-	svg {
-		path {
-			stroke: ${(props) => props.theme.subText};
-		}
-	}
+// 	svg {
+// 		path {
+// 			stroke: ${(props) => props.theme.subText};
+// 		}
+// 	}
 
-	&:hover {
-		background: ${(props) => props.theme.lightBackground};
-	}
-`;
+// 	&:hover {
+// 		background: ${(props) => props.theme.lightBackground};
+// 	}
+// `;
 
 const ContainerBtns = styled.div`
 	margin: 0;
 	display: flex;
+	
+	${media.lessThan('410px')`
+		display: none;
+	`}
 `;
 
 const ReviewTitle = styled.div`
@@ -99,23 +106,25 @@ const TabLine = styled.div`
 		${(props) =>
 			props.underlineAt === "review"
 				? css`
-						width: 10.4rem;
-						left: 0;
+					width: 10.4rem;
+					left: 0;
 				  `
-				: css`
-						width: 12.6rem;
-						left: 4.8rem;
-				  `}
+				: props.underlineAt === "question" ? css`
+					width: 12.3rem;
+					left: 4.8rem;
+				  ` : css`
+					width: 10.8rem;
+					left: 11.7rem;
+				  	`
+		}
 	}
 `;
 
 const ClassPage = (props) => {
 	const { classID, fetchTarget, setFetchTarget } = props;
 	const { state: selected } = useContext(SelectContext);
-	const { reviews, score, loading, underflow, loadMore, setUnderFlow, questions } = useContext(FetcherContext);
+	const { reviews, score, loading, underflow, loadMore, setUnderFlow, questions, recaps } = useContext(FetcherContext);
 	const [showQuestionModal, setQuestionModal] = useState(false);
-
-	// console.log({ loading, loadMore, underflow, questions })
 
 	const handleNewReview = () => {
 		navigateToFormReviewPage(classID);
@@ -143,7 +152,11 @@ const ClassPage = (props) => {
 			<LastReview>
 				<ReviewTitle>
 					<SectionTabButton>
-						<TabTitle as="button" isActive={fetchTarget === "review"} onClick={() => changeTab("review")}>
+						<TabTitle 
+							as="button" 
+							isActive={fetchTarget === "review"} 
+							onClick={() => changeTab("review")}
+						>
 							{fetchTarget === "review" ? "รีวิวทั้งหมด" : "รีวิว"}
 						</TabTitle>
 						<TabTitle
@@ -153,14 +166,21 @@ const ClassPage = (props) => {
 						>
 							{fetchTarget === "question" ? "คำถามทั้งหมด" : "คำถาม"}
 						</TabTitle>
+						<TabTitle
+							as="button"
+							isActive={fetchTarget === "recap"}
+							onClick={() => changeTab("recap")}
+						>
+							{fetchTarget === "recap" ? "สรุปทั้งหมด" : "สรุป"}
+						</TabTitle>
 						<TabLine />
 						<TabLine underlineAt={fetchTarget} />
 					</SectionTabButton>
 					<ContainerBtns>
-						<ButtonLastReview onClick={navigateToHomePage}>
+						{/* <ButtonLastReview onClick={navigateToHomePage}>
 							<HomeIcon />
-						</ButtonLastReview>
-						{fetchTarget === "review" ? (
+						</ButtonLastReview> */}
+						{(fetchTarget === "review" || fetchTarget === "recap") ? (
 							<Button onClick={handleNewReview}>รีวิววิชานี้</Button>
 						) : (
 							<Button onClick={() => setQuestionModal(true)}>ถามคำถาม</Button>
@@ -180,10 +200,16 @@ const ClassPage = (props) => {
 								review && <ReviewCard key={index} isBadge={false} currentRoute={"CLASS"} {...review} />
 						)}
 					</AdaptorReviews>
-				) : (
+				) : fetchTarget === "question" ? (
 					<AdaptorReviews id="adaptor-question">
 						{questions?.map(
 							(question, index) => question && <QuestionCard key={index} questionInfo={question} currentRoute="CLASS" />
+						)}
+					</AdaptorReviews>
+				) : (
+					<AdaptorReviews id="adaptor-recap">
+						{recaps?.map(
+							(recap, index) => recap && <RecapCard key={index} recapInfo={recap} currentRoute="CLASS" />
 						)}
 					</AdaptorReviews>
 				)}
@@ -198,28 +224,74 @@ const ClassPage = (props) => {
 					underflow && (
 						<>
 							<ContainerNoMore>
-								<NoMoreCustom>{reviews.length > 0 ? <NoMoreReview /> : <NoReview />}</NoMoreCustom>
+								<NoMoreCustom>
+									{reviews.length > 0 ? 
+										<>
+											<span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
+											<NoMoreCard /> 
+										</> :
+										<>
+											<span>ไม่มีรีวิว</span>
+											<NoCard />
+										</>
+									}
+								</NoMoreCustom>
 								<PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
 							</ContainerNoMore>
 							<Footer />
 						</>
 					)
-				) : (
+				) : fetchTarget === "question" ? (
 					questions &&
 					!loading &&
 					underflow && (
 						<>
 							<ContainerNoMore>
 								<NoMoreCustom>
-									{questions.length > 0 ? <NoMoreQuestion /> : <NoQuestion />}
+									{questions.length > 0 ? 
+										<>
+											<span id="no-more">ไม่มีคำถามเพิ่มเติม</span>
+											<NoMoreCard /> 
+										</>
+										: 
+										<>
+											<span>ไม่มีคำถาม</span>
+											<NoCard />
+										</>
+									}
 								</NoMoreCustom>
 								<PrimaryButton onClick={() => setQuestionModal(true)}>ถามคำถาม</PrimaryButton>
 							</ContainerNoMore>
 							<Footer />
 						</>
 					)
+				) : (
+					recaps &&
+					!loading &&
+					underflow && (
+						<>
+							<ContainerNoMore>
+								<NoMoreCustom>
+									{recaps.length > 0 ? 
+										<>
+											<span id="no-more">ไม่มีสรุปเพิ่มเติม</span>
+											<NoMoreCard /> 
+										</>
+										: 
+										<>
+											<span>ไม่มีสรุป</span>
+											<NoCard />
+										</>
+									}
+								</NoMoreCustom>
+								<PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
+							</ContainerNoMore>
+							<Footer />
+						</>
+					)
 				)}
 			</LastReview>
+			<NavigationBar tab={fetchTarget} classID={classID} askQuestion={() => setQuestionModal(true)} />
 		</PageTemplate>
 	);
 };

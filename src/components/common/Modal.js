@@ -2,8 +2,35 @@ import { h } from "preact";
 import styled, { css } from "styled-components";
 import { useEffect, useContext } from "preact/hooks";
 import media from "styled-media-query";
-import { Input, Backdrop} from "./DesignSystemStyles"
+import { Input, Backdrop, PrimaryButton, SecondaryButton, TextArea} from "./DesignSystemStyles"
 import { ModalContext } from "../../context/ModalContext";
+import { red, sea_pink } from "./Colors";
+
+export const ConfirmButton = styled(PrimaryButton)`
+  background-color: ${red};
+  margin: 2rem 1.6rem 0;
+
+  &:hover {
+      background: ${sea_pink};
+  }
+`
+
+export const CancelButton = styled(SecondaryButton)`
+  margin: 2rem 1.6rem 0;
+  color: ${(props) => props.theme.subText};
+  box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
+
+  &:hover {
+      background: ${(props) => props.theme.lightBackground};
+  }
+`
+
+export const ReportField = styled(TextArea)`
+  height: 12rem;
+  width: 100%;
+  max-width: 30rem;
+  margin-top: 1.6rem;
+`
 
 const ModalContent = styled.div`
   border: ${(props) =>

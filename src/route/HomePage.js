@@ -3,7 +3,7 @@ import { useContext } from "preact/hooks";
 import { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview, NoReview } from "../components/utility/Icons";
+import { NoCard, NoMoreCard } from "../components/utility/Icons";
 import Footer from "../components/common/Footer";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
@@ -61,7 +61,16 @@ const HomePage = (props) => {
             <>
               <ContainerNoMore>
                 <NoMoreCustom>
-                  {reviews.length > 0 ? <NoMoreReview /> : <NoReview />}
+                  {reviews.length > 0 ? 
+                    <>
+                      <span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
+                      <NoMoreCard /> 
+                    </> :
+                    <>
+                      <span>ไม่มีรีวิว</span>
+                      <NoCard />
+                    </>
+                  }
                 </NoMoreCustom>
               </ContainerNoMore>
               <Footer />

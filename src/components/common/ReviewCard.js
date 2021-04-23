@@ -30,6 +30,7 @@ const CardDetailsContainer = styled.div`
 `;
 
 const Subject = styled(PrimaryButton)`
+  display: block;
   font-size: 1.4rem;
   background: ${(props) => props.color};
   position: absolute;
@@ -38,8 +39,8 @@ const Subject = styled(PrimaryButton)`
   overflow: hidden;
   max-width: 60%;
   white-space: nowrap;
-  filter: ${(props) => `${props.theme.subjectBrightness}%`};
   align-self: flex-start;
+  filter: ${(props) => `brightness(${props.theme.subjectBrightness}%)`};
 
   ${BodySmall} {
     margin-left: 0.4ch;
@@ -83,7 +84,7 @@ const ReviewCard = (props) => {
       {isBadge && (
         <Subject color={getColorHash(classId)} onClick={() => navigateToClassPage(classId)}>
           {classId}
-          <BodySmall> | {classNameTH}</BodySmall>
+          <BodySmall as="span"> | {classNameTH}</BodySmall>
         </Subject>
       )}
       <Content isBadge={isBadge}> {text} </Content>

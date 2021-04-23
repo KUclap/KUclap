@@ -3,6 +3,7 @@ import useQuestionFetcher from "./useQuestionFetcher";
 import useReviewFetcher from "./useReviewFetcher";
 import APIs from "../components/utility/apis";
 import { SelectContext } from "../context/SelectContext";
+import useRecapFetcher from "./useRecapFetcher";
 
 const useFetcherClass = (props) => {
 	const { classID, fetchTarget }  = props
@@ -51,6 +52,8 @@ const useFetcherClass = (props) => {
 		...props
 	})
 
+	const recapState = useRecapFetcher(props)
+
 	switch (fetchTarget) {
 		case "review":
 			return { 
@@ -70,6 +73,12 @@ const useFetcherClass = (props) => {
 				// setUnderFlow,
 				handleFetchingReviewsAndClass: reviewState.handleFetchingReviewsAndClass, 
 				...questionState
+			}
+		case "recap":
+			return {
+				score: classScore,
+				handleFetchingReviewsAndClass: reviewState.handleFetchingReviewsAndClass, 
+				...recapState
 			}
 		default:
 			return null

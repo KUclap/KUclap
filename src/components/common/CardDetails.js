@@ -9,16 +9,15 @@ import {
     ModalActions,
     PrimaryButton,
     SecondaryButton,
-    TextArea,
+    Warning,
     WhiteCircularProgress,
 } from './DesignSystemStyles'
-import MenuItem from '@material-ui/core/MenuItem'
-import Modal from './Modal'
+import Modal, { CancelButton, ConfirmButton, ReportField } from './Modal'
 import useReportReview from '../../hooks/useReportReview'
 import useDeleteReview from '../../hooks/useDeleteReview'
-import { blue, red, sea_pink } from './Colors'
+import { blue } from './Colors'
 import { FetcherContext } from '../../context/FetcherContext'
-import MenuPopup from './MenuPopup'
+import MenuPopup, { MenuContent, MenuContentContainer, MenuItemCustom } from './MenuPopup'
 
 const DetailsContainer = styled.div`
     display: flex;
@@ -82,51 +81,6 @@ const MoreButton = styled(SecondaryButton)`
     }
 `
 
-const MenuContentContainer = styled.div`
-    width: 12.7rem;
-    display: flex;
-    flex-direction: column;
-    font-size: 1.2rem;
-    margin: 0 0.7rem;
-    padding: 1rem 0;
-    border-bottom: 0.1rem solid ${(props) => props.theme.subText};
-    cursor: default;
-`
-
-const MenuContent = styled.div`
-    display: flex;
-    justify-content: space-between;
-    user-select: none;
-
-    &:not(:first-child) {
-        margin-top: 0.2rem;
-    }
-
-    span:last-child {
-        color: ${blue};
-    }
-`
-
-const MenuItemCustom = styled(MenuItem)`
-    &.MuiMenuItem-root {
-        font-family: 'Kanit', arial, sans-serif;
-        padding: 1rem;
-        font-size: 1.2rem;
-        justify-content: center;
-        color: ${(props) => props.theme.mainText};
-
-        &:hover {
-            background: ${(props) => props.theme.menuItem.hover};
-            color: ${(props) => props.theme.mainText};
-        }
-
-        &:active {
-            background: ${(props) => props.theme.menuItem.active};
-            color: ${(props) => props.theme.mainText};
-        }
-    }
-`
-
 const ButtonWithIcon = styled(PrimaryButton)`
     border-radius: 1.5rem;
     padding: 0 0.8rem;
@@ -140,36 +94,6 @@ const ButtonWithIcon = styled(PrimaryButton)`
             fill: white;
         }
     }
-`
-
-const ConfirmButton = styled(PrimaryButton)`
-    background-color: ${red};
-    margin: 2rem 1.6rem 0;
-
-    &:hover {
-        background: ${sea_pink};
-    }
-`
-
-const CancelButton = styled(SecondaryButton)`
-    margin: 2rem 1.6rem 0;
-    color: ${(props) => props.theme.subText};
-    box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
-
-    &:hover {
-        background: ${(props) => props.theme.lightBackground};
-    }
-`
-
-const ReportField = styled(TextArea)`
-    height: 12rem;
-    width: 100%;
-    max-width: 30rem;
-    margin-top: 1.6rem;
-`
-
-const Warning = styled.div`
-    color: ${red};
 `
 
 const CardDetails = (props) => {
