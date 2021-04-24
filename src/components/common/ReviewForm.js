@@ -416,6 +416,8 @@ const ReviewForm = (props) => {
 	const [isUpLoading, setIsUpLoading] = useState(false);
 	const [recommendWord, setRecommendWord] = useState(false);
 	const [file, setFile] = useState(null);
+	const [savedReview, setSavedReview] = useState({})
+
 	const initialForm = {
 		classId: classID,
 		text: "",
@@ -506,12 +508,12 @@ const ReviewForm = (props) => {
 		if (!isLoading) {
 			setIsLoading(true);
 			localStorage.setItem(`kuclap.com-v1-author`, form.author);
-			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, () => {
+			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, (reviewId, classNameTH) => {
 				setIsLoading(false);
 				setIsDone(true);
 				setForm({ ...initialForm, classId: classID });
 				setChecklist({ ...initialChecklist });
-
+				setSavedReview({reviewId, classNameTH})
 				localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			});
 		}
@@ -796,7 +798,7 @@ const ReviewForm = (props) => {
 			<PrimaryButton onClick={required}>รีวิวเลย !</PrimaryButton>
 			{isDone ? (
 				<Suspense>
-					<Alert close={handleCloseAlert} />
+					<Alert close={handleCloseAlert} reviewId={savedReview.reviewId} classId={classID} classNameTH={savedReview.classNameTH} />
 				</Suspense>
 			) : (
 				<Modal showModal={showReviewModal} closeModal={handleCloseAlert}>
