@@ -4,7 +4,7 @@ import APIs from "../components/utility/apis";
 
 const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 	// ### Define states for review fetching
-	const isMatchFetchTarget = (fetchTarget === "recap");
+	const isMatchFetchTarget = fetchTarget === "recap";
 	const [isMounted, setIsMounted] = useState(false);
 	const [recaps, setRecaps] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -44,6 +44,9 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 				window.addEventListener("scroll", scrollingListener, { passive: true });
 			}
 		} else if (isMatchFetchTarget) {
+			setPaging({ ...paging, page: 0 });
+			setRecaps([]);
+			setUnderFlow(false);
 			setLoadMore(true);
 		}
 	}, [isMatchFetchTarget]);

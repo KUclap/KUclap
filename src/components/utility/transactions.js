@@ -4,6 +4,7 @@ export const createReview = (classID, reviewInfo, file, setIsUpLoading, done) =>
 	const { auth, author } = reviewInfo;
 	// if recap is browsed.
 	if (file) {
+		setIsUpLoading(true);
 		// (1) get Presigned URL for upload file to s3.
 		APIs.getPresignUploadRecapByRecapID(classID, author, ({ data: recapInfo }) => {
 			const { url, tag, recapId } = recapInfo;
@@ -25,7 +26,7 @@ export const createReview = (classID, reviewInfo, file, setIsUpLoading, done) =>
 							// (4) create recap
 							APIs.createRecap({ ...recapInfo, reviewId, auth, classNameTH, classNameEN }, () => {
 								done();
-							})
+							});
 						}
 					);
 				});

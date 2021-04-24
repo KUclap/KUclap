@@ -11,8 +11,8 @@ import { navigateToClassPage } from "../utility/helper";
 import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
 import * as TRANSACTIONs from "../utility/transactions";
 import BrowseButton from "./BrowseButton";
-// import { blue, blue_75, blue_97, grey_75, red } from "./Colors";
-import { blue, blue_75, blue_97, grey_75, red } from "./Colors";
+// import { blue, blue_75, blue_97, grey_75, red, turquoise_green } from "./Colors";
+import { blue, blue_75, blue_97, grey_75, red, turquoise_green } from "./Colors";
 import {
 	BodySmall,
 	Heading1,
@@ -201,6 +201,9 @@ const InputContainer = styled.div`
 	}
 `;
 
+const TextStatusCreatingReview = styled(BodySmall)`
+	color: ${turquoise_green};
+`;
 const RadioGroupCustom = styled(RadioGroup)`
 	&.MuiFormGroup-root {
 		flex-direction: row;
@@ -485,7 +488,6 @@ const ReviewForm = (props) => {
 		if (!isLoading) {
 			localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			setIsLoading(true);
-			setIsUpLoading(true);
 
 			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, () => {
 				setIsLoading(false);
@@ -800,7 +802,12 @@ const ReviewForm = (props) => {
 				<Modal showModal={showReviewModal} closeModal={handleCloseAlert}>
 					เมื่อกดรีวิวแล้ว จะไม่สามารถแก้ได้
 					<div>ต้องการรีวิวเลยใช่หรือไม่ ?</div>
-					{isUpLoading ?? <div>รอสักครู่ กำลังทำการอัพโหลดไฟล์สรุป...</div>}
+					{isLoading && !isUpLoading && (
+						<TextStatusCreatingReview>สถานะ: กำลังสร้างรีวิวของคุณ...</TextStatusCreatingReview>
+					)}
+					{isUpLoading && (
+						<TextStatusCreatingReview>สถานะ: กำลังอัพโหลดไฟล์สรุปของคุณ...</TextStatusCreatingReview>
+					)}
 					<ModalActions>
 						<SecondaryButton
 							onClick={() => {

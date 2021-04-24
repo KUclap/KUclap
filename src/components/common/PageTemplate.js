@@ -113,9 +113,9 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage, classes, con
 
 	const handleSelected = (e) => {
 		if (!isFormPage) {
-			handleFetching?.ReviewsAndClass(e.classId);
-			handleFetching?.QuestionsAndClass(e.classId);
-			handleFetching?.RecapsAndClass(e.classId);
+			if (fetchTarget === "review") handleFetching?.ReviewsAndClass(e.classId);
+			else if (fetchTarget === "question") handleFetching?.QuestionsAndClass(e.classId);
+			else if (fetchTarget === "recap") handleFetching?.RecapsAndClass(e.classId);
 
 			dispatchSelected({
 				type: "selected",

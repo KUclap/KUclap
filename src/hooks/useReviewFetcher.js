@@ -48,6 +48,10 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 				window.addEventListener("scroll", scrollingListener, { passive: true });
 			}
 		} else if (isMatchFetchTarget) {
+			// setLoadMore(true);
+			setPaging({ ...paging, page: 0 });
+			setReviews([]);
+			setUnderFlow(false);
 			setLoadMore(true);
 		}
 	}, [isMatchFetchTarget]);

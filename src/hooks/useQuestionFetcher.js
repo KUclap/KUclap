@@ -44,6 +44,10 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 				window.addEventListener("scroll", scrollingListener, { passive: true });
 			}
 		} else if (isMatchFetchTarget) {
+			// setLoadMore(true);
+			setPaging({ ...paging, page: 0 });
+			setQuestions([]);
+			setUnderFlow(false);
 			setLoadMore(true);
 		}
 	}, [isMatchFetchTarget]);
