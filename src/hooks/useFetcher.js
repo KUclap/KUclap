@@ -16,6 +16,16 @@ const useFetcherClass = (props) => {
 		how: 0,
 	});
 
+	const { score, ...reviewState } = useReviewFetcher({
+		...props,
+	});
+
+	const questionState = useQuestionFetcher({
+		...props,
+	});
+
+	const recapState = useRecapFetcher(props);
+
 	useEffect(() => {
 		if (classID) {
 			APIs.getClassDetailByClassId(classID, (res) => {
@@ -33,15 +43,14 @@ const useFetcherClass = (props) => {
 		}
 	}, []);
 
-	const { score, ...reviewState } = useReviewFetcher({
-		...props,
-	});
-
-	const questionState = useQuestionFetcher({
-		...props,
-	});
-
-	const recapState = useRecapFetcher(props);
+	useEffect(() => {
+		// This useEffect use for debounce and disable blinking when data change
+		// previous data will mutate with new data from fetching but fetchTarget change faster than data's tab change
+		// that occure blink data mutation: User can see previous data before loading state start.
+		reviewState.setReviews([]);
+		questionState.setQuestions([]);
+		recapState.setRecaps([]);
+	}, [fetchTarget]);
 
 	switch (fetchTarget) {
 		case "review":
