@@ -60,7 +60,7 @@ const ReviewCard = (props) => {
 	return (
 		<Container>
 			{isBadge && (
-				<Subject color={getColorHash(classId)} onClick={() => navigateToClassPage(classId)}>
+				<Subject color={getColorHash(classId)} onClick={() => navigateToClassPage(classId, "review")}>
 					{classId}
 					<BodySmall as="span"> | {classNameTH}</BodySmall>
 				</Subject>

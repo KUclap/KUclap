@@ -106,17 +106,17 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage, classes, con
 
 	const newEle = useRef(null);
 	const [isBottomViewport, setIsBottomViewport] = useState(false);
-	const { handleFetchingReviewsAndClass, handleFetchingQuestionsAndClass, handleFetchingRecapsAndClass } = useContext(FetcherContext);
+	const {
+		handleFetching,
+		/* handleFetchingReviewsAndClass, handleFetchingQuestionsAndClass, handleFetchingRecapsAndClass */
+	} = useContext(FetcherContext);
 
 	const handleSelected = (e) => {
 		if (!isFormPage) {
-			if (fetchTarget === "review") {
-				handleFetchingReviewsAndClass(e.classId);
-			} else if (fetchTarget === "question") {
-				handleFetchingQuestionsAndClass(e.classId)
-			} else {
-				handleFetchingRecapsAndClass(e.classId)
-			}
+			handleFetching?.ReviewsAndClass(e.classId);
+			handleFetching?.QuestionsAndClass(e.classId);
+			handleFetching?.RecapsAndClass(e.classId);
+
 			dispatchSelected({
 				type: "selected",
 				value: { label: e.label, classID: e.classId },

@@ -103,7 +103,7 @@ const InputField = styled.input`
 `;
 
 const AnswerField = styled(InputField)`
-	height: ${props => props.isAnswering ? "auto" : "3.4rem"};
+	height: ${(props) => (props.isAnswering ? "auto" : "3.4rem")};
 	resize: vertical;
 	overflow: auto;
 
@@ -184,7 +184,7 @@ const QuestionCard = (props) => {
 			sendAnswer();
 		}
 		if (/^\s/.test(value)) {
-			value = answerInfo.answer
+			value = answerInfo.answer;
 		}
 		setAnswerInfo({ ...answerInfo, [field]: value });
 	};
@@ -226,7 +226,10 @@ const QuestionCard = (props) => {
 	return (
 		<Container>
 			{isBadge && (
-				<Subject color={getColorHash(questionInfo.classId)} onClick={() => navigateToClassPage(questionInfo.classId)}>
+				<Subject
+					color={getColorHash(questionInfo.classId)}
+					onClick={() => navigateToClassPage(questionInfo.classId, "question")}
+				>
 					{questionInfo.classId}
 					<BodySmall as="span"> | {questionInfo.classNameTH}</BodySmall>
 				</Subject>

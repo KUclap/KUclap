@@ -1,16 +1,15 @@
 import { useContext, useEffect, useState } from "preact/hooks";
-import useQuestionFetcher from "./useQuestionFetcher";
-import useReviewFetcher from "./useReviewFetcher";
+
 import APIs from "../components/utility/apis";
 import { SelectContext } from "../context/SelectContext";
+import useQuestionFetcher from "./useQuestionFetcher";
 import useRecapFetcher from "./useRecapFetcher";
+import useReviewFetcher from "./useReviewFetcher";
 
 const useFetcherClass = (props) => {
-	const { classID, fetchTarget }  = props
+	const { classID, fetchTarget } = props;
 	const { dispatch: dispatchSelected } = useContext(SelectContext);
-	// const [loading, setLoading] = useState(false)
-	// const [loadMore, setLoadMore] = useState(true);
-	// const [underflow, setUnderFlow] = useState(false);
+
 	const [classScore, setClassScore] = useState({
 		homework: 0,
 		interest: 0,
@@ -32,56 +31,51 @@ const useFetcherClass = (props) => {
 				});
 			});
 		}
-	}, [])
+	}, []);
 
-	const { score, ...reviewState } = useReviewFetcher({ 
-		// loading, 
-		// setLoading,
-		// loadMore, 
-		// setLoadMore, 
-		// underflow, setUnderFlow,
-		...props
-	})
+	const { score, ...reviewState } = useReviewFetcher({
+		...props,
+	});
 
-	const questionState = useQuestionFetcher({ 
-		// loading, 
-		// setLoading,
-		// loadMore, 
-		// setLoadMore, 
-		// underflow, setUnderFlow,
-		...props
-	})
+	const questionState = useQuestionFetcher({
+		...props,
+	});
 
-	const recapState = useRecapFetcher(props)
+	const recapState = useRecapFetcher(props);
 
 	switch (fetchTarget) {
 		case "review":
-			return { 
+			return {
 				score: classScore,
-				// loading,
-				// loadMore, 
-				// underflow,
-				// setUnderFlow,
-				...reviewState
-			}
+				handleFetching: {
+					ReviewsAndClass: reviewState.handleFetchingReviewsAndClass,
+					QuestionsAndClass: questionState.handleFetchingQuestionsAndClass,
+					RecapsAndClass: recapState.handleFetchingRecapsAndClass,
+				},
+				...reviewState,
+			};
 		case "question":
-			return { 
+			return {
 				score: classScore,
-				// loading,
-				// loadMore, 
-				// underflow,
-				// setUnderFlow,
-				handleFetchingReviewsAndClass: reviewState.handleFetchingReviewsAndClass, 
-				...questionState
-			}
+				handleFetching: {
+					ReviewsAndClass: reviewState.handleFetchingReviewsAndClass,
+					QuestionsAndClass: questionState.handleFetchingQuestionsAndClass,
+					RecapsAndClass: recapState.handleFetchingRecapsAndClass,
+				},
+				...questionState,
+			};
 		case "recap":
 			return {
 				score: classScore,
-				handleFetchingReviewsAndClass: reviewState.handleFetchingReviewsAndClass, 
-				...recapState
-			}
+				handleFetching: {
+					ReviewsAndClass: reviewState.handleFetchingReviewsAndClass,
+					QuestionsAndClass: questionState.handleFetchingQuestionsAndClass,
+					RecapsAndClass: recapState.handleFetchingRecapsAndClass,
+				},
+				...recapState,
+			};
 		default:
-			return null
+			return null;
 	}
 };
 
