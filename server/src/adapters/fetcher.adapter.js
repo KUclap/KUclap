@@ -28,6 +28,15 @@ const apis = {
 			console.log(err);
 		}
 	},
+	// GET data reviews
+	getAllReviews: async (next) => {
+		try {
+			const res = await api.get(`/reviews`);
+			next(res);
+		} catch (err) {
+			console.log(err);
+		}
+	},
 	// GET stats when class selected.
 	getClassDetailByClassId: async (classid, next) => {
 		try {
