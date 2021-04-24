@@ -1,17 +1,16 @@
-import { h } from "preact";
-import { lazy, Suspense } from "preact/compat";
-import { useEffect, useState } from "preact/hooks";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import { h } from "preact";
+import { lazy, Suspense } from "preact/compat";
+import { useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
-import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
 import { navigateToClassPage } from "../utility/helper";
+import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
 import * as TRANSACTIONs from "../utility/transactions";
 import BrowseButton from "./BrowseButton";
-
 // import { blue, blue_75, blue_97, grey_75, red } from "./Colors";
 import { blue, blue_75, blue_97, grey_75, red } from "./Colors";
 import {
@@ -123,11 +122,11 @@ const FormTitle = styled.div`
 `;
 
 const ReviewField = styled(TextArea)`
-    height: 14rem;
-    margin-top: 1.4rem;
-    margin-bottom: 2.4rem;
-    resize: vertical;
-`
+	height: 14rem;
+	margin-top: 1.4rem;
+	margin-bottom: 2.4rem;
+	resize: vertical;
+`;
 
 const ScoreTitle = styled(BodySmall)`
 	margin-right: 1.2rem;
@@ -428,6 +427,7 @@ const ReviewForm = (props) => {
 		other: false,
 	};
 
+	const [timeId, setTimeId] = useState(null);
 	const [form, setForm] = useState(initialForm);
 	const [checklist, setChecklist] = useState(initialChecklist);
 	const [require, setRequire] = useState(initialRequire);
@@ -483,6 +483,7 @@ const ReviewForm = (props) => {
 
 	const sendReview = () => {
 		if (!isLoading) {
+			localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			setIsLoading(true);
 			setIsUpLoading(true);
 
@@ -546,10 +547,31 @@ const ReviewForm = (props) => {
 		setForm({ ...form, [field]: value });
 	};
 
+	const autoSave = () => {
+		if (timeId !== null) clearTimeout(timeId);
+		const timer = () =>
+			setTimeout(() => {
+				localStorage.setItem(`kuclap.com-v1-classid-${classID}`, form.text);
+				setTimeId(null);
+			}, 2500);
+		const id = timer();
+		setTimeId(id);
+	};
+
 	useEffect(() => {
 		setForm({ ...initialForm, classID });
 		setChecklist({ ...initialChecklist });
 	}, [classID]);
+
+	useEffect(() => {
+		if (form.text != "") autoSave();
+	}, [form.text]);
+
+	useEffect(() => {
+		if (localStorage.getItem(`kuclap.com-v1-classid-${classID}`)) {
+			setForm({ ...form, text: localStorage.getItem(`kuclap.com-v1-classid-${classID}`) });
+		}
+	}, []);
 
 	return (
 		<Container>
