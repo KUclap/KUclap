@@ -123,7 +123,7 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage, classes, con
 			});
 		}
 
-		if (fetchTarget !== "review") {
+		if (fetchTarget && fetchTarget !== "review") {
 			route(`${baseroute}/${e.classId}?display=${fetchTarget}`);
 		} else {
 			route(`${baseroute}/${e.classId}`);
