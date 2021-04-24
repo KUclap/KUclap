@@ -486,14 +486,15 @@ const ReviewForm = (props) => {
 
 	const sendReview = () => {
 		if (!isLoading) {
-			localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			setIsLoading(true);
-
+			localStorage.setItem(`kuclap.com-v1-author`, form.author);
 			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, () => {
 				setIsLoading(false);
 				setIsDone(true);
 				setForm({ ...initialForm, classId: classID });
 				setChecklist({ ...initialChecklist });
+
+				localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			});
 		}
 	};
@@ -572,6 +573,9 @@ const ReviewForm = (props) => {
 	useEffect(() => {
 		if (localStorage.getItem(`kuclap.com-v1-classid-${classID}`)) {
 			setForm({ ...form, text: localStorage.getItem(`kuclap.com-v1-classid-${classID}`) });
+		}
+		if (localStorage.getItem(`kuclap.com-v1-author`)) {
+			setForm({ ...form, author: localStorage.getItem(`kuclap.com-v1-author`) });
 		}
 	}, []);
 

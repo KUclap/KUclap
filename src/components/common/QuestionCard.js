@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import APIs from "../utility/apis";
@@ -193,6 +193,8 @@ const QuestionCard = (props) => {
 		const isAnswerTooShort = answerInfo.answer.length < 3;
 		const isAuthorIsEmpty = answerInfo.author === "";
 		const areAllInputsValid = !isAnswerTooShort && !isAuthorIsEmpty;
+		localStorage.setItem(`kuclap.com-v1-author`, answerInfo.author);
+
 		if (areAllInputsValid) {
 			setLoading(true);
 			setRequired(defaultRequire);
@@ -222,6 +224,12 @@ const QuestionCard = (props) => {
 			});
 		}
 	};
+
+	useEffect(() => {
+		if (localStorage.getItem(`kuclap.com-v1-author`)) {
+			setAnswerInfo({ ...answerInfo, author: localStorage.getItem(`kuclap.com-v1-author`) });
+		}
+	}, []);
 
 	return (
 		<Container>
