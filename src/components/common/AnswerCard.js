@@ -101,34 +101,40 @@ const AnswerCard = (props) => {
                         >
                             <ThreeDots />
                         </OptionsButton>
-                        <MenuPopup menu={menu} setMenu={setMenu}>
-                            <MenuItemCustom
-                                onClick={() => {
-                                    setMenu(null)
-                                    setReportModal(true)
-                                }}>
-                                แจ้งลบ
-                            </MenuItemCustom>
-                        </MenuPopup>
+                        {
+                            menu &&
+                            <MenuPopup menu={menu} setMenu={setMenu}>
+                                <MenuItemCustom
+                                    onClick={() => {
+                                        setMenu(null)
+                                        setReportModal(true)
+                                    }}>
+                                    แจ้งลบ
+                                </MenuItemCustom>
+                            </MenuPopup>
+                        }
                     </div>
                 </AnswerDetailsContainer>
                 {answerInfo.answer}
             </AnswerCardContainer>
-            <Modal showModal={showReportModal} closeModal={closeReportModal}>
-                เหตุผลในการแจ้งลบ
-                <Warning>{reportReason.require ? 'กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร' : ''}</Warning>
-                <ReportField
-                    placeholder="อย่างน้อย 10 ตัวอักษร"
-                    value={reportReason.reason}
-                    onChange={(e) => handleOnChange(e)}
-                />
-                <ModalActions>
-                    <CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
-                    <ConfirmButton onClick={handleReport}>
-                        {isLoadingReport ? <WhiteCircularProgress size="2rem" /> : 'แจ้งลบ'}
-                    </ConfirmButton>
-                </ModalActions>
-            </Modal>
+            {
+                showReportModal &&
+                <Modal showModal={showReportModal} closeModal={closeReportModal}>
+                    เหตุผลในการแจ้งลบ
+                    <Warning>{reportReason.require ? 'กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร' : ''}</Warning>
+                    <ReportField
+                        placeholder="อย่างน้อย 10 ตัวอักษร"
+                        value={reportReason.reason}
+                        onChange={(e) => handleOnChange(e)}
+                    />
+                    <ModalActions>
+                        <CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
+                        <ConfirmButton onClick={handleReport}>
+                            {isLoadingReport ? <WhiteCircularProgress size="2rem" /> : 'แจ้งลบ'}
+                        </ConfirmButton>
+                    </ModalActions>
+                </Modal>
+            }
         </OuterContainer>
     )
 }

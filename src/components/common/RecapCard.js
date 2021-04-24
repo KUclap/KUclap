@@ -179,70 +179,79 @@ const RecapCard = (props) => {
 					<button onClick={(e) => setMenu(e.currentTarget)} aria-controls="more-menu" aria-haspopup="true">
 						<ThreeDots />
 					</button>
-					<MenuPopup menu={menu} setMenu={setMenu}>
-						<MenuItemCustom
-							onClick={() => {
-								setMenu(null);
-								navigateToReviewPage(recapInfo.reviewId);
-							}}
-						>
-							ดูรีวิวนี้
-						</MenuItemCustom>
-						<MenuItemCustom
-							onClick={() => {
-								setMenu(null);
-								setReportModal(true);
-							}}
-						>
-							แจ้งลบ
-						</MenuItemCustom>
-						<MenuItemCustom
-							onClick={() => {
-								setMenu(null);
-								setDeleteModal(true);
-							}}
-						>
-							ลบสรุป
-						</MenuItemCustom>
-					</MenuPopup>
+					{
+						menu &&
+						<MenuPopup menu={menu} setMenu={setMenu}>
+							<MenuItemCustom
+								onClick={() => {
+									setMenu(null);
+									navigateToReviewPage(recapInfo.reviewId);
+								}}
+							>
+								ดูรีวิวนี้
+							</MenuItemCustom>
+							<MenuItemCustom
+								onClick={() => {
+									setMenu(null);
+									setReportModal(true);
+								}}
+							>
+								แจ้งลบ
+							</MenuItemCustom>
+							<MenuItemCustom
+								onClick={() => {
+									setMenu(null);
+									setDeleteModal(true);
+								}}
+							>
+								ลบสรุป
+							</MenuItemCustom>
+						</MenuPopup>
+					}
 					<SecondaryButton onClick={handleOpenRecapLink}>
 						ดาวน์โหลด <Download />
 					</SecondaryButton>
 				</CardActions>
 			</RecapCardContainer>
-			<Modal showModal={showReportModal} closeModal={closeReportModal}>
-				เหตุผลในการแจ้งลบ
-				<Warning>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</Warning>
-				<ReportField
-					placeholder="อย่างน้อย 10 ตัวอักษร"
-					value={reportReason.reason}
-					onChange={(e) => handleOnChange(e)}
-				/>
-				<ModalActions>
-					<CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
-					<ConfirmButton onClick={handleReport}>
-						{isLoadingReport ? <WhiteCircularProgress size="2rem" /> : "แจ้งลบ"}
-					</ConfirmButton>
-				</ModalActions>
-			</Modal>
-			<Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
-				กรอกตัวเลข 4 หลักของคุณเพื่อลบสรุป
-				<Warning>เมื่อลบสรุป รีวิวจะถูกลบด้วย</Warning>
-				<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
-				<Input
-					type="text"
-					placeholder="ใส่ตัวเลข 4 หลัก"
-					value={auth.value}
-					onInput={handleOnChangePassword}
-					maxLength={4}
-				/>
-				<ModalActions>
-					<CancelButton onClick={closeDeleteModal}>ยกเลิก</CancelButton>
-					<ConfirmButton onClick={handleDelete}>
-						{isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : "ลบสรุป"}
-					</ConfirmButton>
-				</ModalActions>
-			</Modal>
+			{
+				showReportModal && 
+				<Modal showModal={showReportModal} closeModal={closeReportModal}>
+					เหตุผลในการแจ้งลบ
+					<Warning>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</Warning>
+					<ReportField
+						placeholder="อย่างน้อย 10 ตัวอักษร"
+						value={reportReason.reason}
+						onChange={(e) => handleOnChange(e)}
+					/>
+					<ModalActions>
+						<CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
+						<ConfirmButton onClick={handleReport}>
+							{isLoadingReport ? <WhiteCircularProgress size="2rem" /> : "แจ้งลบ"}
+						</ConfirmButton>
+					</ModalActions>
+				</Modal>
+			}
+			{
+				showDeleteModal &&
+				<Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
+					กรอกตัวเลข 4 หลักของคุณเพื่อลบสรุป
+					<Warning>เมื่อลบสรุป รีวิวจะถูกลบด้วย</Warning>
+					<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
+					<Input
+						type="text"
+						placeholder="ใส่ตัวเลข 4 หลัก"
+						value={auth.value}
+						onInput={handleOnChangePassword}
+						maxLength={4}
+					/>
+					<ModalActions>
+						<CancelButton onClick={closeDeleteModal}>ยกเลิก</CancelButton>
+						<ConfirmButton onClick={handleDelete}>
+							{isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : "ลบสรุป"}
+						</ConfirmButton>
+					</ModalActions>
+				</Modal>
+			}
 		</>
 	);
 };
