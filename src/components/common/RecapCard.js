@@ -5,7 +5,7 @@ import { FetcherContext } from "../../context/FetcherContext";
 import useDeleteRecap from "../../hooks/useDeleteRecap";
 import useReportRecap from "../../hooks/useReportRecap";
 import APIs from "../utility/apis";
-import { getColorHash, navigateToReviewPage, parseDate } from "../utility/helper";
+import { getColorHash, navigateToClassPage, navigateToReviewPage, parseDate } from "../utility/helper";
 import { Download, ThreeDots } from "../utility/Icons";
 import { blue, grey_50 } from "./Colors";
 import {
