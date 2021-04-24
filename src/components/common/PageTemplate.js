@@ -106,10 +106,7 @@ const PageTemplate = ({ classID, toggleTheme, children, isFormPage, classes, con
 
 	const newEle = useRef(null);
 	const [isBottomViewport, setIsBottomViewport] = useState(false);
-	const {
-		handleFetching,
-		/* handleFetchingReviewsAndClass, handleFetchingQuestionsAndClass, handleFetchingRecapsAndClass */
-	} = useContext(FetcherContext);
+	const { handleFetching } = useContext(FetcherContext);
 
 	const handleSelected = (e) => {
 		if (!isFormPage) {

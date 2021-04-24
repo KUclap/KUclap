@@ -44,8 +44,8 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 				window.addEventListener("scroll", scrollingListener, { passive: true });
 			}
 		} else if (isMatchFetchTarget) {
-			setPaging({ ...paging, page: 0 });
 			setRecaps([]);
+			setPaging({ ...paging, page: 0 });
 			setUnderFlow(false);
 			setLoadMore(true);
 		}
