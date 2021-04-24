@@ -1,5 +1,5 @@
 # Building stage
-FROM node:14.2 as builder
+FROM --platform=linux/amd64 node:14.2 as builder
 WORKDIR /usr/src/app
 
 ARG GIT_ACCESS_TOKEN_CURL_CONFIG
@@ -19,7 +19,7 @@ RUN npm run build:server
 RUN ls -al 
 
 # Starting stage
-FROM node:14.2-slim
+FROM --platform=linux/amd64 node:14.2-slim
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/node_modules node_modules/
 COPY --from=builder /usr/src/app/.env.* .
