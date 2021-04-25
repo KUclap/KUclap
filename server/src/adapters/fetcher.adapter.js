@@ -3,10 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
-const { URL_API } = process.env;
+const { URL_API, URL_SSR_API } = process.env;
 
 const api = axios.create({
-	baseURL: URL_API,
+	baseURL: URL_SSR_API || URL_API,
 });
 
 const apis = {
