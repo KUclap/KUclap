@@ -11,7 +11,7 @@
 		"test": "jest",
 		"build:dev": "NODE_ENV=development preact build --analyze ",
 		"build:dev_prd": "NODE_ENV=development preact build --prerenderUrls ./src/prerender-urls.js --template ./src/templates/template.html",
-		"build:stag_prd": "NODE_ENV=staging preact build --prerenderUrls ./src/prerender-urls.js --template ./src/templates/template.html",
+		"build:stag_prd": "NODE_ENV=staging preact build --preload --prerenderUrls ./src/prerender-urls.js --template ./src/templates/template.html",
 		"build:preprod_prd": "NODE_ENV=preproduction preact build --prerenderUrls ./src/prerender-urls.js --template ./src/templates/template.html",
 		"build:prod_prd": "NODE_ENV=production preact build --prerenderUrls ./src/prerender-urls.js --template ./src/templates/template.html",
 		"build:server": "babel ./server -d ./dist",
