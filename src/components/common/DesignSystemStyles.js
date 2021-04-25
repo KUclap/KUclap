@@ -30,9 +30,7 @@ const buttonStyles = {
   fontSize: "1.6rem"
 }
 
-const PrimaryButton = styled.button`
-	background-color: ${blue};
-  color: white;
+const Button = styled.button`
   padding: ${buttonStyles.padding};
   border-radius: ${buttonStyles.borderRadius};
   font-size: ${buttonStyles.fontSize};
@@ -41,6 +39,11 @@ const PrimaryButton = styled.button`
   align-items: center;
   align-self: center;
   justify-content: center;
+`
+
+const PrimaryButton = styled(Button)`
+	background-color: ${blue};
+  color: white;
 
   &:active {
     background-color: ${blue};
@@ -51,7 +54,7 @@ const PrimaryButton = styled.button`
   }
 `
 
-const SecondaryButton = styled(PrimaryButton)`
+const SecondaryButton = styled(Button)`
   background-color: transparent;
   color: ${blue};
   box-shadow: inset 0 0 0 0.1rem ${blue};
