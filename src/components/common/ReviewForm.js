@@ -472,14 +472,14 @@ const ReviewForm = (props) => {
 
 	const required = () => {
 		let req = { ...require };
-		const isReviewEmpty = form.text === "";
+		const isReviewTooShort = form.text.length < 25;
 		const isAllStatsNotSelected = form.stats.homework === -1 || form.stats.how === -1 || form.stats.interest === -1;
 		const isGradeNotSelected = form.grade === -1;
 		const isAuthorEmpty = form.author === "";
 		const isAuthTooShort = form.auth.length < 4;
 		const isYearNotValid = (form.year !== "" && !validateAcademicYear(form.year))
 		const AreAllInputsValid =
-			!isReviewEmpty &&
+			!isReviewTooShort &&
 			!isAuthorEmpty &&
 			!isAuthTooShort &&
 			!isGradeNotSelected &&
@@ -491,7 +491,7 @@ const ReviewForm = (props) => {
 			setRequire(initialRequire);
 			setReviewModal(true);
 		} else {
-			req.text = isReviewEmpty;
+			req.text = isReviewTooShort;
 			req.stats = isAllStatsNotSelected;
 			req.grade = isGradeNotSelected;
 			req.author = isAuthorEmpty;
@@ -597,16 +597,16 @@ const ReviewForm = (props) => {
 				<DetailTitle id="review-field">
 					รีวิววิชานี้
 					<RequiredDot />
-					{require.text && <WarningCustom>กรุณากรอกรีวิว</WarningCustom>}
 				</DetailTitle>
 				<Button
 					onClick={() => {
 						navigateToClassPage(classID);
 					}}
-				>
+					>
 					ย้อนกลับ
 				</Button>
 			</FormTitle>
+			{require.text && <WarningCustom align="bottom">รีวิวต้องมีความยาวมากกว่า 25 ตัวอักษร</WarningCustom>}
 			<ReviewField
 				type="textarea"
 				placeholder="เขียนรีวิว..."
