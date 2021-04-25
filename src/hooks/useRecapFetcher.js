@@ -65,6 +65,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setRecaps([...recaps, ...data]);
+							if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -77,6 +78,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setRecaps([...recaps, ...data]);
+							if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -90,7 +92,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 	useEffect(() => {
 		const adaptor = document.getElementById("adaptor-recap");
 		if (adaptor && typeof window !== "undefined") {
-			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+			if (adaptor?.clientHeight <= window.innerHeight && !underflow && !loading && !loadMore) {
 				setLoadMore(true);
 			}
 		}

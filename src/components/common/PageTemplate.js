@@ -34,6 +34,7 @@ const SelectCustom = styled(Select)`
 	margin-bottom: 2.2rem;
 
 	.Select-placeholder {
+		background: ${(props) => props.theme.body};
 		color: #888;
 		align-items: center;
 		padding: 0 1.2rem;
@@ -48,6 +49,7 @@ const SelectCustom = styled(Select)`
 		}
 	}
 	.Select-control {
+		background-color: ${(props) => props.theme.body};
 		width: 100%;
 		margin: 0 auto;
 		border: 0.2rem solid ${(props) => props.theme.borderColor};

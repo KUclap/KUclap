@@ -66,6 +66,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setQuestions([...questions, ...data]);
+							if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -78,20 +79,21 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setQuestions([...questions, ...data]);
+							if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
 				}
 			}
+			setLoadMore(false);
 		}
-		setLoadMore(false);
 	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
 		const adaptor = document.getElementById("adaptor-question");
 		if (adaptor && typeof window !== "undefined") {
-			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+			if (adaptor?.clientHeight <= window.innerHeight && !underflow && !loading && !loadMore) {
 				setLoadMore(true);
 			}
 		}
@@ -104,6 +106,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 		setQuestions([]);
 		setLoading(true);
 		setUnderFlow(false);
+
 		APIs.getQuestionsByClassId(classID, 0, paging.offset, (res) => {
 			if (res.data === null) {
 				setUnderFlow(true);

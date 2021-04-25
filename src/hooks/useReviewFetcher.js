@@ -70,6 +70,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setReviews([...reviews, ...data]);
+							if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -82,6 +83,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setReviews([...reviews, ...data]);
+							if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -95,7 +97,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 	useEffect(() => {
 		const adaptor = document.getElementById("adaptor");
 		if (adaptor && typeof window !== "undefined") {
-			if (adaptor?.clientHeight <= window.innerHeight && adaptor.clientHeight) {
+			if (adaptor?.clientHeight <= window.innerHeight && !underflow && !loading && !loadMore) {
 				setLoadMore(true);
 			}
 		}

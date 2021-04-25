@@ -5,8 +5,6 @@ const QuestionFetcherContext = createContext();
 
 const QuestionFetcherProvider = (props) => {
 	const state = useQuestionFetcher(props);
-	// console.log(state)
-
 	return (
 		<QuestionFetcherContext.Provider
 			value={{
