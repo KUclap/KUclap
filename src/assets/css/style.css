@@ -16,6 +16,21 @@ body {
 button {
   font-family: 'Kanit', arial, sans-serif;
   font-size: inherit;
+  border: 0;
+  user-select: none;
+  background: none;
+  outline: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+input, textarea {
+  font-family: "Kanit", arial, sans-serif;
+  -webkit-appearance: none;
+}
+
+p {
+    margin: 0;
 }
 
 * {

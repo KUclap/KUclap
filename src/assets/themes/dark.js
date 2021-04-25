@@ -1,17 +1,21 @@
+import { grey_20 } from "../../components/common/Colors";
+
 export default {
   name: "dark",
 
   solid: "black",
   body: "#191b1f",
-  bodyText: "#f5f5f5",
-  mainText: "#cccccc",
-  lightColor: "#494949",
-  lightColor2: "#313438",
-  lightButton: `
-    background: rgba(255, 255, 255, 0.64);
-    color: #191b1f;
-  `,
-
+  mainText: "#f5f5f5",
+  subText: "#6d6d6d",
+  borderColor: "#494949",
+  lightBackground: "#313438",
+  lightBlueBackground: grey_20,
+  tag: {
+    fontColor: "#f5f5f5",
+    background: "transparent",
+    border: "#f5f5f5",
+    hover: "#6d6d6d"
+  },
   skeleton: ["#797979", "#aaaaaa"],
   menuItem: {
     hover: "hsl(212, 34%, 41%)",
@@ -19,6 +23,4 @@ export default {
   },
   subjectBrightness: 80,
   footerButtonText: "#dcd4dc",
-  placeholderText: "#6d6d6d",
-  cardDetailsText: "#6d6d6d"
 }

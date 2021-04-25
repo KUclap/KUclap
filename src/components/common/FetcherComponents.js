@@ -1,10 +1,9 @@
 import styled from "styled-components";
+import media from "styled-media-query";
+import { grey_75 } from "./Colors";
+import { Heading1 } from "./DesignSystemStyles"
 
-const DetailTitle = styled.div`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: ${(props) =>
-    props.desc ? props.theme.placeholderText : props.theme.mainText};
+const DetailTitle = styled(Heading1)`
   padding: ${(props) => (props.desc ? "0 1rem" : 0)};
   user-select: none;
 `;
@@ -17,6 +16,10 @@ const AdaptorReviews = styled.div`
 const LastReview = styled.div`
   width: 86%;
   margin: 0 2.4rem;
+
+  ${media.lessThan('410px')`
+		margin-bottom: 2.4rem;
+	`}
 `;
 
 const ContainerNoMore = styled.div`
@@ -30,14 +33,26 @@ const ContainerNoMore = styled.div`
 
 const NoMoreCustom = styled.div`
   margin: 2.9rem auto;
+  color: ${grey_75};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  span {
+    opacity: 0.4;
+    margin-bottom: 1rem;
+    font-size: 4.8rem;
+
+    &#no-more {
+      font-size: 3.6rem;
+    }
+  }
 `;
 
-const SubjectTitle = styled.h1`
-  font-size: 1.8rem;
+const SubjectTitle = styled(Heading1)`
   margin: 0 6.4rem 1.5rem;
   min-width: 86%;
   color: ${(props) => props.theme.mainText};
-  font-weight: 600;
   line-height: 180%;
 
   span {

@@ -3,7 +3,7 @@ import render from "preact-render-to-string"
 
 import bundle from "../../../build/ssr-build/ssr-bundle"
 
-const App = bundle.default;
+const App = bundle;
 import { InjectTemplateFactory } from '../helpers/injection.helper'
 
 const HomeService = async (req, res) => {

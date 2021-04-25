@@ -7,7 +7,7 @@ import { InjectTemplateFactory } from '../helpers/injection.helper'
 import { validatorClassId } from '../helpers/validate.helper'
 import APIs from '../adapters/fetcher.adapter'
 
-const App = bundle.default;
+const App = bundle;
 
 
 const ClassService = async (req, res) => {

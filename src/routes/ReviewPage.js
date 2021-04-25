@@ -3,23 +3,17 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import { getHelmet } from "../components/utility/helmet";
-import { NoMoreReview, HomeIcon } from "../components/utility/Icons";
+import { NoMoreCard, HomeIcon } from "../components/utility/Icons";
 import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
-import APIs from '../components/utility/apis'
+import APIs from "../components/utility/apis";
 import Details from "../components/common/Detail";
-import Footer from "../components/common/Footer";
+import Footer from "../components/async/Footer";
 import PageTemplate from "../components/common/PageTemplate";
-import ReviewCard from "../components/common/ReviewCard";
+import ReviewCard from "../components/async/ReviewCard";
 
-import {
-	navigateToClassPage,
-	navigateToHomePage,
-	getClassName,
-	getColorHash,
-} from "../components/utility/helper";
+import { navigateToClassPage, navigateToHomePage, getClassName, getColorHash } from "../components/utility/helper";
 
 import { SelectContext } from "../context/SelectContext";
-import { ReviewFetcherProvider } from "../context/ReviewFetcherContext";
 
 import {
 	DetailTitle,
@@ -29,6 +23,8 @@ import {
 	NoMoreCustom,
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
+import { blue_75, grey_75 } from "../components/common/Colors";
+import { FetcherProvider } from "../context/FetcherContext";
 
 const Button = styled.div`
 	background-color: hsl(145, 63%, 42%);
@@ -55,9 +51,9 @@ const ButtonLastReview = styled.div`
 	align-items: center;
 	background: transparent;
 	margin-right: 1rem;
-	border: 0.1rem solid #BDBDBD;
-  padding: 0.2rem 1rem;
-  border-radius: 0.4rem;
+	border: 0.1rem solid ${grey_75};
+	padding: 0.2rem 1rem;
+	border-radius: 0.4rem;
 `;
 
 const ContainerBtns = styled.div`
@@ -74,31 +70,23 @@ const ReviewTitle = styled.div`
 `;
 
 const ReviewPage = (props) => {
-	const { 
-		currentClass: subject,
-		review, 
-		loading, 
-		isAvailable 
-	} = props;
+	const { currentClass: subject, review, loading, isAvailable } = props;
 
 	const { state: selected } = useContext(SelectContext);
-
 	return (
 		<PageTemplate
 			content={getHelmet("REVIEW", subject, review)}
 			isFormPage={true}
 			classID={review?.classId}
-			{...props} 
+			{...props}
 		>
-			
-			<SubjectTitle color={isAvailable ? getColorHash(review.classId) : "#9ac1ee"}>
+			<SubjectTitle color={isAvailable ? getColorHash(review.classId) : blue_75}>
 				<span>{isAvailable ? review.classId : "000000"}</span>
-				{
-					loading ? "กำลังโหลดข้อมูลวิชา..." 
-						: isAvailable ? 
-							getClassName(selected.label) 
-							: "ไม่มีข้อมูลรีวิวในระบบ"
-				}
+				{loading
+					? "กำลังโหลดข้อมูลวิชา..."
+					: isAvailable
+					? getClassName(selected.label)
+					: "ไม่มีข้อมูลรีวิวในระบบ"}
 				{/* {review ? getClassName(selected.label) : "ไม่มีข้อมูลรีวิวในระบบ"} */}
 			</SubjectTitle>
 
@@ -107,33 +95,46 @@ const ReviewPage = (props) => {
 				<ReviewTitle>
 					<DetailTitle>รีวิวโดย {review?.author}</DetailTitle>
 					<ContainerBtns>
-						<ButtonLastReview onClick={navigateToHomePage} >
-							<HomeIcon  />
+						<ButtonLastReview onClick={navigateToHomePage}>
+							<HomeIcon />
 						</ButtonLastReview>
 						<Button onClick={() => navigateToClassPage(review.classId)}>แสดงทุกรีวิว</Button>
 					</ContainerBtns>
 				</ReviewTitle>
 
 				<AdaptorReviews id="adaptor" />
-				{
-					loading ? ( <ReviewSkeletonA /> )
-					 : isAvailable ? 
-						  (<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />) 
-						  : (<>
-								<ContainerNoMore>
-									<NoMoreCustom>
-										<NoMoreReview />
-									</NoMoreCustom>
-								</ContainerNoMore>
-							</>)
-				}
+				{review.length <= 0 ? (
+					<>
+						<ContainerNoMore>
+							<NoMoreCustom>
+								<span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
+								<NoMoreCard />
+							</NoMoreCustom>
+						</ContainerNoMore>
+					</>
+				) : review ? (
+					<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+				) : loading ? (
+					<ReviewSkeletonA />
+				) : isAvailable ? (
+					<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+				) : (
+					<>
+						<ContainerNoMore>
+							<NoMoreCustom>
+								<span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
+								<NoMoreCard />
+							</NoMoreCustom>
+						</ContainerNoMore>
+					</>
+				)}
 				{/* {review ? (
 					<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
 				) : (
 					<>
 						<ContainerNoMore>
 							<NoMoreCustom>
-								<NoMoreReview />
+								<NoMoreCard />
 							</NoMoreCustom>
 						</ContainerNoMore>
 					</>
@@ -145,16 +146,16 @@ const ReviewPage = (props) => {
 };
 
 const Interface = (props) => {
-	const { currentReview, currentClass, reviewID} = props;
+	const { currentReview, currentClass, reviewID } = props;
 	const { dispatch: dispatchSelected } = useContext(SelectContext);
-	const [review, setReview] = useState([])
+	const [review, setReview] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [isAvailable, setIsAvailable] = useState(false);
 
 	useEffect(() => {
 		if (currentReview && currentClass) {
-			setLoading(false)
-			setIsAvailable(true)
+			setLoading(false);
+			setIsAvailable(true);
 			dispatchSelected({
 				type: "selected",
 				value: { label: currentClass.label, classID: currentClass.classId },
@@ -174,19 +175,21 @@ const Interface = (props) => {
 			// }
 
 			setLoading(true);
-			APIs.getReviewByReviewID(reviewID, (res) => {
-				setLoading(false);
-				setIsAvailable(true);
-				
-				APIs.getClassDetailByClassId(res.data.classId, (res) => {
-					dispatchSelected({
-						type: "selected",
-						value: { label: res.data.label, classID: res.data.classId },
-					});
-				});
+			APIs.getReviewByReviewID(
+				reviewID,
+				async (res) => {
+					setLoading(false);
+					setIsAvailable(true);
 
-				setReview({ ...res.data });
-			},
+					APIs.getClassDetailByClassId(res.data.classId, async (res) => {
+						dispatchSelected({
+							type: "selected",
+							value: { label: res.data.label, classID: res.data.classId },
+						});
+					});
+
+					setReview({ ...res.data });
+				},
 				() => {
 					setLoading(false);
 					setIsAvailable(false);
@@ -196,13 +199,9 @@ const Interface = (props) => {
 	}, []);
 
 	return (
-		<ReviewFetcherProvider classID={(currentClass && currentClass.classId) || review.classId}>
-			<ReviewPage 
-				review={currentReview || review} 
-				loading={loading}
-				isAvailable={isAvailable}
-				{...props} />
-		</ReviewFetcherProvider>
+		<FetcherProvider classID={(currentClass && currentClass.classId) || review.classId}>
+			<ReviewPage review={currentReview || review} loading={loading} isAvailable={isAvailable} {...props} />
+		</FetcherProvider>
 	);
 };
 

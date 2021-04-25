@@ -2,10 +2,13 @@ import { h } from "preact";
 import media from 'styled-media-query'
 import styled, { withTheme } from "styled-components";
 
-import { KUClap } from "../utility/Icons";
+// import { KUClap } from "../utility/Icons";
 import { navigateToHomePage } from "../utility/helper";
 import SocialIcons from './SocialIcons'
 import ThemeToggleButton from "./ThemeToggleButton";
+import { grey } from "./Colors";
+
+import HandWashing from "./HandWashing";
 
 const KUclapText = styled.p`
   font-size: 4.6rem;
@@ -13,7 +16,7 @@ const KUclapText = styled.p`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin: 4rem 0 2.5rem 0;
   cursor: pointer;
   user-select: none;
 
@@ -26,7 +29,7 @@ const KUclapText = styled.p`
 const DetailKUclap = styled.span`
   font-size: 1.8rem;
   text-transform: uppercase;
-  color: ${(props) => props.theme.mainText || "#4f4f4f"};
+  color: ${(props) => props.theme.mainText || grey};
   text-align: center;
   font-weight: 400;
 `;
@@ -49,17 +52,16 @@ const UtilitysContainer = styled.div`
 
 
 
-const Header = ({ theme, toggleTheme }) => {
+const Header = ({ toggleTheme }) => {
   return (
     <>
-
-      
       <UtilitysContainer>
        <SocialIcons />
       </UtilitysContainer>
       <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={navigateToHomePage}>
-        <KUClap bgColor={theme.body} textColor={theme.bodyText} />
+        <HandWashing />
+        {/* <KUClap bgColor={theme.body} textColor={theme.mainText} /> */}
         <span>
           <b>KU</b>CLAP
         </span>

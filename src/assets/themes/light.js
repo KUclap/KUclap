@@ -1,24 +1,26 @@
+import { blue, blue_90, blue_97, grey, grey_75, grey_88, grey_95 } from "../../components/common/Colors";
+
 export default {
   name: "light",
 
   solid: "white",
   body: "white",
-  bodyText: "black",
-  mainText: "#4f4f4f",
-  lightColor: "#e0e0e0",
-  lightColor2: "#f2f2f2",
-  lightButton: `
-    background: rgba(0, 0, 0, 0.64);
-    color: #fff;
-  `,
-
+  mainText: grey,
+  subText: grey_75,
+  borderColor: grey_88,
+  lightBackground: grey_95,
+  lightBlueBackground: blue_97,
+  tag: {
+    fontColor: blue,
+    background: blue_97,
+    border: blue,
+    hover: "white"
+  },
   skeleton: ["#f3f3f3", "#ecebeb"],
   menuItem: {
     hover: "hsl(212, 71%, 95%)",
-    active: "hsl(214, 84%, 90%)",
+    active: blue_90,
   },
   subjectBrightness: 100,
   footerButtonText: "#121112",
-  placeholderText: "#BDBDBD",
-  cardDetailsText: "hsl(0, 0%, 34%)"
 }
