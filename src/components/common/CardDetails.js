@@ -5,7 +5,10 @@ import styled from "styled-components";
 import { FetcherContext } from "../../context/FetcherContext";
 import useDeleteReview from "../../hooks/useDeleteReview";
 import useReportReview from "../../hooks/useReportReview";
-import { blue } from "../common/Colors";
+import APIs from "../utility/apis";
+import { navigateToReviewPage, parseDate } from "../utility/helper";
+import { DownArrow, GradeCircle, Recap } from "../utility/Icons";
+import { blue } from "./Colors";
 import {
 	BodyTiny,
 	Input,
@@ -14,12 +17,9 @@ import {
 	SecondaryButton,
 	Warning,
 	WhiteCircularProgress,
-} from "../common/DesignSystemStyles";
-import MenuPopup, { MenuContent, MenuContentContainer, MenuItemCustom } from "../common/MenuPopup";
-import Modal, { CancelButton, ConfirmButton, ReportField } from "../common/Modal";
-import APIs from "../utility/apis";
-import { navigateToReviewPage, parseDate } from "../utility/helper";
-import { DownArrow, GradeCircle, Recap } from "../utility/Icons";
+} from "./DesignSystemStyles";
+import MenuPopup, { MenuContent, MenuContentContainer, MenuItemCustom } from "./MenuPopup";
+import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal";
 
 const DetailsContainer = styled.div`
 	display: flex;

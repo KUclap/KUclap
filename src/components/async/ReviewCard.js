@@ -3,7 +3,7 @@ import { BodyMedium, BodySmall, Subject } from "../common/DesignSystemStyles";
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 
-import CardDetails from "../async/CardDetails";
+import CardDetails from "../common/CardDetails";
 import APIs from "../utility/apis";
 import { getColorHash, navigateToClassPage } from "../utility/helper";
 
