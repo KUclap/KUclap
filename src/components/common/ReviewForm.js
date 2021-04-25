@@ -5,9 +5,9 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import { h } from "preact";
 import { lazy, Suspense } from "preact/compat";
 import { useEffect, useState } from "preact/hooks";
-import styled, { withTheme } from "styled-components";
+import styled, { css, withTheme } from "styled-components";
 
-import { navigateToClassPage } from "../utility/helper";
+import { navigateToClassPage, validateAcademicYear } from "../utility/helper";
 import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
 import * as TRANSACTIONs from "../utility/transactions";
 import BrowseButton from "./BrowseButton";
@@ -16,12 +16,14 @@ import { blue, blue_75, blue_97, grey_75, red, turquoise_green } from "./Colors"
 import {
 	BodySmall,
 	Heading1,
+	Heading2,
 	Input,
 	ModalActions,
 	PrimaryButton,
 	RequiredDot,
 	SecondaryButton,
 	TextArea,
+	Warning,
 	WhiteCircularProgress,
 } from "./DesignSystemStyles";
 import Modal from "./Modal";
@@ -69,6 +71,8 @@ const Container = styled.div`
 
 const DetailTitle = styled(Heading1)`
 	display: ${(props) => (props.description ? "grid" : "flex")};
+	justify-content: ${props => props.score ? "space-between" : "flex-start"};
+	white-space: nowrap;
 
 	span {
 		font-size: 1.2rem;
@@ -107,14 +111,6 @@ const WordTag = styled.button`
 	}
 `;
 
-const Warning = styled(DetailTitle)`
-	margin-left: 1.2rem;
-	font-size: 1.6rem;
-	color: ${red};
-	display: ${(props) => (props.required ? "inline" : "none")};
-	text-align: center;
-`;
-
 const FormTitle = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -138,8 +134,18 @@ const ScoreBar = styled.div`
 	justify-content: space-between;
 
 	&:not(:first-child) {
-		margin-top: 1.6rem;
+		margin-top: ${props => props.title ? "0" : "1.6rem"};
 	}
+
+	${props => props.title && css`
+		max-width: 22rem;
+		width: 45%;
+		margin-left: 1rem;
+
+		> p {
+			font-size: 1.4rem;
+		}
+	`}
 `;
 
 const ScoreContainer = styled.div`
@@ -204,6 +210,7 @@ const InputContainer = styled.div`
 const TextStatusCreatingReview = styled(BodySmall)`
 	color: ${turquoise_green};
 `;
+
 const RadioGroupCustom = styled(RadioGroup)`
 	&.MuiFormGroup-root {
 		flex-direction: row;
@@ -269,7 +276,9 @@ const Button = styled(SecondaryButton)`
 
 const Rating = styled.div`
 	display: flex;
-	width: 18rem;
+	min-width: 18rem;
+	max-width: 22rem;
+	width: 55%;
 	justify-content: space-between;
 `;
 
@@ -369,6 +378,14 @@ const CheckboxCustom = styled(Checkbox)`
 	}
 `;
 
+const WarningCustom = styled(Warning)`
+	font-weight: 600;
+	margin: ${props => props.align === "bottom" ? "0" : (props.align === "top" ? "0 0 1.2rem 0"  : "0 0 0 1.2rem")};
+	font-size: 1.6rem;
+	display: inline;
+	text-align: ${props => props.align === "bottom" ? "left" : "center"};
+`
+
 // const SemanticText = styled(DetailTitle)`
 //   span {
 //     color: ${blue_75};
@@ -399,6 +416,8 @@ const ReviewForm = (props) => {
 	const [isUpLoading, setIsUpLoading] = useState(false);
 	const [recommendWord, setRecommendWord] = useState(false);
 	const [file, setFile] = useState(null);
+	const [savedReview, setSavedReview] = useState({})
+
 	const initialForm = {
 		classId: classID,
 		text: "",
@@ -428,6 +447,7 @@ const ReviewForm = (props) => {
 		auth: false,
 		rude: false,
 		other: false,
+		year: false
 	};
 
 	const [timeId, setTimeId] = useState(null);
@@ -452,33 +472,33 @@ const ReviewForm = (props) => {
 
 	const required = () => {
 		let req = { ...require };
-		const AreAllInputsValid =
-			form.text !== "" &&
-			form.author !== "" &&
-			form.auth.length == 4 &&
-			form.grade !== -1 &&
-			form.auth !== "" &&
-			form.stats.homework !== -1 &&
-			form.stats.how !== -1 &&
-			form.stats.interest !== -1 &&
-			checklist.rude &&
-			checklist.other;
-		const isReviewEmpty = form.text === "";
+		const isReviewTooShort = form.text.length < 25;
 		const isAllStatsNotSelected = form.stats.homework === -1 || form.stats.how === -1 || form.stats.interest === -1;
 		const isGradeNotSelected = form.grade === -1;
 		const isAuthorEmpty = form.author === "";
 		const isAuthTooShort = form.auth.length < 4;
+		const isYearNotValid = (form.year !== "" && !validateAcademicYear(form.year))
+		const AreAllInputsValid =
+			!isReviewTooShort &&
+			!isAuthorEmpty &&
+			!isAuthTooShort &&
+			!isGradeNotSelected &&
+			!isAllStatsNotSelected &&
+			!isYearNotValid
+			checklist.rude &&
+			checklist.other;
 		if (AreAllInputsValid) {
 			setRequire(initialRequire);
 			setReviewModal(true);
 		} else {
-			req.text = isReviewEmpty;
+			req.text = isReviewTooShort;
 			req.stats = isAllStatsNotSelected;
 			req.grade = isGradeNotSelected;
 			req.author = isAuthorEmpty;
 			req.auth = isAuthTooShort;
 			req.rude = !checklist.rude;
 			req.other = !checklist.other;
+			req.year = isYearNotValid;
 			req.enableReview = true;
 			setRequire(req);
 		}
@@ -488,12 +508,12 @@ const ReviewForm = (props) => {
 		if (!isLoading) {
 			setIsLoading(true);
 			localStorage.setItem(`kuclap.com-v1-author`, form.author);
-			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, () => {
+			TRANSACTIONs.createReview(classID, form, file, setIsUpLoading, (reviewId, classNameTH) => {
 				setIsLoading(false);
 				setIsDone(true);
 				setForm({ ...initialForm, classId: classID });
 				setChecklist({ ...initialChecklist });
-
+				setSavedReview({reviewId, classNameTH})
 				localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			});
 		}
@@ -506,14 +526,6 @@ const ReviewForm = (props) => {
 		}
 		setForm(newForm);
 	};
-
-	// const pasteURL = () => {
-	//   const pasteTarget = document.getElementById("recap-field");
-	//   navigator.clipboard.readText().then(clipText => {
-	//     pasteTarget.value = clipText
-	//     setForm({...form, recap: clipText })
-	//   });
-	// }
 
 	const addWordToReview = (word) => {
 		let review = form.text;
@@ -585,16 +597,16 @@ const ReviewForm = (props) => {
 				<DetailTitle id="review-field">
 					รีวิววิชานี้
 					<RequiredDot />
-					<Warning required={require.text}>กรุณากรอกรีวิว</Warning>
 				</DetailTitle>
 				<Button
 					onClick={() => {
 						navigateToClassPage(classID);
 					}}
-				>
+					>
 					ย้อนกลับ
 				</Button>
 			</FormTitle>
+			{require.text && <WarningCustom align="bottom">รีวิวต้องมีความยาวมากกว่า 25 ตัวอักษร</WarningCustom>}
 			<ReviewField
 				type="textarea"
 				placeholder="เขียนรีวิว..."
@@ -616,11 +628,17 @@ const ReviewForm = (props) => {
 				})}
 			</RecommendReviewContainer>
 			{/* <SemanticText>รีวิวนี้มีความหมายในเชิง : <span>{semantic.toUpperCase() || "กรุณาพิมพ์รีวิวก่อน..."}</span></SemanticText> */}
-			<DetailTitle>
-				ให้คะแนนความพอใจวิชา
-				<RequiredDot />
-				<Warning required={require.stats}>กรุณาเลือกทุกหัวข้อ</Warning>
+			<DetailTitle score>
+				<div>
+					ให้คะแนนความพอใจวิชา
+					<RequiredDot />
+				</div>
+				<ScoreBar title>
+					<Heading2 desc>ไม่พอใจ</Heading2>
+					<Heading2 desc>พอใจ</Heading2>
+				</ScoreBar>
 			</DetailTitle>
+			{require.stats && <WarningCustom align="bottom">กรุณาเลือกทุกหัวข้อ</WarningCustom>}
 			<ScoreContainer>
 				{Rate.map((item, key) => (
 					<ScoreBar key={key}>
@@ -646,7 +664,7 @@ const ReviewForm = (props) => {
 				<DetailTitle>
 					เกรดที่ได้
 					<RequiredDot />
-					<Warning required={require.grade}>กรุณาเลือกเกรด</Warning>
+					{require.grade && <WarningCustom>กรุณาเลือกเกรด</WarningCustom>}
 				</DetailTitle>
 				<GradeBar>
 					{Grade.map((item, key) => (
@@ -667,7 +685,7 @@ const ReviewForm = (props) => {
 				<DetailTitle id="author-field">
 					นามปากกา
 					<RequiredDot />
-					<Warning required={require.author}>กรุณากรอกนามปากกา</Warning>
+					{require.author && <WarningCustom>กรุณากรอกนามปากกา</WarningCustom>}
 				</DetailTitle>
 				<Input
 					placeholder="ใส่ชื่อผู้เขียน"
@@ -678,10 +696,13 @@ const ReviewForm = (props) => {
 				/>
 			</InputContainer>
 			<InputContainer>
-				<DetailTitle id="year-field">ปีการศึกษาที่เรียน</DetailTitle>
+				<DetailTitle id="year-field">
+					ปีการศึกษาที่เรียน
+					{require.year && <WarningCustom>ปีการศึกษาไม่ถูกต้อง</WarningCustom>}
+				</DetailTitle>
 				<Input
 					small
-					placeholder="เช่น 64"
+					placeholder="เช่น 63"
 					value={form.year}
 					onChange={(e) => handleOnChangeNumberField(e, "year")}
 					maxLength={2}
@@ -729,29 +750,6 @@ const ReviewForm = (props) => {
 					<span>ควรใส่ลายน้ำเพื่อป้องกันการคัดลอก</span>
 				</DetailTitle>
 				<BrowseButton file={file} setFile={setFile} />
-				{/* <Button
-					onClick={() => {
-						navigateToClassPage(classID);
-					}}
-				>
-					เลือกไฟล์
-				</Button> */}
-				{/* <Input
-					placeholder="วางลิงก์ที่นี่"
-					value={form.recap}
-					onChange={(e) => handleOnchange(e, "recap")}
-					aria-labelledby="recap-field"
-				/> */}
-				{/* <CopyInputContainer>
-          <Input
-            type="text"
-            placeholder="วางลิงก์ที่นี่หรือกดปุ่มวาง"
-            value={form.recap}
-            onChange={(e) => handleOnchange(e, "recap")}
-            id="recap-field"
-          />
-          <PasteButton onClick={pasteURL}>วาง</PasteButton>
-        </CopyInputContainer> */}
 			</InputContainer>
 			<InputContainer>
 				<DetailTitle id="pin-field" description>
@@ -759,8 +757,8 @@ const ReviewForm = (props) => {
 						ตัวเลข 4 หลัก
 						<RequiredDot />
 					</div>
-					<Warning required={require.auth}>กรุณากรอกเลข 4 หลัก</Warning>
 					<span>เพื่อใช้ลบรีวิวในภายหลัง</span>
+					{require.auth && <WarningCustom align="bottom">กรุณากรอกเลข 4 หลัก</WarningCustom>}
 				</DetailTitle>
 				<Input
 					small
@@ -774,7 +772,7 @@ const ReviewForm = (props) => {
 			<Caution>
 				กรุณาตรวจสอบความถูกต้องก่อนรีวิว
 				<CheckboxContainer
-					warning={require.rude}
+					warningCustom={require.rude}
 					onClick={() => setChecklist({ ...checklist, rude: !checklist.rude })}
 				>
 					<CheckboxCustom
@@ -785,7 +783,7 @@ const ReviewForm = (props) => {
 					เนื้อหาไม่มีคำหยาบคาย
 				</CheckboxContainer>
 				<CheckboxContainer
-					warning={require.other}
+					warningCustom={require.other}
 					onClick={() => setChecklist({ ...checklist, other: !checklist.other })}
 				>
 					<CheckboxCustom
@@ -796,11 +794,11 @@ const ReviewForm = (props) => {
 					เนื้อหาไม่มีการพาดพิงถึงผู้อื่น
 				</CheckboxContainer>
 			</Caution>
-			<Warning required={require.enableReview}>กรุณากรอกข้อมูลให้ครบถ้วน</Warning>
+			{require.enableReview && <WarningCustom align="top">กรุณากรอกข้อมูลให้ครบถ้วน</WarningCustom>}
 			<PrimaryButton onClick={required}>รีวิวเลย !</PrimaryButton>
 			{isDone ? (
 				<Suspense>
-					<Alert Close={handleCloseAlert} />
+					<Alert close={handleCloseAlert} reviewId={savedReview.reviewId} classId={classID} classNameTH={savedReview.classNameTH} />
 				</Suspense>
 			) : (
 				<Modal showModal={showReviewModal} closeModal={handleCloseAlert}>

@@ -130,7 +130,7 @@ export const timeDifference = (date) => {
 
 const MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 
-export function parseDate(date) {
+export const parseDate = (date) => {
 	const createdAt = new Date(date);
 	const hourShift = -7;
 	const timestamp = createdAt.getTime();
@@ -141,4 +141,15 @@ export function parseDate(date) {
 	let year = dateTimezone.getFullYear() + 543;
 
 	return `${day} ${month} ${year}`;
+}
+
+export const validateAcademicYear = (year) => {
+	const today = new Date()
+	const monthOfFirstDate = 7
+	let academicYear = (today.getFullYear() + 543) - 2500
+	if (today.getMonth() < monthOfFirstDate) {
+		academicYear -= 1
+	} 
+	const isAcademicYearValid = (year <= academicYear)
+	return isAcademicYearValid
 }

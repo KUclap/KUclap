@@ -152,38 +152,44 @@ const QuestionHeader = (props) => {
 					)}
 				</span>
 			</QuestionHeaderContainer>
-			<Modal showModal={showReportModal} closeModal={closeReportModal}>
-				เหตุผลในการแจ้งลบ
-				<WarningCustom>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</WarningCustom>
-				<ReportField
-					placeholder="อย่างน้อย 10 ตัวอักษร"
-					value={reportReason.reason}
-					onChange={(e) => handleOnChange(e)}
-				/>
-				<ModalActions>
-					<CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
-					<ConfirmButton onClick={handleReport}>
-						{isLoadingReport ? <WhiteCircularProgress size="2rem" /> : "แจ้งลบ"}
-					</ConfirmButton>
-				</ModalActions>
-			</Modal>
-			<Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
-				กรอกตัวเลข 4 หลักของคุณเพื่อลบคำถาม
-				<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
-				<Input
-					type="text"
-					placeholder="ใส่ตัวเลข 4 หลัก"
-					value={auth.value}
-					onInput={handleOnChangePassword}
-					maxLength={4}
-				/>
-				<ModalActions>
-					<CancelButton onClick={closeDeleteModal}>ยกเลิก</CancelButton>
-					<ConfirmButton onClick={handleDelete}>
-						{isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : "ลบคำถาม"}
-					</ConfirmButton>
-				</ModalActions>
-			</Modal>
+			{
+				showReportModal &&
+				<Modal showModal={showReportModal} closeModal={closeReportModal}>
+					เหตุผลในการแจ้งลบ
+					<WarningCustom>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</WarningCustom>
+					<ReportField
+						placeholder="อย่างน้อย 10 ตัวอักษร"
+						value={reportReason.reason}
+						onChange={(e) => handleOnChange(e)}
+					/>
+					<ModalActions>
+						<CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
+						<ConfirmButton onClick={handleReport}>
+							{isLoadingReport ? <WhiteCircularProgress size="2rem" /> : "แจ้งลบ"}
+						</ConfirmButton>
+					</ModalActions>
+				</Modal>
+			}
+			{
+				showDeleteModal &&
+				<Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
+					กรอกตัวเลข 4 หลักของคุณเพื่อลบคำถาม
+					<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
+					<Input
+						type="text"
+						placeholder="ใส่ตัวเลข 4 หลัก"
+						value={auth.value}
+						onInput={handleOnChangePassword}
+						maxLength={4}
+					/>
+					<ModalActions>
+						<CancelButton onClick={closeDeleteModal}>ยกเลิก</CancelButton>
+						<ConfirmButton onClick={handleDelete}>
+							{isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : "ลบคำถาม"}
+						</ConfirmButton>
+					</ModalActions>
+				</Modal>
+			}
 		</>
 	);
 };

@@ -197,98 +197,107 @@ const CardDetails = (props) => {
 					{!recapId && <BodyTiny>เพิ่มเติม</BodyTiny>}
 					<DownArrow />
 				</MoreButton>
-				<MenuPopup menu={menu} setMenu={setMenu}>
-					<MenuContentContainer>
-						{sec !== 0 && (
-							<MenuContent>
-								<span>หมู่เรียน (เซค)</span>
-								<span>{sec}</span>
-							</MenuContent>
-						)}
-						{semester !== 0 && (
-							<MenuContent>
-								<span>ภาคเรียน</span>
-								<span>
-									{
+				{
+					menu &&
+					<MenuPopup menu={menu} setMenu={setMenu}>
+						<MenuContentContainer>
+							{sec !== 0 && (
+								<MenuContent>
+									<span>หมู่เรียน (เซค)</span>
+									<span>{sec}</span>
+								</MenuContent>
+							)}
+							{semester !== 0 && (
+								<MenuContent>
+									<span>ภาคเรียน</span>
+									<span>
 										{
-											1: "ต้น",
-											2: "ปลาย",
-											3: "ฤดูร้อน",
-										}[semester]
-									}
-								</span>
-							</MenuContent>
-						)}
-						{year !== 0 && (
+											{
+												1: "ต้น",
+												2: "ปลาย",
+												3: "ฤดูร้อน",
+											}[semester]
+										}
+									</span>
+								</MenuContent>
+							)}
+							{year !== 0 && (
+								<MenuContent>
+									<span>ปีการศึกษา</span>
+									<span>{year}</span>
+								</MenuContent>
+							)}
+							{/* {recapId && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
 							<MenuContent>
-								<span>ปีการศึกษา</span>
-								<span>{year}</span>
+								<span>รีวิวเมื่อ</span>
+								<span>{parseDate(createdAt)}</span>
 							</MenuContent>
-						)}
-						{/* {recapId && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
-						<MenuContent>
-							<span>รีวิวเมื่อ</span>
-							<span>{parseDate(createdAt)}</span>
-						</MenuContent>
-					</MenuContentContainer>
-					<MenuItemCustom
-						onClick={() => {
-							setMenu(null);
-							navigateToReviewPage(reviewId);
-						}}
-					>
-						ดูรีวิวนี้
-					</MenuItemCustom>
-					<MenuItemCustom
-						onClick={() => {
-							setMenu(null);
-							setReportModal(true);
-						}}
-					>
-						แจ้งลบ
-					</MenuItemCustom>
-					<MenuItemCustom
-						onClick={() => {
-							setMenu(null);
-							setEditModal(true);
-						}}
-					>
-						ลบรีวิว
-					</MenuItemCustom>
-				</MenuPopup>
+						</MenuContentContainer>
+						<MenuItemCustom
+							onClick={() => {
+								setMenu(null);
+								navigateToReviewPage(reviewId);
+							}}
+						>
+							ดูรีวิวนี้
+						</MenuItemCustom>
+						<MenuItemCustom
+							onClick={() => {
+								setMenu(null);
+								setReportModal(true);
+							}}
+						>
+							แจ้งลบ
+						</MenuItemCustom>
+						<MenuItemCustom
+							onClick={() => {
+								setMenu(null);
+								setEditModal(true);
+							}}
+						>
+							ลบรีวิว
+						</MenuItemCustom>
+					</MenuPopup>
+				}
 			</SubDetail>
-			<Modal showModal={showReportModal} closeModal={closeReportModal}>
-				เหตุผลในการแจ้งลบ
-				<Warning>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</Warning>
-				<ReportField
-					placeholder="อย่างน้อย 10 ตัวอักษร"
-					value={reportReason.reason}
-					onChange={(e) => handleOnchange(e)}
-				/>
-				<ModalActions>
-					<CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
-					<ConfirmButton onClick={handleReport}>
-						{isLoadingReport ? <WhiteCircularProgress size="2rem" /> : "แจ้งลบ"}
-					</ConfirmButton>
-				</ModalActions>
-			</Modal>
-			<Modal showModal={showEditModal} closeModal={closeEditModal}>
-				กรอกตัวเลข 4 หลักของคุณเพื่อลบรีวิว
-				<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
-				<Input
-					type="text"
-					placeholder="ใส่ตัวเลข 4 หลัก"
-					value={auth.value}
-					onInput={handleOnchangePassword}
-					maxLength={4}
-				/>
-				<ModalActions>
-					<CancelButton onClick={closeEditModal}>ยกเลิก</CancelButton>
-					<ConfirmButton onClick={handleDelete}>
-						{isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : "ลบรีวิว"}
-					</ConfirmButton>
-				</ModalActions>
-			</Modal>
+			{
+				showReportModal &&
+				<Modal showModal={showReportModal} closeModal={closeReportModal}>
+					เหตุผลในการแจ้งลบ
+					<Warning>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</Warning>
+					<ReportField
+						placeholder="อย่างน้อย 10 ตัวอักษร"
+						value={reportReason.reason}
+						onChange={(e) => handleOnchange(e)}
+					/>
+					<ModalActions>
+						<CancelButton onClick={closeReportModal}>ยกเลิก</CancelButton>
+						<ConfirmButton onClick={handleReport}>
+							{isLoadingReport ? <WhiteCircularProgress size="2rem" /> : "แจ้งลบ"}
+						</ConfirmButton>
+					</ModalActions>
+				</Modal>
+			}
+			{
+				showEditModal &&
+				<Modal showModal={showEditModal} closeModal={closeEditModal}>
+					กรอกตัวเลข 4 หลักของคุณเพื่อลบรีวิว
+					<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
+					<Input
+						type="text"
+						placeholder="ใส่ตัวเลข 4 หลัก"
+						value={auth.value}
+						onInput={handleOnchangePassword}
+						maxLength={4}
+					/>
+					<ModalActions>
+						<CancelButton onClick={closeEditModal}>ยกเลิก</CancelButton>
+						<ConfirmButton onClick={handleDelete}>
+							{isLoadingDelete ? <WhiteCircularProgress size="2rem" /> : "ลบรีวิว"}
+						</ConfirmButton>
+					</ModalActions>
+				</Modal>
+			}
 		</DetailsContainer>
 	);
 };

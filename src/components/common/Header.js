@@ -2,11 +2,13 @@ import { h } from "preact";
 import media from 'styled-media-query'
 import styled, { withTheme } from "styled-components";
 
-import { KUClap } from "../utility/Icons";
+// import { KUClap } from "../utility/Icons";
 import { navigateToHomePage } from "../utility/helper";
 import SocialIcons from './SocialIcons'
 import ThemeToggleButton from "./ThemeToggleButton";
 import { grey } from "./Colors";
+
+import HandWashing from "./HandWashing";
 
 const KUclapText = styled.p`
   font-size: 4.6rem;
@@ -50,7 +52,7 @@ const UtilitysContainer = styled.div`
 
 
 
-const Header = ({ theme, toggleTheme }) => {
+const Header = ({ toggleTheme }) => {
   return (
     <>
       <UtilitysContainer>
@@ -58,7 +60,8 @@ const Header = ({ theme, toggleTheme }) => {
       </UtilitysContainer>
       <ThemeToggleButton onClick={toggleTheme} right />
       <KUclapText onClick={navigateToHomePage}>
-        <KUClap bgColor={theme.body} textColor={theme.mainText} />
+        <HandWashing />
+        {/* <KUClap bgColor={theme.body} textColor={theme.mainText} /> */}
         <span>
           <b>KU</b>CLAP
         </span>

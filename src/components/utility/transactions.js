@@ -25,7 +25,7 @@ export const createReview = (classID, reviewInfo, file, setIsUpLoading, done) =>
 							const { reviewId, classNameTH, classNameEN } = data;
 							// (4) create recap
 							APIs.createRecap({ ...recapInfo, reviewId, auth, classNameTH, classNameEN }, () => {
-								done();
+								done(reviewId, classNameTH);
 							});
 						}
 					);
@@ -40,8 +40,9 @@ export const createReview = (classID, reviewInfo, file, setIsUpLoading, done) =>
 				sec: parseInt(reviewInfo.sec, 10),
 				semester: parseInt(reviewInfo.semester, 10),
 			},
-			() => {
-				done();
+			({ data }) => {
+				const { reviewId, classNameTH } = data;
+				done(reviewId, classNameTH);
 			}
 		);
 	}

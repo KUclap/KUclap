@@ -126,12 +126,15 @@ const ClassPage = (props) => {
 						)}
 					</ContainerBtns>
 				</ReviewTitle>
-				<QuestionModal
-					classID={classID}
-					className={selected.label}
-					showQuestionModal={showQuestionModal}
-					setQuestionModal={setQuestionModal}
-				/>
+				{
+					showQuestionModal && 
+					<QuestionModal
+						classID={classID}
+						className={selected.label}
+						showQuestionModal={showQuestionModal}
+						setQuestionModal={setQuestionModal}
+					/>
+				}
 				{fetchTarget === "review" ? (
 					<AdaptorReviews id="adaptor">
 						{reviews?.map(
