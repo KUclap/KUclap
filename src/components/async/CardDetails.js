@@ -5,21 +5,21 @@ import styled from "styled-components";
 import { FetcherContext } from "../../context/FetcherContext";
 import useDeleteReview from "../../hooks/useDeleteReview";
 import useReportReview from "../../hooks/useReportReview";
+import { blue } from "../common/Colors";
+import {
+	BodyTiny,
+	Input,
+	ModalActions,
+	PrimaryButton,
+	SecondaryButton,
+	Warning,
+	WhiteCircularProgress,
+} from "../common/DesignSystemStyles";
+import MenuPopup, { MenuContent, MenuContentContainer, MenuItemCustom } from "../common/MenuPopup";
+import Modal, { CancelButton, ConfirmButton, ReportField } from "../common/Modal";
 import APIs from "../utility/apis";
 import { navigateToReviewPage, parseDate } from "../utility/helper";
 import { DownArrow, GradeCircle, Recap } from "../utility/Icons";
-import { blue } from "./Colors";
-import {
-    BodyTiny,
-    Input,
-    ModalActions,
-    PrimaryButton,
-    SecondaryButton,
-    Warning,
-    WhiteCircularProgress,
-} from './DesignSystemStyles'
-import Modal, { CancelButton, ConfirmButton, ReportField } from './Modal'
-import MenuPopup, { MenuContent, MenuContentContainer, MenuItemCustom } from './MenuPopup'
 
 const DetailsContainer = styled.div`
 	display: flex;
@@ -142,6 +142,8 @@ const CardDetails = (props) => {
 	}, [isAuthMatch]);
 
 	const closeReportModal = () => {
+		// console.log("close");
+		showReportModal;
 		setReportModal(false);
 		setReportReason(defaultReportReason);
 	};
@@ -162,7 +164,7 @@ const CardDetails = (props) => {
 	const handleOnchange = (e) => {
 		let value = e.target.value;
 		if (/^\s/.test(value)) {
-			value = reportReason.value
+			value = reportReason.value;
 		}
 		setReportReason({ ...reportReason, reason: value });
 	};
@@ -197,8 +199,7 @@ const CardDetails = (props) => {
 					{!recapId && <BodyTiny>เพิ่มเติม</BodyTiny>}
 					<DownArrow />
 				</MoreButton>
-				{
-					menu &&
+				{menu && (
 					<MenuPopup menu={menu} setMenu={setMenu}>
 						<MenuContentContainer>
 							{sec !== 0 && (
@@ -258,10 +259,9 @@ const CardDetails = (props) => {
 							ลบรีวิว
 						</MenuItemCustom>
 					</MenuPopup>
-				}
+				)}
 			</SubDetail>
-			{
-				showReportModal &&
+			{showReportModal && (
 				<Modal showModal={showReportModal} closeModal={closeReportModal}>
 					เหตุผลในการแจ้งลบ
 					<Warning>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</Warning>
@@ -277,12 +277,13 @@ const CardDetails = (props) => {
 						</ConfirmButton>
 					</ModalActions>
 				</Modal>
-			}
-			{
-				showEditModal &&
+			)}
+			{showEditModal && (
 				<Modal showModal={showEditModal} closeModal={closeEditModal}>
 					กรอกตัวเลข 4 หลักของคุณเพื่อลบรีวิว
-					<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
+					<Warning>
+						{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}
+					</Warning>
 					<Input
 						type="text"
 						placeholder="ใส่ตัวเลข 4 หลัก"
@@ -297,7 +298,7 @@ const CardDetails = (props) => {
 						</ConfirmButton>
 					</ModalActions>
 				</Modal>
-			}
+			)}
 		</DetailsContainer>
 	);
 };

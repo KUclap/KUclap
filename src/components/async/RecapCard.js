@@ -4,10 +4,7 @@ import styled from "styled-components";
 import { FetcherContext } from "../../context/FetcherContext";
 import useDeleteRecap from "../../hooks/useDeleteRecap";
 import useReportRecap from "../../hooks/useReportRecap";
-import APIs from "../utility/apis";
-import { getColorHash, navigateToClassPage, navigateToReviewPage, parseDate } from "../utility/helper";
-import { Download, ThreeDots } from "../utility/Icons";
-import { blue, grey_50 } from "./Colors";
+import { blue, grey_50 } from "../common/Colors";
 import {
 	BodySmall,
 	Input,
@@ -16,9 +13,12 @@ import {
 	Subject,
 	Warning,
 	WhiteCircularProgress,
-} from "./DesignSystemStyles";
-import MenuPopup, { MenuItemCustom } from "./MenuPopup";
-import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal";
+} from "../common/DesignSystemStyles";
+import MenuPopup, { MenuItemCustom } from "../common/MenuPopup";
+import Modal, { CancelButton, ConfirmButton, ReportField } from "../common/Modal";
+import APIs from "../utility/apis";
+import { getColorHash, navigateToClassPage, navigateToReviewPage, parseDate } from "../utility/helper";
+import { Download, ThreeDots } from "../utility/Icons";
 
 const RecapCardContainer = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
@@ -179,8 +179,7 @@ const RecapCard = (props) => {
 					<button onClick={(e) => setMenu(e.currentTarget)} aria-controls="more-menu" aria-haspopup="true">
 						<ThreeDots />
 					</button>
-					{
-						menu &&
+					{menu && (
 						<MenuPopup menu={menu} setMenu={setMenu}>
 							<MenuItemCustom
 								onClick={() => {
@@ -207,14 +206,13 @@ const RecapCard = (props) => {
 								ลบสรุป
 							</MenuItemCustom>
 						</MenuPopup>
-					}
+					)}
 					<SecondaryButton onClick={handleOpenRecapLink}>
 						ดาวน์โหลด <Download />
 					</SecondaryButton>
 				</CardActions>
 			</RecapCardContainer>
-			{
-				showReportModal && 
+			{showReportModal && (
 				<Modal showModal={showReportModal} closeModal={closeReportModal}>
 					เหตุผลในการแจ้งลบ
 					<Warning>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</Warning>
@@ -230,13 +228,14 @@ const RecapCard = (props) => {
 						</ConfirmButton>
 					</ModalActions>
 				</Modal>
-			}
-			{
-				showDeleteModal &&
+			)}
+			{showDeleteModal && (
 				<Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
 					กรอกตัวเลข 4 หลักของคุณเพื่อลบสรุป
 					<Warning>เมื่อลบสรุป รีวิวจะถูกลบด้วย</Warning>
-					<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
+					<Warning>
+						{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}
+					</Warning>
 					<Input
 						type="text"
 						placeholder="ใส่ตัวเลข 4 หลัก"
@@ -251,7 +250,7 @@ const RecapCard = (props) => {
 						</ConfirmButton>
 					</ModalActions>
 				</Modal>
-			}
+			)}
 		</>
 	);
 };

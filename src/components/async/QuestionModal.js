@@ -2,8 +2,7 @@ import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import styled from "styled-components";
 
-import APIs from "../utility/apis";
-import { grey_75, red } from "./Colors";
+import { grey_75, red } from "../common/Colors";
 import {
 	Input,
 	ModalActions,
@@ -11,8 +10,9 @@ import {
 	SecondaryButton,
 	TextArea,
 	WhiteCircularProgress,
-} from "./DesignSystemStyles";
-import Modal from "./Modal";
+} from "../common/DesignSystemStyles";
+import Modal from "../common/Modal";
+import APIs from "../utility/apis";
 
 const QuestionField = styled(TextArea)`
 	height: 12rem;

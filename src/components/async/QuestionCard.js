@@ -2,13 +2,13 @@ import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
+import AnswerList from "../common/AnswerList";
+import { blue_75, red } from "../common/Colors";
+import { BodySmall, Subject, WhiteCircularProgress } from "../common/DesignSystemStyles";
+import QuestionHeader from "../common/QuestionHeader";
 import APIs from "../utility/apis";
 import { getColorHash, navigateToClassPage } from "../utility/helper";
 import { DownArrow, RightArrow } from "../utility/Icons";
-import AnswerList from "./AnswerList";
-import { blue_75, red } from "./Colors";
-import { BodySmall, Subject, WhiteCircularProgress } from "./DesignSystemStyles";
-import QuestionHeader from "./QuestionHeader";
 
 const Container = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
@@ -180,7 +180,7 @@ const QuestionCard = (props) => {
 	const handleOnChange = (e, field) => {
 		let value = e.target.value;
 		if (field === "author" && e.key === "Enter") {
-			console.log("sending");
+			// console.log("sending");
 			sendAnswer();
 		}
 		if (/^\s/.test(value)) {

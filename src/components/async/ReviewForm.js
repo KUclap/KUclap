@@ -7,12 +7,9 @@ import { lazy, Suspense } from "preact/compat";
 import { useEffect, useState } from "preact/hooks";
 import styled, { css, withTheme } from "styled-components";
 
-import { navigateToClassPage, validateAcademicYear } from "../utility/helper";
-import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
-import * as TRANSACTIONs from "../utility/transactions";
-import BrowseButton from "./BrowseButton";
+import BrowseButton from "../common/BrowseButton";
 // import { blue, blue_75, blue_97, grey_75, red, turquoise_green } from "./Colors";
-import { blue, blue_75, blue_97, grey_75, red, turquoise_green } from "./Colors";
+import { blue, blue_75, blue_97, grey_75, red, turquoise_green } from "../common/Colors";
 import {
 	BodySmall,
 	Heading1,
@@ -25,8 +22,11 @@ import {
 	TextArea,
 	Warning,
 	WhiteCircularProgress,
-} from "./DesignSystemStyles";
-import Modal from "./Modal";
+} from "../common/DesignSystemStyles";
+import Modal from "../common/Modal";
+import { navigateToClassPage, validateAcademicYear } from "../utility/helper";
+import { Bad, Excellent, Good, So, Worst } from "../utility/Icons";
+import * as TRANSACTIONs from "../utility/transactions";
 
 const Alert = lazy(() => import("./Alert"));
 
@@ -71,7 +71,7 @@ const Container = styled.div`
 
 const DetailTitle = styled(Heading1)`
 	display: ${(props) => (props.description ? "grid" : "flex")};
-	justify-content: ${props => props.score ? "space-between" : "flex-start"};
+	justify-content: ${(props) => (props.score ? "space-between" : "flex-start")};
 	white-space: nowrap;
 
 	span {
@@ -134,18 +134,20 @@ const ScoreBar = styled.div`
 	justify-content: space-between;
 
 	&:not(:first-child) {
-		margin-top: ${props => props.title ? "0" : "1.6rem"};
+		margin-top: ${(props) => (props.title ? "0" : "1.6rem")};
 	}
 
-	${props => props.title && css`
-		max-width: 22rem;
-		width: 45%;
-		margin-left: 1rem;
+	${(props) =>
+		props.title &&
+		css`
+			max-width: 22rem;
+			width: 45%;
+			margin-left: 1rem;
 
-		> p {
-			font-size: 1.4rem;
-		}
-	`}
+			> p {
+				font-size: 1.4rem;
+			}
+		`}
 `;
 
 const ScoreContainer = styled.div`
@@ -380,11 +382,11 @@ const CheckboxCustom = styled(Checkbox)`
 
 const WarningCustom = styled(Warning)`
 	font-weight: 600;
-	margin: ${props => props.align === "bottom" ? "0" : (props.align === "top" ? "0 0 1.2rem 0"  : "0 0 0 1.2rem")};
+	margin: ${(props) => (props.align === "bottom" ? "0" : props.align === "top" ? "0 0 1.2rem 0" : "0 0 0 1.2rem")};
 	font-size: 1.6rem;
 	display: inline;
-	text-align: ${props => props.align === "bottom" ? "left" : "center"};
-`
+	text-align: ${(props) => (props.align === "bottom" ? "left" : "center")};
+`;
 
 // const SemanticText = styled(DetailTitle)`
 //   span {
@@ -416,7 +418,7 @@ const ReviewForm = (props) => {
 	const [isUpLoading, setIsUpLoading] = useState(false);
 	const [recommendWord, setRecommendWord] = useState(false);
 	const [file, setFile] = useState(null);
-	const [savedReview, setSavedReview] = useState({})
+	const [savedReview, setSavedReview] = useState({});
 
 	const initialForm = {
 		classId: classID,
@@ -447,7 +449,7 @@ const ReviewForm = (props) => {
 		auth: false,
 		rude: false,
 		other: false,
-		year: false
+		year: false,
 	};
 
 	const [timeId, setTimeId] = useState(null);
@@ -477,16 +479,15 @@ const ReviewForm = (props) => {
 		const isGradeNotSelected = form.grade === -1;
 		const isAuthorEmpty = form.author === "";
 		const isAuthTooShort = form.auth.length < 4;
-		const isYearNotValid = (form.year !== "" && !validateAcademicYear(form.year))
+		const isYearNotValid = form.year !== "" && !validateAcademicYear(form.year);
 		const AreAllInputsValid =
 			!isReviewTooShort &&
 			!isAuthorEmpty &&
 			!isAuthTooShort &&
 			!isGradeNotSelected &&
 			!isAllStatsNotSelected &&
-			!isYearNotValid
-			checklist.rude &&
-			checklist.other;
+			!isYearNotValid;
+		checklist.rude && checklist.other;
 		if (AreAllInputsValid) {
 			setRequire(initialRequire);
 			setReviewModal(true);
@@ -513,7 +514,7 @@ const ReviewForm = (props) => {
 				setIsDone(true);
 				setForm({ ...initialForm, classId: classID });
 				setChecklist({ ...initialChecklist });
-				setSavedReview({reviewId, classNameTH})
+				setSavedReview({ reviewId, classNameTH });
 				localStorage.removeItem(`kuclap.com-v1-classid-${classID}`);
 			});
 		}
@@ -602,7 +603,7 @@ const ReviewForm = (props) => {
 					onClick={() => {
 						navigateToClassPage(classID);
 					}}
-					>
+				>
 					ย้อนกลับ
 				</Button>
 			</FormTitle>
@@ -798,7 +799,12 @@ const ReviewForm = (props) => {
 			<PrimaryButton onClick={required}>รีวิวเลย !</PrimaryButton>
 			{isDone ? (
 				<Suspense>
-					<Alert close={handleCloseAlert} reviewId={savedReview.reviewId} classId={classID} classNameTH={savedReview.classNameTH} />
+					<Alert
+						close={handleCloseAlert}
+						reviewId={savedReview.reviewId}
+						classId={classID}
+						classNameTH={savedReview.classNameTH}
+					/>
 				</Suspense>
 			) : (
 				<Modal showModal={showReviewModal} closeModal={handleCloseAlert}>

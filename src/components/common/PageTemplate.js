@@ -1,3 +1,5 @@
+import Header from "./Header";
+import Helmet from "./Helmet";
 import { h } from "preact";
 import { route } from "preact-router";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
@@ -8,8 +10,6 @@ import { FetcherContext } from "../../context/FetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import { GoToTop } from "../utility/Icons";
-import Header from "./Header";
-import Helmet from "./Helmet";
 
 import "react-select/dist/react-select.css";
 import "react-virtualized-select/styles.css";

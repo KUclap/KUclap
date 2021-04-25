@@ -152,8 +152,7 @@ const QuestionHeader = (props) => {
 					)}
 				</span>
 			</QuestionHeaderContainer>
-			{
-				showReportModal &&
+			{showReportModal && (
 				<Modal showModal={showReportModal} closeModal={closeReportModal}>
 					เหตุผลในการแจ้งลบ
 					<WarningCustom>{reportReason.require ? "กรุณากรอกเหตุผลอย่างน้อย 10 ตัวอักษร" : ""}</WarningCustom>
@@ -169,12 +168,13 @@ const QuestionHeader = (props) => {
 						</ConfirmButton>
 					</ModalActions>
 				</Modal>
-			}
-			{
-				showDeleteModal &&
+			)}
+			{showDeleteModal && (
 				<Modal showModal={showDeleteModal} closeModal={closeDeleteModal}>
 					กรอกตัวเลข 4 หลักของคุณเพื่อลบคำถาม
-					<Warning>{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}</Warning>
+					<Warning>
+						{!auth.isMatch ? "ตัวเลขไม่ถูกต้อง" : "" || auth.require ? "กรุณากรอกตัวเลข" : ""}
+					</Warning>
 					<Input
 						type="text"
 						placeholder="ใส่ตัวเลข 4 หลัก"
@@ -189,7 +189,7 @@ const QuestionHeader = (props) => {
 						</ConfirmButton>
 					</ModalActions>
 				</Modal>
-			}
+			)}
 		</>
 	);
 };

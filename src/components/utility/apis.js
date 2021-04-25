@@ -186,9 +186,7 @@ const apis = {
 
 	getRecapsByClassId: async (classID, page, offset, next) => {
 		try {
-			const res = await api.get(
-				`/recaps/${classID}?page=${page}&offset=${offset}`
-			);
+			const res = await api.get(`/recaps/${classID}?page=${page}&offset=${offset}`);
 			next(res);
 		} catch (err) {
 			console.log(err);
@@ -217,7 +215,7 @@ const apis = {
 			next(err.response.data);
 		}
 	},
-	
+
 	// GET presigned url for download recap
 	getPresignDownloadRecapByRecapID: async (recapID /* , next */) => {
 		if (typeof window !== "undefined") {

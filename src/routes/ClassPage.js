@@ -1,42 +1,32 @@
 import { h } from "preact";
+import { route } from "preact-router";
 import { useContext, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
+import media from "styled-media-query";
 
-import { getHelmet } from "../components/utility/helmet";
-import { NoMoreCard, NoCard } from "../components/utility/Icons";
-import Footer from "../components/common/Footer";
-import PageTemplate from "../components/common/PageTemplate";
-import ReviewCard from "../components/common/ReviewCard";
-import QuestionCard from "../components/common/QuestionCard";
-
-import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
-
+import Footer from "../components/async/Footer";
+import NavigationBar from "../components/async/NavigationBar";
+import QuestionCard from "../components/async/QuestionCard";
+import QuestionModal from "../components/async/QuestionModal";
+import RecapCard from "../components/async/RecapCard";
+import ReviewCard from "../components/async/ReviewCard";
+import { PrimaryButton } from "../components/common/DesignSystemStyles";
 import Details from "../components/common/Detail";
 import {
-	// navigateToHomePage,
-	navigateToFormReviewPage,
-	getClassName,
-	getColorHash,
-	getDetailFromLabel,
-} from "../components/utility/helper";
-
-import { SelectContext } from "../context/SelectContext";
-
-import {
 	AdaptorReviews,
-	LastReview,
 	ContainerNoMore,
+	LastReview,
 	NoMoreCustom,
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
-import { PrimaryButton } from "../components/common/DesignSystemStyles";
-import QuestionModal from "../components/common/QuestionModal";
-import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
-import { route } from "preact-router";
-import RecapCard from "../components/common/RecapCard";
-import NavigationBar from "../components/common/NavigationBar";
-import media from "styled-media-query";
 import MenuUnderline from "../components/common/MenuUnderline";
+import PageTemplate from "../components/common/PageTemplate";
+import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
+import { getHelmet } from "../components/utility/helmet";
+import { getClassName, getColorHash, getDetailFromLabel, navigateToFormReviewPage } from "../components/utility/helper";
+import { NoCard, NoMoreCard } from "../components/utility/Icons";
+import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
+import { SelectContext } from "../context/SelectContext";
 
 const Button = styled.div`
 	background-color: #2f80ed;
@@ -70,8 +60,8 @@ const Button = styled.div`
 const ContainerBtns = styled.div`
 	margin: 0;
 	display: flex;
-	
-	${media.lessThan('410px')`
+
+	${media.lessThan("410px")`
 		display: none;
 	`}
 `;
@@ -86,7 +76,9 @@ const ReviewTitle = styled.div`
 const ClassPage = (props) => {
 	const { classID, fetchTarget, setFetchTarget } = props;
 	const { state: selected } = useContext(SelectContext);
-	const { reviews, score, loading, underflow, loadMore, setUnderFlow, questions, recaps } = useContext(FetcherContext);
+	const { reviews, score, loading, underflow, loadMore, setUnderFlow, questions, recaps } = useContext(
+		FetcherContext
+	);
 	const [showQuestionModal, setQuestionModal] = useState(false);
 
 	const handleNewReview = () => {
@@ -119,22 +111,21 @@ const ClassPage = (props) => {
 						{/* <ButtonLastReview onClick={navigateToHomePage}>
 							<HomeIcon />
 						</ButtonLastReview> */}
-						{(fetchTarget === "review" || fetchTarget === "recap") ? (
+						{fetchTarget === "review" || fetchTarget === "recap" ? (
 							<Button onClick={handleNewReview}>รีวิววิชานี้</Button>
 						) : (
 							<Button onClick={() => setQuestionModal(true)}>ถามคำถาม</Button>
 						)}
 					</ContainerBtns>
 				</ReviewTitle>
-				{
-					showQuestionModal && 
+				{showQuestionModal && (
 					<QuestionModal
 						classID={classID}
 						className={selected.label}
 						showQuestionModal={showQuestionModal}
 						setQuestionModal={setQuestionModal}
 					/>
-				}
+				)}
 				{fetchTarget === "review" ? (
 					<AdaptorReviews id="adaptor">
 						{reviews?.map(
@@ -145,7 +136,8 @@ const ClassPage = (props) => {
 				) : fetchTarget === "question" ? (
 					<AdaptorReviews id="adaptor-question">
 						{questions?.map(
-							(question, index) => question && <QuestionCard key={index} questionInfo={question} currentRoute="CLASS" />
+							(question, index) =>
+								question && <QuestionCard key={index} questionInfo={question} currentRoute="CLASS" />
 						)}
 					</AdaptorReviews>
 				) : (
@@ -167,16 +159,17 @@ const ClassPage = (props) => {
 						<>
 							<ContainerNoMore>
 								<NoMoreCustom>
-									{reviews.length > 0 ? 
+									{reviews.length > 0 ? (
 										<>
 											<span id="no-more">ไม่มีรีวิวเพิ่มเติม</span>
-											<NoMoreCard /> 
-										</> :
+											<NoMoreCard />
+										</>
+									) : (
 										<>
 											<span>ไม่มีรีวิว</span>
 											<NoCard />
 										</>
-									}
+									)}
 								</NoMoreCustom>
 								<PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
 							</ContainerNoMore>
@@ -190,17 +183,17 @@ const ClassPage = (props) => {
 						<>
 							<ContainerNoMore>
 								<NoMoreCustom>
-									{questions.length > 0 ? 
+									{questions.length > 0 ? (
 										<>
 											<span id="no-more">ไม่มีคำถามเพิ่มเติม</span>
-											<NoMoreCard /> 
+											<NoMoreCard />
 										</>
-										: 
+									) : (
 										<>
 											<span>ไม่มีคำถาม</span>
 											<NoCard />
 										</>
-									}
+									)}
 								</NoMoreCustom>
 								<PrimaryButton onClick={() => setQuestionModal(true)}>ถามคำถาม</PrimaryButton>
 							</ContainerNoMore>
@@ -214,17 +207,17 @@ const ClassPage = (props) => {
 						<>
 							<ContainerNoMore>
 								<NoMoreCustom>
-									{recaps.length > 0 ? 
+									{recaps.length > 0 ? (
 										<>
 											<span id="no-more">ไม่มีสรุปเพิ่มเติม</span>
-											<NoMoreCard /> 
+											<NoMoreCard />
 										</>
-										: 
+									) : (
 										<>
 											<span>ไม่มีสรุป</span>
 											<NoCard />
 										</>
-									}
+									)}
 								</NoMoreCustom>
 								<PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
 							</ContainerNoMore>
