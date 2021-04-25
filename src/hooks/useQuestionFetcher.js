@@ -15,7 +15,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 		page: 0,
 		offset: 5,
 	});
-
+	// console.log(underflow, loading, loadMore);
 	useEffect(() => {
 		// reference on the props
 		// We have to use ref instead state because eventlistener initial with context then the prop will not mutate when current state change
@@ -47,6 +47,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 			// setLoadMore(true);
 			setPaging({ ...paging, page: 0 });
 			setQuestions([]);
+			setLoading(false);
 			setUnderFlow(false);
 			setLoadMore(true);
 		}
@@ -66,7 +67,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setQuestions([...questions, ...data]);
-							if (data.length !== paging.offset) setUnderFlow(true);
+							// if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -79,23 +80,23 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setQuestions([...questions, ...data]);
-							if (data.length !== paging.offset) setUnderFlow(true);
+							// if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
 				}
 			}
-			setLoadMore(false);
 		}
+		setLoadMore(false);
 	}, [loadMore]);
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		const adaptor = document.getElementById("adaptor-question");
-		if (adaptor && typeof window !== "undefined") {
-			if (adaptor?.clientHeight <= window.innerHeight && !underflow && !loading && !loadMore) {
-				setLoadMore(true);
-			}
+		// const adaptor = document.getElementById("adaptor-question");
+		// if (adaptor && typeof window !== "undefined") {
+		// 	if (adaptor?.clientHeight <= window.innerHeight && adaptor?.clientHeight) {
+		if (!underflow && !loadMore && !loading && questions.length < paging.offset) {
+			setLoadMore(true);
 		}
 	}, [questions]);
 
@@ -112,7 +113,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 				setUnderFlow(true);
 			} else {
 				setQuestions(res.data);
-				setUnderFlow(false);
+				// setUnderFlow(false);
 			}
 			setLoading(false);
 		});

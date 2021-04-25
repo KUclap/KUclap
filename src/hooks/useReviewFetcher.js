@@ -70,7 +70,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setReviews([...reviews, ...data]);
-							if (data.length !== paging.offset) setUnderFlow(true);
+							// if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -83,7 +83,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 						} else {
 							setPaging({ ...paging, page: paging.page + 1 });
 							setReviews([...reviews, ...data]);
-							if (data.length !== paging.offset) setUnderFlow(true);
+							// if (data.length !== paging.offset) setUnderFlow(true);
 						}
 						setLoading(false);
 					});
@@ -95,11 +95,14 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 
 	// loading and fetch more when review a few.
 	useEffect(() => {
-		const adaptor = document.getElementById("adaptor");
-		if (adaptor && typeof window !== "undefined") {
-			if (adaptor?.clientHeight <= window.innerHeight && !underflow && !loading && !loadMore) {
-				setLoadMore(true);
-			}
+		// const adaptor = document.getElementById("adaptor");
+		// if (adaptor && typeof window !== "undefined") {
+		// 	if (adaptor?.clientHeight <= window.innerHeight && adaptor?.clientHeight) {
+		// 		setLoadMore(true);
+		// 	}
+		// }
+		if (!underflow && !loadMore && !loading && reviews.length < paging.offset) {
+			setLoadMore(true);
 		}
 	}, [reviews]);
 
