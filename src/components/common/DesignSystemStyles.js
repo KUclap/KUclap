@@ -37,13 +37,13 @@ const Button = styled.button`
   font-weight: 500;
   display: flex;
   align-items: center;
-  align-self: center;
   justify-content: center;
 `
 
 const PrimaryButton = styled(Button)`
 	background-color: ${blue};
   color: white;
+  align-self: center;
 
   &:active {
     background-color: ${blue};
@@ -195,10 +195,11 @@ const Warning = styled.div`
     font-size: 1.4rem;
 `
 
-const Subject = styled(PrimaryButton)`
+const Subject = styled(Button)`
 	display: block;
 	font-size: 1.4rem;
 	background: ${(props) => props.color};
+  color: white;
 	position: absolute;
 	transform: translateY(-2.4rem);
 	text-overflow: ellipsis;
