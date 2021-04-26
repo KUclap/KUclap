@@ -11,10 +11,6 @@ import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import { GoToTop } from "../utility/Icons";
 
-import "react-select/dist/react-select.css";
-import "react-virtualized-select/styles.css";
-import "react-virtualized/styles.css";
-
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
