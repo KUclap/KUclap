@@ -1,17 +1,16 @@
 import { Component, h } from "preact";
+// import AsyncRoute from "preact-async-route";
 import { Router } from "preact-router";
-
-import AsyncRoute from "preact-async-route";
 
 import * as themes from "./assets/themes";
 import baseroute from "./components/utility/baseroute";
 import GlobalComponent from "./components/utility/GlobalComponent";
 import withClasses from "./HOC/withClasses";
 import Provider from "./providers/AppProvider";
-// import ClassPage from "./routes/ClassPage";
-// import FormReviewCreatePage from "./routes/FormReviewCreatePage";
-// import HomePage from "./routes/HomePage";
-// import ReviewPage from "./routes/ReviewPage";
+import ClassPage from "./routes/ClassPage";
+import FormReviewCreatePage from "./routes/FormReviewCreatePage";
+import HomePage from "./routes/HomePage";
+import ReviewPage from "./routes/ReviewPage";
 
 class App extends Component {
 	/** Gets fired when the route changes.
@@ -60,7 +59,7 @@ class App extends Component {
 				<Provider theme={themes[this.state.theme]} {...this.props}>
 					<GlobalComponent />
 					<Router url={this.props.url} onChange={this.handleRoute}>
-						{/* <HomePage path={`${baseroute}/`} toggleTheme={this.toggleTheme} classes={classes} />
+						<HomePage path={`${baseroute}/`} toggleTheme={this.toggleTheme} classes={classes} />
 						<ClassPage path={`${baseroute}/:classID`} toggleTheme={this.toggleTheme} classes={classes} />
 						<FormReviewCreatePage
 							path={`${baseroute}/form/create/:classID`}
@@ -77,8 +76,8 @@ class App extends Component {
 							currentClass={
 								currentClass || (typeof window !== "undefined" && this.state.global?.currentClass)
 							}
-						/> */}
-						<AsyncRoute
+						/>
+						{/* <AsyncRoute
 							path={`${baseroute}/`}
 							toggleTheme={this.toggleTheme}
 							// component={HomePage}
@@ -113,7 +112,7 @@ class App extends Component {
 							currentClass={
 								currentClass || (typeof window !== "undefined" && this.state.global?.currentClass)
 							}
-						/>
+						/> */}
 					</Router>
 				</Provider>
 			</div>
