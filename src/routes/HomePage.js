@@ -3,13 +3,13 @@ import { route } from "preact-router";
 import { useContext, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
+import Footer from "../components/async/Footer";
+import { AdaptorReviews, ContainerNoMore, LastReview, NoMoreCustom } from "../components/common/FetcherComponents";
+import MenuUnderline from "../components/common/MenuUnderline";
+import PageTemplate from "../components/common/PageTemplate";
 import QuestionCard from "../components/common/QuestionCard";
 import RecapCard from "../components/common/RecapCard";
 import ReviewCard from "../components/common/ReviewCard";
-import { AdaptorReviews, ContainerNoMore, LastReview, NoMoreCustom } from "../components/common/FetcherComponents";
-import Footer from "../components/async/Footer";
-import MenuUnderline from "../components/common/MenuUnderline";
-import PageTemplate from "../components/common/PageTemplate";
 import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
 import { getHelmet } from "../components/utility/helmet";
 import { navigateToHomePage } from "../components/utility/helper";

@@ -1,11 +1,11 @@
-import CardActions from "./CardActions";
-import { BodyMedium, BodySmall, Subject } from "./DesignSystemStyles";
 import { h } from "preact";
 import styled, { withTheme } from "styled-components";
 
-import CardDetails from "./CardDetails";
 import APIs from "../utility/apis";
 import { getColorHash, navigateToClassPage } from "../utility/helper";
+import CardActions from "./CardActions";
+import CardDetails from "./CardDetails";
+import { BodyMedium, BodySmall, Subject } from "./DesignSystemStyles";
 
 const Container = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};

@@ -1,8 +1,3 @@
-import ReviewCard from "../components/common/ReviewCard";
-import { h } from "preact";
-import { useContext, useEffect, useState } from "preact/hooks";
-import styled, { withTheme } from "styled-components";
-
 import Footer from "../components/async/Footer";
 import { blue_75, grey_75 } from "../components/common/Colors";
 import Details from "../components/common/Detail";
@@ -15,6 +10,7 @@ import {
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
 import PageTemplate from "../components/common/PageTemplate";
+import ReviewCard from "../components/common/ReviewCard";
 import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
 import APIs from "../components/utility/apis";
 import { getHelmet } from "../components/utility/helmet";
@@ -22,6 +18,9 @@ import { getClassName, getColorHash, navigateToClassPage, navigateToHomePage } f
 import { HomeIcon, NoMoreCard } from "../components/utility/Icons";
 import { FetcherProvider } from "../context/FetcherContext";
 import { SelectContext } from "../context/SelectContext";
+import { h } from "preact";
+import { useContext, useEffect, useState } from "preact/hooks";
+import styled, { withTheme } from "styled-components";
 
 const Button = styled.div`
 	background-color: hsl(145, 63%, 42%);
