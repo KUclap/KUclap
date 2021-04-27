@@ -1,7 +1,6 @@
 import { Component, h } from "preact";
+// import AsyncRoute from "preact-async-route";
 import { Router } from "preact-router";
-
-// import AsyncRoute from 'preact-async-route';
 
 import * as themes from "./assets/themes";
 import baseroute from "./components/utility/baseroute";
@@ -81,25 +80,31 @@ class App extends Component {
 						{/* <AsyncRoute
 							path={`${baseroute}/`}
 							toggleTheme={this.toggleTheme}
-							component={HomePage}
+							// component={HomePage}
+							getComponent={() => import("./routes/HomePage").then((module) => module.default)}
 							classes={classes}
 						/>
 						<AsyncRoute
 							path={`${baseroute}/:classID`}
 							toggleTheme={this.toggleTheme}
-							component={ClassPage}
+							// component={ClassPage}
+							getComponent={() => import("./routes/ClassPage").then((module) => module.default)}
 							classes={classes}
 						/>
 						<AsyncRoute
 							path={`${baseroute}/form/create/:classID`}
 							toggleTheme={this.toggleTheme}
-							component={FormReviewCreatePage}
+							// component={FormReviewCreatePage}
+							getComponent={() =>
+								import("./routes/FormReviewCreatePage").then((module) => module.default)
+							}
 							classes={classes}
 						/>
 						<AsyncRoute
 							path={`${baseroute}/review/:reviewID`}
 							toggleTheme={this.toggleTheme}
-							component={ReviewPage}
+							// component={ReviewPage}
+							getComponent={() => import("./routes/ReviewPage").then((module) => module.default)}
 							classes={classes}
 							currentReview={
 								currentReview || (typeof window !== "undefined" && this.state.global?.currentReview)

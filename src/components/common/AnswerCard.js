@@ -2,11 +2,11 @@ import { useState } from "preact/hooks";
 import styled from "styled-components";
 
 import useReportAnswer from "../../hooks/useReportAnswer";
-import { ModalActions, Warning, WhiteCircularProgress } from "../common/DesignSystemStyles";
-import MenuPopup, { MenuItemCustom } from "../common/MenuPopup";
-import Modal, { CancelButton, ConfirmButton, ReportField } from "../common/Modal";
 import { timeDifference } from "../utility/helper";
 import { ThreeDots } from "../utility/Icons";
+import { ModalActions, Warning, WhiteCircularProgress } from "./DesignSystemStyles";
+import MenuPopup, { MenuItemCustom } from "./MenuPopup";
+import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal";
 
 const AnswerCardContainer = styled.div`
 	background: ${(props) => props.theme.lightBlueBackground};

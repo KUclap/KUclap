@@ -2,8 +2,8 @@ import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import styled from "styled-components";
 
-import AnswerCard from "../async/AnswerCard";
 import APIs from "../utility/apis";
+import AnswerCard from "./AnswerCard";
 import { AnswerSkeletonA, AnswerSkeletonB } from "./QuestionSkeleton";
 
 const AnswerListContainer = styled.div`
