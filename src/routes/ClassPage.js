@@ -6,10 +6,7 @@ import media from "styled-media-query";
 
 import Footer from "../components/async/Footer";
 import NavigationBar from "../components/async/NavigationBar";
-import QuestionCard from "../components/common/QuestionCard";
 import QuestionModal from "../components/async/QuestionModal";
-import RecapCard from "../components/async/RecapCard";
-import ReviewCard from "../components/async/ReviewCard";
 import { PrimaryButton } from "../components/common/DesignSystemStyles";
 import Details from "../components/common/Detail";
 import {
@@ -21,6 +18,9 @@ import {
 } from "../components/common/FetcherComponents";
 import MenuUnderline from "../components/common/MenuUnderline";
 import PageTemplate from "../components/common/PageTemplate";
+import QuestionCard from "../components/common/QuestionCard";
+import RecapCard from "../components/common/RecapCard";
+import ReviewCard from "../components/common/ReviewCard";
 import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
 import { getHelmet } from "../components/utility/helmet";
 import { getClassName, getColorHash, getDetailFromLabel, navigateToFormReviewPage } from "../components/utility/helper";
@@ -39,7 +39,6 @@ const Button = styled.div`
 	cursor: pointer;
 	white-space: nowrap;
 `;
-
 // const ButtonLastReview = styled(SecondaryButton)`
 // 	margin-right: 1rem;
 // 	box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};

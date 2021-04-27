@@ -4,8 +4,8 @@ import { useContext, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
 import QuestionCard from "../components/common/QuestionCard";
-import RecapCard from "../components/async/RecapCard";
-import ReviewCard from "../components/async/ReviewCard";
+import RecapCard from "../components/common/RecapCard";
+import ReviewCard from "../components/common/ReviewCard";
 import { AdaptorReviews, ContainerNoMore, LastReview, NoMoreCustom } from "../components/common/FetcherComponents";
 import Footer from "../components/async/Footer";
 import MenuUnderline from "../components/common/MenuUnderline";

@@ -1,30 +1,27 @@
+import ReviewCard from "../components/common/ReviewCard";
 import { h } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
-import { getHelmet } from "../components/utility/helmet";
-import { NoMoreCard, HomeIcon } from "../components/utility/Icons";
-import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
-import APIs from "../components/utility/apis";
-import Details from "../components/common/Detail";
 import Footer from "../components/async/Footer";
-import PageTemplate from "../components/common/PageTemplate";
-import ReviewCard from "../components/async/ReviewCard";
-
-import { navigateToClassPage, navigateToHomePage, getClassName, getColorHash } from "../components/utility/helper";
-
-import { SelectContext } from "../context/SelectContext";
-
+import { blue_75, grey_75 } from "../components/common/Colors";
+import Details from "../components/common/Detail";
 import {
-	DetailTitle,
 	AdaptorReviews,
-	LastReview,
 	ContainerNoMore,
+	DetailTitle,
+	LastReview,
 	NoMoreCustom,
 	SubjectTitle,
 } from "../components/common/FetcherComponents";
-import { blue_75, grey_75 } from "../components/common/Colors";
+import PageTemplate from "../components/common/PageTemplate";
+import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
+import APIs from "../components/utility/apis";
+import { getHelmet } from "../components/utility/helmet";
+import { getClassName, getColorHash, navigateToClassPage, navigateToHomePage } from "../components/utility/helper";
+import { HomeIcon, NoMoreCard } from "../components/utility/Icons";
 import { FetcherProvider } from "../context/FetcherContext";
+import { SelectContext } from "../context/SelectContext";
 
 const Button = styled.div`
 	background-color: hsl(145, 63%, 42%);

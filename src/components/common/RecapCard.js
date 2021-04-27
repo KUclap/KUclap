@@ -4,7 +4,10 @@ import styled from "styled-components";
 import { FetcherContext } from "../../context/FetcherContext";
 import useDeleteRecap from "../../hooks/useDeleteRecap";
 import useReportRecap from "../../hooks/useReportRecap";
-import { blue, grey_50 } from "../common/Colors";
+import APIs from "../utility/apis";
+import { getColorHash, navigateToClassPage, navigateToReviewPage, parseDate } from "../utility/helper";
+import { Download, ThreeDots } from "../utility/Icons";
+import { blue, grey_50 } from "./Colors";
 import {
 	BodySmall,
 	Input,
@@ -13,12 +16,9 @@ import {
 	Subject,
 	Warning,
 	WhiteCircularProgress,
-} from "../common/DesignSystemStyles";
-import MenuPopup, { MenuItemCustom } from "../common/MenuPopup";
-import Modal, { CancelButton, ConfirmButton, ReportField } from "../common/Modal";
-import APIs from "../utility/apis";
-import { getColorHash, navigateToClassPage, navigateToReviewPage, parseDate } from "../utility/helper";
-import { Download, ThreeDots } from "../utility/Icons";
+} from "./DesignSystemStyles";
+import MenuPopup, { MenuItemCustom } from "./MenuPopup";
+import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal";
 
 const RecapCardContainer = styled.div`
 	border: 0.2rem solid ${(props) => props.theme.borderColor};
