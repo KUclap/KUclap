@@ -1,9 +1,9 @@
 import { h } from "preact";
+import { Suspense, lazy } from "preact/compat";
 import { route } from "preact-router";
 import { useContext, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
-
-import QuestionCard from "../components/async/QuestionCard";
+// import QuestionCard from "../components/async/QuestionCard";
 import RecapCard from "../components/async/RecapCard";
 import ReviewCard from "../components/async/ReviewCard";
 import { AdaptorReviews, ContainerNoMore, LastReview, NoMoreCustom } from "../components/common/FetcherComponents";
@@ -15,6 +15,8 @@ import { getHelmet } from "../components/utility/helmet";
 import { navigateToHomePage } from "../components/utility/helper";
 import { NoCard, NoMoreCard } from "../components/utility/Icons";
 import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
+
+const QuestionCard = lazy(() => import("../components/async/QuestionCard"));
 
 const HomeTitle = styled.div`
 	width: fit-content;
@@ -52,12 +54,14 @@ const HomePage = (props) => {
 						{questions?.map(
 							(question, index) =>
 								question && (
-									<QuestionCard
-										isBadge={true}
-										key={index}
-										questionInfo={question}
-										currentRoute="HOME"
-									/>
+									<Suspense fallback={<ReviewSkeletonB />}>
+										<QuestionCard
+											isBadge={true}
+											key={index}
+											questionInfo={question}
+											currentRoute="HOME"
+										/>
+									</Suspense>
 								)
 						)}
 					</AdaptorReviews>
