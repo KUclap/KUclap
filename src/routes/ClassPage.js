@@ -6,7 +6,7 @@ import media from "styled-media-query";
 
 import Footer from "../components/async/Footer";
 import NavigationBar from "../components/async/NavigationBar";
-import QuestionCard from "../components/async/QuestionCard";
+import QuestionCard from "../components/common/QuestionCard";
 import QuestionModal from "../components/async/QuestionModal";
 import RecapCard from "../components/async/RecapCard";
 import ReviewCard from "../components/async/ReviewCard";

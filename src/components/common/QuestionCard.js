@@ -2,10 +2,10 @@ import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
-import AnswerList from "../common/AnswerList";
-import { blue_75, red } from "../common/Colors";
-import { BodySmall, Subject, WhiteCircularProgress } from "../common/DesignSystemStyles";
-import QuestionHeader from "../common/QuestionHeader";
+import AnswerList from "./AnswerList";
+import { blue_75, red } from "./Colors";
+import { BodySmall, Subject, WhiteCircularProgress } from "./DesignSystemStyles";
+import QuestionHeader from "./QuestionHeader";
 import APIs from "../utility/apis";
 import { getColorHash, navigateToClassPage } from "../utility/helper";
 import { DownArrow, RightArrow } from "../utility/Icons";

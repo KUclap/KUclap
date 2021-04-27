@@ -1,17 +1,17 @@
 import { Component, h } from "preact";
 import { Router } from "preact-router";
 
-// import AsyncRoute from 'preact-async-route';
+import AsyncRoute from "preact-async-route";
 
 import * as themes from "./assets/themes";
 import baseroute from "./components/utility/baseroute";
 import GlobalComponent from "./components/utility/GlobalComponent";
 import withClasses from "./HOC/withClasses";
 import Provider from "./providers/AppProvider";
-import ClassPage from "./routes/ClassPage";
-import FormReviewCreatePage from "./routes/FormReviewCreatePage";
-import HomePage from "./routes/HomePage";
-import ReviewPage from "./routes/ReviewPage";
+// import ClassPage from "./routes/ClassPage";
+// import FormReviewCreatePage from "./routes/FormReviewCreatePage";
+// import HomePage from "./routes/HomePage";
+// import ReviewPage from "./routes/ReviewPage";
 
 class App extends Component {
 	/** Gets fired when the route changes.
@@ -60,7 +60,7 @@ class App extends Component {
 				<Provider theme={themes[this.state.theme]} {...this.props}>
 					<GlobalComponent />
 					<Router url={this.props.url} onChange={this.handleRoute}>
-						<HomePage path={`${baseroute}/`} toggleTheme={this.toggleTheme} classes={classes} />
+						{/* <HomePage path={`${baseroute}/`} toggleTheme={this.toggleTheme} classes={classes} />
 						<ClassPage path={`${baseroute}/:classID`} toggleTheme={this.toggleTheme} classes={classes} />
 						<FormReviewCreatePage
 							path={`${baseroute}/form/create/:classID`}
@@ -77,29 +77,35 @@ class App extends Component {
 							currentClass={
 								currentClass || (typeof window !== "undefined" && this.state.global?.currentClass)
 							}
-						/>
-						{/* <AsyncRoute
+						/> */}
+						<AsyncRoute
 							path={`${baseroute}/`}
 							toggleTheme={this.toggleTheme}
-							component={HomePage}
+							// component={HomePage}
+							getComponent={() => import("./routes/HomePage").then((module) => module.default)}
 							classes={classes}
 						/>
 						<AsyncRoute
 							path={`${baseroute}/:classID`}
 							toggleTheme={this.toggleTheme}
-							component={ClassPage}
+							// component={ClassPage}
+							getComponent={() => import("./routes/ClassPage").then((module) => module.default)}
 							classes={classes}
 						/>
 						<AsyncRoute
 							path={`${baseroute}/form/create/:classID`}
 							toggleTheme={this.toggleTheme}
-							component={FormReviewCreatePage}
+							// component={FormReviewCreatePage}
+							getComponent={() =>
+								import("./routes/FormReviewCreatePage").then((module) => module.default)
+							}
 							classes={classes}
 						/>
 						<AsyncRoute
 							path={`${baseroute}/review/:reviewID`}
 							toggleTheme={this.toggleTheme}
-							component={ReviewPage}
+							// component={ReviewPage}
+							getComponent={() => import("./routes/ReviewPage").then((module) => module.default)}
 							classes={classes}
 							currentReview={
 								currentReview || (typeof window !== "undefined" && this.state.global?.currentReview)
@@ -107,7 +113,7 @@ class App extends Component {
 							currentClass={
 								currentClass || (typeof window !== "undefined" && this.state.global?.currentClass)
 							}
-						/> */}
+						/>
 					</Router>
 				</Provider>
 			</div>

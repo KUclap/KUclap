@@ -3,7 +3,7 @@ import { route } from "preact-router";
 import { useContext, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
 
-import QuestionCard from "../components/async/QuestionCard";
+import QuestionCard from "../components/common/QuestionCard";
 import RecapCard from "../components/async/RecapCard";
 import ReviewCard from "../components/async/ReviewCard";
 import { AdaptorReviews, ContainerNoMore, LastReview, NoMoreCustom } from "../components/common/FetcherComponents";
