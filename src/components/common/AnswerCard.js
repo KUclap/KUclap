@@ -17,6 +17,7 @@ const AnswerCardContainer = styled.div`
 	flex-direction: column;
 	white-space: pre-line;
 	overflow-wrap: break-word;
+	word-break: break-word;
 `;
 
 const AnswerDetailsContainer = styled.div`

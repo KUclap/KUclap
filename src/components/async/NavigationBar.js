@@ -15,7 +15,7 @@ const NavBarContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 
-	${media.greaterThan("411px")`
+	${media.greaterThan("461px")`
 		display: none;
 	`}
 

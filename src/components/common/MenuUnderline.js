@@ -32,7 +32,7 @@ const TabLine = styled.div`
 					left: 4.8rem;
                 ` : css`
 					width: 9.4rem;
-					left: 11.7rem;
+					left: 11.8rem;
                 `
             ) : (props.underlineAt === "review"
                 ? css`
@@ -44,7 +44,7 @@ const TabLine = styled.div`
                     left: 4.8rem;
                 ` : css`
                     width: 10.8rem;
-                    left: 11.7rem;
+                    left: 11.8rem;
                 `
             )
         }
