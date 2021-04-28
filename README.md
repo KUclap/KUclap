@@ -5,7 +5,8 @@
     <img src="logo.png" alt="Logo" width="125" height="125">
   </a>
 <div align="center">
-  <h3 align="center">KUclap Back-End</h3>
+  <h3 align="center">KUclap Front-End</h3>
+</div>
 
 # KUclap
 
