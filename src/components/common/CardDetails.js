@@ -7,8 +7,8 @@ import useDeleteReview from "../../hooks/useDeleteReview";
 import useReportReview from "../../hooks/useReportReview";
 import APIs from "../utility/apis";
 import { navigateToReviewPage, parseDate } from "../utility/helper";
-import { DownArrow, GradeCircle, Recap } from "../utility/Icons";
-import { blue } from "./Colors";
+import { DownArrow, Facebook, GradeCircle, Recap, Twitter, WarningIcon } from "../utility/Icons";
+import { blue, grey_20, red } from "./Colors";
 import {
 	BodyTiny,
 	Input,
@@ -21,6 +21,8 @@ import {
 import MenuPopup, { MenuContent, MenuContentContainer, MenuItemCustom } from "./MenuPopup";
 import Modal, { CancelButton, ConfirmButton, ReportField } from "./Modal";
 
+import Menu from "@material-ui/core/Menu";
+
 const DetailsContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -28,6 +30,7 @@ const DetailsContainer = styled.div`
 	text-align: right;
 	margin-left: 0.3rem;
 	width: 100%;
+	position: relative;
 `;
 
 const SubDetail = styled.div`
@@ -41,6 +44,32 @@ const SubDetail = styled.div`
 
 	button {
 		margin-left: 0.3rem;
+	}
+`;
+
+const ReportedWarning = styled.button`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	> svg {
+		width: 1.8rem;
+		height: 1.8rem;
+
+		path {
+			fill: ${red};
+		}
+	}
+`
+
+const SocialIcon = styled.a`
+	cursor: pointer;
+	user-select: none;
+	margin-left: 0.4rem;
+
+	> svg {
+		height: 1.8rem;
+		width: 1.8rem;
 	}
 `;
 
@@ -98,11 +127,41 @@ const ButtonWithIcon = styled(PrimaryButton)`
 	}
 `;
 
+const MenuCustom = styled(Menu)`
+	.MuiPaper-elevation0 {
+		background: hsl(0, 79%, 95%);
+		margin-top: 0.4rem;
+		color: ${grey_20};
+		width: 80%;
+		max-width: 36rem;
+	}
+
+	.MuiList-root {
+		display: flex;
+		flex-direction: column;
+		font-weight: 500;
+		font-size: 1.2rem;
+		
+		> div {
+			margin-top: 0.2rem;
+			font-size: 1.1rem;
+			font-weight: 400;
+			display: inline;
+			align-self: flex-end;
+		}
+	}
+
+	.MuiList-padding {
+		padding: 0.8rem;
+	}
+`;
+
 const CardDetails = (props) => {
-	const { reviewId, classId, currentRoute, recapId, author, grade, semester, year, createdAt, sec } = props;
+	const { reviewId, classId, currentRoute, recapId, author, grade, semester, year, createdAt, sec, reported, deleteReason } = props;
 
 	const [showEditModal, setEditModal] = useState(false);
 	const [showReportModal, setReportModal] = useState(false);
+	const [reportedText, setReportedText] = useState(null);
 	const { handleCardDeleted } = useContext(FetcherContext);
 
 	const [menu, setMenu] = useState(null);
@@ -177,90 +236,139 @@ const CardDetails = (props) => {
 		<DetailsContainer>
 			<SubDetail>
 				<BodyTiny>โดย {author}</BodyTiny>
-				<Grade>
-					<span>{grade}</span>
-					<GradeCircle />
-				</Grade>
+				{
+					!deleteReason &&
+					<Grade>
+						<span>{grade}</span>
+						<GradeCircle />
+					</Grade>
+				}
 			</SubDetail>
-			<SubDetail>
-				{recapId && (
-					<ButtonWithIcon onClick={handleOpenRecapLink}>
-						<BodyTiny>ชีทสรุป</BodyTiny>
-						<Recap />
-					</ButtonWithIcon>
-				)}
-				<MoreButton
-					type="report"
-					aria-controls="more-menu"
-					aria-haspopup="true"
-					onClick={(e) => setMenu(e.currentTarget)}
-					fullButton={!recapId}
-				>
-					{!recapId && <BodyTiny>เพิ่มเติม</BodyTiny>}
-					<DownArrow />
-				</MoreButton>
-				{menu && (
-					<MenuPopup menu={menu} setMenu={setMenu}>
-						<MenuContentContainer>
-							{sec !== 0 && (
-								<MenuContent>
-									<span>หมู่เรียน (เซค)</span>
-									<span>{sec}</span>
-								</MenuContent>
-							)}
-							{semester !== 0 && (
-								<MenuContent>
-									<span>ภาคเรียน</span>
+			{
+				!deleteReason &&
+				<SubDetail>
+					{reported && (<>
+						<ReportedWarning 
+							aria-controls="reported-text"
+							aria-haspopup="true"
+							onClick={(e) => setReportedText(e.currentTarget)} 
+						>
+							<WarningIcon />
+						</ReportedWarning>
+						{reportedText && (
+							<MenuCustom
+								elevation={0}
+								getContentAnchorEl={null}
+								transformOrigin={{
+									vertical: "top",
+									horizontal: "center",
+								}}
+								anchorOrigin={{
+									vertical: "bottom",
+									horizontal: "right",
+								}}
+								id="reported-text"
+								anchorEl={reportedText}
+								open={Boolean(reportedText)}
+								onClose={() => setReportedText(null)}
+								keepMounted
+							>
+								รีวิวนี้ถูกแจ้งลบเพราะข้อมูลบางอย่างไม่ถูกต้อง 
+								โปรดศึกษารีวิวอื่น ๆ ประกอบการพิจารณา 
+								รีวิวจะถูกลบเมื่อผู้ดูแลเห็นสมควร 
+								<div>
+									หากต้องการข้อมูลเพิ่มเติมติดต่อ KUclap ที่
 									<span>
-										{
-											{
-												1: "ต้น",
-												2: "ปลาย",
-												3: "ฤดูร้อน",
-											}[semester]
-										}
+										<SocialIcon href="https://fb.com/kuclap/" target="_blank" rel="noopener noreferrer">
+											<Facebook />
+										</SocialIcon>
+										<SocialIcon href="https://twitter.com/KUclapOfficial" target="_blank" rel="noopener noreferrer">
+											<Twitter />
+										</SocialIcon>
 									</span>
-								</MenuContent>
-							)}
-							{year !== 0 && (
+								</div>
+							</MenuCustom>
+						)}
+					</>)}
+					{recapId && (
+						<ButtonWithIcon onClick={handleOpenRecapLink}>
+							<BodyTiny>ชีทสรุป</BodyTiny>
+							<Recap />
+						</ButtonWithIcon>
+					)}
+					<MoreButton
+						type="report"
+						aria-controls="more-menu"
+						aria-haspopup="true"
+						onClick={(e) => setMenu(e.currentTarget)}
+						fullButton={!recapId}
+					>
+						{!recapId && <BodyTiny>เพิ่มเติม</BodyTiny>}
+						<DownArrow />
+					</MoreButton>
+					{menu && (
+						<MenuPopup menu={menu} setMenu={setMenu}>
+							<MenuContentContainer>
+								{sec !== 0 && (
+									<MenuContent>
+										<span>หมู่เรียน (เซค)</span>
+										<span>{sec}</span>
+									</MenuContent>
+								)}
+								{semester !== 0 && (
+									<MenuContent>
+										<span>ภาคเรียน</span>
+										<span>
+											{
+												{
+													1: "ต้น",
+													2: "ปลาย",
+													3: "ฤดูร้อน",
+												}[semester]
+											}
+										</span>
+									</MenuContent>
+								)}
+								{year !== 0 && (
+									<MenuContent>
+										<span>ปีการศึกษา</span>
+										<span>{year}</span>
+									</MenuContent>
+								)}
+								{/* {recapId && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
 								<MenuContent>
-									<span>ปีการศึกษา</span>
-									<span>{year}</span>
+									<span>รีวิวเมื่อ</span>
+									<span>{parseDate(createdAt)}</span>
 								</MenuContent>
-							)}
-							{/* {recapId && <MenuContent><span>สรุปถูกดาวน์โหลด</span><span>0</span></MenuContent>} */}
-							<MenuContent>
-								<span>รีวิวเมื่อ</span>
-								<span>{parseDate(createdAt)}</span>
-							</MenuContent>
-						</MenuContentContainer>
-						<MenuItemCustom
-							onClick={() => {
-								setMenu(null);
-								navigateToReviewPage(reviewId);
-							}}
-						>
-							ดูรีวิวนี้
-						</MenuItemCustom>
-						<MenuItemCustom
-							onClick={() => {
-								setMenu(null);
-								setReportModal(true);
-							}}
-						>
-							แจ้งลบ
-						</MenuItemCustom>
-						<MenuItemCustom
-							onClick={() => {
-								setMenu(null);
-								setEditModal(true);
-							}}
-						>
-							ลบรีวิว
-						</MenuItemCustom>
-					</MenuPopup>
-				)}
-			</SubDetail>
+							</MenuContentContainer>
+							<MenuItemCustom
+								onClick={() => {
+									setMenu(null);
+									navigateToReviewPage(reviewId);
+								}}
+							>
+								ดูรีวิวนี้
+							</MenuItemCustom>
+							<MenuItemCustom
+								onClick={() => {
+									setMenu(null);
+									setReportModal(true);
+								}}
+							>
+								แจ้งลบ
+							</MenuItemCustom>
+							<MenuItemCustom
+								onClick={() => {
+									setMenu(null);
+									setEditModal(true);
+								}}
+							>
+								ลบรีวิว
+							</MenuItemCustom>
+						</MenuPopup>
+					)}
+				</SubDetail>
+			}
 			{showReportModal && (
 				<Modal showModal={showReportModal} closeModal={closeReportModal}>
 					เหตุผลในการแจ้งลบ

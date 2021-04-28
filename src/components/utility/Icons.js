@@ -585,6 +585,14 @@ const Heart = ({ id }) => (
 	</svg>
 );
 
+const WarningIcon = () => (
+	<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M28 52C41.2548 52 52 41.2548 52 28C52 14.7452 41.2548 4 28 4C14.7452 4 4 14.7452 4 28C4 41.2548 14.7452 52 28 52ZM28 56C43.464 56 56 43.464 56 28C56 12.536 43.464 0 28 0C12.536 0 0 12.536 0 28C0 43.464 12.536 56 28 56Z" fill="#EEA99A" />
+		<path d="M25 13C25 11.3431 26.3431 10 28 10C29.6569 10 31 11.3431 31 13V33C31 34.6569 29.6569 36 28 36C26.3431 36 25 34.6569 25 33V13Z" fill="#EEA99A" />
+		<path d="M25 43C25 41.3431 26.3431 40 28 40C29.6569 40 31 41.3431 31 43C31 44.6569 29.6569 46 28 46C26.3431 46 25 44.6569 25 43Z" fill="#EEA99A" />
+	</svg>
+)
+
 export {
 	Clap,
 	Boo,
@@ -623,4 +631,5 @@ export {
 	SmallBubble,
 	LargeBubble,
 	Heart,
+	WarningIcon
 };
