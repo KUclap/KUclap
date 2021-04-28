@@ -17,7 +17,7 @@ const LastReview = styled.div`
   width: 86%;
   margin: 0 2.4rem;
 
-  ${media.lessThan('410px')`
+  ${media.lessThan('460px')`
 		margin-bottom: 2.4rem;
 	`}
 `;

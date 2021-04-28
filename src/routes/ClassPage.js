@@ -7,7 +7,7 @@ import media from "styled-media-query";
 import Footer from "../components/async/Footer";
 import NavigationBar from "../components/async/NavigationBar";
 import QuestionModal from "../components/async/QuestionModal";
-import { PrimaryButton } from "../components/common/DesignSystemStyles";
+import { PrimaryButton, SecondaryButton } from "../components/common/DesignSystemStyles";
 import Details from "../components/common/Detail";
 import {
 	AdaptorReviews,
@@ -23,8 +23,8 @@ import RecapCard from "../components/common/RecapCard";
 import ReviewCard from "../components/common/ReviewCard";
 import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
 import { getHelmet } from "../components/utility/helmet";
-import { getClassName, getColorHash, getDetailFromLabel, navigateToFormReviewPage } from "../components/utility/helper";
-import { NoCard, NoMoreCard } from "../components/utility/Icons";
+import { getClassName, getColorHash, getDetailFromLabel, navigateToFormReviewPage, navigateToHomePage } from "../components/utility/helper";
+import { HomeIcon, NoCard, NoMoreCard } from "../components/utility/Icons";
 import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
 import { SelectContext } from "../context/SelectContext";
 
@@ -39,28 +39,29 @@ const Button = styled.div`
 	cursor: pointer;
 	white-space: nowrap;
 `;
-// const ButtonLastReview = styled(SecondaryButton)`
-// 	margin-right: 1rem;
-// 	box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
-// 	padding: 0.2rem 1rem;
-// 	align-self: unset;
 
-// 	svg {
-// 		path {
-// 			stroke: ${(props) => props.theme.subText};
-// 		}
-// 	}
+const ButtonLastReview = styled(SecondaryButton)`
+	margin-right: 1rem;
+	box-shadow: inset 0 0 0 0.1rem ${(props) => props.theme.subText};
+	padding: 0.2rem 1rem;
+	align-self: unset;
 
-// 	&:hover {
-// 		background: ${(props) => props.theme.lightBackground};
-// 	}
-// `;
+	svg {
+		path {
+			stroke: ${(props) => props.theme.subText};
+		}
+	}
+
+	&:hover {
+		background: ${(props) => props.theme.lightBackground};
+	}
+`;
 
 const ContainerBtns = styled.div`
 	margin: 0;
 	display: flex;
 
-	${media.lessThan("410px")`
+	${media.lessThan("460px")`
 		display: none;
 	`}
 `;
@@ -107,9 +108,9 @@ const ClassPage = (props) => {
 				<ReviewTitle>
 					<MenuUnderline fetchTarget={fetchTarget} changeTab={changeTab} />
 					<ContainerBtns>
-						{/* <ButtonLastReview onClick={navigateToHomePage}>
+						<ButtonLastReview onClick={navigateToHomePage}>
 							<HomeIcon />
-						</ButtonLastReview> */}
+						</ButtonLastReview>
 						{fetchTarget === "review" || fetchTarget === "recap" ? (
 							<Button onClick={handleNewReview}>รีวิววิชานี้</Button>
 						) : (
