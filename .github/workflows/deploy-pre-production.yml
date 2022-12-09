@@ -13,7 +13,7 @@ jobs:
       - name: Web Preact - Publish to Github Packages Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
-          GIT_ACCESS_TOKEN_CURL_CONFIG: ${{ secrets.GIT_ACCESS_TOKEN_CURL_CONFIG }}
+          GIT_ACCESS_TOKEN_CURL_CONFIG: ${{ secrets.GIT_ACCESS_TOKEN_CURL_CONFIG_WEB_KUCLAP }}
         with:
           name: kuclap/kuclap/kuclap-pre-prod-web
           registry: docker.pkg.github.com
