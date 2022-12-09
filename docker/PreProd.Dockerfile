@@ -20,7 +20,7 @@ RUN npm run build:server
 FROM node:16.16.0-slim
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/node_modules node_modules/
-COPY --from=builder /usr/src/app/.env.* .
+COPY --from=builder /usr/src/app/.env.preproduction .
 COPY --from=builder /usr/src/app/build build/
 COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/package.json .
