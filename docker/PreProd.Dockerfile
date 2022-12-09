@@ -10,9 +10,7 @@ COPY server server/
 COPY .babelrc ./
 
 # Curl config
-RUN curl -o .env.preproduction https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/KUclap/_ENV/main/env/kuclap-frontend/.env.preproduction && ls .env.preproduction
-RUN source .env.preproduction
-RUN echo $ENV_KU_CLAP
+RUN curl -o .env.preproduction https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/KUclap/_ENV/main/env/kuclap-frontend/.env.preproduction
 
 RUN npm ci
 RUN npm run build:preprod_prd
@@ -28,4 +26,6 @@ COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/package.json .
 
 EXPOSE 8088 8088
+
+RUN ls .env.preproduction
 CMD [ "npm", "run", "start:server-preprod"]
