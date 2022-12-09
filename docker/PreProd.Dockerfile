@@ -1,4 +1,4 @@
-FROM node:14.2 as builder
+FROM node:16.16.0 as builder
 WORKDIR /usr/src/app
 
 ARG GIT_ACCESS_TOKEN_CURL_CONFIG
@@ -17,7 +17,7 @@ RUN npm run build:preprod_prd
 RUN npm run build:server
 
 # Starting stage
-FROM node:14.2-slim
+FROM node:16.16.0-slim
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/node_modules node_modules/
 COPY --from=builder /usr/src/app/.env.* .
@@ -27,5 +27,4 @@ COPY --from=builder /usr/src/app/package.json .
 
 EXPOSE 8088 8088
 
-RUN ls .env.preproduction
 CMD [ "npm", "run", "start:server-preprod"]

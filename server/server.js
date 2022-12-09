@@ -1,5 +1,5 @@
 // import "module-alias/register"
-import { basename } from "path";
+import path, { basename } from "path";
 import compression from "compression";
 import dotenv from "dotenv";
 import polka from "polka";
@@ -10,7 +10,7 @@ import ReviewEndpoint from "./src/controllers/review.controller";
 import SitemapClassEndpoint from "./src/controllers/sitemap.classes.controller";
 import SitemapReviewEndpoint from "./src/controllers/sitemap.reviews.controller";
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: path.resolve(__dirname, `../.env.${process.env.NODE_ENV}`) });
 
 const { PORT, ENV_KU_CLAP } = process.env;
 
