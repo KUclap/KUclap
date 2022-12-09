@@ -27,4 +27,6 @@ COPY --from=builder /usr/src/app/package.json .
 
 EXPOSE 8088 8088
 
+RUN cat .env.preproduction && ls .env.preproduction
+
 CMD [ "npm", "run", "start:server-preprod"]
