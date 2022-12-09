@@ -10,6 +10,7 @@ import { FetcherContext } from "../../context/FetcherContext";
 import { SelectContext } from "../../context/SelectContext";
 import baseroute from "../utility/baseroute";
 import { GoToTop } from "../utility/Icons";
+import media from "styled-media-query";
 
 const Container = styled.div`
 	display: flex;
@@ -90,6 +91,10 @@ const GoTopCustomStyle = styled.a`
 			? css`
 					& {
 						bottom: 2.5rem;
+
+						${media.lessThan("460px")`
+							bottom: 6rem;
+						`}
 					}
 			  `
 			: css`
