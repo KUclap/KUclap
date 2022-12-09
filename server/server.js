@@ -38,8 +38,8 @@ polka()
 	.get("/:classID", ClassEndpoint)
 	.get("/review/:reviewID", ReviewEndpoint)
 	.get("/form/create/:classID", ClassEndpoint)
-	.listen(process.env.PORT || PORT || 8000, (err) => {
+	.listen(process.env.PORT || PORT, (err) => {
 		if (err) throw err;
-		console.log(`> 🔧 Mode: ${ENV_KU_CLAP}`);
+		console.log(`> 🔧 Mode: ${ENV_KU_CLAP} / ${process.env.NODE_ENV}`);
 		console.log(`> 🚀 Running on localhost:${PORT}`);
 	});
