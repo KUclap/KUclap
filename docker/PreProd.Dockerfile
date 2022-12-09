@@ -11,7 +11,8 @@ COPY .babelrc ./
 
 # Curl config
 RUN curl -o .env.preproduction https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/KUclap/_ENV/main/env/kuclap-frontend/.env.preproduction && ls .env.preproduction
-RUN ls .env.preproduction
+RUN source .env.preproduction
+RUN echo $ENV_KU_CLAP
 
 RUN npm ci
 RUN npm run build:preprod_prd
