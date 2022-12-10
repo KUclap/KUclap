@@ -1,5 +1,5 @@
 # Building stage
-FROM --platform=linux/amd64 node:14.2-slim as builder
+FROM --platform=linux/amd64 node:16.16.0-slim as builder
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -8,17 +8,22 @@ COPY src src/
 COPY server server/
 COPY .babelrc ./
 COPY .env.staging ./
+
 RUN npm ci
+
 RUN npm run build:stag_prd
 RUN npm run build:server
-RUN ls -al 
 
 # Starting stage
-FROM --platform=linux/amd64 node:14.2-slim
+FROM --platform=linux/amd64 node:16.16.0-slim
 WORKDIR /usr/src/app
+
 COPY --from=builder /usr/src/app/node_modules node_modules/
+COPY --from=builder /usr/src/app/.env.* .
 COPY --from=builder /usr/src/app/build build/
 COPY --from=builder /usr/src/app/dist dist/
 COPY --from=builder /usr/src/app/package.json .
+
 EXPOSE 8000 8000
+
 CMD [ "npm", "run", "start:server-stag"]
