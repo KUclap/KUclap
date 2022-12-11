@@ -31,7 +31,7 @@ const TabLine = styled.div`
 					width: 11.2rem;
 					left: 4.8rem;
                 ` : css`
-					width: 9.4rem;
+          width: 14.2rem;
 					left: 11.8rem;
                 `
             ) : (props.underlineAt === "review"
@@ -43,13 +43,34 @@ const TabLine = styled.div`
                     width: 12.3rem;
                     left: 4.8rem;
                 ` : css`
-                    width: 10.8rem;
+                    width: 15.6rem;
                     left: 11.8rem;
                 `
             )
         }
 	}
 `;
+
+const WrapperNewFeature = styled.div`
+  display: flex;
+`
+
+const NewFeatureBadge =  styled.span`
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  
+  color: white;
+  background-color: hsl(11, 85%, 47%);
+  
+  width: 4rem;
+  height: 1.8rem;
+  border-radius: 0.6rem;
+  margin: 0.6rem 0 0 0.8rem;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 const MenuUnderline = (props) => {
     const { fetchTarget, changeTab, currentRoute } = props
@@ -75,7 +96,10 @@ const MenuUnderline = (props) => {
                 isActive={fetchTarget === "recap"}
                 onClick={() => changeTab("recap")}
             >
-                {fetchTarget === "recap" ? (currentRoute === "HOME" ? "สรุปล่าสุด" : "สรุปทั้งหมด") : "สรุป"}
+                <WrapperNewFeature>
+                  {fetchTarget === "recap" ? (currentRoute === "HOME" ? "สรุปล่าสุด" : "สรุปทั้งหมด") : "สรุป"}
+                  <NewFeatureBadge>NEW</NewFeatureBadge>
+                </WrapperNewFeature>
             </TabTitle>
             <TabLine />
             <TabLine currentRoute={currentRoute} underlineAt={fetchTarget} />
