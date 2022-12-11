@@ -58,14 +58,14 @@ const WrapperNewFeature = styled.div`
 const NewFeatureBadge =  styled.span`
   font-size: 1.2rem;
   line-height: 1.6rem;
-  
+
   color: white;
   background-color: hsl(11, 85%, 47%);
   
   width: 4rem;
   height: 1.8rem;
   border-radius: 0.6rem;
-  margin: 0.6rem 0 0 0.8rem;
+  margin: 0.6rem 0.8rem 0 0 ;
   
   display: flex;
   justify-content: center;
@@ -97,8 +97,8 @@ const MenuUnderline = (props) => {
                 onClick={() => changeTab("recap")}
             >
                 <WrapperNewFeature>
-                  {fetchTarget === "recap" ? (currentRoute === "HOME" ? "สรุปล่าสุด" : "สรุปทั้งหมด") : "สรุป"}
                   <NewFeatureBadge>NEW</NewFeatureBadge>
+                  {fetchTarget === "recap" ? (currentRoute === "HOME" ? "สรุปล่าสุด" : "สรุปทั้งหมด") : "สรุป"}
                 </WrapperNewFeature>
             </TabTitle>
             <TabLine />
