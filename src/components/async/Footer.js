@@ -86,11 +86,6 @@ const Footer = ({ theme }) => {
 			</ContainerSocial>
 
 			<MoreProductionText>เว็บไซต์อื่น ๆ ที่อยากแนะนำ</MoreProductionText>
-			<a href="https://marsdev31.github.io/KUnit/" target="_blank" rel="noopener noreferrer">
-				<Button>
-					KUnit <span> | เว็บไซต์สำหรับคำนวณหน่วยกิตวิชาบูรฯ </span>
-				</Button>
-			</a>
 			<a href="https://kufillinggood.web.app/" target="_blank" rel="noopener noreferrer">
 				<Button>
 					KUFillingGood <span> | ระบบจัดวิชานอกภาคลงตารางเรียน </span>
