@@ -13,7 +13,7 @@ COPY .babelrc ./
 RUN curl -o .env.staging https://${GIT_ACCESS_TOKEN_CURL_CONFIG}@raw.githubusercontent.com/KUclap/_ENV/main/env/kuclap-frontend/.env.staging
 
 RUN npm ci
-RUN npm run build:preprod_prd
+RUN npm run build:stag_prd
 RUN npm run build:server
 
 # Starting stage
