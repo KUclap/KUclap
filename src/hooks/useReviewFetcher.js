@@ -18,7 +18,7 @@ const useReviewFetcherClass = ({ classID, fetchTarget }) => {
 	});
 	const [paging, setPaging] = useState({
 		page: 0,
-		offset: 5,
+		offset: 20,
 	});
 
 	useEffect(() => {
