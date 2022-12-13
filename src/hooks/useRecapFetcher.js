@@ -13,7 +13,7 @@ const useRecapFetcherClass = ({ classID, fetchTarget }) => {
 	const refIsMatchFetchTarget = useRef(isMatchFetchTarget);
 	const [paging, setPaging] = useState({
 		page: 0,
-		offset: 5,
+		offset: 20,
 	});
 
 	useEffect(() => {
