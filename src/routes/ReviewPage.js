@@ -11,6 +11,7 @@ import {
 } from "../components/common/FetcherComponents";
 import PageTemplate from "../components/common/PageTemplate";
 import ReviewCard from "../components/common/ReviewCard";
+import AdDisplayCard from '../components/common/AdDisplayCard'
 import { ReviewSkeletonA } from "../components/common/ReviewSkeleton";
 import APIs from "../components/utility/apis";
 import { getHelmet } from "../components/utility/helmet";
@@ -109,7 +110,10 @@ const ReviewPage = (props) => {
 						</ContainerNoMore>
 					</>
 				) : review ? (
-					<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+          <>
+            <ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+            <AdDisplayCard />
+          </>
 				) : loading ? (
 					<ReviewSkeletonA />
 				) : isAvailable ? (
