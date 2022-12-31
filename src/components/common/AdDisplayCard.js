@@ -10,7 +10,7 @@ const AdDisplayCard = () => {
 
 	return (
     <ins class="adsbygoogle"
-      style="display:block; margin-top: -18px; background-color: red;"
+      style="display:block; margin-top: -18px;"
       data-ad-test="on"
       data-ad-client="ca-pub-5117800582657554"
       data-ad-slot="9259275909"
