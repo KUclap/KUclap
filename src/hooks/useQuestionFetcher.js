@@ -13,7 +13,7 @@ const useQuestionFetcherClass = ({ classID, fetchTarget }) => {
 	const refIsMatchFetchTarget = useRef(isMatchFetchTarget);
 	const [paging, setPaging] = useState({
 		page: 0,
-		offset: 20,
+		offset: 12,
 	});
 	// console.log(underflow, loading, loadMore);
 	useEffect(() => {
