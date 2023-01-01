@@ -10,6 +10,7 @@ import PageTemplate from "../components/common/PageTemplate";
 import QuestionCard from "../components/common/QuestionCard";
 import RecapCard from "../components/common/RecapCard";
 import ReviewCard from "../components/common/ReviewCard";
+import AdDisplayCard from '../components/common/AdDisplayCard'
 import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
 import { getHelmet } from "../components/utility/helmet";
 import { navigateToHomePage } from "../components/utility/helper";
@@ -19,6 +20,8 @@ import { FetcherContext, FetcherProvider } from "../context/FetcherContext";
 const HomeTitle = styled.div`
 	width: fit-content;
 `;
+
+const ADS_POSITION_OFFSET = 9
 
 const HomePage = (props) => {
 	const { fetchTarget, setFetchTarget } = props;
@@ -46,7 +49,12 @@ const HomePage = (props) => {
 							(review, index) => {
 								if (review && !review?.deleteReason) {
 									return (
-										review && <ReviewCard key={index} isBadge={true} currentRoute={"HOME"} {...review} />
+										review && (
+                      <>
+                        <ReviewCard key={index} isBadge={true} currentRoute={"HOME"} {...review} />
+                        { index !== 0 && index % ADS_POSITION_OFFSET == 0 && <AdDisplayCard key={`ads-${index}`} /> }
+                      </>
+                    )
 									)
 								}
 							}
@@ -57,12 +65,15 @@ const HomePage = (props) => {
 						{questions?.map(
 							(question, index) =>
 								question && (
-									<QuestionCard
-										isBadge={true}
-										key={index}
-										questionInfo={question}
-										currentRoute="HOME"
-									/>
+                  <>
+                    <QuestionCard
+                      isBadge={true}
+                      key={index}
+                      questionInfo={question}
+                      currentRoute="HOME"
+                    />
+                    { index !== 0 && index % ADS_POSITION_OFFSET == 0 && <AdDisplayCard key={`ads-${index}`} /> }
+                  </>
 								)
 						)}
 					</AdaptorReviews>
@@ -70,7 +81,12 @@ const HomePage = (props) => {
 					<AdaptorReviews id="adaptor-recap">
 						{recaps?.map(
 							(recap, index) => 
-								recap && <RecapCard isBadge={true} key={index} recapInfo={recap} currentRoute="HOME" />
+								recap && (
+                  <>
+                    <RecapCard isBadge={true} key={index} recapInfo={recap} currentRoute="HOME" />
+                    { index !== 0 && index % ADS_POSITION_OFFSET == 0 && <AdDisplayCard key={`ads-${index}`} /> }
+                  </>
+                )
 						)}
 					</AdaptorReviews>
 				)}

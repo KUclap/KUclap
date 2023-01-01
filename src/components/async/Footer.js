@@ -27,28 +27,28 @@ const SocialText = styled(MoreProductionText)`
 	margin: 0.8rem 0 0 0;
 `;
 
-const Button = styled.button`
-	cursor: pointer;
-	background: ${(props) => props.theme.body};
-	color: ${blue};
-	min-width: 27.6rem;
-	font-size: 1.4rem;
-	font-family: "Kanit";
-	padding: 0.6rem 1.2rem;
-	border: 0.35rem solid ${(props) => props.theme.borderColor};
-	border-radius: 7px;
-	transition: 0.25s all ease-in;
-	margin: 0.8rem auto;
+// const Button = styled.button`
+// 	cursor: pointer;
+// 	background: ${(props) => props.theme.body};
+// 	color: ${blue};
+// 	min-width: 27.6rem;
+// 	font-size: 1.4rem;
+// 	font-family: "Kanit";
+// 	padding: 0.6rem 1.2rem;
+// 	border: 0.35rem solid ${(props) => props.theme.borderColor};
+// 	border-radius: 7px;
+// 	transition: 0.25s all ease-in;
+// 	margin: 0.8rem auto;
 
-	span {
-		color: ${(props) => props.theme.footerButtonText};
-		font-size: 1.1rem;
-	}
+// 	span {
+// 		color: ${(props) => props.theme.footerButtonText};
+// 		font-size: 1.1rem;
+// 	}
 
-	&:hover {
-		border-color: ${blue};
-	}
-`;
+// 	&:hover {
+// 		border-color: ${blue};
+// 	}
+// `;
 
 const ExternalLink = styled.a`
 	margin-top: 1.5rem;
@@ -85,12 +85,12 @@ const Footer = ({ theme }) => {
 				<SocialIcons />
 			</ContainerSocial>
 
-			<MoreProductionText>เว็บไซต์อื่น ๆ ที่อยากแนะนำ</MoreProductionText>
+			{/* <MoreProductionText>เว็บไซต์อื่น ๆ ที่อยากแนะนำ</MoreProductionText>
 			<a href="https://kufillinggood.web.app/" target="_blank" rel="noopener noreferrer">
 				<Button>
 					KUFillingGood <span> | ระบบจัดวิชานอกภาคลงตารางเรียน </span>
 				</Button>
-			</a>
+			</a> */}
 
 			<ExternalLink href="https://github.com/KUclap" target="_blank" rel="noopener noreferrer">
 				<span className="highlight">PRs Welcome&nbsp;</span> at{" "}

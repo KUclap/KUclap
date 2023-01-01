@@ -21,6 +21,7 @@ import PageTemplate from "../components/common/PageTemplate";
 import QuestionCard from "../components/common/QuestionCard";
 import RecapCard from "../components/common/RecapCard";
 import ReviewCard from "../components/common/ReviewCard";
+import AdDisplayCard from '../components/common/AdDisplayCard'
 import { ReviewSkeletonA, ReviewSkeletonB } from "../components/common/ReviewSkeleton";
 import { getHelmet } from "../components/utility/helmet";
 import { getClassName, getColorHash, getDetailFromLabel, navigateToFormReviewPage, navigateToHomePage } from "../components/utility/helper";
@@ -72,6 +73,8 @@ const ReviewTitle = styled.div`
 	align-items: center;
 	margin-top: 2.2rem;
 `;
+
+const ADS_POSITION_OFFSET = 9
 
 const ClassPage = (props) => {
 	const { classID, fetchTarget, setFetchTarget } = props;
@@ -130,20 +133,35 @@ const ClassPage = (props) => {
 					<AdaptorReviews id="adaptor">
 						{reviews?.map(
 							(review, index) =>
-								review && <ReviewCard key={index} isBadge={false} currentRoute={"CLASS"} {...review} />
+								review && (
+                  <>
+                    <ReviewCard key={index} isBadge={false} currentRoute={"CLASS"} {...review} />
+                    { index !== 0 && index % ADS_POSITION_OFFSET == 0 && <AdDisplayCard key={`ads-${index}`} /> }
+                  </>
+                )
 						)}
 					</AdaptorReviews>
 				) : fetchTarget === "question" ? (
 					<AdaptorReviews id="adaptor-question">
 						{questions?.map(
 							(question, index) =>
-								question && <QuestionCard key={index} questionInfo={question} currentRoute="CLASS" />
+								question && (
+                  <>
+                    <QuestionCard key={index} questionInfo={question} currentRoute="CLASS" />
+                    { index !== 0 && index % ADS_POSITION_OFFSET == 0 && <AdDisplayCard key={`ads-${index}`} /> }
+                  </>
+                )
 						)}
 					</AdaptorReviews>
 				) : (
 					<AdaptorReviews id="adaptor-recap">
 						{recaps?.map(
-							(recap, index) => recap && <RecapCard key={index} recapInfo={recap} currentRoute="CLASS" />
+							(recap, index) => recap && (
+                <>
+                  <RecapCard key={index} recapInfo={recap} currentRoute="CLASS" />
+                  { index !== 0 && index % ADS_POSITION_OFFSET == 0 && <AdDisplayCard key={`ads-${index}`} /> }
+                </>
+              )
 						)}
 					</AdaptorReviews>
 				)}
