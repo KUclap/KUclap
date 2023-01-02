@@ -64,6 +64,8 @@
 	"dependencies": {
 		"@material-ui/core": "^4.9.10",
 		"@material-ui/icons": "^4.9.1",
+		"@sentry/browser": "^7.28.1",
+		"@sentry/tracing": "^7.28.1",
 		"animate.css": "^3.7.2",
 		"axios": "^0.19.2",
 		"compression": "^1.7.4",
