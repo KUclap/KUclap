@@ -113,6 +113,7 @@ const ReviewPage = (props) => {
 				) : review ? (
           <>
             <ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+            <br />
             <AdDisplayCard />
           </>
 				) : loading ? (
@@ -120,6 +121,7 @@ const ReviewPage = (props) => {
 				) : isAvailable ? (
           <>
             <ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+            <br />
             <AdDisplayCard />
           </>
 				) : (
