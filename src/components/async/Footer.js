@@ -11,8 +11,7 @@ const Container = styled.footer`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin-top: 7.5rem;
-	margin-bottom: 4rem;
+	margin: 4rem 0;
 	border-top: 0.475rem dashed ${(props) => props.theme.borderColor};
 `;
 
