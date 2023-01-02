@@ -21,7 +21,7 @@ const HomeTitle = styled.div`
 	width: fit-content;
 `;
 
-const ADS_POSITION_OFFSET = 9
+const ADS_POSITION_OFFSET = 6
 
 const HomePage = (props) => {
 	const { fetchTarget, setFetchTarget } = props;
@@ -115,6 +115,7 @@ const HomePage = (props) => {
 									)}
 								</NoMoreCustom>
 							</ContainerNoMore>
+              <AdDisplayCard />
 							<Footer />
 						</>
 					)
@@ -138,6 +139,7 @@ const HomePage = (props) => {
 									)}
 								</NoMoreCustom>
 							</ContainerNoMore>
+              <AdDisplayCard />
 							<Footer />
 						</>
 					)
@@ -161,6 +163,7 @@ const HomePage = (props) => {
 									)}
 								</NoMoreCustom>
 							</ContainerNoMore>
+              <AdDisplayCard />
 							<Footer />
 						</>
 					)
