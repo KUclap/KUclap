@@ -74,7 +74,7 @@ const ReviewTitle = styled.div`
 	margin-top: 2.2rem;
 `;
 
-const ADS_POSITION_OFFSET = 9
+const ADS_POSITION_OFFSET = 6
 
 const ClassPage = (props) => {
 	const { classID, fetchTarget, setFetchTarget } = props;
@@ -191,6 +191,7 @@ const ClassPage = (props) => {
 								</NoMoreCustom>
 								<PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
 							</ContainerNoMore>
+              <AdDisplayCard />
 							<Footer />
 						</>
 					)
@@ -215,6 +216,7 @@ const ClassPage = (props) => {
 								</NoMoreCustom>
 								<PrimaryButton onClick={() => setQuestionModal(true)}>ถามคำถาม</PrimaryButton>
 							</ContainerNoMore>
+              <AdDisplayCard />
 							<Footer />
 						</>
 					)
@@ -239,6 +241,7 @@ const ClassPage = (props) => {
 								</NoMoreCustom>
 								<PrimaryButton onClick={handleNewReview}>เพิ่มรีวิว</PrimaryButton>
 							</ContainerNoMore>
+              <AdDisplayCard />
 							<Footer />
 						</>
 					)

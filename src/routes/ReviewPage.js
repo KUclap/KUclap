@@ -108,16 +108,22 @@ const ReviewPage = (props) => {
 								<NoMoreCard />
 							</NoMoreCustom>
 						</ContainerNoMore>
+            <AdDisplayCard />
 					</>
 				) : review ? (
           <>
             <ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+            <br />
             <AdDisplayCard />
           </>
 				) : loading ? (
 					<ReviewSkeletonA />
 				) : isAvailable ? (
-					<ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+          <>
+            <ReviewCard isBadge={false} currentRoute={"REVIEW"} {...review} />
+            <br />
+            <AdDisplayCard />
+          </>
 				) : (
 					<>
 						<ContainerNoMore>
@@ -126,6 +132,7 @@ const ReviewPage = (props) => {
 								<NoMoreCard />
 							</NoMoreCustom>
 						</ContainerNoMore>
+            <AdDisplayCard />
 					</>
 				)}
 				{/* {review ? (

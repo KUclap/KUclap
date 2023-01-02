@@ -26,7 +26,7 @@ const ContainerNoMore = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.6rem 0;
+  margin: 1.6rem 0 4.8rem;
   min-width: 27.6rem;
   overflow: hidden;
 `;
