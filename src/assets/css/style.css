@@ -48,3 +48,8 @@ p {
         font-size: 62.5%; 
     }
 }
+
+.MuiAlert-message {
+    font-family: 'Kanit', arial, sans-serif;
+    font-size: 1.25rem;
+}
