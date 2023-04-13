@@ -1,6 +1,6 @@
 import { h, createContext } from "preact";
 import useFetcher from "../hooks/useFetcher";
-import { Alert } from "@mui/material";
+// import { Alert } from "@mui/material";
 
 const FetcherContext = createContext();
 
@@ -13,9 +13,9 @@ const FetcherProvider = (props) => {
         ...state,
       }}
     >
-      <Alert severity="error">
+      {/* <Alert severity="error">
         ขณะนี้ระบบกำลังขัดข้อง ทางเรากำลังแก้ไขอย่างเต็มที่ กรุณาลองใหม่อีกครั้งภายหลังนะคะ 😭
-      </Alert>
+      </Alert> */}
       {props.children}
     </FetcherContext.Provider>
   );
