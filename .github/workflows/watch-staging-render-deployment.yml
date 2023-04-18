@@ -1,0 +1,16 @@
+name: Render
+on:
+  push:
+    branches:
+      - staging-release
+jobs:
+  deploy:
+    name: Wait for Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Render Deployment
+        uses: bounceapp/render-action@0.6.0
+        with:
+          render-token: ${{ secrets.KUCLAP_WWW_GITHUB_ACTION_WATCH_RENDER_DEPLOYMENT }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          service-id: ${{ secrets.KUCLAP_WWW_RENDER_SERVICE_ID }}
