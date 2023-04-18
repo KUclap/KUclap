@@ -2,7 +2,6 @@ import { h } from "preact";
 import { route } from "preact-router";
 import { useContext, useState } from "preact/hooks";
 import styled, { withTheme } from "styled-components";
-
 import Footer from "../components/async/Footer";
 import { AdaptorReviews, ContainerNoMore, LastReview, NoMoreCustom } from "../components/common/FetcherComponents";
 import MenuUnderline from "../components/common/MenuUnderline";
