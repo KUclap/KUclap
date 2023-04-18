@@ -1,4 +1,4 @@
-name: Render
+name: Wait for Render Deployment
 on:
   push:
     branches:
