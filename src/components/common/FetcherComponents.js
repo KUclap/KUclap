@@ -11,6 +11,10 @@ const DetailTitle = styled(Heading1)`
 const AdaptorReviews = styled.div`
   width: 100%;
   margin: 0 auto;
+
+  .google-auto-placed {
+    display: none !important;
+  }
 `;
 
 const LastReview = styled.div`
