@@ -34,6 +34,11 @@ export default (config, env, helpers) => {
 	// Define a `process.env.SSR` boolean constant:
 	DefinePlugin.plugin.definitions["process.env.SSR"] = String(env.ssr);
 
+	// axios 1.x's browser build touches `window` (form-data), which breaks prerender in Node.
+	if (env.ssr) {
+		config.resolve.alias.axios$ = require.resolve("axios/dist/node/axios.cjs");
+	}
+
 	// Change path to static files (default request route to root "/")
 	if (
 		process.env.NODE_ENV === "staging" ||
